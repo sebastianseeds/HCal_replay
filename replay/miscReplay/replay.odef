@@ -1,0 +1,25 @@
+# Sample outout definition file
+
+#ADC from calorimeter
+#block *
+block g.*
+block bb.*trig.*
+block bb.sh.*
+block bb.ps.*
+block bb.ps.n*
+block bb.sh.n*
+block bb.sh.Ref*
+block bb.ps.ngoodADChits
+block bb.sh.ngoodADChits
+block bb.ps.a*col
+block bb.ps.a*row
+block bb.ps.ped
+block bb.ps.a*
+block bb.sh.a*col
+block bb.sh.a*row
+block bb.sh.ped
+#block bb.sh.cl*
+block bb.sh.a*
+block bb.ps.*samp*
+block bb.sh.*samp*
+

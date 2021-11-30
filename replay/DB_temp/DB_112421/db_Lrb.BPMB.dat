@@ -1,0 +1,47 @@
+--------[ 2021-10-22 15:30:00 -0400 ]
+Lrb.BPMB.detmap =
+      10    14     9    12     1  250
+Lrb.BPMB.calib_rot = 0.01887
+Lrb.BPMB.pedestals = 42487.255 42556.537 42519.863 42167.701
+Lrb.BPMB.rotmatrix = -0.717949 0.718184 0.745201 0.683732 
+Lrb.BPMB.offsets = 0.00106211 -0.000368352
+
+--------[ 2021-10-21 20:00:00 -0400 ]
+Lrb.BPMB.detmap =
+      10    14     9    12     1  250
+Lrb.BPMB.calib_rot = 0.01887
+Lrb.BPMB.pedestals = 46720 46850 47300 47090
+Lrb.BPMB.rotmatrix = -0.717949 0.718184 0.745201 0.683732 
+Lrb.BPMB.offsets = 0.00106211 -0.000368352
+
+--------[ 2021-10-12 18:00:00 -0400 ]
+Lrb.BPMB.detmap =
+      10    14     9    12     1  250
+Lrb.BPMB.calib_rot = 0.01887
+Lrb.BPMB.pedestals = 32365.676 32269.325 32239.474 31945.989
+Lrb.BPMB.rotmatrix = -0.717949 0.718184 0.745201 0.683732 
+Lrb.BPMB.offsets = 0.00106211 -0.000368352
+
+--------[ 2021-10-12 17:00:00 -0400 ]
+Lrb.BPMB.detmap =
+      10    14     9    12     1  250
+Lrb.BPMB.calib_rot = 0.01887
+Lrb.BPMB.pedestals = 15400  15460  16240  16150
+Lrb.BPMB.rotmatrix = -0.717949 0.718184 0.745201 0.683732 
+Lrb.BPMB.offsets = 0.00106211 -0.000368352
+
+--------[ 2021-10-12 12:00:00 -0400 ]
+Lrb.BPMB.detmap =
+      10    14     4    7     1  250
+Lrb.BPMB.calib_rot = 0.01887
+Lrb.BPMB.pedestals = 15400  15460  16240  16150
+Lrb.BPMB.rotmatrix = -0.717949 0.718184 0.745201 0.683732 
+Lrb.BPMB.offsets = 0.00106211 -0.000368352
+
+--------[ 2021-09-18 00:00:00 -0400 ]
+Lrb.BPMB.detmap =
+      10    14     4    7     1  250
+Lrb.BPMB.calib_rot = 0.01887
+Lrb.BPMB.pedestals = 15400  15460  16240  16150
+Lrb.BPMB.rotmatrix = -0.717949 0.718184 0.745201 0.683732
+Lrb.BPMB.offsets = 0.00106211 -0.000368352

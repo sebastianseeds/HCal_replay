@@ -1,0 +1,51 @@
+# Sample outout definition file
+
+#ADC from calorimeter
+#block *
+block g.*
+block bb.*trig.*
+block bb.ps.n*
+block bb.sh.n*
+block bb.ps.ngoodADChits
+block bb.sh.ngoodADChits
+block bb.ps.a*col
+block bb.ps.a*row
+block bb.ps.ped
+block bb.ps.a*
+block bb.sh.a*col
+block bb.sh.a*row
+block bb.sh.ped
+block bb.sh.cl*
+block bb.sh.a*
+#block bb.ps.*samp*
+#block bb.sh.*samp*
+block bb.sh.*
+block bb.ps.*
+
+# cut
+#cut shtime bb.sh.a_time>0
+#cut pstime bb.ps.a_time>0
+
+## PS 
+th2f hped_vs_elem_ps 'Pedestal vs element ID : PS' bb.ps.adcelemID[I] bb.ps.ped[I] 52 0 52 200 0 200 bb.ps.a_time[I]>0 
+th2f hADCtime_vs_elem_ps 'ADC time vs element ID : PS' bb.ps.adcelemID[I] bb.ps.a_time[I] 52 0 52 200 0 200 bb.ps.a_time[I]>0 
+th2f hADCamp_vs_elem_ps 'ADC amplitude(mV) vs element ID : PS' bb.ps.adcelemID[I] bb.ps.a_amp_p[I] 52 0 52 100 0 100 bb.ps.a_time[I]>0 
+th2f hADCint_vs_elem_ps 'ADC integral(pC) vs element ID : PS' bb.ps.adcelemID[I] bb.ps.a_p[I] 52 0 52 80 0 80 bb.ps.a_time[I]>0 
+th2f hADCeng_vs_elem_ps 'ADC integral(GeV) vs element ID : PS' bb.ps.adcelemID[I] bb.ps.a_c[I] 52 0 52 100 0 1 bb.ps.a_time[I]>0 
+
+## SH
+th2f hped_vs_elem_sh 'Pedestal vs element ID : SH' bb.sh.adcelemID[I] bb.sh.ped[I] 189 0 189 200 0 200 bb.sh.a_time[I]>0 
+th2f hADCtime_vs_elem_sh 'ADC time vs element ID : SH' bb.sh.adcelemID[I] bb.sh.a_time[I] 189 0 189 200 0 200 bb.sh.a_time[I]>0 
+th2f hADCamp_vs_elem_sh 'ADC amplitude(mV) vs element ID : SH' bb.sh.adcelemID[I] bb.sh.a_amp_p[I] 189 0 189 100 0 100 bb.sh.a_time[I]>0 
+th2f hADCint_vs_elem_sh 'ADC integral(pC) vs element ID : SH' bb.sh.adcelemID[I] bb.sh.a_p[I] 189 0 189 60 0 60 bb.sh.a_time[I]>0 
+th2f hADCeng_vs_elem_sh 'ADC integral(GeV) vs element ID : SH' bb.sh.adcelemID[I] bb.sh.a_c[I] 189 0 189 100 0 1 bb.sh.a_time[I]>0 
+
+## BBCal trigger
+# ADC
+th2f hped_vs_elem_trig 'Pedestal vs element ID : BBTrig' bb.bbtrig.adcelemID[I] bb.bbtrig.ped[I] 25 0 25 200 0 200 bb.bbtrig.a_time[I]>0 
+th2f hADCtime_vs_elem_trig 'ADC time vs element ID : BBTrig' bb.bbtrig.adcelemID[I] bb.bbtrig.a_time[I] 25 0 25 200 0 200 bb.bbtrig.a_time[I]>0 
+th2f hADCamp_vs_elem_trig 'ADC amplitude(mV) vs element ID : BBTrig' bb.bbtrig.adcelemID[I] bb.bbtrig.a_amp_p[I] 25 0 25 100 0 100 bb.bbtrig.a_time[I]>0 
+
+# TDC
+th2f htdc_vs_elem_trig 'TDC vs element ID : BBTrig (High)' bb.bbtrig.tdcelemID[I] bb.bbtrig.tdc[I] 25 0 25 200 -200 200 
+

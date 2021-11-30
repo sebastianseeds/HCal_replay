@@ -1,0 +1,1574 @@
+# Date/Time = Fri Jan 1 11:00:00 2021 
+# database format: the tracker consists of a collection of modules: 
+# database properties will be organized by module, not by "plane" as in old SBS-offline
+
+# Geometry and calibration/decode information:
+
+# BigBite GEMs as in the GMN run: Layer 0 = U/V (1 module), Layer 1 = 3X INFN X/Y, Layer 2 = 1X U/V, Layer 3 = 3X INFN X/Y, Layer 4 = 4X UVA X/Y
+bb.gem.modules = m0     m1 m2 m3    m4   m5 m6 m7    m8 m9 m10 m11
+
+bb.gem.m0.layer = 0
+
+bb.gem.m1.layer = 1
+bb.gem.m2.layer = 1
+bb.gem.m3.layer = 1
+
+bb.gem.m4.layer = 2
+
+bb.gem.m5.layer = 3
+bb.gem.m6.layer = 3
+bb.gem.m7.layer = 3
+
+bb.gem.m8.layer = 4
+bb.gem.m9.layer = 4
+bb.gem.m10.layer = 4
+bb.gem.m11.layer = 4
+
+# APV mapping configurations: 0 = INFN, 1 = UVA X/Y, 2 = UVA U/V
+bb.gem.m0.apvmap = 2 # UVA U/V
+
+bb.gem.m1.apvmap = 0 # INFN
+bb.gem.m2.apvmap = 0
+bb.gem.m3.apvmap = 0
+
+bb.gem.m4.apvmap = 2 # U/V
+
+bb.gem.m5.apvmap = 0 # INFN
+bb.gem.m6.apvmap = 0
+bb.gem.m7.apvmap = 0
+
+bb.gem.m8.apvmap = 1 # UVA X/Y
+bb.gem.m9.apvmap = 1 # UVA X/Y
+bb.gem.m10.apvmap = 1 # UVA X/Y
+bb.gem.m11.apvmap = 1 # UVA X/Y
+
+# basic flags controlling decoding:
+bb.gem.pedestalmode = 0
+bb.gem.commonmode_flag = 1 # "Danning method" cm subtraction
+bb.gem.chan_cm_flags = 512 # defines the "dummy" reference channel for storing the cm_enable and build_all_samples flags
+bb.gem.commonmode_nstriplo = 20
+bb.gem.commonmode_nstriphi = 20
+bb.gem.commonmode_niter = 3
+bb.gem.commonmode_minstrips = 20
+bb.gem.plot_common_mode = 0
+bb.gem.pedsub_online = 1
+bb.gem.dump_geometry_info = 1
+bb.gem.efficiency_bin_width_1D = 0.01
+bb.gem.efficiency_bin_width_2D = 0.01
+
+
+# to start with, let's not worry about the misalignments, let's put everything at its nominal/ideal position:
+
+#bb.gem.m0.position = 0 0 0
+
+# initial guesses:
+# in the INFN X/Y layers, the "GEMPOS" index that defines the global module number runs from bottom to top
+#bb.gem.m1.position = 0.535 0 0.1288
+#bb.gem.m2.position =      0 0 0.1288
+#bb.gem.m3.position = -0.535  0 0.1288
+
+#bb.gem.m4.position = 0 0 0.2781
+
+#bb.gem.m5.position =  0.535 0 0.4112
+#bb.gem.m6.position =      0 0 0.4112
+#bb.gem.m7.position = -0.535 0 0.4112
+
+# in the UVA X/Y layer, the "GEMPOS" index that defines the global module number runs from top to bottom
+#bb.gem.m8.position = -0.768 0 1.570
+#bb.gem.m9.position = -0.256 0 1.534
+#bb.gem.m10.position = 0.256 0 1.570
+#bb.gem.m11.position = 0.768 0 1.534
+
+#bb.gem.m0.angle = 0 0 0
+
+#bb.gem.m1.angle = 0 0 0
+#bb.gem.m2.angle = 0 0 0
+#bb.gem.m3.angle = 0 0 0
+
+#bb.gem.m4.angle = 0 0 0
+
+#bb.gem.m5.angle = 0 0 0
+#bb.gem.m6.angle = 0 0 0
+#bb.gem.m7.angle = 0 0 0
+
+#bb.gem.m8.angle = 0 0 0
+#bb.gem.m9.angle = 0 0 0
+#bb.gem.m10.angle = 0 0 0
+#bb.gem.m11.angle = 0 0 0
+
+# First alignment results (UVA layers only):
+#bb.gem.m0.position =               0               0               0
+#bb.gem.m0.angle =               0               0               0
+#bb.gem.m1.position =           0.535               0          0.1288
+#bb.gem.m1.angle =               0               0               0
+#bb.gem.m2.position =               0               0          0.1288
+#bb.gem.m2.angle =               0               0               0
+#bb.gem.m3.position =          -0.535               0          0.1288
+#bb.gem.m3.angle =               0               0               0
+#bb.gem.m4.position =     -0.00821202      0.00406697        0.278831
+#bb.gem.m4.angle =       0.0421632     -0.00770176       -0.256661
+#bb.gem.m5.position =           0.535               0          0.4112
+#bb.gem.m5.angle =               0               0               0
+#bb.gem.m6.position =               0               0          0.4112
+#bb.gem.m6.angle =               0               0               0
+#bb.gem.m7.position =          -0.535               0          0.4112
+#bb.gem.m7.angle =               0               0               0
+#bb.gem.m8.position =       -0.768602      0.00189088         1.57228
+#bb.gem.m8.angle =        0.287157       0.0497893      -0.0167777
+#bb.gem.m9.position =       -0.253387     -0.00198992         1.53365
+#bb.gem.m9.angle =       0.0660782       -0.151838        -0.12117
+#bb.gem.m10.position =         0.25814     -0.00556479         1.57406
+#bb.gem.m10.angle =        0.178343       -0.107656       -0.119409
+#bb.gem.m11.position =        0.768809      -0.0121981         1.53247
+#bb.gem.m11.angle =       -0.612792       -0.380139        0.182686
+# Alignment 2nd iteration (UVA layers only):
+#bb.gem.m0.position =               0               0               0
+#bb.gem.m0.angle =               0               0               0
+#bb.gem.m1.position =           0.535               0          0.1288
+#bb.gem.m1.angle =               0               0               0
+#bb.gem.m2.position =               0               0          0.1288
+#bb.gem.m2.angle =               0               0               0
+#bb.gem.m3.position =          -0.535               0          0.1288
+#bb.gem.m3.angle =               0               0               0
+#bb.gem.m4.position =     -0.00902501      0.00449594        0.278757
+#bb.gem.m4.angle =     -0.00602692      -0.0323214       -0.295959
+#bb.gem.m5.position =           0.535               0          0.4112
+#bb.gem.m5.angle =               0               0               0
+#bb.gem.m6.position =               0               0          0.4112
+#bb.gem.m6.angle =               0               0               0
+#bb.gem.m7.position =          -0.535               0          0.4112
+#bb.gem.m7.angle =               0               0               0
+#bb.gem.m8.position =       -0.767349      0.00181506         1.57119
+#bb.gem.m8.angle =        0.138463       -0.233331       -0.158902
+#bb.gem.m9.position =       -0.253518     -0.00201252         1.53283
+#bb.gem.m9.angle =       -0.121823       -0.209282       -0.221751
+#bb.gem.m10.position =         0.25784     -0.00698227         1.57467
+#bb.gem.m10.angle =       0.0577716       -0.086862       -0.188649
+#bb.gem.m11.position =        0.769169      -0.0117417         1.53331
+#bb.gem.m11.angle =       -0.733937       -0.554105      -0.0143921
+# Alignment 3rd iteration (UVA layers only)
+#bb.gem.m0.position =               0               0               0
+#bb.gem.m0.angle =               0               0               0
+#bb.gem.m1.position =           0.535               0          0.1288
+#bb.gem.m1.angle =               0               0               0
+#bb.gem.m2.position =               0               0          0.1288
+#bb.gem.m2.angle =               0               0               0
+#bb.gem.m3.position =          -0.535               0          0.1288
+#bb.gem.m3.angle =               0               0               0
+#bb.gem.m4.position =     -0.00913963       0.0045326        0.278676 
+#bb.gem.m4.angle =      -0.0105214      -0.0296677        -0.30133
+#bb.gem.m5.position =           0.535               0          0.4112
+#bb.gem.m5.angle =               0               0               0
+#bb.gem.m6.position =               0               0          0.4112
+#bb.gem.m6.angle =               0               0               0
+#bb.gem.m7.position =          -0.535               0          0.4112
+#bb.gem.m7.angle =               0               0               0
+#bb.gem.m8.position =       -0.766813      0.00180247         1.57071
+#bb.gem.m8.angle =       0.0804257       -0.237145       -0.202136
+#bb.gem.m9.position =       -0.253846      -0.0020081         1.53264
+#bb.gem.m9.angle =       -0.183899       -0.155404       -0.256244
+#bb.gem.m10.position =        0.257561     -0.00737937          1.5745
+#bb.gem.m10.angle =      0.00742667      -0.0880552       -0.206393
+#bb.gem.m11.position =        0.769244      -0.0116252         1.53332
+#bb.gem.m11.angle =       -0.857941       -0.656681      -0.0881281
+# alignment 4th iteration (UVA layers plus INFN J0): Eventually we might need time-dependent alignment params:
+#bb.gem.m0.position =               0               0               0
+#bb.gem.m0.angle =               0               0               0
+#bb.gem.m1.position =        0.529885      -0.0098546        0.132296
+#bb.gem.m1.angle =       0.0195618       -0.240395       -0.121741
+#bb.gem.m2.position =     -0.00505968     -0.00686753         0.13001
+#bb.gem.m2.angle =       0.0119132       0.0354303        -0.34864
+#bb.gem.m3.position =       -0.541103     -0.00331867        0.130722
+#bb.gem.m3.angle =       -0.191761        0.122195       -0.363729
+#bb.gem.m4.position =     -0.00808782      0.00632119        0.278401
+#bb.gem.m4.angle =      -0.0113032     -0.00483909        -0.28855
+#bb.gem.m5.position =           0.535               0          0.4112
+#bb.gem.m5.angle =               0               0               0
+#bb.gem.m6.position =               0               0          0.4112
+#bb.gem.m6.angle =               0               0               0
+#bb.gem.m7.position =          -0.535               0          0.4112
+#bb.gem.m7.angle =               0               0               0
+#bb.gem.m8.position =       -0.766594      0.00222772         1.57114
+#bb.gem.m8.angle =       0.0439763       -0.251011       -0.220488
+#bb.gem.m9.position =       -0.253884     -0.00199037         1.53204
+#bb.gem.m9.angle =       -0.193856       -0.168662       -0.274617
+#bb.gem.m10.position =         0.25759     -0.00747815         1.57378
+#bb.gem.m10.angle =      0.00966997      -0.0921889       -0.221361
+#bb.gem.m11.position =        0.769493      -0.0110257          1.5326
+#bb.gem.m11.angle =       -0.811449        -0.63143       -0.138899
+# first round of 5-layer alignment, September 26:
+#bb.gem.m0.position =               0               0               0
+#bb.gem.m0.angle =               0               0               0
+#bb.gem.m1.position =        0.530161      0.00122419        0.132135
+#bb.gem.m1.angle =     -0.00579893       -0.236448       -0.164099
+#bb.gem.m2.position =     -0.00472469      0.00450983        0.130035
+#bb.gem.m2.angle =       -0.017921       0.0516765       -0.361467
+#bb.gem.m3.position =       -0.540876      0.00822546        0.131145
+#bb.gem.m3.angle =       -0.199382        0.164808       -0.365438
+#bb.gem.m4.position =     -0.00744453       0.0057906        0.278257
+#bb.gem.m4.angle =       0.0264833       0.0122006       -0.257475
+#bb.gem.m5.position =        0.525269     0.000809933        0.415358
+#bb.gem.m5.angle =        0.154401        0.058399       -0.171539
+#bb.gem.m6.position =     -0.00949246       0.0016568        0.415637
+#bb.gem.m6.angle =        0.311496        0.201536      -0.0308564
+#bb.gem.m7.position =          -0.535               0          0.4112
+#bb.gem.m7.angle =               0               0               0
+#bb.gem.m8.position =        -0.76439    -0.000293366         1.56941
+#bb.gem.m8.angle =       -0.227179       -0.293331       -0.453812
+#bb.gem.m9.position =       -0.250867     -0.00170947         1.53025
+#bb.gem.m9.angle =       -0.344905       -0.178442       -0.397411
+#bb.gem.m10.position =         0.25759     -0.00747815         1.57378
+#bb.gem.m10.angle =      0.00966998      -0.0922256       -0.221361
+#bb.gem.m11.position =        0.769493      -0.0110257          1.5326
+#bb.gem.m11.angle =         -0.8114         -0.6294       -0.138891
+# better 5-layer alignment after fixing decode map issue (fiber swap), Sept. 27, 2021:
+bb.gem.m0.position =               0               0               0
+bb.gem.m0.angle =               0               0               0
+bb.gem.m1.position =         0.53004      0.00122346        0.132294
+bb.gem.m1.angle =      0.00730057        -0.23551       -0.157008
+bb.gem.m2.position =     -0.00483181      0.00453899        0.130173
+bb.gem.m2.angle =      -0.0201476       0.0430749       -0.361586
+bb.gem.m3.position =       -0.540962      0.00830375        0.131113
+bb.gem.m3.angle =       -0.174489        0.120442       -0.372539
+bb.gem.m4.position =     -0.00767748      0.00564678        0.278521
+bb.gem.m4.angle =      -0.0046367       0.0189606       -0.277188
+bb.gem.m5.position =        0.524853      0.00032359        0.415576
+bb.gem.m5.angle =        0.168737       0.0437047       -0.166935
+bb.gem.m6.position =      -0.0100786      0.00118932         0.41612
+bb.gem.m6.angle =         0.30627         0.18866      -0.0205122
+bb.gem.m7.position =          -0.535               0          0.4112
+bb.gem.m7.angle =               0               0               0
+bb.gem.m8.position =       -0.764335     0.000668296         1.57006
+bb.gem.m8.angle =       -0.095146       -0.216054       -0.378275
+bb.gem.m9.position =       -0.252238     -0.00208911         1.53116
+bb.gem.m9.angle =        -0.20089       -0.133872       -0.301345
+bb.gem.m10.position =        0.258417     -0.00797151         1.57407
+bb.gem.m10.angle =       0.0303194       -0.194166       -0.267587
+bb.gem.m11.position =        0.771015      -0.0119037         1.53384
+bb.gem.m11.angle =       -0.500268       -0.357792       -0.250312
+
+
+# we MAY need to adjust the size on the U/V layers, but for now let's just use a nominal 40x150 cm^2:
+
+bb.gem.m0.size = 1.50 0.40 0.001
+
+bb.gem.m1.size = 0.512 0.4096 0.001
+bb.gem.m2.size = 0.512 0.4096 0.001
+bb.gem.m3.size = 0.512 0.4096 0.001
+
+bb.gem.m4.size = 1.50 0.40 0.001
+
+bb.gem.m5.size = 0.512 0.4096 0.001
+bb.gem.m6.size = 0.512 0.4096 0.001
+bb.gem.m7.size = 0.512 0.4096 0.001
+
+bb.gem.m8.size = 0.512 0.6144 0.001
+bb.gem.m9.size = 0.512 0.6144 0.001
+bb.gem.m10.size = 0.512 0.6144 0.001
+bb.gem.m11.size = 0.512 0.6144 0.001
+
+
+# strip angles (as measured wrt +X direction of transport coordinate system):
+
+# in Sean's schematic, the pink strips are "V" and the blue strips are "U":
+# both U and V strip indices run in the opposite direction from the +X axis of transport coordinates.
+# the "U" angle should be -30 + 180 degrees or -30 - 180 degrees = 150 or -210 degrees
+# the "V" angle should be 30 - 180 degrees or 30 + 180 degrees = 210 or -150 degrees
+bb.gem.m0.uangle = 150.0
+bb.gem.m0.vangle = -150.0
+
+# for the INFN X/Y modules only the X-axis direction needs to be reversed
+bb.gem.m1.uangle = 180.0
+bb.gem.m1.vangle =  90.0
+bb.gem.m2.uangle = 180.0
+bb.gem.m2.vangle =  90.0
+bb.gem.m3.uangle = 180.0
+bb.gem.m3.vangle =  90.0
+
+bb.gem.m4.uangle = 150.0
+bb.gem.m4.vangle = -150.0
+
+bb.gem.m5.uangle = 180.0
+bb.gem.m5.vangle =  90.0
+bb.gem.m6.uangle = 180.0
+bb.gem.m6.vangle =  90.0
+bb.gem.m7.uangle = 180.0
+bb.gem.m7.vangle =  90.0
+
+# for the UVA X/Y modules the "X" axis coincides with the direction of transport coordinates but the "Y" axis is opposite the direction of transport coordinates:
+# as confirmed by Sean Jeffas:
+
+bb.gem.m8.uangle = 0.0
+bb.gem.m8.vangle = -90.0
+bb.gem.m9.uangle = 0.0
+bb.gem.m9.vangle = -90.0
+bb.gem.m10.uangle = 0.0
+bb.gem.m10.vangle = -90.0
+bb.gem.m11.uangle = 0.0
+bb.gem.m11.vangle = -90.0
+
+# U/V strip offsets: for X/Y GEMS, INFN and UVA alike, we are probably safe to stick with (0,0).
+# for U/V strip GEMs, the needed offsets are non-zero:
+
+# U offsets:
+bb.gem.m0.uoffset = 0.0108
+
+bb.gem.m1.uoffset = 0.0
+bb.gem.m2.uoffset = 0.0
+bb.gem.m3.uoffset = 0.0
+
+bb.gem.m4.uoffset = 0.0108
+
+bb.gem.m5.uoffset = 0.0
+bb.gem.m6.uoffset = 0.0
+bb.gem.m7.uoffset = 0.0
+
+bb.gem.m8.uoffset = 0.0
+bb.gem.m9.uoffset = 0.0
+bb.gem.m10.uoffset = 0.0
+bb.gem.m11.uoffset = 0.0
+
+# U offsets:
+bb.gem.m0.voffset = 0.0108
+
+bb.gem.m1.voffset = 0.0
+bb.gem.m2.voffset = 0.0
+bb.gem.m3.voffset = 0.0
+
+bb.gem.m4.voffset = 0.0108
+
+bb.gem.m5.voffset = 0.0
+bb.gem.m6.voffset = 0.0
+bb.gem.m7.voffset = 0.0
+
+bb.gem.m8.voffset = 0.0
+bb.gem.m9.voffset = 0.0
+bb.gem.m10.voffset = 0.0
+bb.gem.m11.voffset = 0.0
+
+# strip counts: these are easy for the X/Y modules but less trivial for the U/V modules:
+
+# to start with, we set the U/V layer strip count equal to 128 times the total number of APV cards.
+# however, not all physical readout strips are connected to APV cards and not all APV cards have
+# all channels connected to physical readout strips, so we probably will need an additional
+# optional database parameter to specify the "strip offset" from the physical center of the GEM active area:
+# for now, we keep nstripsu,v = 3,840 for the U/V strip GEMs, changing this parameter would change the definition of uoffset and voffset
+bb.gem.m0.nstripsu = 3840
+bb.gem.m0.nstripsv = 3840
+
+bb.gem.m1.nstripsu = 1280
+bb.gem.m1.nstripsv = 1024
+bb.gem.m2.nstripsu = 1280
+bb.gem.m2.nstripsv = 1024
+bb.gem.m3.nstripsu = 1280
+bb.gem.m3.nstripsv = 1024
+
+bb.gem.m4.nstripsu = 3840
+bb.gem.m4.nstripsv = 3840
+
+bb.gem.m5.nstripsu = 1280
+bb.gem.m5.nstripsv = 1024
+bb.gem.m6.nstripsu = 1280
+bb.gem.m6.nstripsv = 1024
+bb.gem.m7.nstripsu = 1280
+bb.gem.m7.nstripsv = 1024
+
+bb.gem.m8.nstripsu = 1280
+bb.gem.m8.nstripsv = 1536
+bb.gem.m9.nstripsu = 1280
+bb.gem.m9.nstripsv = 1536
+bb.gem.m10.nstripsu = 1280
+bb.gem.m10.nstripsv = 1536
+bb.gem.m11.nstripsu = 1280
+bb.gem.m11.nstripsv = 1536
+
+# all modules have the same strip pitch along both dimensions, 0.4 mm:
+bb.gem.upitch = 0.0004
+bb.gem.vpitch = 0.0004
+
+# tracking parameters:
+bb.gem.threshold_sample = 50.0
+bb.gem.threshold_stripsum = 200.0
+bb.gem.threshold_clustersum = 500.0
+
+bb.gem.ADCasym_cut = 1.1
+bb.gem.deltat_cut = 30.0
+bb.gem.corrcoeff_cut = 0.5
+bb.gem.filterflag1D = 0
+bb.gem.filterflag2D = 0
+
+bb.gem.peakprominence_minsigma = 5.0
+bb.gem.peakprominence_minfraction = 0.2
+
+bb.gem.maxnu_charge = 4
+bb.gem.maxnv_charge = 4
+
+bb.gem.maxnu_pos = 2
+bb.gem.maxnv_pos = 2
+
+bb.gem.sigmahitshape = 0.0004 
+bb.gem.sigmahitpos = 0.00015 # 0.15 mm or 150 um
+bb.gem.trackchi2cut = 3000.0
+bb.gem.onlinezerosuppression = 0
+bb.gem.zerosuppress_nsigma = 5.0
+bb.gem.minhitsontrack = 3
+bb.gem.maxhitcombos = 10000
+bb.gem.maxhitcombos_inner = 10000
+bb.gem.maxhitcombos_total = 1000000000
+bb.gem.tryfasttrack = 1
+bb.gem.gridbinwidthx = 0.05
+bb.gem.gridbinwidthy = 0.05
+bb.gem.gridedgetolerancex = 0.02
+bb.gem.gridedgetolerancey = 0.02
+bb.gem.useconstraint = 0
+
+################### DECODE INFO ########################################################################
+## Channel maps for decoding explained                                                                ##
+## Each entry corresponds to one APV card                                                             ## 
+## Crate = ROC ID = 20 for BigBite VTP                                                                ##
+## Slot = 11 for BigBite VTP                                                                          ##
+## fiber/mpd is fiber number for an MPD module, this is unique for each module within a VTP/SSP       ##
+## gemid is unique "production ID" of a GEM module, not currently used by analysis but useful         ##
+## for bookkeeping/tracking                                                                           ##
+## adc_ch is the unique adc channel of this APV card within its associated MPD                        ##
+## i2c is the "i2c address" of this APV card (not currently used by analysis)                         ##
+## pos maps APV cards to physical locations on the detector                                           ##
+## invert specifies whether strip index runs from "right-to-left" or "left-to-right" within an APV    ##
+## axis specifies which strip orientation/dimension of the readout strips connected to this APV       ##
+## ORDER of entries in the maps is:                                                                   ##
+## crate   slot   fiber/mpd  gemid  adc_ch   i2c   pos     invert   axis                              ##
+########################################################################################################
+
+bb.gem.m0.chanmap = 
+     20      11       7       3       0       3      29       1       1 
+     20      11       7       3       1       2      28       1       1 
+     20      11       7       3       2       1      27       1       1 
+     20      11       7       3       3       0      26       1       1 
+     20      11       7       3       4       7      25       1       1 
+     20      11       7       3       5       6      24       1       1 
+     20      11       7       3       6       5      23       1       1 
+     20      11       7       3       7       4      22       1       1 
+     20      11       7       3       8      11      21       1       1 
+     20      11       7       3       9      10      20       1       1 
+     20      11       7       3      10       9      19       1       1 
+     20      11       7       3      11       8      18       1       1 
+     20      11       7       3      12      15      17       1       1 
+     20      11       7       3      13      14      16       1       1 
+     20      11       7       3      14      13      15       1       1 
+     20      11       8       3       0       3      11       1       1 
+     20      11       8       3       1       2      10       1       1 
+     20      11       8       3       2       1       9       1       1 
+     20      11       8       3       3       0       8       1       1 
+     20      11       8       3       4       7       7       1       1 
+     20      11       8       3       5       6       6       1       1 
+     20      11       8       3       6       5       5       1       1 
+     20      11       8       3       7       4       4       1       1 
+     20      11       8       3       8      11       3       1       1 
+     20      11       8       3       9      10       2       1       1 
+     20      11       8       3      10       9       1       1       1 
+     20      11       8       3      11       8       0       1       1 
+     20      11       8       3      12      15      14       1       1 
+     20      11       8       3      13      14      13       1       1 
+     20      11       8       3      14      13      12       1       1 
+     20      11       9       3       0       3      26       0       0 
+     20      11       9       3       1       2      27       0       0 
+     20      11       9       3       2       1      28       0       0 
+     20      11       9       3       3       0      29       0       0 
+     20      11       9       3       4       7      22       0       0 
+     20      11       9       3       5       6      23       0       0 
+     20      11       9       3       6       5      24       0       0 
+     20      11       9       3       7       4      25       0       0 
+     20      11       9       3       8      11      18       0       0 
+     20      11       9       3       9      10      19       0       0 
+     20      11       9       3      10       9      20       0       0 
+     20      11       9       3      11       8      21       0       0 
+     20      11       9       3      12      15      15       0       0 
+     20      11       9       3      13      14      16       0       0 
+     20      11       9       3      14      13      17       0       0 
+     20      11      10       3       0       3       8       0       0 
+     20      11      10       3       1       2       9       0       0 
+     20      11      10       3       2       1      10       0       0 
+     20      11      10       3       3       0      11       0       0 
+     20      11      10       3       4       7       4       0       0 
+     20      11      10       3       5       6       5       0       0 
+     20      11      10       3       6       5       6       0       0 
+     20      11      10       3       7       4       7       0       0 
+     20      11      10       3       8      11       0       0       0 
+     20      11      10       3       9      10       1       0       0 
+     20      11      10       3      10       9       2       0       0 
+     20      11      10       3      11       8       3       0       0 
+     20      11      10       3      12      15      12       0       0 
+     20      11      10       3      13      14      13       0       0 
+     20      11      10       3      14      13      14       0       0 
+bb.gem.m1.chanmap = 
+     20      11      16      24       0       0       9       0       0 
+     20      11      16      24       1       1       7       0       0 
+     20      11      16      24       2       2       5       0       0 
+     20      11      16      24       3       3       3       0       0 
+     20      11      16      24       4       4       1       0       0 
+     20      11      17      24       4       0       7       0       1 
+     20      11      17      24       3       1       5       0       1 
+     20      11      17      24       2       2       3       0       1 
+     20      11      17      24       1       3       1       0       1 
+     20      11      18      24       0       0       0       1       0 
+     20      11      18      24       1       1       2       1       0 
+     20      11      18      24       2       2       4       1       0 
+     20      11      18      24       3       3       6       1       0 
+     20      11      18      24       4       4       8       1       0 
+     20      11      19      24       0       0       0       1       1 
+     20      11      19      24       1       1       2       1       1 
+     20      11      19      24       2       2       4       1       1 
+     20      11      19      24       3       3       6       1       1 
+bb.gem.m2.chanmap = 
+     20      11      16      15       5       8       9       0       0 
+     20      11      16      15       6       9       7       0       0 
+     20      11      16      15       7      10       5       0       0 
+     20      11      16      15       8      11       3       0       0 
+     20      11      16      15       9      12       1       0       0 
+     20      11      17      15       9       8       7       0       1 
+     20      11      17      15       8       9       5       0       1 
+     20      11      17      15       7      10       3       0       1 
+     20      11      17      15       6      11       1       0       1 
+     20      11      18      15       5       8       0       1       0 
+     20      11      18      15       6       9       2       1       0 
+     20      11      18      15       7      10       4       1       0 
+     20      11      18      15       8      11       6       1       0 
+     20      11      18      15       9      12       8       1       0 
+     20      11      19      15       9       8       0       1       1 
+     20      11      19      15       8       9       2       1       1 
+     20      11      19      15       7      10       4       1       1 
+     20      11      19      15       6      11       6       1       1 
+bb.gem.m3.chanmap = 
+     20      11      16      12      10      16       9       0       0 
+     20      11      16      12      11      17       7       0       0 
+     20      11      16      12      12      18       5       0       0 
+     20      11      16      12      13      19       3       0       0 
+     20      11      16      12      14      20       1       0       0 
+     20      11      17      12      10      16       7       0       1 
+     20      11      17      12      11      17       5       0       1 
+     20      11      17      12      12      18       3       0       1 
+     20      11      17      12      13      19       1       0       1 
+     20      11      18      12      10      16       0       1       0 
+     20      11      18      12      11      17       2       1       0 
+     20      11      18      12      12      18       4       1       0 
+     20      11      18      12      13      19       6       1       0 
+     20      11      18      12      14      20       8       1       0 
+     20      11      19      12      14      16       0       1       1 
+     20      11      19      12      13      17       2       1       1 
+     20      11      19      12      12      18       4       1       1 
+     20      11      19      12      11      19       6       1       1 
+bb.gem.m4.chanmap = 
+     20      11      11     104       0       3      29       1       1 
+     20      11      11     104       1       2      28       1       1 
+     20      11      11     104       2       1      27       1       1 
+     20      11      11     104       3       0      26       1       1 
+     20      11      11     104       4       7      25       1       1 
+     20      11      11     104       5       6      24       1       1 
+     20      11      11     104       6       5      23       1       1 
+     20      11      11     104       7       4      22       1       1 
+     20      11      11     104       8      11      21       1       1 
+     20      11      11     104       9      10      20       1       1 
+     20      11      11     104      10       9      19       1       1 
+     20      11      11     104      11       8      18       1       1 
+     20      11      11     104      12      15      17       1       1 
+     20      11      11     104      13      14      16       1       1 
+     20      11      11     104      14      13      15       1       1 
+     20      11      12     104       0       3      11       1       1 
+     20      11      12     104       1       2      10       1       1 
+     20      11      12     104       2       1       9       1       1 
+     20      11      12     104       3       0       8       1       1 
+     20      11      12     104       4       7       7       1       1 
+     20      11      12     104       5       6       6       1       1 
+     20      11      12     104       6       5       5       1       1 
+     20      11      12     104       7       4       4       1       1 
+     20      11      12     104       8      11       3       1       1 
+     20      11      12     104       9      10       2       1       1 
+     20      11      12     104      10       9       1       1       1 
+     20      11      12     104      11       8       0       1       1 
+     20      11      12     104      12      15      14       1       1 
+     20      11      12     104      13      14      13       1       1 
+     20      11      12     104      14      13      12       1       1 
+     20      11      13     104       0       3      26       0       0 
+     20      11      13     104       1       2      27       0       0 
+     20      11      13     104       2       1      28       0       0 
+     20      11      13     104       3       0      29       0       0 
+     20      11      13     104       4       7      22       0       0 
+     20      11      13     104       5       6      23       0       0 
+     20      11      13     104       6       5      24       0       0 
+     20      11      13     104       7       4      25       0       0 
+     20      11      13     104       8      11      18       0       0 
+     20      11      13     104       9      10      19       0       0 
+     20      11      13     104      10       9      20       0       0 
+     20      11      13     104      11       8      21       0       0 
+     20      11      13     104      12      15      15       0       0 
+     20      11      13     104      13      14      16       0       0 
+     20      11      13     104      14      13      17       0       0 
+     20      11      14     104       0       3       8       0       0 
+     20      11      14     104       1       2       9       0       0 
+     20      11      14     104       2       1      10       0       0 
+     20      11      14     104       3       0      11       0       0 
+     20      11      14     104       4       7       4       0       0 
+     20      11      14     104       5       6       5       0       0 
+     20      11      14     104       6       5       6       0       0 
+     20      11      14     104       7       4       7       0       0 
+     20      11      14     104       8      11       0       0       0 
+     20      11      14     104       9      10       1       0       0 
+     20      11      14     104      10       9       2       0       0 
+     20      11      14     104      11       8       3       0       0 
+     20      11      14     104      12      15      12       0       0 
+     20      11      14     104      13      14      13       0       0 
+     20      11      14     104      14      13      14       0       0 
+bb.gem.m5.chanmap = 
+     20      11      20      18       0       0       9       0       0 
+     20      11      20      18       1       1       7       0       0 
+     20      11      20      18       2       2       5       0       0 
+     20      11      20      18       3       3       3       0       0 
+     20      11      20      18       4       4       1       0       0 
+     20      11      21      18       4       0       7       0       1 
+     20      11      21      18       3       1       5       0       1 
+     20      11      21      18       2       2       3       0       1 
+     20      11      21      18       1       3       1       0       1 
+     20      11      22      18       0       0       0       1       0 
+     20      11      22      18       1       1       2       1       0 
+     20      11      22      18       2       2       4       1       0 
+     20      11      22      18       3       3       6       1       0 
+     20      11      22      18       4       4       8       1       0 
+     20      11      23      18       0       0       0       1       1 
+     20      11      23      18       1       1       2       1       1 
+     20      11      23      18       2       2       4       1       1 
+     20      11      23      18       3       3       6       1       1 
+bb.gem.m6.chanmap = 
+     20      11      20       0       5       8       9       0       0 
+     20      11      20       0       6       9       7       0       0 
+     20      11      20       0       7      10       5       0       0 
+     20      11      20       0       8      11       3       0       0 
+     20      11      20       0       9      12       1       0       0 
+     20      11      21       0       5       8       7       0       1 
+     20      11      21       0       6       9       5       0       1 
+     20      11      21       0       7      10       3       0       1 
+     20      11      21       0       8      11       1       0       1 
+     20      11      22       0       5       8       0       1       0 
+     20      11      22       0       6       9       2       1       0 
+     20      11      22       0       7      10       4       1       0 
+     20      11      22       0       8      11       6       1       0 
+     20      11      22       0       9      12       8       1       0 
+     20      11      23       0       5       8       0       1       1 
+     20      11      23       0       6       9       2       1       1 
+     20      11      23       0       7      10       4       1       1 
+     20      11      23       0       8      11       6       1       1 
+bb.gem.m7.chanmap = 
+     20      11      20       4      10      16       9       0       0 
+     20      11      20       4      11      17       7       0       0 
+     20      11      20       4      12      18       5       0       0 
+     20      11      20       4      13      19       3       0       0 
+     20      11      20       4      14      20       1       0       0 
+     20      11      21       4      10      16       7       0       1 
+     20      11      21       4      11      17       5       0       1 
+     20      11      21       4      12      18       3       0       1 
+     20      11      21       4      13      19       1       0       1 
+     20      11      22       4      10      16       0       1       0 
+     20      11      22       4      11      17       2       1       0 
+     20      11      22       4      12      18       4       1       0 
+     20      11      22       4      13      19       6       1       0 
+     20      11      22       4      14      20       8       1       0 
+     20      11      23       4      10      16       0       1       1 
+     20      11      23       4      11      17       2       1       1 
+     20      11      23       4      12      18       4       1       1 
+     20      11      23       4      13      19       6       1       1 
+bb.gem.m8.chanmap = 
+     20      11       0      13       0      15       0       1       1 
+     20      11       0      13       1      14       1       1       1 
+     20      11       0      13       2      13       2       1       1 
+     20      11       0      13       3      12       3       1       1 
+     20      11       0      13       4      11       4       1       1 
+     20      11       0      13       5      10       5       1       1 
+     20      11       0      13       6       9       6       1       1 
+     20      11       0      13       7       8       7       1       1 
+     20      11       0      13       8       7       8       1       1 
+     20      11       0      13       9       6       9       1       1 
+     20      11       0      13      10       5      10       1       1 
+     20      11       0      13      11       4      11       1       1 
+     20      11       4      13      10       4       9       1       0 
+     20      11       4      13      11       3       8       1       0 
+     20      11       4      13      12       2       7       1       0 
+     20      11       4      13      13       1       6       1       0 
+     20      11       4      13      14       0       5       1       0 
+     20      11       5      13       0       4       0       0       0 
+     20      11       5      13       1       3       1       0       0 
+     20      11       5      13       2       2       2       0       0 
+     20      11       5      13       3       1       3       0       0 
+     20      11       5      13       4       0       4       0       0 
+bb.gem.m9.chanmap = 
+     20      11       1      20       0      15       0       1       1 
+     20      11       1      20       1      14       1       1       1 
+     20      11       1      20       2      13       2       1       1 
+     20      11       1      20       3      12       3       1       1 
+     20      11       1      20       4      11       4       1       1 
+     20      11       1      20       5      10       5       1       1 
+     20      11       1      20       6       9       6       1       1 
+     20      11       1      20       7       8       7       1       1 
+     20      11       1      20       8       7       8       1       1 
+     20      11       1      20       9       6       9       1       1 
+     20      11       1      20      10       5      10       1       1 
+     20      11       1      20      11       4      11       1       1 
+     20      11       4      20       5      12       9       1       0 
+     20      11       4      20       6      11       8       1       0 
+     20      11       4      20       7      10       7       1       0 
+     20      11       4      20       8       9       6       1       0 
+     20      11       4      20       9       8       5       1       0 
+     20      11       5      20       5      12       0       0       0 
+     20      11       5      20       6      11       1       0       0 
+     20      11       5      20       7      10       2       0       0 
+     20      11       5      20       8       9       3       0       0 
+     20      11       5      20       9       8       4       0       0 
+bb.gem.m10.chanmap = 
+     20      11       3      17       0      15      11       0       1 
+     20      11       3      17       1      14      10       0       1 
+     20      11       3      17       2      13       9       0       1 
+     20      11       3      17       3      12       8       0       1 
+     20      11       3      17       4      11       7       0       1 
+     20      11       3      17       5      10       6       0       1 
+     20      11       3      17       6       9       5       0       1 
+     20      11       3      17       7       8       4       0       1 
+     20      11       3      17       8       7       3       0       1 
+     20      11       3      17       9       6       2       0       1 
+     20      11       3      17      10       5       1       0       1 
+     20      11       3      17      11       4       0       0       1 
+     20      11       4      17       0      20       9       1       0 
+     20      11       4      17       1      19       8       1       0 
+     20      11       4      17       2      18       7       1       0 
+     20      11       4      17       3      17       6       1       0 
+     20      11       4      17       4      16       5       1       0 
+     20      11       5      17      10      20       0       0       0 
+     20      11       5      17      11      19       1       0       0 
+     20      11       5      17      12      18       2       0       0 
+     20      11       5      17      13      17       3       0       0 
+     20      11       5      17      14      16       4       0       0 
+bb.gem.m11.chanmap = 
+     20      11       2      25       0      15      11       0       1 
+     20      11       2      25       1      14      10       0       1 
+     20      11       2      25       2      13       9       0       1 
+     20      11       2      25       3      12       8       0       1 
+     20      11       2      25       4      11       7       0       1 
+     20      11       2      25       5      10       6       0       1 
+     20      11       2      25       6       9       5       0       1 
+     20      11       2      25       7       8       4       0       1 
+     20      11       2      25       8       7       3       0       1 
+     20      11       2      25       9       6       2       0       1 
+     20      11       2      25      10       5       1       0       1 
+     20      11       2      25      11       4       0       0       1 
+     20      11       6      25       0       4       9       1       0 
+     20      11       6      25       1       3       8       1       0 
+     20      11       6      25       2       2       7       1       0 
+     20      11       6      25       3       1       6       1       0 
+     20      11       6      25       4       0       5       1       0 
+     20      11       6      25       8      12       0       0       0 
+     20      11       6      25       9      11       1       0       0 
+     20      11       6      25      10      10       2       0       0 
+     20      11       6      25      11       9       3       0       0 
+     20      11       6      25      12       8       4       0       0 
+
+
+# TIME-DEPENDENT ENTRIES FOR DECODE MAP CHANGES (IF ANY)
+
+
+-------[ 2021-09-22 09:22:00 ] # start of first run after fibers 2 and 3 swapped:
+
+bb.gem.m10.chanmap = 
+     20      11       2      17       0      15      11       0       1 
+     20      11       2      17       1      14      10       0       1 
+     20      11       2      17       2      13       9       0       1 
+     20      11       2      17       3      12       8       0       1 
+     20      11       2      17       4      11       7       0       1 
+     20      11       2      17       5      10       6       0       1 
+     20      11       2      17       6       9       5       0       1 
+     20      11       2      17       7       8       4       0       1 
+     20      11       2      17       8       7       3       0       1 
+     20      11       2      17       9       6       2       0       1 
+     20      11       2      17      10       5       1       0       1 
+     20      11       2      17      11       4       0       0       1 
+     20      11       4      17       0      20       9       1       0 
+     20      11       4      17       1      19       8       1       0 
+     20      11       4      17       2      18       7       1       0 
+     20      11       4      17       3      17       6       1       0 
+     20      11       4      17       4      16       5       1       0 
+     20      11       5      17      10      20       0       0       0 
+     20      11       5      17      11      19       1       0       0 
+     20      11       5      17      12      18       2       0       0 
+     20      11       5      17      13      17       3       0       0 
+     20      11       5      17      14      16       4       0       0 
+bb.gem.m11.chanmap = 
+     20      11       3      25       0      15      11       0       1 
+     20      11       3      25       1      14      10       0       1 
+     20      11       3      25       2      13       9       0       1 
+     20      11       3      25       3      12       8       0       1 
+     20      11       3      25       4      11       7       0       1 
+     20      11       3      25       5      10       6       0       1 
+     20      11       3      25       6       9       5       0       1 
+     20      11       3      25       7       8       4       0       1 
+     20      11       3      25       8       7       3       0       1 
+     20      11       3      25       9       6       2       0       1 
+     20      11       3      25      10       5       1       0       1 
+     20      11       3      25      11       4       0       0       1 
+     20      11       6      25       0       4       9       1       0 
+     20      11       6      25       1       3       8       1       0 
+     20      11       6      25       2       2       7       1       0 
+     20      11       6      25       3       1       6       1       0 
+     20      11       6      25       4       0       5       1       0 
+     20      11       6      25       8      12       0       0       0 
+     20      11       6      25       9      11       1       0       0 
+     20      11       6      25      10      10       2       0       0 
+     20      11       6      25      11       9       3       0       0 
+     20      11       6      25      12       8       4       0       0 
+
+#--------[ 2021-09-27 00:46:14 ] # start of first run after fibers 2 and 3 swapped back to original connections:
+#
+#      for some reason, the Y strips of modules 10 and 11 still seem to be "swapped" even after the fibers were switched back to their original connections. 
+#      so commenting out the following entries "just works". Don't ask me why
+# 
+#bb.gem.m10.chanmap = 
+#     20      11       3      17       0      15      11       0       1 
+#     20      11       3      17       1      14      10       0       1 
+#     20      11       3      17       2      13       9       0       1 
+#     20      11       3      17       3      12       8       0       1 
+#     20      11       3      17       4      11       7       0       1 
+#     20      11       3      17       5      10       6       0       1 
+#     20      11       3      17       6       9       5       0       1 
+#     20      11       3      17       7       8       4       0       1 
+#     20      11       3      17       8       7       3       0       1 
+#     20      11       3      17       9       6       2       0       1 
+#     20      11       3      17      10       5       1       0       1 
+#     20      11       3      17      11       4       0       0       1 
+#     20      11       4      17       0      20       9       1       0 
+#     20      11       4      17       1      19       8       1       0 
+#     20      11       4      17       2      18       7       1       0 
+#     20      11       4      17       3      17       6       1       0 
+#     20      11       4      17       4      16       5       1       0 
+#     20      11       5      17      10      20       0       0       0 
+#     20      11       5      17      11      19       1       0       0 
+#     20      11       5      17      12      18       2       0       0 
+#     20      11       5      17      13      17       3       0       0 
+#     20      11       5      17      14      16       4       0       0 
+#
+#bb.gem.m11.chanmap = 
+#     20      11       2      25       0      15      11       0       1 
+#     20      11       2      25       1      14      10       0       1 
+#     20      11       2      25       2      13       9       0       1 
+#     20      11       2      25       3      12       8       0       1 
+#     20      11       2      25       4      11       7       0       1 
+#     20      11       2      25       5      10       6       0       1 
+#     20      11       2      25       6       9       5       0       1 
+#     20      11       2      25       7       8       4       0       1 
+#     20      11       2      25       8       7       3       0       1 
+#     20      11       2      25       9       6       2       0       1 
+#     20      11       2      25      10       5       1       0       1 
+#     20      11       2      25      11       4       0       0       1 
+#     20      11       6      25       0       4       9       1       0 
+#     20      11       6      25       1       3       8       1       0 
+#     20      11       6      25       2       2       7       1       0 
+#     20      11       6      25       3       1       6       1       0 
+#     20      11       6      25       4       0       5       1       0 
+#     20      11       6      25       8      12       0       0       0 
+#     20      11       6      25       9      11       1       0       0 
+#     20      11       6      25      10      10       2       0       0 
+#     20      11       6      25      11       9       3       0       0 
+#     20      11       6      25      12       8       4       0       0 
+
+
+
+
+############ END TIME-DEPENDENT DECODE MAP ENTRIES
+
+
+
+###################### TIME-DEPENDENT PEDESTAL FILES ##########################
+
+# time-dependent entries:
+# default value from the beginning of time:
+bb.gem.pedfile = gemped/daq_ped_bb_gem_run220.dat
+
+# new pedestals from run 814:
+
+--------[ 2021-09-19 00:00:00 ]
+bb.gem.pedfile = gemped/daq_ped_bb_gem_run814.dat
+
+--------[ 2021-09-21 14:30:00 ]
+bb.gem.pedfile = gemped/daq_ped_bb_gem_run902.dat
+
+------[ 2021-09-25 06:45:00 ]
+bb.gem.pedfile = gemped/daq_ped_bb_gem_run10363.dat
+
+--------[ 2021-09-27 00:46:14 ] # start of first run after fibers 2 and 3 swapped back to original connections:
+bb.gem.pedfile = gemped/daq_ped_bb_gem_run10431.dat
+
+#################### END OF TIME-DEPENDENT PEDESTAL FILES #########################
+
+
+######################## TIME-DEPENDENT COMMON-MODE PARAMETERS ###############################
+## THESE ARE ASSOCIATED WITH THE SAME TIME STAMPS ABOVE, BUT WE ORGANIZE THEM INTO THEIR    ## 
+## OWN SECTION FOR READABILITY AND CLARITY                                                  ##
+##############################################################################################
+
+# default from the beginning of time to september 19, 2021:
+#Mon Sep 20 15:42:48 2021
+# Copy the contents of this file into $DB_DIR/db_bb.gem.dat to use these pedestals for analysis
+# format = detname.commonmode_mean(U,V) and detname.commonmode_rms(U,V) = common-mode mean and RMS for U, V strips by APV card in order of position
+
+bb.gem.m0.commonmode_meanU = 
+           490.99            406.03            547.52            360.42            273.57            504.36            335.14            544.19            304.93            470.43             343.2            367.04            506.57            405.28            473.48             518.4 
+           546.14            494.38            517.94             346.5            449.82            551.09            542.17            477.48            485.24            508.49            465.76            392.41            595.47            414.46 
+bb.gem.m0.commonmode_rmsU = 
+           10.524            9.2513            9.4773             9.527            11.437            12.403            14.011            14.427            9.8783            12.444            11.746            13.735              8.65            10.336            14.219            9.5153 
+           11.016            13.508            11.764            10.993             13.85            19.205            15.913            12.885            14.131            23.777            14.586            11.483            12.809            13.228 
+bb.gem.m0.commonmode_meanV = 
+           421.03            328.65            601.23            466.03            521.86            529.36             426.8            427.27            366.37             509.8            475.98            319.99             434.4            473.04            497.24            426.58 
+           487.51            571.94             524.5            508.56            549.63             464.2            475.91            551.61             270.5            469.59            480.85             458.7            482.47            515.14 
+bb.gem.m0.commonmode_rmsV = 
+           11.637            11.614            13.246             12.71            13.735            14.588            16.944            13.892                10            9.7629            13.974              12.9             7.955            9.2851            13.188            9.7717 
+           9.7133            14.057            10.351            10.847            13.302            17.551            9.3406            10.931            12.862            17.463            10.086            10.226            13.912            13.767 
+
+
+bb.gem.m1.commonmode_meanU = 
+           418.83            412.16            450.74            505.18            533.17            489.39            458.39            473.13            504.04            494.44 
+bb.gem.m1.commonmode_rmsU = 
+           55.386            40.214            57.103             35.03            60.746            30.311            54.716            33.133             55.41            37.793 
+bb.gem.m1.commonmode_meanV = 
+           498.36            559.88            407.79            469.71            448.92            458.64            408.41             551.2 
+bb.gem.m1.commonmode_rmsV = 
+            62.33            45.839            51.436            56.581            47.673            58.785            47.809            67.233 
+
+
+bb.gem.m2.commonmode_meanU = 
+           496.86            475.04            471.67             454.7            471.71            443.76            510.57             415.2            427.77            396.97 
+bb.gem.m2.commonmode_rmsU = 
+           41.474            37.679            45.192            32.358            48.169            30.356            52.703            32.787            57.986            41.121 
+bb.gem.m2.commonmode_meanV = 
+           438.62            581.12            523.27            528.73             416.2            588.68            442.51            500.85 
+bb.gem.m2.commonmode_rmsV = 
+           43.744            76.222            47.172            79.476            46.158            84.642            44.599            84.335 
+
+
+bb.gem.m3.commonmode_meanU = 
+           479.53            487.06            546.11            316.06            533.51            435.86            483.71             540.1            542.96            430.58 
+bb.gem.m3.commonmode_rmsU = 
+           52.025            45.958            52.697            36.427            49.671            36.145            57.636            42.987            66.316            49.403 
+bb.gem.m3.commonmode_meanV = 
+            477.9            433.17            451.01            600.52            440.46            532.86            526.41            395.35 
+bb.gem.m3.commonmode_rmsV = 
+           38.457            87.291            54.543            82.175            56.589            82.732            54.213             53.44 
+
+
+bb.gem.m4.commonmode_meanU = 
+           445.82            471.93            465.32            509.44            482.32            295.53            491.22            495.59            479.34            492.65            458.92            469.49            380.96            473.66             458.1            375.79 
+           497.81            504.11            493.02            579.25            499.73            480.72            494.11            498.54            517.03            466.77            512.94            519.08             567.8            556.55 
+bb.gem.m4.commonmode_rmsU = 
+            8.154            9.2791            11.858            14.493            12.464              9.94            10.031            15.983            12.808            11.122            9.5349            11.036            13.199            11.125            20.241            10.952 
+           8.9187            15.569            14.833            8.7499            10.096            20.579            19.879            10.515            8.8489            27.496            8.9857            8.0921            9.4016            8.7169 
+bb.gem.m4.commonmode_meanV = 
+           256.66            358.51            238.07            438.45            329.79            532.18            528.95             431.5            672.42             504.8            466.89            520.12            519.92            455.78            429.24            525.65 
+           369.85            458.92            375.07            562.91            502.71            312.27            423.62            441.14            573.79             617.7            531.07            590.08            481.18            486.32 
+bb.gem.m4.commonmode_rmsV = 
+           7.7742            7.5612            9.0081            9.9907            11.736             11.24            14.774            20.146            13.043            8.4474            12.426            15.224             9.314            9.4978            17.782            11.984 
+           10.408            16.711            14.608            8.9515            12.147            20.116            21.508            8.4621             12.15            37.364            16.047            9.3415             10.58            10.185 
+
+
+bb.gem.m5.commonmode_meanU = 
+           480.57            529.42            510.92            419.19            463.15             479.2            469.74            430.42            443.75            502.11 
+bb.gem.m5.commonmode_rmsU = 
+           34.628            38.812            34.106            39.534            32.983            34.096             33.39             30.81            38.827            34.561 
+bb.gem.m5.commonmode_meanV = 
+           342.62            556.03            483.93            471.79            458.58            485.09             392.7            463.68 
+bb.gem.m5.commonmode_rmsV = 
+           61.994            48.767            53.065            44.044            53.971            47.546            52.124            47.931 
+
+
+bb.gem.m6.commonmode_meanU = 
+           404.96            382.42            532.71            354.05            421.21            408.61            398.78            534.13            450.01            505.03 
+bb.gem.m6.commonmode_rmsU = 
+           48.877            44.142            38.471            34.419            31.537             24.41            33.552             39.55            52.016            45.281 
+bb.gem.m6.commonmode_meanV = 
+           464.05            554.85             507.1            515.76            506.64            464.77            482.48            407.23 
+bb.gem.m6.commonmode_rmsV = 
+               65            68.527            61.381            59.597            61.237            64.431            71.307            57.339 
+
+
+bb.gem.m7.commonmode_meanU = 
+            446.5            443.66            473.64            436.86            462.15            529.09            423.35            466.67            358.91            359.53 
+bb.gem.m7.commonmode_rmsU = 
+           63.951            43.602            39.478            36.749            34.979            43.252            43.349            56.482            58.375            74.335 
+bb.gem.m7.commonmode_meanV = 
+           515.69            374.42            536.28            412.93            459.97            432.24            419.62             433.4 
+bb.gem.m7.commonmode_rmsV = 
+           60.382            4.4699            75.569            72.028            66.573            69.633            58.202            69.422 
+
+
+bb.gem.m8.commonmode_meanU = 
+           527.84             613.9            575.68            448.83            606.15            456.89            510.36            530.12               494            538.11 
+bb.gem.m8.commonmode_rmsU = 
+           8.6434            7.9871            7.9487            8.2567            8.6578            8.9919            7.4099            9.9575            10.027            12.878 
+bb.gem.m8.commonmode_meanV = 
+           606.74            697.27             516.7            614.86            693.27            516.96            763.79            762.15            603.11            579.45             616.7            757.04 
+bb.gem.m8.commonmode_rmsV = 
+            9.092            6.4767            9.4352            7.7495            6.8697            7.0946            8.3046            7.4056            7.1353            9.2061            6.5941            8.7102 
+
+
+bb.gem.m9.commonmode_meanU = 
+           549.74            406.46            532.36             400.4            660.19            395.55            513.77            362.21            502.49            502.16 
+bb.gem.m9.commonmode_rmsU = 
+           13.155            8.8362             10.58            12.635            11.736            8.3171            8.5939            7.4843            8.2079            10.904 
+bb.gem.m9.commonmode_meanV = 
+           537.73            710.68            574.44            512.57            642.66            667.01             722.8            672.97            613.14            657.53            615.54            189.66 
+bb.gem.m9.commonmode_rmsV = 
+            16.97              8.53            9.6817            7.6256            7.1732            7.7838            8.3784            7.6909            7.9491            7.2995            7.6477            1.4925 
+
+
+bb.gem.m10.commonmode_meanU = 
+           495.42            303.78            293.39            519.22            522.26            536.72            594.75            557.33            556.12            480.66 
+bb.gem.m10.commonmode_rmsU = 
+           11.561            10.373            9.0851            9.4012            10.368            9.1834            9.8128            9.9794            9.5952            10.155 
+bb.gem.m10.commonmode_meanV = 
+           655.86            418.24            754.04            660.08            468.91            612.73            575.38            550.06            452.52            389.26            562.23            583.09 
+bb.gem.m10.commonmode_rmsV = 
+           11.526            8.3887            8.8723            8.2499            7.7654            9.4968            9.2299            9.3869            8.1369            11.085            7.9543            12.898 
+
+
+bb.gem.m11.commonmode_meanU = 
+           491.55            423.57            452.29            462.17            490.72            738.19            793.78            629.98            792.41            711.74 
+bb.gem.m11.commonmode_rmsU = 
+           8.8906            7.6693            9.9811            9.0147            9.3932            9.8951            9.3552            10.955            12.768            9.7872 
+bb.gem.m11.commonmode_meanV = 
+           602.57            673.62            553.17            605.13            537.91            618.25            501.74            391.66            397.54            373.32            443.34            464.75 
+bb.gem.m11.commonmode_rmsV = 
+            10.27            7.4577             8.261            8.7531            8.6486            9.1007            8.6674            8.3121            8.4997            9.3674            7.7888            18.332 
+
+
+------[ 2021-09-19 00:00:00 ]
+#Mon Sep 20 18:16:53 2021
+# Copy the contents of this file into $DB_DIR/db_bb.gem.dat to use these pedestals for analysis
+# format = detname.commonmode_mean(U,V) and detname.commonmode_rms(U,V) = common-mode mean and RMS for U, V strips by APV card in order of position
+
+bb.gem.m0.commonmode_meanU = 
+           494.23            408.55            552.31            362.77            273.84            508.77            338.23            549.85            305.05             473.5            343.65            368.65            511.05            408.31            476.12            520.77 
+           549.93            497.68            521.64            349.81            453.89            558.41            546.78            481.57            489.31            511.73            385.74            570.95            488.91            414.85 
+bb.gem.m0.commonmode_rmsU = 
+           16.308            16.678              21.9            26.239            24.483            26.474            27.509            26.628            19.452            21.533            20.077            20.742            15.889            17.123            18.475            15.056 
+           16.964            17.467            14.006              14.6            16.086            17.955            13.227             14.24            14.574             17.74            9.2827             10.57            10.078            6.9117 
+bb.gem.m0.commonmode_meanV = 
+           423.65            329.21            604.65            470.73            525.82            533.63            429.97            429.03            367.66            513.48            480.63            321.24            439.04            477.67            502.96            427.84 
+            487.6            574.44            528.41            512.49             552.2            469.18            480.84             557.1            269.76            472.05            572.68            563.52            511.77            448.95 
+bb.gem.m0.commonmode_rmsV = 
+           16.432            18.913            23.543            24.283            29.577            28.182            27.858            22.152            20.551            20.359            21.891            17.965            17.484            16.215            16.003             17.94 
+           16.005            15.983             13.93            14.325            14.861            14.776             6.935            10.821            12.564            11.719            14.967            10.269            15.964            7.7721 
+
+
+bb.gem.m1.commonmode_meanU = 
+            413.8            419.85            450.02            507.94            538.64            494.33            466.32             474.1            505.75                 0 
+bb.gem.m1.commonmode_rmsU = 
+           14.751            15.437            14.149            16.933            15.722            17.544            16.132              18.9            19.354                 0 
+bb.gem.m1.commonmode_meanV = 
+            495.3            575.28            412.88            485.04            454.52            471.31            410.12             568.7 
+bb.gem.m1.commonmode_rmsV = 
+           24.545            12.252            16.096            12.042            14.992            11.859            17.153            14.765 
+
+
+bb.gem.m2.commonmode_meanU = 
+           511.97            477.72            485.83             457.8            487.54            449.21            528.36            419.27            445.49            397.89 
+bb.gem.m2.commonmode_rmsU = 
+            16.87            16.765            15.383            14.432            16.282            14.535            16.811            13.576            21.498            15.444 
+bb.gem.m2.commonmode_meanV = 
+                485.74            606.53            577.18            555.64            473.69            619.71            498.61            534.18 
+bb.gem.m2.commonmode_rmsV = 
+                14.482            17.351            16.589            14.983            16.137            14.676            19.816            19.284 
+
+
+bb.gem.m3.commonmode_meanU = 
+           501.26            494.81            569.17            315.65            555.46            440.55            503.03             548.1            562.88            449.66 
+bb.gem.m3.commonmode_rmsU = 
+           22.983            21.885             24.47             16.41            22.805            16.071            25.158            16.684            28.216            18.702 
+bb.gem.m3.commonmode_meanV = 
+           485.05            443.65            460.54             612.9            455.56            539.84            542.87            395.69 
+bb.gem.m3.commonmode_rmsV = 
+           17.808            23.142            17.543            19.014             19.27            20.043            23.834            13.916 
+
+
+bb.gem.m4.commonmode_meanU = 
+           451.85            477.08            470.95            518.91            488.35            300.27            495.63            500.14            482.95            495.45            462.61            473.36            385.11            478.64            462.39            376.34 
+            499.1            505.66            496.78            584.09            502.56            484.25            498.72               502            519.78            466.77            473.71            506.69            548.33            481.17 
+bb.gem.m4.commonmode_rmsU = 
+           13.876            18.208            24.505            28.814            24.625            23.573            25.521            27.266            22.902            23.549            20.079            13.993            22.795            19.009            20.352            15.998 
+           17.272            16.118            14.687            13.706            13.825            15.987            13.003             11.69            10.639            15.974            10.305            10.342            7.7766            8.0098 
+bb.gem.m4.commonmode_meanV = 
+           257.78            359.45             237.8            441.66            331.93            535.93            531.19            433.16            675.82            506.06            467.66            520.84            524.31            458.94            431.34            532.57 
+           373.53            461.96            377.84            570.62            508.41            314.53            428.66               446            579.46            623.44            545.02            549.75            577.77            498.38 
+bb.gem.m4.commonmode_rmsV = 
+           16.821            17.627            20.223            22.773            32.884            32.293            34.708             31.97            22.928            23.089            23.674            22.002            20.172            19.018            21.778            16.503 
+           16.482             18.56            12.931            13.608            14.769            16.045            12.704            9.5234            11.344             21.85            11.544            8.2574            9.5334            6.0374 
+
+
+bb.gem.m5.commonmode_meanU = 
+            484.6            525.49            518.42            424.12            466.58            482.93             472.9            431.39            446.45            497.38 
+bb.gem.m5.commonmode_rmsU = 
+           16.264            15.616            13.672            15.821            12.683            15.529            12.603            15.364            15.456            19.982 
+bb.gem.m5.commonmode_meanV = 
+           344.59            555.48            488.67            476.23             465.3            486.48            394.64            461.07 
+bb.gem.m5.commonmode_rmsV = 
+            25.41            18.104            17.366            14.818            17.119            15.064             18.06            16.249 
+
+
+bb.gem.m6.commonmode_meanU = 
+            409.1            380.58            533.37            358.92             423.4            410.31            402.17            535.67            459.95            507.56 
+bb.gem.m6.commonmode_rmsU = 
+           15.411            21.206            13.778            16.826            15.266            14.253            14.649             18.31            18.987             19.95 
+bb.gem.m6.commonmode_meanV = 
+           458.88            554.17            506.58            525.04            509.46            468.28            485.79            407.87 
+bb.gem.m6.commonmode_rmsV = 
+            18.92            20.604            14.649            16.465            15.266            17.406            19.973            18.557 
+
+
+bb.gem.m7.commonmode_meanU = 
+           451.35            435.52            476.49            441.09            465.48            534.74            433.43            468.53             360.3             350.6 
+bb.gem.m7.commonmode_rmsU = 
+           30.757            29.754            25.186            30.813            27.224            37.667            32.128            41.484             38.72            45.273 
+bb.gem.m7.commonmode_meanV = 
+           520.62                 0             536.4                 0            459.96            439.61            427.11            437.13 
+bb.gem.m7.commonmode_rmsV = 
+            26.45                 0            30.564                 0            27.636            38.917             26.69            38.703 
+
+
+bb.gem.m8.commonmode_meanU = 
+           540.62            628.98            590.23            460.84            619.78             463.1             517.3            537.19            500.27            545.07 
+bb.gem.m8.commonmode_rmsU = 
+           8.7807            8.1334            7.6875            8.2183            8.3826            8.4433            7.5498            9.5396            9.7264            11.962 
+bb.gem.m8.commonmode_meanV = 
+           628.05            722.16            538.24            640.09            717.02            538.47            795.63            793.57            628.05            601.09            639.85            788.92 
+bb.gem.m8.commonmode_rmsV = 
+           8.5644            6.3334            9.5188            7.6808            6.6171            6.9569             8.546             7.508             7.208             9.393            7.0596            8.8262 
+
+
+bb.gem.m9.commonmode_meanU = 
+           559.93            414.62            543.83            408.99            670.87            412.02            535.94            376.89            522.07            520.04 
+bb.gem.m9.commonmode_rmsU = 
+           11.696            8.7051            8.7078            10.363            9.7236            8.5393            9.4626            8.0087             8.632            11.362 
+bb.gem.m9.commonmode_meanV = 
+           551.06            726.98            587.55            525.07            657.14            681.65            736.73             687.7            627.83            672.14            629.35            178.64 
+bb.gem.m9.commonmode_rmsV = 
+           13.715            7.8069            9.9178            7.5102            7.2468            7.8913            7.9075            7.5701            7.7775            7.1575            7.5141            1.5036 
+
+
+bb.gem.m10.commonmode_meanU = 
+              503            305.74            295.34            524.14            530.57            540.01            599.08            560.99            558.66            481.52 
+bb.gem.m10.commonmode_rmsU = 
+           10.818            10.142            8.9025            9.1673            9.6655            9.2185            9.5682            9.5947            9.9354            10.751 
+bb.gem.m10.commonmode_meanV = 
+           658.64            419.82            758.92            664.21            471.08            615.48            577.97            553.14            454.29            389.93            565.24            585.75 
+bb.gem.m10.commonmode_rmsV = 
+           11.277            8.3801            8.6898            8.2797            7.7258            10.006            8.9728            9.1305            7.8111            10.624            7.4199            11.973 
+
+
+bb.gem.m11.commonmode_meanU = 
+           496.16            425.25            456.81            464.94            495.59            683.65            737.08            574.56            737.51            655.62 
+bb.gem.m11.commonmode_rmsU = 
+           9.1341            7.4136            10.189            8.9221            9.2596            8.1609            9.5032            14.892             9.807            10.558 
+bb.gem.m11.commonmode_meanV = 
+           606.92            680.28            558.01            610.66            544.23            623.18            506.64            395.06            399.87            376.54            447.08            468.49 
+bb.gem.m11.commonmode_rmsV = 
+           10.287            7.4892            8.2913            8.5492            8.4095            9.5249            8.1135            7.9032            8.0389            8.9192              7.21            14.709 
+
+
+--------[ 2021-09-21 14:30:00 ]
+
+bb.gem.m0.commonmode_meanU = 
+           493.36            407.26            552.18            362.26             273.8            508.74            338.06            549.32            304.25            472.73            343.41            368.61            509.55            408.06            476.43            520.73 
+            549.8            496.35             521.3            349.89            453.54            557.41            544.27            480.19            487.93            511.65            386.86            570.01            488.11             413.7 
+bb.gem.m0.commonmode_rmsU = 
+           21.547            21.618            29.195             35.24             32.33            34.987            36.788            36.032             25.87            27.659            27.006            28.189            20.919            22.587            24.791            18.982 
+           21.541             23.05            16.197            17.326            19.602            22.723            14.044            14.398            16.834            21.884            10.053             10.75             10.53            7.4001 
+bb.gem.m0.commonmode_meanV = 
+           425.64               330             605.2             471.6            525.95            534.17            430.96            429.92            367.76            512.65            480.56            320.28            438.33            477.53            503.13            428.59 
+           487.62            574.75             527.4            513.17            552.26            468.76            480.16            556.82            270.64            472.03            570.19            562.75             510.3            447.96 
+bb.gem.m0.commonmode_rmsV = 
+           22.148            25.182            30.697            31.892            40.309            38.282             36.92            30.235            27.716            27.577            28.545            24.333            23.754            21.969            21.811            23.889 
+           21.357             21.44            17.969            17.958            18.081            18.789            8.0607            12.582            14.097             14.17            17.202            11.576            17.984            8.5352 
+
+
+bb.gem.m1.commonmode_meanU = 
+           414.53            418.49             448.1             506.7            536.82            492.98            464.63            475.25            507.86                 0 
+bb.gem.m1.commonmode_rmsU = 
+           16.343            15.084            16.189            19.777             18.35            21.477            18.596              23.1            22.201                 0 
+bb.gem.m1.commonmode_meanV = 
+           497.44            571.93            411.61            479.57            453.63            466.46            407.14            562.93 
+bb.gem.m1.commonmode_rmsV = 
+           26.403            13.314            18.295            12.829            17.034            12.758            19.302            16.824 
+
+
+bb.gem.m2.commonmode_meanU = 
+           493.42            474.38            469.18            457.19            469.43            445.22            510.59            415.02            426.38            395.51 
+bb.gem.m2.commonmode_rmsU = 
+           19.483            18.555            18.152             15.38            18.329            15.036            18.319            13.618            22.678            15.889 
+bb.gem.m2.commonmode_meanV = 
+           493.68            553.03            580.14            501.34            473.78            563.08            500.68            476.58 
+bb.gem.m2.commonmode_rmsV = 
+           16.196            15.811            14.718            14.474            15.439            14.947            18.896            18.888 
+
+
+bb.gem.m3.commonmode_meanU = 
+           470.84            493.25             536.2            313.67            522.85            437.23            471.22            545.83            531.55            449.08 
+bb.gem.m3.commonmode_rmsU = 
+           18.531             22.35            18.299            14.744            16.013            13.946            17.622            15.271            22.255            18.881 
+bb.gem.m3.commonmode_meanV = 
+            481.6             440.8            458.59            608.78            449.21            535.08            538.43            392.14 
+bb.gem.m3.commonmode_rmsV = 
+           13.821            21.048            15.383            16.971            16.785            17.087             20.22            12.133 
+
+
+bb.gem.m4.commonmode_meanU = 
+           449.87            475.76            468.79            518.44            486.36            298.34             492.3            496.09            482.19            495.58            462.95            473.16            385.94            478.64            461.93            377.26 
+           498.86             504.6               496             582.9             502.1            482.43            498.63            501.98            519.33            466.45            472.06             504.3            544.14            478.55 
+bb.gem.m4.commonmode_rmsU = 
+           18.173            24.633            33.885            39.641            32.946            31.131            33.866            35.948            30.766            31.027            26.296            17.885            29.921            25.096            25.574            22.286 
+           22.982            21.472            18.674             15.69            17.282            19.178             15.09            13.107            12.996            19.079            10.676            10.972            8.6217            8.8868 
+bb.gem.m4.commonmode_meanV = 
+           260.87            360.59            238.68            441.56            331.59            535.04            531.18            433.18                 0            509.13            468.72            522.38            524.27            459.52            429.99            531.14 
+           372.45            460.37            377.01            568.19            505.73            313.01            427.12             445.3            577.84            621.21            541.03             547.4            575.48            496.09 
+bb.gem.m4.commonmode_rmsV = 
+           22.924             24.29            27.032            31.243            45.667             45.56            48.446            44.734                 0            33.286            33.922            34.285             30.12            27.901            32.118             24.16 
+           24.081            27.495            17.615            18.434            19.829            22.217            17.595            13.026            15.757            28.491            15.552            11.125            12.319            7.1299 
+
+
+bb.gem.m5.commonmode_meanU = 
+           484.22             522.9            516.71             425.4            465.31            484.31            472.76            429.94            444.86             496.7 
+bb.gem.m5.commonmode_rmsU = 
+           17.067            17.527            14.587            18.719            14.492            18.588             14.96            18.475             19.12            23.452 
+bb.gem.m5.commonmode_meanV = 
+           343.86            553.75             488.9            474.71            462.65            485.66            393.67            459.57 
+bb.gem.m5.commonmode_rmsV = 
+           26.351            22.038            18.047            17.878            17.698            17.566            18.814            17.806 
+
+
+bb.gem.m6.commonmode_meanU = 
+           408.76             381.4            532.25             358.8            421.82            409.57            399.96             534.9             459.1            507.77 
+bb.gem.m6.commonmode_rmsU = 
+           18.416            25.931            15.735            20.348            16.461            17.048             15.36            22.775            20.862            23.748 
+bb.gem.m6.commonmode_meanV = 
+           458.83            549.68            506.43            522.98            509.31            468.38            484.37            405.32 
+bb.gem.m6.commonmode_rmsV = 
+           19.207            23.181            14.444            18.717             14.55            19.544            19.552            20.143 
+
+
+bb.gem.m7.commonmode_meanU = 
+           453.59            426.39            478.66            436.37            466.31            533.32            431.68            469.32            363.15            358.69 
+bb.gem.m7.commonmode_rmsU = 
+           39.524            33.347            27.937            34.296            28.005            41.464            34.368            46.211            44.306            51.271 
+bb.gem.m7.commonmode_meanV = 
+           573.88            446.36            590.52            417.36            513.16            442.12            477.88            437.52 
+bb.gem.m7.commonmode_rmsV = 
+           30.655            4.1854            37.896            26.177            34.324            43.461            32.305             43.84 
+
+
+bb.gem.m8.commonmode_meanU = 
+           540.89             629.4            590.09            461.21             620.1            462.14            516.38            536.97            499.03            544.62 
+bb.gem.m8.commonmode_rmsU = 
+           8.9843            8.2322            7.6538            8.3613            8.5448            8.5453            7.5666            9.1921            9.7427            12.387 
+bb.gem.m8.commonmode_meanV = 
+           624.35            697.86            559.89            652.31            735.25            528.14            801.04            789.91            624.16            614.45            668.61            823.47 
+bb.gem.m8.commonmode_rmsV = 
+           9.1919            6.6115            9.5171            7.7511            6.7749            6.9865            8.4366            7.5381            7.1243            9.1776            7.0414              8.74 
+
+
+bb.gem.m9.commonmode_meanU = 
+           559.87            415.89            544.37            409.08            669.75             412.4            535.66            376.76            521.34            519.94 
+bb.gem.m9.commonmode_rmsU = 
+            12.51            8.5503            10.149            11.076            10.111            8.3758            9.0055            7.8585            8.1844             10.71 
+bb.gem.m9.commonmode_meanV = 
+           556.05            752.93            570.27            517.08            642.91            694.95            733.57             694.7            635.76            662.68            604.12                 0 
+bb.gem.m9.commonmode_rmsV = 
+            14.94            7.9153            9.9436             7.751            7.4464            8.1579            8.4433            7.7822            8.0258            7.4336            8.1047                 0 
+
+
+bb.gem.m10.commonmode_meanU = 
+           500.35            305.95             295.1            523.41            530.08            539.32            597.67            559.61            557.62            481.23 
+bb.gem.m10.commonmode_rmsU = 
+           11.512            9.9951            8.9393             9.216            10.166            8.9406            9.0972            9.1091            9.0589            9.8876 
+bb.gem.m10.commonmode_meanV = 
+           659.41            420.64            759.63            664.35            471.46            615.81            578.02            554.51             454.5            390.82            565.87            586.07 
+bb.gem.m10.commonmode_rmsV = 
+           11.355            8.3302            8.7256                 8            7.9325            10.069            9.1838            9.1033             8.181            10.604            7.7229            12.393 
+
+
+bb.gem.m11.commonmode_meanU = 
+           496.52            425.16            456.18            465.07            494.83            684.56            737.79            574.48            738.02            655.57 
+bb.gem.m11.commonmode_rmsU = 
+           9.2018            7.4334            10.124            9.1434            9.3213            8.3464            9.7519            20.702            11.386            13.119 
+bb.gem.m11.commonmode_meanV = 
+           607.36            681.55            557.93            610.18             544.4             623.6             506.2            394.71            399.89            376.37            447.21             468.2 
+bb.gem.m11.commonmode_rmsV = 
+            10.38            7.2362             7.868            8.2912            8.2515            8.9401            7.6283             7.362            7.4927            9.2678            7.0981            15.702 
+
+
+
+------[ 2021-09-25 06:45:00 ]
+
+
+bb.gem.m0.commonmode_meanU = 
+           494.07            407.18            550.26            360.33            273.64            507.73            337.41            547.34            305.88            472.56            345.11            367.55            508.55            407.74             475.8            519.57 
+           548.76            496.34            519.83            348.05               453            554.59            543.63            479.16            487.43            508.94            384.39            567.18            486.86            414.61 
+bb.gem.m0.commonmode_rmsU = 
+           15.469            15.878            20.921            24.978            23.104            24.871            26.016            25.203            18.657            20.377            19.145            20.047            15.251            16.545            18.429            14.766 
+           16.158            16.468            13.749            13.411            14.637            16.388            13.624            13.285            13.287            17.682            9.0311             9.688            9.4239            6.5997 
+bb.gem.m0.commonmode_meanV = 
+           422.68            328.93            603.26            469.98             524.6            532.05            429.17             430.4            367.21            512.55            479.51            320.51               438             476.4            502.08             426.6 
+           486.87            573.37            525.62            509.56            550.77            466.85            478.96            554.59            270.62            470.78            565.52               559            507.29            446.39 
+bb.gem.m0.commonmode_rmsV = 
+           16.242            18.235            22.551            23.308            28.393             27.13            26.868            21.956            20.073            19.865             21.52            18.406            16.916            16.139            16.612            17.666 
+           15.986            16.426             13.68            14.241            14.807              15.6            7.5054             10.74            12.562            12.469            14.958            9.9085            15.911             7.985 
+
+
+bb.gem.m1.commonmode_meanU = 
+           416.28            415.88            447.96            505.11            535.44            492.52            463.25            476.46            503.76            443.58 
+bb.gem.m1.commonmode_rmsU = 
+           16.229            16.453            15.115            16.431            16.695            15.759             16.39            15.779            18.873            11.878 
+bb.gem.m1.commonmode_meanV = 
+           496.78            572.92            411.13            482.97            451.97            471.72            406.49            567.14 
+bb.gem.m1.commonmode_rmsV = 
+           21.754            13.337            16.036            13.314            16.017            13.329            18.544            16.822 
+
+
+bb.gem.m2.commonmode_meanU = 
+           499.55            476.57            474.41            458.62            474.52            447.15             514.2            417.21            430.36            398.42 
+bb.gem.m2.commonmode_rmsU = 
+           19.148            16.749            18.034            14.718             18.67            15.035            18.085            14.306            21.458            16.762 
+bb.gem.m2.commonmode_meanV = 
+           472.36            574.62            558.75            523.04            453.57            584.23            477.04            496.66 
+bb.gem.m2.commonmode_rmsV = 
+           16.009            16.892            15.401             15.52            16.541            15.782             19.67            18.417 
+
+
+bb.gem.m3.commonmode_meanU = 
+           490.38            491.38            557.47            313.65            544.76            436.98            491.22            543.48            550.64            447.58 
+bb.gem.m3.commonmode_rmsU = 
+           18.715            18.914            19.266            14.114             16.41             14.61            17.331            15.865            20.094            18.561 
+bb.gem.m3.commonmode_meanV = 
+           483.45            438.19            460.29            603.92            450.71            531.95            540.08            390.11 
+bb.gem.m3.commonmode_rmsV = 
+           13.157             15.59            16.588            16.711            18.302            17.408            21.389            12.583 
+
+
+bb.gem.m4.commonmode_meanU = 
+           448.69            474.98            468.51            518.61            485.79            297.53            491.16             497.9            482.65            496.98            462.43            472.73            384.83            476.75            461.49            374.96 
+            498.5            504.02            493.72            580.95             500.5            481.67            497.58            500.48            517.35            464.94            469.28             500.8            541.13            479.89 
+bb.gem.m4.commonmode_rmsU = 
+           13.151            16.881            23.272            27.729            21.818            21.062            23.264            25.499            19.631            20.997            18.183            12.988            19.455            17.425            19.339            13.956 
+           15.931            15.485            11.931            12.001            12.849             14.36            10.305            10.513            10.664            13.215            9.2306            10.083            7.1771             7.336 
+bb.gem.m4.commonmode_meanV = 
+           260.75            360.25            238.23            441.22            331.15            535.01            530.65            433.46            506.69            504.54            469.34            521.18            522.73            458.73             430.6            529.31 
+           371.73            460.48            376.56            566.09             505.5            312.65            425.16            445.13             577.7            619.03            538.29            545.54            570.91             493.2 
+bb.gem.m4.commonmode_rmsV = 
+           19.573            17.313            18.255            19.175            31.876            29.805            30.904            26.863            21.385            21.143            25.462            19.307            19.054            17.552            18.344            16.316 
+           16.204            16.452            12.987            13.633                15            13.781            11.358            9.6807            11.869            16.228            11.465            8.6551            9.9955            5.8501 
+
+
+bb.gem.m5.commonmode_meanU = 
+           478.36            522.88            515.28            423.77            464.65             483.6            470.62            430.03            444.62            495.07 
+bb.gem.m5.commonmode_rmsU = 
+           19.382            17.838            16.317            17.668            14.764             16.64            14.688             15.93            19.238            19.414 
+bb.gem.m5.commonmode_meanV = 
+           341.41            548.83            487.62            473.11            462.16            482.75            395.48            458.64 
+bb.gem.m5.commonmode_rmsV = 
+           24.586            18.432            18.702            15.255            19.452            15.733            20.768            17.556 
+
+
+bb.gem.m6.commonmode_meanU = 
+           405.93            377.09            530.83            356.96            421.75            408.33             398.9            535.19            457.89            507.47 
+bb.gem.m6.commonmode_rmsU = 
+           16.686            24.161            15.204              18.7            16.373            15.378             15.17            18.918            19.411            19.027 
+bb.gem.m6.commonmode_meanV = 
+           456.03            548.39            504.93            520.68            509.89            463.33               485            402.15 
+bb.gem.m6.commonmode_rmsV = 
+           20.357            20.977            16.675            16.167            17.181            16.533            22.444            18.035 
+
+
+bb.gem.m7.commonmode_meanU = 
+           452.07            431.39            477.48            435.61            464.76            531.92            429.64            467.54            358.68            356.93 
+bb.gem.m7.commonmode_rmsU = 
+           30.516            33.428            25.996            33.752            27.625            37.499             30.12            37.407            32.564            38.145 
+bb.gem.m7.commonmode_meanV = 
+           531.57            443.98            546.38            414.16            462.09            439.54            433.98            438.38 
+bb.gem.m7.commonmode_rmsV = 
+           29.066            4.1682            31.799            20.496            29.793            34.644            27.321            36.884 
+
+
+bb.gem.m8.commonmode_meanU = 
+           537.45            623.87            586.04            459.21            615.94             460.8             514.7            535.08            498.29            543.42 
+bb.gem.m8.commonmode_rmsU = 
+           8.6625            8.2581            7.9519            8.5493            8.8337            8.1962            7.2832            8.9825            8.9843             11.35 
+bb.gem.m8.commonmode_meanV = 
+           617.48            689.25             554.8            644.35            727.86            522.84            791.31            780.42            617.75            609.27            663.12            813.08 
+bb.gem.m8.commonmode_rmsV = 
+           8.3122            6.2354            9.1689            7.5624            6.5565            6.7968            8.2211            7.2633            7.0178            9.0241            6.8229            8.5641 
+
+
+bb.gem.m9.commonmode_meanU = 
+           557.77            414.11            541.96            409.41            671.74            412.44            534.21            378.19            521.83            521.21 
+bb.gem.m9.commonmode_rmsU = 
+           11.993            9.5043            9.1478            11.372            10.456            8.6212            8.9051            7.8733            8.5927            11.769 
+bb.gem.m9.commonmode_meanV = 
+           563.73             710.8            578.79            527.71            672.87            693.29            739.48            689.45            658.46             653.8            606.33                 0 
+bb.gem.m9.commonmode_rmsV = 
+           14.026            7.9355            10.033            7.6354            6.9083            7.7997             8.155            7.5502             7.642             7.189            7.6461                 0 
+
+
+bb.gem.m10.commonmode_meanU = 
+           500.05            305.89             296.3            523.35            529.79            538.11            596.92            559.26            557.33            481.05 
+bb.gem.m10.commonmode_rmsU = 
+           11.683            10.425            9.7095            10.032             10.38            9.2963            9.2602            9.0939            8.8775            9.9374 
+bb.gem.m10.commonmode_meanV = 
+           606.63             679.8            558.04             610.1            543.05            623.28            506.19            394.22            400.45            377.19            448.21             468.8 
+bb.gem.m10.commonmode_rmsV = 
+           10.552            7.1808            7.5956            8.0646            7.8216            8.6496            7.9333             7.675            8.1041            9.0645            7.0657            13.074 
+
+
+bb.gem.m11.commonmode_meanU = 
+           494.98            425.13            456.91            465.24            495.17            684.33            737.57            575.69            735.69            654.36 
+bb.gem.m11.commonmode_rmsU = 
+           8.8908            7.6701            9.4697            8.5803            9.2238            10.862            12.816             12.88            8.4888            12.141 
+bb.gem.m11.commonmode_meanV = 
+           657.66            419.33            758.72            664.31             470.1            615.15            577.26            552.73            454.13            390.52             564.8            586.61 
+bb.gem.m11.commonmode_rmsV = 
+           11.085            8.0646            7.9072            8.0755            7.4267            9.7902            8.6712            8.4159            7.7914            10.334            7.7007            12.007 
+
+
+--------[ 2021-09-27 00:46:14 ]
+
+
+#Mon Sep 27 00:51:00 2021
+# Copy the contents of this file into $DB_DIR/db_bb.gem.dat to use these pedestals for analysis
+# format = detname.commonmode_mean(U,V) and detname.commonmode_rms(U,V) = common-mode mean and RMS for U, V strips by APV card in order of position
+
+bb.gem.m0.commonmode_meanU = 
+           494.55            407.84            549.84            361.84            274.45            508.16            337.93            547.73            306.37             473.7             345.3            367.25            509.54            407.41            476.05            519.33 
+           549.32            496.52            519.77            348.03            453.92            555.58            543.68            479.48            487.47            510.26            383.96            567.55            486.72            414.38 
+bb.gem.m0.commonmode_rmsU = 
+           15.064            15.341            19.927            23.543            22.195            24.061            24.903             24.12            17.917            19.867            18.407            19.017            14.701            15.796             17.28            14.007 
+           15.544            15.702            13.478            13.355            14.568            16.119            13.413            13.598            13.545            17.165            9.2986            9.9712            9.7411            6.8006 
+bb.gem.m0.commonmode_meanV = 
+           422.36             328.4            602.06            468.77            524.59            531.26             429.1            429.02            367.85             512.4             479.4            320.71            437.13            476.29            501.97            424.69 
+           486.71            572.72             525.3             509.9            550.14            466.06            479.71             554.5            270.76            470.77             564.7            558.63             506.7            446.44 
+bb.gem.m0.commonmode_rmsV = 
+           15.315            17.336            21.371            22.103            26.712              25.6            25.796            20.476             18.92            18.867            20.704            17.337            15.976            15.004            15.346            16.789 
+           15.163             15.61            13.044            14.285            15.007            14.941            7.4033            11.091             13.02            11.909            15.169            9.9225            16.216            8.0886 
+
+
+bb.gem.m1.commonmode_meanU = 
+           416.91            417.41             448.1            504.99            535.27             491.7            463.66            477.03            504.39            441.79 
+bb.gem.m1.commonmode_rmsU = 
+           15.704            16.092            14.528            16.582            16.091            16.018            15.976            16.001            18.667            11.802 
+bb.gem.m1.commonmode_meanV = 
+           497.33            576.89            410.77            486.86            453.11            476.36            406.43            570.52 
+bb.gem.m1.commonmode_rmsV = 
+           21.829            13.582            16.101            13.483            16.038            13.396            18.641             16.32 
+
+
+bb.gem.m2.commonmode_meanU = 
+           504.07             477.2            479.01            459.34            478.07            446.89            518.29            417.77            434.01            398.98 
+bb.gem.m2.commonmode_rmsU = 
+           17.801            16.733            16.646            14.857            17.097            15.288            16.931            14.259            20.494            15.886 
+bb.gem.m2.commonmode_meanV = 
+           490.91            578.45             576.4            528.04            471.63            589.77             496.1            502.48 
+bb.gem.m2.commonmode_rmsV = 
+           16.241            17.176            15.403            15.589            16.787            15.942            20.404            18.574 
+
+
+bb.gem.m3.commonmode_meanU = 
+           494.41            490.55            561.28            314.25            548.19            435.95            496.29            543.23            555.18            447.12 
+bb.gem.m3.commonmode_rmsU = 
+           17.562            20.221            17.972            15.152            15.703            15.387            16.943            16.274            19.807            18.741 
+bb.gem.m3.commonmode_meanV = 
+           484.67            438.38            461.16            604.35            451.23            532.64            540.79            390.01 
+bb.gem.m3.commonmode_rmsV = 
+           13.543            15.201             16.24            16.566            17.995            17.221            21.589            12.907 
+
+
+bb.gem.m4.commonmode_meanU = 
+           447.69            473.96            468.36            515.49            485.35             298.3            491.65            496.08            482.62            495.36             462.5            472.14            384.74            477.04            460.77            374.58 
+           497.78            503.75            493.78            580.56            499.77            481.35            496.62            499.86            517.94            464.91            469.19            500.34             540.6            475.62 
+bb.gem.m4.commonmode_rmsU = 
+           13.095            16.524            22.584            26.627            21.275            20.435            22.239            24.418            18.853            20.356             17.53            12.658             19.29            17.116            18.778            13.278 
+           15.174            14.548            11.596            11.556            12.297            13.552            10.028            10.048            10.023            12.771            8.7705            9.5826            7.0277            7.2019 
+bb.gem.m4.commonmode_meanV = 
+           261.66            360.98            238.89            442.05            332.14            534.98            531.52            433.27            505.35            505.59            468.61             520.8            523.38            458.29            431.11            529.62 
+           372.36            460.76            376.03            566.48            504.72             312.4            426.64            444.46            575.78            618.03            537.45            546.06            571.68            493.24 
+bb.gem.m4.commonmode_rmsV = 
+           18.877             16.48            17.346            18.209            30.408            28.461            29.213            25.551            20.439             20.08            24.162            18.373            18.152            16.666            17.568            15.674 
+           15.504            15.738             12.23            12.903            14.502            13.002            10.988            9.1941            11.316             15.45            11.064            8.3385            9.8422            5.7951 
+
+
+bb.gem.m5.commonmode_meanU = 
+           479.42            523.46            515.44            425.02            465.35            483.33            470.99            429.94            444.69            495.58 
+bb.gem.m5.commonmode_rmsU = 
+            19.29            17.124            16.158            16.986             14.83            16.034            14.647            15.316            18.624            18.515 
+bb.gem.m5.commonmode_meanV = 
+           341.83            550.92            488.49            473.08            462.66            483.48            395.47            458.89 
+bb.gem.m5.commonmode_rmsV = 
+            24.39            18.034            18.658            15.045            19.349             15.25            20.756             16.88 
+
+
+bb.gem.m6.commonmode_meanU = 
+           406.53            378.39            531.01            359.72            420.62               410             398.6            534.55            457.44            507.98 
+bb.gem.m6.commonmode_rmsU = 
+           16.302             23.26            14.754            18.428            15.913            14.685            14.911            18.162            18.613            18.055 
+bb.gem.m6.commonmode_meanV = 
+           457.56            549.55            506.39            522.25            510.16            465.69            485.09             401.5 
+bb.gem.m6.commonmode_rmsV = 
+           20.216            20.576            16.351            15.772             17.14            15.933            23.117             17.16 
+
+
+bb.gem.m7.commonmode_meanU = 
+           453.33            430.46            477.42            436.89            465.57            532.42            429.95            468.16            361.31            357.51 
+bb.gem.m7.commonmode_rmsU = 
+           29.257            31.732            25.056            31.389            27.235            34.913             30.66            34.957            33.424            35.939 
+bb.gem.m7.commonmode_meanV = 
+           533.35            443.75            549.87            415.22            463.52             439.8               435            436.93 
+bb.gem.m7.commonmode_rmsV = 
+           29.271            4.1027            32.099            19.692            28.993            33.361            27.936            34.836 
+
+
+bb.gem.m8.commonmode_meanU = 
+           535.11            621.78            584.21            457.02            614.18            461.31            514.92             534.9            497.52            543.36 
+bb.gem.m8.commonmode_rmsU = 
+           8.6765            8.1138            7.7889            8.3848             8.597            8.3338            7.0404            8.7904            9.1724            11.502 
+bb.gem.m8.commonmode_meanV = 
+           614.43            686.44            551.22            641.17            724.43            519.51            788.01            776.61            615.02            605.67            660.26            808.47 
+bb.gem.m8.commonmode_rmsV = 
+           8.0558             6.316            9.0808            7.5084             6.574            6.8107            8.2756            7.3652            7.2433            9.0143            6.8227            8.6165 
+
+
+bb.gem.m9.commonmode_meanU = 
+           555.07            412.99            539.45            405.74            666.39            413.46            534.25            378.59            520.71            518.77 
+bb.gem.m9.commonmode_rmsU = 
+           11.927            9.1563            8.5168            11.103            10.206              8.41            8.5746            7.4741            8.0084            10.599 
+bb.gem.m9.commonmode_meanV = 
+           561.09             708.4            576.55            525.68            669.94            690.27            736.51            686.25             656.4            651.84            604.74                 0 
+bb.gem.m9.commonmode_rmsV = 
+           13.462            8.1813            10.123            7.4199            7.0421             7.696            7.8869            7.4974            7.3882            7.1178            7.6248                 0 
+
+
+bb.gem.m10.commonmode_meanU = 
+           496.06            303.37            294.03            521.68            527.07            536.72            596.13            557.82            556.63            482.15 
+bb.gem.m10.commonmode_rmsU = 
+           11.681            10.824            9.3727            9.8486             11.09            9.0862            9.1987            9.0304            8.6843            9.2588 
+bb.gem.m10.commonmode_meanV = 
+            657.8            419.65            758.99            663.52            470.31            614.39            577.36             552.4            454.46            389.99            563.61            585.07 
+bb.gem.m10.commonmode_rmsV = 
+            11.59            8.3052            8.5711            8.0534            7.6784            9.6091            9.0248            8.9126             7.926            10.558            7.9158            11.669 
+
+
+bb.gem.m11.commonmode_meanU = 
+           494.59             424.7            456.51            465.23            493.72            683.79            737.97            575.61            736.85             655.2 
+bb.gem.m11.commonmode_rmsU = 
+           8.5764            7.1438            9.2533            7.9648            8.8776            8.4454             10.29             15.53            8.8132            11.715 
+bb.gem.m11.commonmode_meanV = 
+           607.29            679.41             558.3               610            542.33            623.35            506.02            394.54            399.99            376.76            447.73            468.61 
+bb.gem.m11.commonmode_rmsV = 
+           10.506             7.492            8.0908            8.1459            8.0928            9.8603            8.6119            8.2516             8.646            8.4862             7.238            13.918 
+
+#################### END OF TIME-DEPENDENT COMMON-MODE PARAMETERS ############################

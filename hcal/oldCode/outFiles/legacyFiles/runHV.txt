@@ -1,0 +1,11 @@
+##File to provide associated HV values by run number for HCAL cosmic analysis
+##Sseeds - 11.15.20. Left side of HCAL only.
+##Form: run(#) -HV(Volts)
+978  1700
+980  1800
+981  1900
+983  2000
+984  1850
+987  1750
+988  1650
+989  1600

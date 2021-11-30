@@ -1,0 +1,19 @@
+#LH2
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11311*.root
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_11311*.root
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11311*.root
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11182*.root
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11302*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11303*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11304*
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11420*
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11421*
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11422*
+endlist
+hcalt::ce>0
+hcalt::a_time>0
+endcut
+E_e 3.84
+current 1.0
+W_mean 1.442
+W_sigma 0.098

@@ -1,0 +1,69 @@
+# Sample run database
+--------[ 2017-07-26 17:50:14 ]
+
+ebeam = 11.0
+
+sbs.theta = -30
+sbs.pcentral = -1
+sbs.phi = 0
+sbs.colldist = 1.5
+sbs.off_x = 0
+sbs.off_y = 0
+sbs.off_z = 0
+
+bb.magdist = 1.55
+bb.theta    = 33.0                                                              
+bb.pcentral = 2.0 
+
+L.theta     = 30.0
+L.pcentral  = -1
+
+--------[ 2021-10-10 00:00:00 ] # SBS-1 kinematics for GMN:
+
+# The minimal required information in this file (for now) is the beam energy and
+# the spectrometer central angles and central momenta:
+
+ebeam = 1.916
+
+# as far as I can see only central angle and central momentum are required run parameters
+# for THaSpectrometer
+# note that pcentral is meaningless for SBS and BB, but as far as I know they are required for
+# THaSpectrometer, so I just set them to the momentum of elastically scattered electrons (protons) for
+# BB (SBS) respectively
+
+# SBS on beam right:
+sbs.theta = -33.5
+sbs.pcentral = 1.5
+
+# BB on beam left:
+bb.theta = 51.0
+bb.pcentral = 1.09
+bb.colldist = 1.4779
+bb.magdist = 1.8518
+
+
+--------[ 2021-10-18 16:00:00 ] ## Starting SBS-4 kinematics for GMN
+
+ebeam = 3.7278
+
+sbs.theta = -31.9
+sbs.pcentral = 2.373 # elastic proton momentum
+
+# pcentral chosen for elastic
+# note BB field production setting is 750 A most of the time
+bb.theta = 36.0
+bb.pcentral = 2.122 
+bb.magdist = 1.799
+
+---------[ 2021-10-25 16:00:00 ] ## Starting SBS-5 kinematics for GMN
+
+ebeam = 7.38 # to be adjusted when we find out what the actual beam energy is according to HALLA:p
+
+sbs.theta = 24.7
+sbs.pcentral = 4.31
+
+# pcentral chosen for elastic:
+
+bb.theta = 27.5 
+bb.pcentral = 3.91
+bb.magdist = 1.90

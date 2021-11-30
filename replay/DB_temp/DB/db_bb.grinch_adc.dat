@@ -1,0 +1,47 @@
+#grinch detector map (adc only)
+## crate slot start_channel end_channel
+bb.grinch_adc.detmap =
+  7     13     0     15  0
+  7     14     0     15  0
+  7     15     0     15  0
+  7     16     0     15  0
+#  5     18     31    31  -1
+
+bb.grinch_adc.chanmap =
+        0  1   2   3   4   5   6   7   8   9  10  11  12  13  14  15
+        16 17  18  18  20  21  22  23  24  25  26  27  28  29  30 31
+        32 33  34  35  36  37  38  39  40  41  42  43  44  45  46 47
+        48 49  50  51  52  53  54  55  56  57  58  59  60  61  62 63
+
+#bb.grinch_adc.model_in_detmap = 1
+bb.grinch_adc.position = 0 0 0  ## This needs to be fixed
+bb.grinch_adc.size = 10 10 10 ## This needs to be fixed
+bb.grinch_adc.xyz = -0.9145 -0.124 0.0 #m # we don't really need z
+bb.grinch_adc.dxdydz = 1 1 1 # Meh, just so it won't crash
+
+#grinch geometry info
+bb.grinch_adc.nrows = 16
+bb.grinch_adc.ncols = 4
+
+## adc channels to mV assume F250 set fot 2V for 4096
+bb.grinch_adc.conv = 0.4882
+# Threshold for pulse finding in waveform (mV)
+bb.grinch_adc.thres = 20.
+# Number of bins (bin=4ns) at the beginning of waveform used to determing average Pedestal
+bb.grinch_adc.NPedBin = 4
+# Number of bins (bin=4ns) before Threshold Bin to use in integrating pulse
+bb.grinch_adc.NSB = 3
+# Number of bins (bin=4ns) before Threshold Bin to use in integrating pulse
+bb.grinch_adc.NSA = 10
+# Number of bin for fixed Threshold if no Threshold Crossing is found
+bb.grinch_adc.FixThresBin = 14
+# Convert adc integral in pC to GeV
+bb.grinch_adc.gain = 1.0
+
+
+bb.grinch_adc.adc.pedestal =
+  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+

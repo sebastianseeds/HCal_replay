@@ -1,0 +1,47 @@
+#LH2 zero field 1.92 GeV
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11287*
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11288*
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11289*
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11290*
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11291*
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11292*
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11296*
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11298*
+#LH2 NEW HV zero field 3.728 GeV
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11587_-1.root
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11587_-1_1.root
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11587_-1_2.root
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11587*
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11588*
+#LD2 NEW HV 3.728 GeV 30% field run
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11562*
+/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11593*
+#LH2 NEW HV zero field 
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11989
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11990
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11991
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11992
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11993
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11994
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_12000
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_12008
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_12022
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_12035
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_12049
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_12052
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_12053
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_12058
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_12064
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_12072
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_12058_-1__*
+endlist
+#hcalt::tdc<1000&&
+endcut
+E_e 3.728
+HCal_d 11.0
+HCal_th 31.9
+opticsCorr 1.05
+W_mean 0.94
+W_sig 0.09
+BB_th 36.0
+emin 0.08

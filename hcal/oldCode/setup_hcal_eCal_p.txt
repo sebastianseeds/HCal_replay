@@ -1,0 +1,15 @@
+$ROOTFILES/gmn_replayed_11199_stream0_seg0_0.root
+#$OUT_DIR/hcal_11199_50000.root
+endlist
+sbs.hcal.nclus>0
+endcut
+E_e 1.92
+minEventPerCell 100
+maxEventPerCell 4000
+highDelta 0.1
+HCal_d 14.5
+HCal_th 35
+HVfilePath setFiles/HV_run11199.txt
+alphasFilePath setFiles/alphas.txt
+constPath /work/halla/sbs/seeds/outFiles/HCalECal_Const11199.txt
+HVoutPath /work/halla/sbs/seeds/outFiles/HCalECal_HV11199.txt

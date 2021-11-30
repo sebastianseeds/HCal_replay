@@ -1,0 +1,38 @@
+# SBS GMn Sept 2021
+# scaler.map file for Left HRS event type 140
+# comments start with #
+
+# FIXME 
+# map syntax
+# scaler, type, crate, slot, header, mask, norm slot#
+# after the norm slot#:  clock chan# and clock frequency
+# scaler   type   crate   slot    header     mask        norm   slot    clk freq
+  map      1151   1       0       abc00000   ffff0000    1
+  map      3800   1       1       abc10000   ffff0000    1      7       103700 
+  map      3800   1       2       abc20000   ffff0000    1
+  map      3800   1       3       abc30000   ffff0000    1
+  map      3800   1       4       abc40000   ffff0000    1
+  map      3800   1       5       abc50000   ffff0000    1
+  map      3800   1       6       abc60000   ffff0000    1
+
+# Helicity scaler in the LHRS, ROC10 
+# variable syntax
+# slot#, chan#, (1=cnt, 2=rate), var name, description string
+# var name gets "fName" prefix, e.g.
+# for L-HRS scalers with fname="Left", var name = "LeftTSbcmu3"
+# type        slot   chan   cnt(1) or rate(2)   var name   description string 
+  variable    14     1           1             unew       new bcm upstream count
+  variable    14     1           2             unew_r     new bcm upstream rate
+  variable    14     2           1             dnew       new bcm downstream count
+  variable    14     2           2             dnew_r     new bcm downstream rate
+  variable    14     3           1             unser      unser counts
+  variable    14     3           2             unser_r    unser rate
+  variable    14     5           1             u1         bcm x1 upstream count
+  variable    14     5           2             u1_r       bcm x1 upstream rate
+  variable    14     6           1             d1         bcm x1 downstream count
+  variable    14     6           2             d1_r       bcm x1 downstream rate
+  variable    14     7           1             d3         bcm x3 downstream count
+  variable    14     7           2             d3_r       bcm x3 downstream rate
+  variable    14     8           1             d10        bcm x10 downstream count
+  variable    14     8           2             d10_r      bcm x10 downstream rate
+

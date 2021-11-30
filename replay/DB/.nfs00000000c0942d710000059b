@@ -1,0 +1,72 @@
+### Detector map, format:
+## crate slot start_channel end_channel refindex
+# crate slot ch_min ch_max
+bb.hodoadc.detmap = 
+## Detmap for the ADCs
+#  5     4     0     31     -1 ## 32 channels (Left  PMTs)
+#  5     5     0     31     -1 ## 32 channels (Right PMTs)
+  5     15     0     15     -1 ## 0-15 channels (Left  PMTs)
+  5     14     0     15     -1 ## 16-31 channels (Left  PMTs)
+  5     17     0     15     -1 ## 0-15 channels (Right PMTs)
+  5     16     0     15     -1 ## 16-31 channels (Right PMTs)
+
+bb.hodoadc.chanmap = 
+	  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  
+         16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31 
+	 32  33  34  35  36  37  38  39  40  41  42  43  44  45  46  47
+	 48  49  50  51  52  53  54  55  56  57  58  59  60  61  62  63 
+
+
+## Positions in [m] where +z is roated by bb.theta
+bb.hodoadc.position = 0 0 2.5319 ## Need to re-check this number
+
+
+## Size
+bb.hodoadc.size   =  0.595 2.295 0.37 # in meters
+
+## Number of rows and columns
+#bb.hodoadc.ncols =  2
+#bb.hodoadc.nrows = 32
+bb.hodoadc.ncols =  32
+bb.hodoadc.nrows = 2
+
+## Position of first module
+bb.hodoadc.xyz    = -1.105  0.255  0.000
+## Space between modules
+bb.hodoadc.dxdydz =  10.000  10.000  0.000
+
+
+bb.hodoadc.adcbaroffset = 0 #this is not really relevant for tdc but include to be consistent with adc db. This allows to cycle through the bars with subsections of the readout at a time
+
+## adc channels to mV assume F250 set fot 2V for 4096
+bb.hodoadc.adc.conv = 0.4882
+# Threshold for pulse finding in waveform (mV)
+bb.hodoadc.adc.thres = 5.0
+# Number of bins (bin=4ns) at the beginning of waveform used to determing average Pedestal
+bb.hodoadc.adc.NPedBin = 4
+# Number of bins (bin=4ns) before Threshold Bin to use in integrating pulse
+bb.hodoadc.adc.NSB = 3
+# Number of bins (bin=4ns) before Threshold Bin to use in integrating pulse
+bb.hodoadc.adc.NSA = 12
+# Number of bin for fixed Threshold if no Threshold Crossing is found
+bb.hodoadc.adc.FixThresBin = 14
+# Convert adc integral in pC to GeV
+bb.hodoadc.adc.gain = 1.0
+
+bb.hodoadc.adc.pedestal = 
+	 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+	 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0  
+	 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0  
+	 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+
+bb.hodoadc.timewalk0map = 
+	 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+	 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0  
+	 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0  
+	 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+
+bb.hodoadc.timewalk1map = 
+	 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+	 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0  
+	 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0  
+	 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0

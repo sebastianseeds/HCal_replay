@@ -1,0 +1,30 @@
+bb.hcaltrig.detmap = 
+   17    8     32   32 0 # 1 channel. Sum module trigger copy (logical).
+  17    8     34   34 0 # 1 channel. Copy of DVCS pulser EDTM signal (logical).
+  17    8     35   35 0 # 1 channel. Copy of BB trigger (logical).
+
+bb.hcaltrig.chanmap =  0 1  2    
+## Number of rows and columns
+bb.hcaltrig.ncols =  3
+bb.hcaltrig.nrows = 1
+## Position of first module
+bb.hcaltrig.xyz    = -1.105  0.255  0.000
+## Space between modules
+bb.hcaltrig.dxdydz =  10.000  10.000  0.000
+## Positions in [m] where +z is roated by bb.theta
+bb.hcaltrig.position = 0 0 2.5319 ## Need to re-check this number
+## Size
+bb.hcaltrig.size   =  0.595 2.295 0.37 # in meters
+#
+bb.hcaltrig.tdc.cal = 0.112
+#
+bb.hcaltrig.tdc.offset = 0
+#
+bb.hcaltrig.tdc.GoodTimeCut = 40.
+#
+bb.hcaltrig.reftdc.cal = 0.112
+#
+bb.hcaltrig.reftdc.offset = 0
+#
+bb.hcaltrig.reftdc.GoodTimeCut = 40.
+                

@@ -1,0 +1,35 @@
+# SBS GMn Sept 2021
+# scaler.map file for Left HRS event type 140  
+# comments start with #
+
+# map syntax
+# scaler, type, crate, slot, header, mask, norm slot#
+# after the norm slot#:  clock chan# and clock frequency
+# scaler   type   crate   slot    header     mask        norm   ch   clk freq
+map      1151     8       0       abc00010   ffffffff    2 
+map      3800     8       1       abc10020   ffffffff    2        
+map      3800     8       2       abc20020   ffffffff    2      7    103700
+map      3800     8       3       abc30020   ffffffff    2 
+map      1151     8       4       abc40010   ffffffff    2 
+map      1151     8       5       abc50010   ffffffff    2 
+
+# Scaler in the LHRS, ROC10 
+# variable syntax
+# slot#, chan#, (1=cnt, 2=rate), var name, description string
+# var name gets "fName" prefix, e.g.
+# for L-HRS scalers with fname="Left", var name = "Left.bcm.u3"
+# type        slot   chan    cnt(1) or rate(2)   var name         description string 
+  variable    1      18      1                   bcm.unew.cnt     new digital bcm upstream count
+  variable    1      18      2                   bcm.unew.rate    new digital bcm upstream rate
+  variable    1      20      1                   bcm.dnew.cnt     new digital bcm downstream count
+  variable    1      20      2                   bcm.dnew.rate    new digital bcm downstream rate
+  variable    1      22      1                   bcm.unser.cnt    unser counts
+  variable    1      22      2                   bcm.unser.rate   unser rate
+  variable    1      24      1                   bcm.u1.cnt       bcm u1 upstream count
+  variable    1      24      2                   bcm.u1.rate      bcm u1 upstream rate
+  variable    1      26      1                   bcm.d1.cnt       bcm d1 downstream count
+  variable    1      26      2                   bcm.d1.rate      bcm d1 downstream rate
+  variable    1      28      1                   bcm.d3.cnt       bcm d3 downstream count
+  variable    1      28      2                   bcm.d3.rate      bcm d3 downstream rate
+  variable    1      30      1                   bcm.d10.cnt      bcm d10 downstream count
+  variable    1      30      2                   bcm.d10.rate     bcm d10 downstream rate

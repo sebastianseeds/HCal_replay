@@ -1,0 +1,94 @@
+Log file of previous DVCS pulser rate settings.
+
+May 24, 2021, 16:42:04:
+New DVCS Pulser Settings = 2000 Hz.
+May 24, 2021, 16:42:18:
+New DVCS Pulser Settings = 50000 Hz.
+May 24, 2021, 16:44:21:
+New DVCS Pulser Settings = 500 Hz.
+May 24, 2021, 16:46:04:
+New DVCS Pulser Settings = 100000 Hz.
+May 27, 2021, 10:51:48:
+New DVCS Pulser Settings = 5 Hz.
+September 07, 2021, 16:29:16:
+New DVCS Pulser Settings = 5 Hz.
+September 07, 2021, 16:32:39:
+New DVCS Pulser Settings = 100 Hz.
+September 07, 2021, 16:33:00:
+New DVCS Pulser Settings = 20 Hz.
+September 07, 2021, 16:33:07:
+New DVCS Pulser Settings = 5 Hz.
+September 07, 2021, 16:33:28:
+New DVCS Pulser Settings = 1000 Hz.
+September 07, 2021, 16:34:36:
+New DVCS Pulser Settings = 50 Hz.
+September 07, 2021, 16:39:43:
+New DVCS Pulser Settings = 200 Hz.
+September 07, 2021, 16:39:53:
+New DVCS Pulser Settings = 20000 Hz.
+September 07, 2021, 17:28:34:
+New DVCS Pulser Settings = 500 Hz.
+September 07, 2021, 17:28:42:
+New DVCS Pulser Settings = 10 Hz.
+September 07, 2021, 17:28:55:
+New DVCS Pulser Settings = 20 Hz.
+September 07, 2021, 17:29:14:
+New DVCS Pulser Settings = 50000 Hz.
+September 07, 2021, 17:29:21:
+New DVCS Pulser Settings = 20 Hz.
+September 07, 2021, 17:34:30:
+New DVCS Pulser Settings = 50 Hz.
+September 07, 2021, 17:34:43:
+New DVCS Pulser Settings = 5000 Hz.
+September 07, 2021, 17:34:50:
+New DVCS Pulser Settings = 50000 Hz.
+September 07, 2021, 17:35:02:
+New DVCS Pulser Settings = 20 Hz.
+September 08, 2021, 17:13:46:
+New DVCS Pulser Settings = 50 Hz.
+September 08, 2021, 17:13:57:
+New DVCS Pulser Settings = 20 Hz.
+September 08, 2021, 17:16:17:
+New DVCS Pulser Settings = 50 Hz.
+September 08, 2021, 17:23:28:
+New DVCS Pulser Settings = 20 Hz.
+September 13, 2021, 17:51:46:
+New DVCS Pulser Settings = 1 Hz.
+September 13, 2021, 17:52:00:
+New DVCS Pulser Settings = 100 Hz.
+September 13, 2021, 17:52:09:
+New DVCS Pulser Settings = 1 Hz.
+September 13, 2021, 17:52:28:
+New DVCS Pulser Settings = 20000 Hz.
+September 13, 2021, 17:52:37:
+New DVCS Pulser Settings = 10000 Hz.
+September 13, 2021, 17:52:43:
+New DVCS Pulser Settings = 20 Hz.
+September 13, 2021, 17:52:49:
+New DVCS Pulser Settings = 5 Hz.
+September 13, 2021, 17:53:02:
+New DVCS Pulser Settings = 1 Hz.
+September 17, 2021, 17:06:06:
+New DVCS Pulser Settings = 50 Hz.
+September 17, 2021, 17:06:12:
+New DVCS Pulser Settings = 1 Hz.
+September 17, 2021, 17:09:58:
+New DVCS Pulser Settings = 5 Hz.
+September 18, 2021, 10:04:26:
+New DVCS Pulser Settings = 10 Hz.
+September 18, 2021, 10:05:00:
+New DVCS Pulser Settings = 10 Hz.
+September 18, 2021, 10:05:00:
+New DVCS Pulser Settings = 20 Hz.
+September 18, 2021, 10:05:02:
+New DVCS Pulser Settings = 10 Hz.
+September 20, 2021, 17:01:14:
+New DVCS Pulser Settings = 10 Hz.
+September 24, 2021, 17:49:55:
+New DVCS Pulser Settings = 10 Hz.
+September 24, 2021, 17:50:04:
+New DVCS Pulser Settings = 2000 Hz.
+September 24, 2021, 17:56:18:
+New DVCS Pulser Settings = 5000 Hz.
+September 24, 2021, 17:58:55:
+New DVCS Pulser Settings = 10000 Hz.

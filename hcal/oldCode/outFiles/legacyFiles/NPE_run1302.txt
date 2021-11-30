@@ -1,0 +1,281 @@
+#All information for run 1302.
+#Row Col LED <Max> <Int> NPE
+For row 12 and col 0, pedestal is 238.627
+12  0  1  3747.3  21510.2  184.954
+For row 12 and col 1, pedestal is 194.81
+12  1  1  596.357  3192.9  14.7964
+For row 12 and col 2, pedestal is 215.053
+12  2  1  1890.28  10328.4  68.8134
+For row 12 and col 3, pedestal is 216.15
+12  3  1  10538.5  21677.8  25.631
+For row 12 and col 4, pedestal is 232.028
+12  4  1  195.287  1123.4  64.1929
+For row 12 and col 5, pedestal is 208.103
+12  5  1  517.296  3081.22  88.7438
+For row 12 and col 6, pedestal is 204.235
+12  6  1  432.23  2673.94  104.663
+For row 12 and col 7, pedestal is 196.088
+12  7  1  230.804  1409.58  63.5697
+For row 12 and col 8, pedestal is 234.79
+12  8  1  2715.09  14954.7  53.3851
+For row 12 and col 9, pedestal is 230.551
+12  9  1  3747.77  21260.8  1089.86
+For row 12 and col 10, pedestal is 214.794
+12  10  1  3502.1  19033.2  68.3546
+For row 12 and col 11, pedestal is 184.526
+12  11  1  3762.64  25712.1  1336.01
+For row 13 and col 0, pedestal is 168.738
+13  0  1  2950.45  16287  33.3598
+For row 13 and col 1, pedestal is 199.418
+13  1  1  8558.43  21991.1  52.8237
+For row 13 and col 2, pedestal is 214.711
+13  2  1  3290.1  18791  66.0238
+For row 13 and col 3, pedestal is 195.513
+13  3  1  3977.08  21701.6  105.328
+For row 13 and col 4, pedestal is 205.236
+13  4  1  237.782  1254.08  33.1662
+For row 13 and col 5, pedestal is 203.433
+13  5  1  259.425  1521.61  109.513
+For row 13 and col 6, pedestal is 150.74
+13  6  1  1462.95  7839.05  139.926
+For row 13 and col 7, pedestal is 197.506
+13  7  1  646.886  3899.45  133.871
+For row 13 and col 8, pedestal is 225.452
+For row 13 and col 9, pedestal is 215.411
+13  9  1  2671.27  14767.8  57.1834
+For row 13 and col 10, pedestal is 196.962
+13  10  1  4249.18  21575.5  75.9093
+For row 13 and col 11, pedestal is 211.558
+13  11  1  2846.32  15624.1  77.0652
+For row 14 and col 0, pedestal is 203.419
+14  0  1  1823.99  10363.1  60.3136
+For row 14 and col 1, pedestal is 227.672
+14  1  1  3290.67  18688.3  61.6125
+For row 14 and col 2, pedestal is 189.447
+14  2  1  3880.86  21753.9  101.906
+For row 14 and col 3, pedestal is 212.317
+14  3  1  2066.89  11601.7  83.5439
+For row 14 and col 4, pedestal is 185.797
+14  4  1  350.033  2152.2  72.59
+For row 14 and col 5, pedestal is 217.33
+14  5  1  565.233  3377.52  82.1951
+For row 14 and col 6, pedestal is 181.578
+14  6  1  513.854  3170.63  135.222
+For row 14 and col 7, pedestal is 228.485
+14  7  1  465.089  2933.41  113.709
+For row 14 and col 8, pedestal is 202.11
+14  8  1  3775.02  24405.9  nan
+For row 14 and col 9, pedestal is 213.077
+14  9  1  2061.23  11578.4  76.4107
+For row 14 and col 10, pedestal is 238.629
+14  10  1  3668.99  22084.7  887.959
+For row 14 and col 11, pedestal is 210.037
+14  11  1  3663.5  23565  793.745
+For row 15 and col 0, pedestal is 232.364
+15  0  1  3765.47  20758.9  198.512
+For row 15 and col 1, pedestal is 199.826
+15  1  1  1072.55  5917.61  35.5697
+For row 15 and col 2, pedestal is 221.222
+15  2  1  3918.35  20977.7  177.643
+For row 15 and col 3, pedestal is 174.566
+15  3  1  3603.28  20697.2  168.874
+For row 15 and col 4, pedestal is 212.313
+15  4  1  403.015  2425.1  70.8491
+For row 15 and col 5, pedestal is 180.842
+15  5  1  472.459  2933.38  95.1218
+For row 15 and col 6, pedestal is 219.751
+15  6  1  1097.76  5903.96  124.788
+For row 15 and col 7, pedestal is 224.455
+15  7  1  672.923  4416  152.293
+For row 15 and col 8, pedestal is 175.585
+15  8  1  3849.42  22880.6  223.883
+For row 15 and col 9, pedestal is 189.841
+15  9  1  2295.79  12556.1  86.9073
+For row 15 and col 10, pedestal is 185.022
+15  10  1  2031.16  11128.2  77.3125
+For row 15 and col 11, pedestal is 206.059
+15  11  1  2086.62  11666.2  55.2515
+For row 16 and col 0, pedestal is 181.541
+16  0  1  295.929  1627.96  15.7295
+For row 16 and col 1, pedestal is 218.054
+16  1  1  3065.43  16950  52.2376
+For row 16 and col 2, pedestal is 208.79
+16  2  1  1915.6  10783.5  89.4622
+For row 16 and col 3, pedestal is 203.625
+16  3  1  2566.13  14168.8  76.2168
+For row 16 and col 4, pedestal is 229.066
+16  4  1  379.284  2313.76  88.8813
+For row 16 and col 5, pedestal is 193.393
+16  5  1  38.3383  187.985  24.6767
+For row 16 and col 6, pedestal is 189.99
+16  6  1  593.647  3690.57  176.527
+For row 16 and col 7, pedestal is 220.749
+16  7  1  449.367  2697.01  120.362
+For row 16 and col 8, pedestal is 191.017
+For row 16 and col 9, pedestal is 217.498
+16  9  1  2014.07  11316.8  81.1457
+For row 16 and col 10, pedestal is 211.306
+16  10  1  8633.66  22717.8  61.2466
+For row 16 and col 11, pedestal is 208.133
+16  11  1  877.63  4876.74  75.3601
+For row 17 and col 0, pedestal is 191.922
+17  0  1  2531.56  13394.3  67.6066
+For row 17 and col 1, pedestal is 201.039
+17  1  1  138.987  786.657  10.7857
+For row 17 and col 2, pedestal is 198.89
+For row 17 and col 3, pedestal is 225.274
+17  3  1  2325.62  12527.3  76.402
+For row 17 and col 4, pedestal is 210.272
+17  4  1  481.989  2734.32  94.3208
+For row 17 and col 5, pedestal is 175.945
+17  5  1  1370.01  7157.09  96.6689
+For row 17 and col 6, pedestal is 220.272
+17  6  1  816.146  4017.3  122.356
+For row 17 and col 7, pedestal is 231.061
+17  7  1  289.37  1769.25  131.674
+For row 17 and col 8, pedestal is 214.446
+17  8  1  7236.18  22129.4  16.3967
+For row 17 and col 9, pedestal is 217.692
+17  9  1  3252.12  17875  54.2063
+For row 17 and col 10, pedestal is 205.165
+17  10  1  4875.9  21675  83.3242
+For row 17 and col 11, pedestal is 243.08
+17  11  1  1129.83  6301.66  59.292
+For row 18 and col 0, pedestal is 210.496
+18  0  1  2279.9  12220.2  35.6647
+For row 18 and col 1, pedestal is 216.455
+18  1  1  525.43  2943.05  58.1794
+For row 18 and col 2, pedestal is 209.541
+18  2  1  3770.47  18521.1  47.2029
+For row 18 and col 3, pedestal is 240.892
+18  3  1  2547.11  15571.5  56.6645
+For row 18 and col 4, pedestal is 195.886
+18  4  1  703.055  3622.8  88.0341
+For row 18 and col 5, pedestal is 188.591
+18  5  1  466.013  2829.24  106.841
+For row 18 and col 6, pedestal is 209.731
+18  6  1  481.441  3215.8  118.085
+For row 18 and col 7, pedestal is 230.573
+18  7  1  677.784  4324.15  128.306
+For row 18 and col 8, pedestal is 239.686
+For row 18 and col 9, pedestal is 231.906
+18  9  1  2249.1  15911.5  80.3039
+For row 18 and col 10, pedestal is 218.007
+18  10  1  4294.8  25400.8  99.7948
+For row 18 and col 11, pedestal is 183.912
+18  11  1  1725.51  11732.2  52.4331
+For row 19 and col 0, pedestal is 190.017
+19  0  1  2022.75  10678.6  41.3092
+For row 19 and col 1, pedestal is 221.099
+19  1  1  3849.61  21903.2  48.6714
+For row 19 and col 2, pedestal is 250.933
+19  2  1  2575.59  13790.8  53.3016
+For row 19 and col 3, pedestal is 231.126
+19  3  1  1784.98  10175.5  107.221
+For row 19 and col 4, pedestal is 204.152
+19  4  1  404.898  2320.34  90.0618
+For row 19 and col 5, pedestal is 218.973
+19  5  1  621.985  3133.87  77.4492
+For row 19 and col 6, pedestal is 219.165
+19  6  1  578.84  3142.78  91.5252
+For row 19 and col 7, pedestal is 237.769
+19  7  1  284.743  1918.04  107.388
+For row 19 and col 8, pedestal is 208.604
+19  8  1  3219.08  19248.6  96.8938
+For row 19 and col 9, pedestal is 183.932
+19  9  1  3724.83  23928  91.6971
+For row 19 and col 10, pedestal is 199.805
+19  10  1  1903.62  13421  70.2389
+For row 19 and col 11, pedestal is 194.945
+19  11  1  1122.57  7718.08  52.4361
+For row 20 and col 0, pedestal is 240.998
+20  0  1  909.715  4875.47  51.5534
+For row 20 and col 1, pedestal is 234.581
+20  1  1  2321.17  12529.9  48.8566
+For row 20 and col 2, pedestal is 213.611
+For row 20 and col 3, pedestal is 216.066
+20  3  1  3228.53  17892.1  72.945
+For row 20 and col 4, pedestal is 171.021
+20  4  1  287.996  1690.78  66.8105
+For row 20 and col 5, pedestal is 187.804
+20  5  1  1136.43  5940.1  85.8587
+For row 20 and col 6, pedestal is 222.607
+20  6  1  643.055  4124.33  140.95
+For row 20 and col 7, pedestal is 194.922
+20  7  1  378.225  2517.39  113.89
+For row 20 and col 8, pedestal is 214.099
+20  8  1  6985.84  23866.3  31.2357
+For row 20 and col 9, pedestal is 210.96
+20  9  1  1978.9  14238  71.7396
+For row 20 and col 10, pedestal is 224.348
+20  10  1  1783.56  12499.1  62.9082
+For row 20 and col 11, pedestal is 210.852
+20  11  1  1476.14  10375.6  84.337
+For row 21 and col 0, pedestal is 221.579
+21  0  1  1091.57  6074.81  52.4983
+For row 21 and col 1, pedestal is 294.376
+21  1  1  4484.57  19860.9  45.3734
+For row 21 and col 2, pedestal is 213.9
+21  2  1  3712.65  22173.4  139.093
+For row 21 and col 3, pedestal is 254.568
+For row 21 and col 4, pedestal is 205.625
+21  4  1  509.317  3009.52  88.5088
+For row 21 and col 5, pedestal is 187.285
+21  5  1  655.73  3384.14  62.5794
+For row 21 and col 6, pedestal is 240.79
+21  6  1  967.552  5192.63  111.752
+For row 21 and col 7, pedestal is 247.926
+21  7  1  602.976  3817.89  121.789
+For row 21 and col 8, pedestal is 240.16
+21  8  1  6658.53  24056.2  123.704
+For row 21 and col 9, pedestal is 249.2
+21  9  1  2932.59  19997.8  82.9695
+For row 21 and col 10, pedestal is 234.539
+21  10  1  2595.57  18098.1  68.3096
+For row 21 and col 11, pedestal is 219.898
+21  11  1  3723.82  24973.7  134.548
+For row 22 and col 0, pedestal is 267.98
+22  0  1  397.942  2145.6  47.5815
+For row 22 and col 1, pedestal is 224.738
+22  1  1  1205.61  6797.58  30.5409
+For row 22 and col 2, pedestal is 246.232
+22  2  1  2820.63  15210.6  38.126
+For row 22 and col 3, pedestal is 254.001
+For row 22 and col 4, pedestal is 218.62
+22  4  1  448.874  2619.5  103.64
+For row 22 and col 5, pedestal is 231.393
+22  5  1  1029.4  5217.44  92.6453
+For row 22 and col 6, pedestal is 251.156
+22  6  1  552.029  3608.39  114.465
+For row 22 and col 7, pedestal is 246.091
+22  7  1  518.986  3353.48  108.203
+For row 22 and col 8, pedestal is 237.354
+For row 22 and col 9, pedestal is 208.393
+22  9  1  1947.03  13418.7  50.1945
+For row 22 and col 10, pedestal is 229.864
+22  10  1  1355.28  9435.77  62.9736
+For row 22 and col 11, pedestal is 224.082
+22  11  1  2240.1  15617.6  49.2269
+For row 23 and col 0, pedestal is 232.266
+23  0  1  1182.17  6526.57  42.5551
+For row 23 and col 1, pedestal is 203.224
+23  1  1  664.612  3689.27  49.338
+For row 23 and col 2, pedestal is 227.561
+23  2  1  852.758  4616.66  35.8965
+For row 23 and col 3, pedestal is 238.701
+23  3  1  1891.7  10474.7  93.8715
+For row 23 and col 4, pedestal is 231.973
+23  4  1  631.59  3776.87  116.022
+For row 23 and col 5, pedestal is 233.07
+23  5  1  620.503  3177.43  77.9151
+For row 23 and col 6, pedestal is 226.045
+23  6  1  430.19  2806.82  130.587
+For row 23 and col 7, pedestal is 191.46
+23  7  1  468.702  2885.74  121.544
+For row 23 and col 8, pedestal is 215.374
+For row 23 and col 9, pedestal is 194.937
+23  9  1  2405.32  16635.6  56.3387
+For row 23 and col 10, pedestal is 197.181
+23  10  1  2791.34  19170.3  59.2558
+For row 23 and col 11, pedestal is 248.832
+23  11  1  1541.19  10865.2  55.664

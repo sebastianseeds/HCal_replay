@@ -1,0 +1,498 @@
+//SSeeds 10.12.21 - Production - Code combining elements from Andrew Puckett's BigCal calibration script and PDatta/EFuchey BB calibration code used to calibrate HCal energy deposition by PMT module. Tested with Eric Fuchey's digitized g4sbs data and used during detector commissioning in GMn run group.
+
+#include <ctime>
+#include <iomanip>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <string>
+#include <TH2F.h>
+#include <TChain.h>
+#include <TCanvas.h>
+#include <iostream>
+#include <TSystem.h>
+#include <TStopwatch.h>
+#include "TChain.h"
+#include "TTree.h"
+#include "TFile.h"
+#include "TMatrixD.h"
+#include "TVectorD.h"
+#include "TString.h"
+#include "TCut.h"
+#include "TH1D.h"
+#include "TH2D.h"
+#include "TMath.h"
+#include "TVector3.h"
+#include "TGraphErrors.h"
+
+TChain *T = 0;
+
+const int kNcell = 288; // Total number of HCal modules
+const int kNrows = 24; // Total number of HCal rows
+const int kNcols = 12; // Total number of HCal columns
+const double kdBlock = 0.152; // Width and height of each module including distance between
+
+const double PI = TMath::Pi();
+const double M_e = 0.00051;
+const double M_p = 0.938272;
+const double M_n = 0.939565;
+const double c_light = 299792458.0;
+
+void hcal_enCal();
+string getDate();
+
+// Get today's date
+string getDate(){
+  time_t now = time(0);
+  tm ltm = *localtime(&now);
+  
+  string yyyy = to_string(1900 + ltm.tm_year);
+  string mm = to_string(1 + ltm.tm_mon);
+  string dd = to_string(ltm.tm_mday);
+  string date = mm + '_' + dd + '_' + yyyy;
+  
+  return date;
+}
+
+void hcalECAL( const char *configfilename, int run = -1 ){
+  
+  // Define a clock to check macro processing time
+  TStopwatch *st = new TStopwatch();
+  st->Start( kTRUE );
+
+  // Start the chain for root files passed with config file  
+  if( !T ) {
+    T = new TChain( "T" );
+    T->SetBranchStatus( "*", 0 );
+    T->SetBranchStatus( "sbs.hcal.*", 1 );
+    T->SetBranchAddress( "sbs.hcal.a_p", hcalt::a_p );
+    T->SetBranchAddress( "sbs.hcal.a_amp", hcalt::a_amp );
+    T->SetBranchAddress( "sbs.hcal.a_c", hcalt::a_c );
+    T->SetBranchAddress( "sbs.hcal.adcrow", hcalt::row );
+    T->SetBranchAddress( "sbs.hcal.adccol", hcalt::col );
+    T->SetBranchAddress( "sbs.hcal.a_time", hcalt::a_time );
+    T->SetBranchAddress( "bb.tr.chi2", hcalt::BBtr_chi2 );
+    T->SetBranchAddress( "bb.tr.n", hcalt::BBtr_n );
+    T->SetBranchAddress( "bb.tr.px", hcalt::BBtr_px );
+    T->SetBranchAddress( "bb.tr.py", hcalt::BBtr_py );
+    T->SetBranchAddress( "bb.tr.pz", hcalt::BBtr_pz );
+    T->SetBranchAddress( "bb.tr.p", hcalt::BBtr_p );
+    T->SetBranchAddress("sbs.hcal.clus.id",hcalt::cid);
+    T->SetBranchAddress("sbs.hcal.clus.row",hcalt::crow);
+    T->SetBranchAddress("sbs.hcal.clus.col",hcalt::ccol);
+    T->SetBranchAddress("sbs.hcal.clus_blk.row",hcalt::cbrow);
+    T->SetBranchAddress("sbs.hcal.clus_blk.col",hcalt::cbcol);
+    T->SetBranchAddress("sbs.hcal.clus.e",hcalt::ce);
+    T->SetBranchAddress("sbs.hcal.clus.eblk",hcalt::ceblk); // Highest energy block
+    T->SetBranchAddress("sbs.hcal.clus.nblk",hcalt::cnblk);
+    T->SetBranchAddress("sbs.hcal.nclus",hcalt::nclus);
+    T->SetBranchAddress("sbs.hcal.nblk",hcalt::nblk);
+    T->SetBranchAddress("sbs.hcal.clus_blk.id",hcalt::cblkid);
+    T->SetBranchAddress("sbs.hcal.clus_blk.e",hcalt::cblke); // Array of block energies
+    //T->SetBranchAddress("sbs.hcal.clus.atimeblk",hcalt::atimeblk);
+ 
+    T->SetBranchStatus( "Ndata.sbs.hcal.adcrow", 1 );
+    T->SetBranchAddress( "Ndata.sbs.hcal.adcrow", &hcalt::ndata );
+    cout << "Opened up tree with nentries=" << T->GetEntries() << endl;
+  }
+
+  // Declare constants
+  double E_e = 1.92; // Energy of beam (incoming electrons from accelerator)
+  int minEventPerCell = 100; // Minimum number of scattered p in cell required to calibrate
+  int maxEventPerCell = 4000; // Maximum number of scattered p events to contribute
+  double highDelta = 0.1; // Minimum M(i,j)/b(i) factor allowed 
+  double HCal_d = 14.5; // Distance to HCal from scattering chamber for comm1
+  double HCal_th = 35.0; // Angle that the center of HCal is at  
+  string HVfilePath = "path/to/HV/settings";
+  string alphasFilePath = "path/to/alpha/parameters";
+  string inConstpath = "path/to/input/constants";
+  string constPath = "path/to/output/constants";
+  string HVoutPath = "path/to/output/HV/settings";
+  
+  // Reading config file
+  ifstream configfile(configfilename);
+  TString currentline;
+  while( currentline.ReadLine( configfile ) && !currentline.BeginsWith("endlist") ){
+    if( !currentline.BeginsWith("#") ){
+      C->Add(currentline);
+    }    
+  }
+  TCut globalcut = "";
+  while( currentline.ReadLine( configfile ) && !currentline.BeginsWith("endcut") ){
+    if( !currentline.BeginsWith("#") ){
+      globalcut += currentline;
+    }    
+  }
+  while( currentline.ReadLine( configfile ) && !currentline.BeginsWith("#") ){
+    TObjArray *tokens = currentline.Tokenize(" ");
+    int ntokens = tokens->GetEntries();
+    if( ntokens>1 ){
+      TString skey = ( (TObjString*)(*tokens)[0] )->GetString();
+      if( skey == "E_e" ){
+	TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
+	E_e = sval.Atof();
+      }
+      if( skey == "minEventPerCell" ){
+	TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
+	minEventPerCell = sval.Atof();
+      }
+      if( skey == "maxEventPerCell" ){
+	TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
+	maxEventPerCell = sval.Atof();
+      }
+      if( skey == "highDelta" ){
+	TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
+	highDelta = sval.Atof();
+      }
+      if( skey == "HCal_d" ){
+	TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
+	HCal_d = sval.Atof();
+      }
+      if( skey == "HCal_th" ){
+	TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
+	HCal_th = sval.Atof();
+      }
+      if( skey == "Iter" ){
+	TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
+	Iter = sval.Atof();
+      }
+      if( skey == "HVfilePath" ){
+	TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
+	HVfilePath = sval;
+      }
+      if( skey == "alphasFilePath" ){
+	TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
+	alphasFilePath = sval;
+      }
+      if( skey == "constPath" ){
+	TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
+	constPath = sval;
+      }
+      if( skey == "inConstPath" ){
+	TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
+	constPath = sval;
+      }
+      if( skey == "HVoutPath" ){
+	TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
+	HVoutPath = sval;
+      }
+    }
+    delete tokens;
+  }
+  
+  // Declare outfile
+  TFile *fout = new TFile( "eCalOut.root", "RECREATE" );
+  
+  // Initialize vectors and arrays
+  vector<int> hitlist;
+  vector<double> energy;
+  double gHV[kNrows][kNcols];
+  double gAlphas[kNrows][kNcols];
+  double gTargetHV[kNrows][kNcols];
+  double gCRatio[kNrows][kNcols];
+  double gOldConst[kNrows][kNcols];
+  double ga_c[kNcell] = {0.0};
+  
+  // Initialize histograms
+  TH1D *h_W = new TH1D( "W", "W", 250, 0.7, 1.5 );
+  h_W->GetXaxis()->SetTitle( "GeV" );
+  TH1D *h_Q2 = new TH1D( "Q2", "Q2", 250, 0.5, 3.0 );
+  h_Q2->GetXaxis()->SetTitle( "GeV" );
+  TH1D *h_E_ep = new TH1D( "Scattered Electron Energy","E_ep", 500, 0.0, E_e*1.5 ); // Set limits based on energy conserv
+  h_E_ep->GetXaxis()->SetTitle( "GeV" );
+  TH1D *h_E_pp = new TH1D( "Scattered Proton Energy", "E_pp", 500, 0.0, E_e*1.5 ); // Set limits based on energy conserv
+  h_E_pp->GetXaxis()->SetTitle( "GeV" );
+  TH1D *h_KE_p = new TH1D( "Scattered Proton Kinetic Energy", "KE_pp", 500, 0.0, E_e*1.5 ); // Set limits based on energy conserv
+  h_KE_p->GetXaxis()->SetTitle( "GeV" );
+  TH1F *h_HCalCol_p = new TH1F( "HCalCol_p", "Projection of Scattered p on HCal Columns", kNcols, 0, kNcols );
+  h_HCalCol_p->GetXaxis()->SetTitle( "column" );
+
+  Long64_t Nevents = C->GetEntries();
+  cout << "Opened up tree with nentries: " << Nevents << ".." << endl;
+
+  // Read in previous high voltage values
+  ifstream HVFile( HVfilePath );
+  if( !HVFile ){
+    cerr << "No HV settings from run present -> setFiles/HV_run" << run << ".txt expected." << endl;
+    return 0;
+  }
+  cout << "Getting HV settings for each pmt.." << endl;
+  int n1=0;
+  double d1;
+  int rval, cval;
+  string line;
+  
+  while( getline( HVFile, line ) ){
+    if( line.at(0) == '#' ) {
+      continue;
+    }
+    stringstream ss( line );
+    ss >> d1;
+    rval = floor( n1/kNcols );
+    cval = n1 % kNcols;
+    gHV[rval][cval] = -d1; 
+    n1++;
+  }
+  
+  // Read in alpha parameters for PMTs
+  ifstream alphaFile( alphasFilePath );
+  if( !alphaFile ){
+    cerr << "No PMT alphas file present -> setFiles/alphas.txt expected." << endl;
+    return 0;
+  }
+
+  cout << "Getting alpha parameters for each pmt.." << endl;
+  n1=0;
+  string line2;
+  
+  while( getline( alphaFile, line2 ) ){
+    if( line2.at( 0 )=='#' ) {
+      continue;
+    }
+    stringstream ss( line2 );
+    ss >> d1;
+    rval = floor( n1/kNcols );
+    cval = n1 % kNcols;
+    gAlphas[rval][cval] = d1;
+    n1++;
+  }
+
+  // Read in previous constants from file
+  ifstream inConstFile( inConstPath );
+  
+  if( !inConstFile ){
+    cerr << "No HV settings from run present -> setFiles/const" << run << ".txt expected." << endl;
+    return 0;
+  }
+
+  cout << "Getting previous constants.." << endl;
+  int n1=0;
+  double d1;
+  string line;
+  
+  while( getline( inConstFile, line ) ){
+    if( line.at(0) == '#' ) {
+      continue;
+    }
+    stringstream ss( line );
+    ss >> d1;
+    gOldConst[n1] = d1; 
+    n1++;
+  }
+
+  cout << "HV settings and alpha parameters loaded." << endl;
+
+  // Need to get electron energy and W for cuts on elastic events
+  long mevent = 0;
+
+  // e' momentum correction factor
+  double eCorr = 1.04;
+  
+  cout << "Main loop over all data commencing.." << endl;
+    
+  gmn_rec_tree *T = new gmn_rec_tree(C);
+
+  TMatrixD Ma(kNcell,kNcell);
+  TVectorD ba(kNcell);
+  int NEV[kNcell] = {0};
+
+  /*
+  double CONSTANTS[kNrows][kNcols] = {1};
+
+  for( int r=0; r<kNrows; r++ ){
+    for( int c=0; c<kNcols; c++ ){
+      int i = r*kNrows+c;
+      CONSTANTS[r][c] = gOldConst[i]; 
+    }
+  }
+  */
+  
+  for( int i; i<Iter; i++ ){
+
+  while( T->GetEntry( mevent++ ) ){ 
+
+    if( mevent%1000 == 0 ) cout << "Main loop: " << mevent << "/" << Nevents << endl;
+    
+    // Sort all tracks by lowest Chi^2 (highest confidence track)
+    int track_tot = (int)T->bb_tr_n;
+    int track = 0;
+    double min = 1000.0; //Set arbitrarily high chi^2 to minimize with loop over tracks
+
+    for( int elem=0; elem<track_tot; elem++ ){            
+      if( T->bb_tr_chi2[elem] < min )
+	track = elem;      
+    }
+
+    double E_ep = sqrt( pow(M_e,2) + pow(hcalt::BBtr_p[track],2) ); // Obtain the scattered electron energy
+    h_E_ep->Fill( E_ep ); // Fill histogram
+
+    double p_ep = eCorr*hcalt::BBtr_p[track]; // Obtain the magnitude of scattered electron momentum with correction factor
+    double Q2 = 2*E_e*E_ep*( 1-(BBtr_pz[track]/p_ep) ); // Obtain Q2 from beam energy, outgoing electron energy, and momenta
+    h_Q2->Fill( Q2 ); // Fill histogram
+
+    double nu = E_e-E_ep; // Obtain energy transfer
+    double W2 = pow( M_p,2 )+2*M_p*nu-Q2; // Obtain W2 from Q2 and nu
+    double W = 0; // Should be Mp for elastic events. Will use to estimate correction factor while GEM tracking ongoing
+    if( W2>0 ){
+      W = sqrt( W2 ); // Obtain W for real events by throwing out negative W2 solns
+      h_W->Fill( W );
+    }
+    
+    // Use the electron kinematics to predict the proton momentum assuming elastic scattering on free proton at rest:
+    double E_pp = nu+M_p; // Get energy of the proton
+    h_E_pp->Fill( E_pp ); // Fill histogram
+
+    double p_p = sqrt( pow( E_pp,2 )-W2 ); // Magnitude of the scattered proton momentum
+
+    //double KE_p = pow( p_p,2 )/(2*M_p);
+    double KE_p = nu; //For elastics
+    h_KE_p->Fill( KE_p );
+
+    //Each component in the form p_p_z = p_p*cos(phi)
+    double phi_p = TMath::ACos( ( E_e-hcalt::BBtr_pz[track])/p_p ) * 180.0 / PI;
+
+    //Get the projection of each event onto the face of HCal - consider only X (column) components to avoid calculations with 48D48 field map. Should still be useful
+    double relPosX = HCal_d*TMath::Tan( HCal_th-phi_p );
+    //int relPosCol = std::floor( relPosX*HCal_th+(kNcols/2) ); // Return the column where the p is expected to land in HCal
+    h_HCalCol_p->Fill( relPosX );
+
+    if( W<1.1&&W>0.3 ){
+      hitlist.push_back( mevent );
+      energy.push_back( KE_p );
+    }
+    
+  }
+
+  //Populated list now iterate. Will come back.
+
+
+
+    if( W<1.1&&W>0.3 ){ //Primary cut on elastics, kept wide to find elastic protons
+
+      int nblk = hcalt::cnblk[0];
+      memset(ga_c, 0, kNcell*sizeof(double)); // Reset the memory of a_c on each event  
+
+      // Get energies with simplest scheme from clusters only
+      for( int blk = 0; blk<nblk; blk++ ){
+	int blkid = int(hcalt::cblkid[blk]);
+	ga_c[blkid] += hcalt::cblke[blk];
+	NEV[blkid]++;
+      }
+
+      // Build the matrix as simply as possible
+      for(int icol = 0; icol<kNcell; icol++){
+	ba(icol)+= ga_c[icol];
+	for(int irow = 0; irow<kNcell; irow++){
+	  Ma(icol,irow)+= ga_c[icol]*ga_c[irow]/KE_p;
+	} 
+      } 
+    }
+  }
+
+  // Reject the bad cells
+  int badcell[kNcell];
+  double y[kNcell] = {0.0}; // Build for easy TGraphErrors build
+
+  for(int i=0; i<kNcell; i++){
+    badcell[i] = 0;
+    y[i] = i;
+    if( NEV[i] < minEventPerCell || Ma(i,i) < 0.1*ba(i) ){ 
+      
+      ba(i) = 1.0;  // set RHS vector for cell i to 1.0 
+      Ma(i,i) = 1.0; //set diagonal element of Matrix M for cell i to 1.0 
+      
+      for(int j=0; j<kNcell; j++){
+	if( j != i ){
+	  
+	  Ma(i,j) = 0.0; 
+	  Ma(j,i) = 0.0;
+	}
+      }
+      badcell[i] = 1;
+      cout << "cell" << i << " bad" << endl;
+    }  
+  }
+
+  // Invert the matrix, solve for coefficients
+  TMatrixD M_inv = Ma.Invert();
+  TVectorD Coeff = M_inv*ba; // Stayes unmodified for reference
+  double GCoeff[kNcell] = {0.0};
+  double HVCoeff[kNcell] = {0.0}; // Seperate for HV such that bad cells stay the same.
+
+  for(int i=0; i<kNcell; i++){
+    if(badcell[i]==0){
+
+      
+
+      GCoeff[i]=gOldConst[i]*Coeff[i];
+      HVCoeff[i]=Coeff[i];
+    }else{
+      GCoeff[i]=gOldConst[i];
+      HVCoeff[i]=1.0;
+    }
+  }
+
+  double yErr[kNcell] = {0.0};
+  TGraphErrors *ccgraph = new TGraphErrors( kNcell, y, GCoeff, yErr, yErr ); 
+  ccgraph->GetXaxis()->SetLimits(0.0,288.0);
+
+  // Write out diagnostic histos
+  fout->cd();
+
+  h_W->Write( "W" );
+  h_W->Draw( "AP" );
+
+  h_Q2->Write( "Q2" );
+  h_Q2->Draw( "AP" );
+
+  h_E_ep->Write( "E_ep" );
+  h_E_ep->Draw( "AP" );
+
+  h_KE_p->Write( "KE_p" );
+  h_KE_p->Draw( "AP" );
+
+  h_E_pp->Write( "E_pp" );
+  h_E_pp->Draw( "AP" );
+
+  h_HCalCol_p->Write( "HCalCol_p" );
+  h_HCalCol_p->Draw( "AP" );
+
+  ccgraph->SetTitle("Calibration Factors");
+  ccgraph->GetXaxis()->SetTitle("Channel");
+  ccgraph->GetXaxis()->SetTitle("Unitless");
+  ccgraph->SetMarkerStyle(21); //Boxes
+  ccgraph->Write("CONSTANTS");
+  ccgraph->Draw("AP");
+
+  // Declare outfiles
+  ofstream ECal_Const;
+  ofstream ECal_HV;
+
+  ECal_HV.open( HVoutPath );
+  ECal_HV << "Module" << '\t' << " HV" << endl;
+
+  for( int i=0; i<kNcell; i++ ){   
+    int r = i/kNcols;
+    int c = i%kNcols;
+
+    ECal_HV << r*kNcols+c+1 << '\t' << -gHV[r][c]*pow(HVCoeff[i],(1/gAlphas[r][c])) << endl;
+  }
+
+  ECal_Const.open( constPath );
+  ECal_Const << "HCal_cfac = " << endl;
+
+  for( int i=0; i<kNcell; i++ ){   
+    ECal_Const << Coeff[i] << endl;
+  }
+
+  cout << "Calibration complete and constants written to file." << endl;
+
+  st->Stop();
+
+  // Send time efficiency report to console
+  cout << "CPU time elapsed = " << st->CpuTime() << " s = " << st->CpuTime()/60.0 << " min. Real time = " << st->RealTime() << " s = " << st->RealTime()/60.0 << " min." << endl;
+
+}
+
+

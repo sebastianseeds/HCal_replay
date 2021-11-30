@@ -1,0 +1,41 @@
+root -l hcal_gmn_11310_-1.root 
+
+T->Draw("sbs.hcal.clus.x:bb.tr.tg_th");
+T->Draw("sbs.hcal.clus.x:atan2(bb.tr.py,bb.tr.px)");
+T->Draw("bb.tr.p");
+T->Draw("bb.tr.p","bb.tr.p<1.2");
+T->Draw("bb.tr.p-1.916/(1.+1.916/.938272*(1.-bb.tr.pz/bb.tr.p))");
+T->Draw("bb.tr.p-1.916/(1.+1.916/.938272*(1.-bb.tr.pz/bb.tr.p))".);
+T->Draw("bb.tr.p-1.916/(1.+1.916/.938272*(1.-bb.tr.pz/bb.tr.p))","bb.tr.p<1.3");
+TCut cutel = "abs(bb.tr.p-1.916/(1.+1.916/.938272*(1.-bb.tr.pz/bb.tr.p))+.05)<.05";
+T->Draw("sbs.hcal.clus.x:atan2(bb.tr.py,bb.tr.px)",cutel);
+T->Draw("sbs.hcal.clus.x:atan2(bb.tr.py,bb.tr.px)",cutel,"colz");
+T->Draw("sbs.hcal.clus.y:acos(bb.tr.pz/bb.tr.p)",cutel,"colz");
+T->Draw("sbs.hcal.clus.y:acos(bb.tr.pz/bb.tr.p)",cutel,"");
+cutel += "gcut_polar";
+T->Draw("sbs.hcal.clus.x:atan2(bb.tr.py,bb.tr.px)",cutel,"colz");
+T->Draw("sbs.hcal.clus.x:atan2(bb.tr.py,bb.tr.px)",cutel&&"gcut_polar","colz");
+T->Draw("sbs.hcal.clus.x:atan2(bb.tr.py,bb.tr.px)",cutel&&"gcut_polar","");
+T->Draw("bb.tr.p-1.916/(1.+1.916/.938272*(1.-bb.tr.pz/bb.tr.p))","gcut_polar&&gcut_azimuthal");
+T->Draw("bb.tr.p-1.916/(1.+1.916/.938272*(1.-bb.tr.pz/bb.tr.p))","gcut_polar&&gcut_azimuthal&&bb.tr.p<1.2");
+T->Draw("bb.tr.p-1.916/(1.+1.916/.938272*(1.-bb.tr.pz/bb.tr.p))",cutel&&"gcut_polar&&
+T->Draw("sbs.hcal.e",cutel&&"gcut_polar&&gcut_azimuthal");
+T->Draw("sbs.hcal.clus.e",cutel&&"gcut_polar&&gcut_azimuthal");
+T->Draw("sbs.hcal.clus.e",cutel&&"gcut_polar&&gcut_azimuthal&&sbs.hcal.clus.e<200");
+T->Draw("sbs.hcal.clus.e",cutel&&"gcut_polar&&gcut_azimuthal&&sbs.hcal.clus.e<100");
+T->Draw("sbs.hcal.clus.e","sbs.hcal.clus.e<100");
+T->Draw("sbs.hcal.clus.e",cutel&&"gcut_polar&&gcut_azimuthal&&sbs.hcal.clus.e<100","same");
+T->Draw("sbs.hcal.clus.nblk","sbs.hcal.clus.e<100");
+T->Draw("sbs.hcal.clus.nblk",cutel&&"gcut_polar&&gcut_azimuthal");
+T->Draw("sbs.hcal.clus_blk.atime",cutel&&"gcut_polar&&gcut_azimuthal");
+T->Draw("sbs.hcal.clus_blk.atime:sbs.hcal.clus.id",cutel&&"gcut_polar&&gcut_azimuthal
+T->Draw("sbs.hcal.clus_blk.atime:sbs.hcal.clus.id",cutel&&"gcut_polar&&gcut_azimuthal","colz");
+T->Draw("sbs.hcal.clus_blk.atime:sbs.hcal.clus.id",cutel&&"gcut_polar&&gcut_azimuthal","");
+T->Draw("sbs.hcal.clus_blk.atime",cutel&&"gcut_polar&&gcut_azimuthal&&sbs.hcal.clus.i
+T->Draw("sbs.hcal.clus_blk.atime",cutel&&"gcut_polar&&gcut_azimuthal&&sbs.hcal.clus.id==101","");
+T->Draw("sbs.hcal.clus_blk.atime",cutel&&"gcut_polar&&gcut_azimuthal&&sbs.hcal.clus.id==235","");
+T->Draw("sbs.hcal.clus_blk.atime:sbs.hcal.clus_blk.e",cutel&&"gcut_polar&&gcut_azimut
+T->Draw("sbs.hcal.clus_blk.atime:sbs.hcal.clus_blk.e",cutel&&"gcut_polar&&gcut_azimuthal&&sbs.hcal.clus.id==235","prof");
+T->Draw("sbs.hcal.clus_blk[0]",cutel&&"gcut_polar&&gcut_azimuthal&&sbs.hcal.clus.id==
+T->Draw("sbs.hcal.clus_blk.atime[0]",cutel&&"gcut_polar&&gcut_azimuthal&&sbs.hcal.clu
+T->Draw("sbs.hcal.clus_blk.atime[0]",cutel&&"gcut_polar&&gcut_azimuthal&&sbs.hcal.clus.id==235","");

@@ -1,0 +1,1154 @@
+#Plateau regions (+/-20% from good average) obtained from LEDplots_v3 on Sun May 23 15:33:39 2021
+#
+Plateau region for row 12, col 0, and LED 1 is from 1400-1600.
+Difference from S to V channel 144: -25 to 25.
+Plateau region for row 12, col 0, and LED 2 is from 1400-1525.
+Difference from S to V channel 144: 0 to 50.
+Plateau region for row 12, col 0, and LED 3 is from 1400-1500.
+Difference from S to V channel 144: 0 to 25.
+Plateau region for row 12, col 0, and LED 4 is from 1400-1450.
+Difference from S to V channel 144: 0 to 0.
+Plateau region for row 12, col 1, and LED 1 is from 1425-1625.
+Difference from S to V channel 145: 25 to 25.
+Plateau region for row 12, col 1, and LED 2 is from 1400-1550.
+Difference from S to V channel 145: 0 to 25.
+Plateau region for row 12, col 1, and LED 3 is from 1400-1475.
+Difference from S to V channel 145: 0 to 0.
+Plateau region for row 12, col 1, and LED 4 is from 1400-1450.
+Difference from S to V channel 145: 0 to 0.
+Plateau region for row 12, col 2, and LED 1 is from 1400-1625.
+Difference from S to V channel 146: -50 to 25.
+Plateau region for row 12, col 2, and LED 2 is from 1400-1575.
+Difference from S to V channel 146: -75 to -200.
+Plateau region for row 12, col 2, and LED 3 is from 1400-1525.
+Difference from S to V channel 146: -50 to 0.
+Plateau region for row 12, col 2, and LED 4 is from 1400-1475.
+Difference from S to V channel 146: -25 to 0.
+Plateau region for row 12, col 3, and LED 1 is from 1400-1625.
+Difference from S to V channel 147: -25 to 50.
+Plateau region for row 12, col 3, and LED 2 is from 1400-1550.
+Difference from S to V channel 147: 0 to 50.
+Plateau region for row 12, col 3, and LED 3 is from 1400-1525.
+Difference from S to V channel 147: 0 to 25.
+Plateau region for row 12, col 3, and LED 4 is from 1400-1425.
+Difference from S to V channel 147: 0 to 0.
+Plateau region for row 12, col 4, and LED 1 is from 1550-1950.
+Difference from S to V channel 148: 100 to -100.
+Plateau region for row 12, col 4, and LED 2 is from 1500-1900.
+Difference from S to V channel 148: 50 to 0.
+Plateau region for row 12, col 4, and LED 3 is from 1500-1750.
+Difference from S to V channel 148: 50 to 0.
+Plateau region for row 12, col 4, and LED 4 is from 1500-1650.
+Difference from S to V channel 148: 50 to 0.
+Plateau region for row 12, col 5, and LED 1 is from 1500-1950.
+Difference from S to V channel 149: 50 to -100.
+Plateau region for row 12, col 5, and LED 2 is from 1500-1900.
+Difference from S to V channel 149: 50 to 0.
+Plateau region for row 12, col 5, and LED 3 is from 1500-1750.
+Difference from S to V channel 149: 50 to 0.
+Plateau region for row 12, col 5, and LED 4 is from 1500-1650.
+Difference from S to V channel 149: 50 to 0.
+Plateau region for row 12, col 6, and LED 1 is from 1500-1950.
+Difference from S to V channel 150: -150 to -100.
+Plateau region for row 12, col 6, and LED 2 is from 1500-1900.
+Difference from S to V channel 150: -100 to 0.
+Plateau region for row 12, col 6, and LED 3 is from 1500-1750.
+Difference from S to V channel 150: 50 to 0.
+Plateau region for row 12, col 6, and LED 4 is from 1500-1650.
+Difference from S to V channel 150: 50 to 0.
+Plateau region for row 12, col 7, and LED 1 is from 1500-1950.
+Difference from S to V channel 151: 50 to -100.
+Plateau region for row 12, col 7, and LED 2 is from 1500-1900.
+Difference from S to V channel 151: 50 to 0.
+Plateau region for row 12, col 7, and LED 3 is from 1500-1750.
+Difference from S to V channel 151: 50 to 0.
+Plateau region for row 12, col 7, and LED 4 is from 1500-1650.
+Difference from S to V channel 151: 50 to 0.
+Plateau region for row 12, col 8, and LED 1 is from 1400-1625.
+Difference from S to V channel 152: 0 to 25.
+Plateau region for row 12, col 8, and LED 2 is from 1400-1600.
+Difference from S to V channel 152: 0 to 25.
+Plateau region for row 12, col 8, and LED 3 is from 1400-1500.
+Difference from S to V channel 152: 0 to 25.
+Plateau region for row 12, col 8, and LED 4 is from 1400-1475.
+Difference from S to V channel 152: 0 to 25.
+Plateau region for row 12, col 9, and LED 1 is from 1400-1600.
+Difference from S to V channel 153: 0 to 0.
+Plateau region for row 12, col 9, and LED 2 is from 1400-1525.
+Difference from S to V channel 153: 0 to -50.
+Plateau region for row 12, col 9, and LED 3 is from 1400-1525.
+Difference from S to V channel 153: 0 to 25.
+Plateau region for row 12, col 9, and LED 4 is from 1400-1475.
+Difference from S to V channel 153: 50 to 0.
+Plateau region for row 12, col 10, and LED 1 is from 1400-1600.
+Difference from S to V channel 154: 0 to 0.
+Plateau region for row 12, col 10, and LED 2 is from 1400-1550.
+Difference from S to V channel 154: 0 to 0.
+Plateau region for row 12, col 10, and LED 3 is from 1400-1525.
+Difference from S to V channel 154: 0 to 0.
+Plateau region for row 12, col 10, and LED 4 is from 1400-1475.
+Difference from S to V channel 154: 50 to 0.
+Plateau region for row 12, col 11, and LED 1 is from 1400-1600.
+Difference from S to V channel 155: 0 to 0.
+Plateau region for row 12, col 11, and LED 2 is from 1425-1550.
+Difference from S to V channel 155: 25 to 0.
+Plateau region for row 12, col 11, and LED 3 is from 1400-1475.
+Difference from S to V channel 155: 0 to -50.
+Plateau region for row 12, col 11, and LED 4 is from 1400-1450.
+Difference from S to V channel 155: 50 to 0.
+Plateau region for row 13, col 0, and LED 1 is from 1400-1625.
+Difference from S to V channel 156: 0 to 25.
+Plateau region for row 13, col 0, and LED 2 is from 1400-1525.
+Difference from S to V channel 156: 0 to -25.
+Plateau region for row 13, col 0, and LED 3 is from 1400-1475.
+Difference from S to V channel 156: 0 to 0.
+Plateau region for row 13, col 0, and LED 4 is from 1400-1450.
+Difference from S to V channel 156: 50 to 25.
+Plateau region for row 13, col 1, and LED 1 is from 1400-1575.
+Difference from S to V channel 157: 50 to 0.
+Plateau region for row 13, col 1, and LED 2 is from 1400-1500.
+Difference from S to V channel 157: 0 to 0.
+Plateau region for row 13, col 1, and LED 3 is from 1400-1500.
+Difference from S to V channel 157: 0 to 25.
+Plateau region for row 13, col 1, and LED 4 is from 1400-1450.
+Difference from S to V channel 157: 0 to 25.
+Plateau region for row 13, col 2, and LED 1 is from 1400-1625.
+Difference from S to V channel 158: 50 to 25.
+Plateau region for row 13, col 2, and LED 2 is from 1400-1550.
+Difference from S to V channel 158: 0 to 0.
+Plateau region for row 13, col 2, and LED 3 is from 1400-1500.
+Difference from S to V channel 158: 50 to 25.
+Plateau region for row 13, col 2, and LED 4 is from 1400-1475.
+Difference from S to V channel 158: 0 to 25.
+Plateau region for row 13, col 3, and LED 1 is from 1400-1625.
+Difference from S to V channel 159: 0 to 25.
+Plateau region for row 13, col 3, and LED 2 is from 1400-1575.
+Difference from S to V channel 159: 0 to 25.
+Plateau region for row 13, col 3, and LED 3 is from 1400-1525.
+Difference from S to V channel 159: 50 to 0.
+Plateau region for row 13, col 3, and LED 4 is from 1400-1450.
+Difference from S to V channel 159: 0 to 0.
+Plateau region for row 13, col 4, and LED 1 is from 1500-1950.
+Difference from S to V channel 160: 50 to -100.
+Plateau region for row 13, col 4, and LED 2 is from 1500-1900.
+Difference from S to V channel 160: 50 to 0.
+Plateau region for row 13, col 4, and LED 3 is from 1500-1750.
+Difference from S to V channel 160: 50 to 0.
+Plateau region for row 13, col 4, and LED 4 is from 1500-1650.
+Difference from S to V channel 160: 50 to 100.
+Plateau region for row 13, col 5, and LED 1 is from 1500-1950.
+Difference from S to V channel 161: -100 to -100.
+Plateau region for row 13, col 5, and LED 2 is from 1500-1900.
+Difference from S to V channel 161: -50 to 0.
+Plateau region for row 13, col 5, and LED 3 is from 1500-1750.
+Difference from S to V channel 161: 50 to 0.
+Plateau region for row 13, col 5, and LED 4 is from 1500-1650.
+Difference from S to V channel 161: 50 to 0.
+Plateau region for row 13, col 6, and LED 1 is from 1500-1950.
+Difference from S to V channel 162: -50 to -50.
+Plateau region for row 13, col 6, and LED 2 is from 1500-1900.
+Difference from S to V channel 162: 50 to 0.
+Plateau region for row 13, col 6, and LED 3 is from 1500-1750.
+Difference from S to V channel 162: 50 to 50.
+Plateau region for row 13, col 6, and LED 4 is from 1500-1650.
+Difference from S to V channel 162: 50 to 0.
+Plateau region for row 13, col 7, and LED 1 is from 1500-1950.
+Difference from S to V channel 163: 50 to -100.
+Plateau region for row 13, col 7, and LED 2 is from 1500-1900.
+Difference from S to V channel 163: 50 to 0.
+Plateau region for row 13, col 7, and LED 3 is from 1500-1750.
+Difference from S to V channel 163: 50 to 0.
+Plateau region for row 13, col 7, and LED 4 is from 1500-1650.
+Difference from S to V channel 163: 50 to 0.
+Plateau region for row 13, col 8, and LED 1 is from 1400-1625.
+Difference from S to V channel 164: 0 to 50.
+Plateau region for row 13, col 8, and LED 2 is from 1400-1525.
+Difference from S to V channel 164: 50 to 0.
+Plateau region for row 13, col 8, and LED 3 is from 1400-1475.
+Difference from S to V channel 164: 0 to 0.
+Plateau region for row 13, col 8, and LED 4 is from 1400-1475.
+Difference from S to V channel 164: 50 to 0.
+Plateau region for row 13, col 9, and LED 1 is from 1400-1625.
+Difference from S to V channel 165: 0 to 25.
+Plateau region for row 13, col 9, and LED 2 is from 1400-1550.
+Difference from S to V channel 165: 0 to 0.
+Plateau region for row 13, col 9, and LED 3 is from 1400-1525.
+Difference from S to V channel 165: 50 to 0.
+Plateau region for row 13, col 9, and LED 4 is from 1400-1475.
+Difference from S to V channel 165: 50 to 0.
+Plateau region for row 13, col 10, and LED 1 is from 1400-1625.
+Difference from S to V channel 166: 50 to 50.
+Plateau region for row 13, col 10, and LED 2 is from 1400-1575.
+Difference from S to V channel 166: 0 to 50.
+Plateau region for row 13, col 10, and LED 3 is from 1400-1500.
+Difference from S to V channel 166: 0 to 25.
+Plateau region for row 13, col 10, and LED 4 is from 1400-1475.
+Difference from S to V channel 166: 50 to 25.
+Plateau region for row 13, col 11, and LED 1 is from 1400-1625.
+Difference from S to V channel 167: 0 to 25.
+Plateau region for row 13, col 11, and LED 2 is from 1400-1575.
+Difference from S to V channel 167: 0 to 0.
+Plateau region for row 13, col 11, and LED 3 is from 1400-1525.
+Difference from S to V channel 167: 50 to 0.
+Plateau region for row 13, col 11, and LED 4 is from 1400-1475.
+Difference from S to V channel 167: 50 to 0.
+Plateau region for row 14, col 0, and LED 1 is from 1400-1625.
+Difference from S to V channel 168: 50 to -25.
+Plateau region for row 14, col 0, and LED 2 is from 1400-1575.
+Difference from S to V channel 168: 0 to 0.
+Plateau region for row 14, col 0, and LED 3 is from 1400-1525.
+Difference from S to V channel 168: 0 to 0.
+Plateau region for row 14, col 0, and LED 4 is from 1400-1475.
+Difference from S to V channel 168: -25 to 0.
+Plateau region for row 14, col 1, and LED 1 is from 1400-1625.
+Difference from S to V channel 169: 0 to 25.
+Plateau region for row 14, col 1, and LED 2 is from 1400-1600.
+Difference from S to V channel 169: 50 to 25.
+Plateau region for row 14, col 1, and LED 3 is from 1400-1500.
+Difference from S to V channel 169: 0 to 0.
+Plateau region for row 14, col 1, and LED 4 is from 1400-1475.
+Difference from S to V channel 169: 0 to 0.
+Plateau region for row 14, col 2, and LED 1 is from 1400-1625.
+Difference from S to V channel 170: 0 to 25.
+Plateau region for row 14, col 2, and LED 2 is from 1400-1575.
+Difference from S to V channel 170: 0 to 25.
+Plateau region for row 14, col 2, and LED 3 is from 1400-1500.
+Difference from S to V channel 170: -25 to 25.
+Plateau region for row 14, col 2, and LED 4 is from 1400-1475.
+Difference from S to V channel 170: 0 to 0.
+Plateau region for row 14, col 3, and LED 1 is from 1400-1625.
+Difference from S to V channel 171: 0 to -25.
+Plateau region for row 14, col 3, and LED 2 is from 1400-1575.
+Difference from S to V channel 171: -25 to 0.
+Plateau region for row 14, col 3, and LED 3 is from 1400-1525.
+Difference from S to V channel 171: 50 to 0.
+Plateau region for row 14, col 3, and LED 4 is from 1400-1475.
+Difference from S to V channel 171: 0 to 0.
+Plateau region for row 14, col 4, and LED 1 is from 1500-1950.
+Difference from S to V channel 172: 50 to -100.
+Plateau region for row 14, col 4, and LED 2 is from 1500-1900.
+Difference from S to V channel 172: 50 to 0.
+Plateau region for row 14, col 4, and LED 3 is from 1500-1750.
+Difference from S to V channel 172: 50 to 0.
+Plateau region for row 14, col 4, and LED 4 is from 1500-1650.
+Difference from S to V channel 172: 50 to 0.
+Plateau region for row 14, col 5, and LED 1 is from 1500-1950.
+Difference from S to V channel 173: 50 to -100.
+Plateau region for row 14, col 5, and LED 2 is from 1500-1900.
+Difference from S to V channel 173: 50 to 0.
+Plateau region for row 14, col 5, and LED 3 is from 1500-1750.
+Difference from S to V channel 173: 50 to 0.
+Plateau region for row 14, col 5, and LED 4 is from 1500-1650.
+Difference from S to V channel 173: 50 to 0.
+Plateau region for row 14, col 6, and LED 1 is from 1500-1950.
+Difference from S to V channel 174: 50 to -100.
+Plateau region for row 14, col 6, and LED 2 is from 1500-1900.
+Difference from S to V channel 174: 50 to 0.
+Plateau region for row 14, col 6, and LED 3 is from 1500-1750.
+Difference from S to V channel 174: 50 to 0.
+Plateau region for row 14, col 6, and LED 4 is from 1500-1650.
+Difference from S to V channel 174: 50 to 0.
+Plateau region for row 14, col 7, and LED 1 is from 1500-1950.
+Difference from S to V channel 175: -100 to -100.
+Plateau region for row 14, col 7, and LED 2 is from 1500-1900.
+Difference from S to V channel 175: -100 to 0.
+Plateau region for row 14, col 7, and LED 3 is from 1500-1750.
+Difference from S to V channel 175: 50 to 0.
+Plateau region for row 14, col 7, and LED 4 is from 1500-1650.
+Difference from S to V channel 175: 50 to 0.
+Plateau region for row 14, col 8, and LED 1 is from 1400-1600.
+Difference from S to V channel 176: -50 to 75.
+Plateau region for row 14, col 8, and LED 2 is from 1400-1575.
+Difference from S to V channel 176: -50 to 0.
+Plateau region for row 14, col 8, and LED 3 is from 1400-1500.
+Difference from S to V channel 176: 0 to 0.
+Plateau region for row 14, col 8, and LED 4 is from 1400-1475.
+Difference from S to V channel 176: 50 to 0.
+Plateau region for row 14, col 9, and LED 1 is from 1400-1625.
+Difference from S to V channel 177: -100 to 25.
+Plateau region for row 14, col 9, and LED 2 is from 1400-1575.
+Difference from S to V channel 177: -50 to 25.
+Plateau region for row 14, col 9, and LED 3 is from 1400-1525.
+Difference from S to V channel 177: -25 to -50.
+Plateau region for row 14, col 9, and LED 4 is from 1400-1475.
+Difference from S to V channel 177: 0 to 0.
+Plateau region for row 14, col 10, and LED 1 is from 1400-1600.
+Difference from S to V channel 178: 0 to 25.
+Plateau region for row 14, col 10, and LED 2 is from 1400-1525.
+Difference from S to V channel 178: 0 to 0.
+Plateau region for row 14, col 10, and LED 3 is from 1400-1525.
+Difference from S to V channel 178: 0 to 50.
+Plateau region for row 14, col 10, and LED 4 is from 1400-1450.
+Difference from S to V channel 178: 50 to 0.
+Plateau region for row 14, col 11, and LED 1 is from 1400-1575.
+Difference from S to V channel 179: -50 to 0.
+Plateau region for row 14, col 11, and LED 2 is from 1400-1550.
+Difference from S to V channel 179: 0 to 25.
+Plateau region for row 14, col 11, and LED 3 is from 1400-1475.
+Difference from S to V channel 179: 0 to 0.
+Plateau region for row 14, col 11, and LED 4 is from 1400-1450.
+Difference from S to V channel 179: 0 to 25.
+Plateau region for row 15, col 0, and LED 1 is from 1400-1625.
+Difference from S to V channel 180: 50 to 25.
+Plateau region for row 15, col 0, and LED 2 is from 1400-1525.
+Difference from S to V channel 180: 0 to 0.
+Plateau region for row 15, col 0, and LED 3 is from 1400-1475.
+Difference from S to V channel 180: -25 to 0.
+Plateau region for row 15, col 0, and LED 4 is from 1400-1450.
+Difference from S to V channel 180: 0 to 25.
+Plateau region for row 15, col 1, and LED 1 is from 1400-1625.
+Difference from S to V channel 181: 50 to -50.
+Plateau region for row 15, col 1, and LED 2 is from 1400-1600.
+Difference from S to V channel 181: 0 to 0.
+Plateau region for row 15, col 1, and LED 3 is from 1400-1525.
+Difference from S to V channel 181: -25 to 25.
+Plateau region for row 15, col 1, and LED 4 is from 1400-1475.
+Difference from S to V channel 181: -25 to 0.
+Plateau region for row 15, col 2, and LED 1 is from 1400-1600.
+Difference from S to V channel 182: 0 to 25.
+Plateau region for row 15, col 2, and LED 2 is from 1400-1575.
+Difference from S to V channel 182: 50 to 50.
+Plateau region for row 15, col 2, and LED 3 is from 1400-1500.
+Difference from S to V channel 182: 0 to 25.
+Plateau region for row 15, col 2, and LED 4 is from 1400-1450.
+Difference from S to V channel 182: 0 to 0.
+Plateau region for row 15, col 3, and LED 1 is from 1400-1600.
+Difference from S to V channel 183: 0 to 0.
+Plateau region for row 15, col 3, and LED 2 is from 1400-1525.
+Difference from S to V channel 183: 0 to 0.
+Plateau region for row 15, col 3, and LED 3 is from 1400-1525.
+Difference from S to V channel 183: 1400 to 1525.
+Plateau region for row 15, col 3, and LED 4 is from 1400-1450.
+Difference from S to V channel 183: -25 to -25.
+Plateau region for row 15, col 4, and LED 1 is from 1500-1950.
+Difference from S to V channel 184: 50 to -100.
+Plateau region for row 15, col 4, and LED 2 is from 1500-1900.
+Difference from S to V channel 184: 50 to 0.
+Plateau region for row 15, col 4, and LED 3 is from 1500-1750.
+Difference from S to V channel 184: 50 to 0.
+Plateau region for row 15, col 4, and LED 4 is from 1500-1650.
+Difference from S to V channel 184: 50 to 0.
+Plateau region for row 15, col 5, and LED 1 is from 1600-1950.
+Difference from S to V channel 185: 150 to -100.
+Plateau region for row 15, col 5, and LED 2 is from 1500-1900.
+Difference from S to V channel 185: 50 to 0.
+Plateau region for row 15, col 5, and LED 3 is from 1500-1750.
+Difference from S to V channel 185: 50 to 0.
+Plateau region for row 15, col 5, and LED 4 is from 1500-1650.
+Difference from S to V channel 185: 50 to 0.
+Plateau region for row 15, col 6, and LED 1 is from 1500-1950.
+Difference from S to V channel 186: 50 to -100.
+Plateau region for row 15, col 6, and LED 2 is from 1500-1900.
+Difference from S to V channel 186: 50 to 0.
+Plateau region for row 15, col 6, and LED 3 is from 1500-1750.
+Difference from S to V channel 186: 50 to 50.
+Plateau region for row 15, col 6, and LED 4 is from 1500-1650.
+Difference from S to V channel 186: 50 to 0.
+Plateau region for row 15, col 7, and LED 1 is from 1500-1950.
+Difference from S to V channel 187: -150 to -100.
+Plateau region for row 15, col 7, and LED 2 is from 1500-1900.
+Difference from S to V channel 187: -100 to 0.
+Plateau region for row 15, col 7, and LED 3 is from 1500-1750.
+Difference from S to V channel 187: -100 to 0.
+Plateau region for row 15, col 7, and LED 4 is from 1500-1650.
+Difference from S to V channel 187: 50 to 0.
+Plateau region for row 15, col 8, and LED 1 is from 1400-1625.
+Difference from S to V channel 188: -75 to 25.
+Plateau region for row 15, col 8, and LED 2 is from 1400-1600.
+Difference from S to V channel 188: 0 to 0.
+Plateau region for row 15, col 8, and LED 3 is from 1400-1525.
+Difference from S to V channel 188: 50 to 25.
+Plateau region for row 15, col 8, and LED 4 is from 1400-1475.
+Difference from S to V channel 188: 50 to 50.
+Plateau region for row 15, col 9, and LED 1 is from 1400-1625.
+Difference from S to V channel 189: 0 to 25.
+Plateau region for row 15, col 9, and LED 2 is from 1400-1600.
+Difference from S to V channel 189: 50 to 0.
+Plateau region for row 15, col 9, and LED 3 is from 1400-1525.
+Difference from S to V channel 189: 50 to 0.
+Plateau region for row 15, col 9, and LED 4 is from 1400-1475.
+Difference from S to V channel 189: 0 to 0.
+Plateau region for row 15, col 10, and LED 1 is from 1400-1625.
+Difference from S to V channel 190: 0 to 25.
+Plateau region for row 15, col 10, and LED 2 is from 1400-1575.
+Difference from S to V channel 190: 0 to 0.
+Plateau region for row 15, col 10, and LED 3 is from 1400-1525.
+Difference from S to V channel 190: 0 to 0.
+Plateau region for row 15, col 10, and LED 4 is from 1400-1475.
+Difference from S to V channel 190: 50 to 0.
+Plateau region for row 15, col 11, and LED 1 is from 1400-1625.
+Difference from S to V channel 191: 0 to 25.
+Plateau region for row 15, col 11, and LED 2 is from 1400-1575.
+Difference from S to V channel 191: 0 to 25.
+Plateau region for row 15, col 11, and LED 3 is from 1400-1525.
+Difference from S to V channel 191: 50 to 0.
+Plateau region for row 15, col 11, and LED 4 is from 1400-1475.
+Difference from S to V channel 191: 50 to 0.
+Plateau region for row 16, col 0, and LED 1 is from 1450-1625.
+Difference from S to V channel 192: 50 to -25.
+Plateau region for row 16, col 0, and LED 2 is from 1400-1575.
+Difference from S to V channel 192: 0 to 25.
+Plateau region for row 16, col 0, and LED 3 is from 1400-1525.
+Difference from S to V channel 192: -25 to 25.
+Plateau region for row 16, col 0, and LED 4 is from 1400-1475.
+Difference from S to V channel 192: 0 to 0.
+Plateau region for row 16, col 1, and LED 1 is from 1400-1625.
+Difference from S to V channel 193: 0 to 25.
+Plateau region for row 16, col 1, and LED 2 is from 1400-1575.
+Difference from S to V channel 193: 0 to 50.
+Plateau region for row 16, col 1, and LED 3 is from 1400-1500.
+Difference from S to V channel 193: -25 to 25.
+Plateau region for row 16, col 1, and LED 4 is from 1400-1475.
+Difference from S to V channel 193: -25 to 25.
+Plateau region for row 16, col 2, and LED 1 is from 1400-1625.
+Difference from S to V channel 194: -75 to 25.
+Plateau region for row 16, col 2, and LED 2 is from 1400-1600.
+Difference from S to V channel 194: -50 to 25.
+Plateau region for row 16, col 2, and LED 3 is from 1400-1525.
+Difference from S to V channel 194: -25 to 0.
+Plateau region for row 16, col 2, and LED 4 is from 1400-1475.
+Difference from S to V channel 194: 50 to 0.
+Plateau region for row 16, col 3, and LED 1 is from 1400-1625.
+Difference from S to V channel 195: 0 to 25.
+Plateau region for row 16, col 3, and LED 2 is from 1400-1575.
+Difference from S to V channel 195: -50 to 0.
+Plateau region for row 16, col 3, and LED 3 is from 1400-1525.
+Difference from S to V channel 195: 50 to 0.
+Plateau region for row 16, col 3, and LED 4 is from 1400-1475.
+Difference from S to V channel 195: 0 to 0.
+Plateau region for row 16, col 4, and LED 1 is from 1650-1950.
+Difference from S to V channel 196: 50 to -100.
+Plateau region for row 16, col 4, and LED 2 is from 1500-1900.
+Difference from S to V channel 196: -100 to 0.
+Plateau region for row 16, col 4, and LED 3 is from 1500-1750.
+Difference from S to V channel 196: -50 to 0.
+Plateau region for row 16, col 4, and LED 4 is from 1500-1650.
+Difference from S to V channel 196: 0 to 0.
+Plateau region for row 16, col 5, and LED 1 is from 1650-1700.
+Difference from S to V channel 197: 200 to -200.
+Plateau region for row 16, col 5, and LED 2 is from 1500-1900.
+Difference from S to V channel 197: 50 to 150.
+Plateau region for row 16, col 5, and LED 3 is from 1500-1750.
+Difference from S to V channel 197: 1500 to 1750.
+Plateau region for row 16, col 5, and LED 4 is from 1500-1650.
+Difference from S to V channel 197: 1500 to 1650.
+Plateau region for row 16, col 6, and LED 1 is from 1500-1950.
+Difference from S to V channel 198: -100 to -100.
+Plateau region for row 16, col 6, and LED 2 is from 1500-1900.
+Difference from S to V channel 198: -100 to 0.
+Plateau region for row 16, col 6, and LED 3 is from 1500-1750.
+Difference from S to V channel 198: -50 to 0.
+Plateau region for row 16, col 6, and LED 4 is from 1500-1650.
+Difference from S to V channel 198: 50 to 0.
+Plateau region for row 16, col 7, and LED 1 is from 1500-1950.
+Difference from S to V channel 199: 50 to -100.
+Plateau region for row 16, col 7, and LED 2 is from 1550-1750.
+Difference from S to V channel 199: 100 to -150.
+Plateau region for row 16, col 7, and LED 3 is from 1500-1750.
+Difference from S to V channel 199: 50 to 0.
+Plateau region for row 16, col 7, and LED 4 is from 1500-1650.
+Difference from S to V channel 199: 50 to 0.
+Plateau region for row 16, col 8, and LED 1 is from 1400-1575.
+Difference from S to V channel 200: 0 to 25.
+Plateau region for row 16, col 8, and LED 2 is from 1400-1525.
+Difference from S to V channel 200: 0 to 25.
+Plateau region for row 16, col 8, and LED 3 is from 1400-1475.
+Difference from S to V channel 200: 0 to 25.
+Plateau region for row 16, col 8, and LED 4 is from 1400-1475.
+Difference from S to V channel 200: 0 to 25.
+Plateau region for row 16, col 9, and LED 1 is from 1400-1625.
+Difference from S to V channel 201: 0 to 25.
+Plateau region for row 16, col 9, and LED 2 is from 1400-1600.
+Difference from S to V channel 201: -50 to 25.
+Plateau region for row 16, col 9, and LED 3 is from 1400-1525.
+Difference from S to V channel 201: -50 to 0.
+Plateau region for row 16, col 9, and LED 4 is from 1425-1475.
+Difference from S to V channel 201: 0 to 0.
+Plateau region for row 16, col 10, and LED 1 is from 1400-1625.
+Difference from S to V channel 202: 0 to 50.
+Plateau region for row 16, col 10, and LED 2 is from 1400-1550.
+Difference from S to V channel 202: 0 to 50.
+Plateau region for row 16, col 10, and LED 3 is from 1400-1500.
+Difference from S to V channel 202: 0 to 25.
+Plateau region for row 16, col 10, and LED 4 is from 1400-1475.
+Difference from S to V channel 202: 0 to 25.
+Plateau region for row 16, col 11, and LED 1 is from 1400-1625.
+Difference from S to V channel 203: -25 to -50.
+Plateau region for row 16, col 11, and LED 2 is from 1400-1600.
+Difference from S to V channel 203: -25 to 0.
+Plateau region for row 16, col 11, and LED 3 is from 1400-1525.
+Difference from S to V channel 203: -25 to 0.
+Plateau region for row 16, col 11, and LED 4 is from 1425-1475.
+Difference from S to V channel 203: 0 to 0.
+Plateau region for row 17, col 0, and LED 1 is from 1400-1625.
+Difference from S to V channel 204: -50 to 25.
+Plateau region for row 17, col 0, and LED 2 is from 1400-1600.
+Difference from S to V channel 204: -75 to 25.
+Plateau region for row 17, col 0, and LED 3 is from 1400-1500.
+Difference from S to V channel 204: -25 to 0.
+Plateau region for row 17, col 0, and LED 4 is from 1400-1475.
+Difference from S to V channel 204: 0 to 0.
+Plateau region for row 17, col 1, and LED 1 is from 1475-1500.
+Difference from S to V channel 205: 125 to -175.
+Plateau region for row 17, col 1, and LED 2 is from 1400-1600.
+Difference from S to V channel 205: 0 to 0.
+Plateau region for row 17, col 1, and LED 3 is from 1425-1450.
+Difference from S to V channel 205: 0 to -75.
+Plateau region for row 17, col 1, and LED 4 is from 1400-1475.
+Difference from S to V channel 205: 0 to 0.
+Plateau region for row 17, col 2, and LED 1 is from 1400-1550.
+Difference from S to V channel 206: 0 to 0.
+Plateau region for row 17, col 2, and LED 2 is from 1400-1500.
+Difference from S to V channel 206: 0 to 0.
+Plateau region for row 17, col 2, and LED 3 is from 1400-1475.
+Difference from S to V channel 206: 0 to 25.
+Plateau region for row 17, col 2, and LED 4 is from 1400-1425.
+Difference from S to V channel 206: 0 to 0.
+Plateau region for row 17, col 3, and LED 1 is from 1400-1625.
+Difference from S to V channel 207: -50 to 25.
+Plateau region for row 17, col 3, and LED 2 is from 1400-1600.
+Difference from S to V channel 207: -50 to 25.
+Plateau region for row 17, col 3, and LED 3 is from 1400-1525.
+Difference from S to V channel 207: 0 to 0.
+Plateau region for row 17, col 3, and LED 4 is from 1400-1475.
+Difference from S to V channel 207: 0 to 0.
+Plateau region for row 17, col 4, and LED 1 is from 1500-1950.
+Difference from S to V channel 208: 50 to -100.
+Plateau region for row 17, col 4, and LED 2 is from 1500-1900.
+Difference from S to V channel 208: 50 to 0.
+Plateau region for row 17, col 4, and LED 3 is from 1500-1750.
+Difference from S to V channel 208: 50 to 0.
+Plateau region for row 17, col 4, and LED 4 is from 1500-1650.
+Difference from S to V channel 208: 50 to 0.
+Plateau region for row 17, col 5, and LED 1 is from 1500-1950.
+Difference from S to V channel 209: 50 to -100.
+Plateau region for row 17, col 5, and LED 2 is from 1500-1900.
+Difference from S to V channel 209: -100 to 50.
+Plateau region for row 17, col 5, and LED 3 is from 1500-1750.
+Difference from S to V channel 209: 50 to 50.
+Plateau region for row 17, col 5, and LED 4 is from 1500-1550.
+Difference from S to V channel 209: 50 to 100.
+Plateau region for row 17, col 6, and LED 1 is from 1500-1950.
+Difference from S to V channel 210: 50 to -100.
+Plateau region for row 17, col 6, and LED 2 is from 1500-1900.
+Difference from S to V channel 210: 50 to 0.
+Plateau region for row 17, col 6, and LED 3 is from 1500-1750.
+Difference from S to V channel 210: 50 to 0.
+Plateau region for row 17, col 6, and LED 4 is from 1500-1650.
+Difference from S to V channel 210: 50 to 0.
+Plateau region for row 17, col 7, and LED 1 is from 1550-1950.
+Difference from S to V channel 211: 100 to -100.
+Plateau region for row 17, col 7, and LED 2 is from 1550-1800.
+Difference from S to V channel 211: -50 to 50.
+Plateau region for row 17, col 7, and LED 3 is from 1500-1750.
+Difference from S to V channel 211: 0 to 150.
+Plateau region for row 17, col 7, and LED 4 is from 1500-1650.
+Difference from S to V channel 211: 0 to 50.
+Plateau region for row 17, col 8, and LED 1 is from 1400-1625.
+Difference from S to V channel 212: -50 to 50.
+Plateau region for row 17, col 8, and LED 2 is from 1400-1500.
+Difference from S to V channel 212: -25 to 0.
+Plateau region for row 17, col 8, and LED 3 is from 1400-1450.
+Difference from S to V channel 212: 50 to 0.
+Plateau region for row 17, col 8, and LED 4 is from 1400-1450.
+Difference from S to V channel 212: 50 to 0.
+Plateau region for row 17, col 9, and LED 1 is from 1425-1625.
+Difference from S to V channel 213: 25 to 25.
+Plateau region for row 17, col 9, and LED 2 is from 1425-1600.
+Difference from S to V channel 213: 25 to 25.
+Plateau region for row 17, col 9, and LED 3 is from 1425-1525.
+Difference from S to V channel 213: 0 to 0.
+Plateau region for row 17, col 9, and LED 4 is from 1425-1475.
+Difference from S to V channel 213: 0 to 0.
+Plateau region for row 17, col 10, and LED 1 is from 1400-1600.
+Difference from S to V channel 214: -50 to 25.
+Plateau region for row 17, col 10, and LED 2 is from 1400-1575.
+Difference from S to V channel 214: 0 to 50.
+Plateau region for row 17, col 10, and LED 3 is from 1400-1500.
+Difference from S to V channel 214: 0 to 0.
+Plateau region for row 17, col 10, and LED 4 is from 1400-1475.
+Difference from S to V channel 214: 50 to 0.
+Plateau region for row 17, col 11, and LED 1 is from 1400-1625.
+Difference from S to V channel 215: -50 to -50.
+Plateau region for row 17, col 11, and LED 2 is from 1400-1600.
+Difference from S to V channel 215: -50 to 0.
+Plateau region for row 17, col 11, and LED 3 is from 1400-1525.
+Difference from S to V channel 215: 0 to 0.
+Plateau region for row 17, col 11, and LED 4 is from 1400-1475.
+Difference from S to V channel 215: 50 to 0.
+Plateau region for row 18, col 0, and LED 1 is from 1400-1625.
+Difference from S to V channel 216: -50 to 25.
+Plateau region for row 18, col 0, and LED 2 is from 1400-1600.
+Difference from S to V channel 216: -50 to 50.
+Plateau region for row 18, col 0, and LED 3 is from 1400-1525.
+Difference from S to V channel 216: 0 to 0.
+Plateau region for row 18, col 0, and LED 4 is from 1400-1450.
+Difference from S to V channel 216: 50 to 25.
+Plateau region for row 18, col 1, and LED 1 is from 1425-1625.
+Difference from S to V channel 217: 25 to 25.
+Plateau region for row 18, col 1, and LED 2 is from 1400-1600.
+Difference from S to V channel 217: -100 to 0.
+Plateau region for row 18, col 1, and LED 3 is from 1400-1525.
+Difference from S to V channel 217: -25 to 0.
+Plateau region for row 18, col 1, and LED 4 is from 1400-1475.
+Difference from S to V channel 217: -25 to 0.
+Plateau region for row 18, col 2, and LED 1 is from 1400-1600.
+Difference from S to V channel 218: -50 to 0.
+Plateau region for row 18, col 2, and LED 2 is from 1400-1575.
+Difference from S to V channel 218: 0 to 50.
+Plateau region for row 18, col 2, and LED 3 is from 1400-1500.
+Difference from S to V channel 218: 0 to 0.
+Plateau region for row 18, col 2, and LED 4 is from 1400-1425.
+Difference from S to V channel 218: 50 to 0.
+Plateau region for row 18, col 3, and LED 1 is from 1400-1625.
+Difference from S to V channel 219: 0 to 25.
+Plateau region for row 18, col 3, and LED 2 is from 1400-1575.
+Difference from S to V channel 219: -50 to 0.
+Plateau region for row 18, col 3, and LED 3 is from 1425-1500.
+Difference from S to V channel 219: -25 to 25.
+Plateau region for row 18, col 3, and LED 4 is from 1425-1475.
+Difference from S to V channel 219: -25 to 0.
+Plateau region for row 18, col 4, and LED 1 is from 1500-1950.
+Difference from S to V channel 220: 50 to -100.
+Plateau region for row 18, col 4, and LED 2 is from 1500-1900.
+Difference from S to V channel 220: 50 to 0.
+Plateau region for row 18, col 4, and LED 3 is from 1500-1750.
+Difference from S to V channel 220: 50 to 0.
+Plateau region for row 18, col 4, and LED 4 is from 1500-1650.
+Difference from S to V channel 220: 50 to 0.
+Plateau region for row 18, col 5, and LED 1 is from 1500-1950.
+Difference from S to V channel 221: 50 to -100.
+Plateau region for row 18, col 5, and LED 2 is from 1500-1900.
+Difference from S to V channel 221: 50 to 0.
+Plateau region for row 18, col 5, and LED 3 is from 1500-1750.
+Difference from S to V channel 221: 50 to 0.
+Plateau region for row 18, col 5, and LED 4 is from 1500-1650.
+Difference from S to V channel 221: 50 to 0.
+Plateau region for row 18, col 6, and LED 1 is from 1500-1950.
+Difference from S to V channel 222: -100 to -100.
+Plateau region for row 18, col 6, and LED 2 is from 1500-1900.
+Difference from S to V channel 222: 50 to 0.
+Plateau region for row 18, col 6, and LED 3 is from 1500-1750.
+Difference from S to V channel 222: 50 to 0.
+Plateau region for row 18, col 6, and LED 4 is from 1500-1650.
+Difference from S to V channel 222: 50 to 0.
+Plateau region for row 18, col 7, and LED 1 is from 1500-1950.
+Difference from S to V channel 223: -100 to -100.
+Plateau region for row 18, col 7, and LED 2 is from 1500-1900.
+Difference from S to V channel 223: 50 to 0.
+Plateau region for row 18, col 7, and LED 3 is from 1500-1750.
+Difference from S to V channel 223: 50 to 0.
+Plateau region for row 18, col 7, and LED 4 is from 1500-1650.
+Difference from S to V channel 223: 50 to 0.
+Plateau region for row 18, col 8, and LED 1 is from 1400-1525.
+Difference from S to V channel 224: 0 to 25.
+Plateau region for row 18, col 8, and LED 2 is from 1400-1475.
+Difference from S to V channel 224: 0 to 0.
+Plateau region for row 18, col 8, and LED 3 is from 1400-1450.
+Difference from S to V channel 224: 0 to 0.
+Plateau region for row 18, col 8, and LED 4 is from 1400-1425.
+Difference from S to V channel 224: 0 to 25.
+Plateau region for row 18, col 9, and LED 1 is from 1400-1625.
+Difference from S to V channel 225: -50 to 25.
+Plateau region for row 18, col 9, and LED 2 is from 1400-1600.
+Difference from S to V channel 225: 0 to 0.
+Plateau region for row 18, col 9, and LED 3 is from 1400-1525.
+Difference from S to V channel 225: 0 to 0.
+Plateau region for row 18, col 9, and LED 4 is from 1400-1475.
+Difference from S to V channel 225: 0 to 0.
+Plateau region for row 18, col 10, and LED 1 is from 1400-1625.
+Difference from S to V channel 226: 0 to 25.
+Plateau region for row 18, col 10, and LED 2 is from 1400-1600.
+Difference from S to V channel 226: 50 to 25.
+Plateau region for row 18, col 10, and LED 3 is from 1400-1525.
+Difference from S to V channel 226: 50 to 0.
+Plateau region for row 18, col 10, and LED 4 is from 1400-1450.
+Difference from S to V channel 226: 50 to 0.
+Plateau region for row 18, col 11, and LED 1 is from 1400-1625.
+Difference from S to V channel 227: 50 to -50.
+Plateau region for row 18, col 11, and LED 2 is from 1400-1600.
+Difference from S to V channel 227: 50 to 0.
+Plateau region for row 18, col 11, and LED 3 is from 1400-1525.
+Difference from S to V channel 227: 50 to 0.
+Plateau region for row 18, col 11, and LED 4 is from 1400-1475.
+Difference from S to V channel 227: 50 to 0.
+Plateau region for row 19, col 0, and LED 1 is from 1400-1625.
+Difference from S to V channel 228: 0 to 25.
+Plateau region for row 19, col 0, and LED 2 is from 1400-1600.
+Difference from S to V channel 228: 50 to 25.
+Plateau region for row 19, col 0, and LED 3 is from 1400-1525.
+Difference from S to V channel 228: 50 to 0.
+Plateau region for row 19, col 0, and LED 4 is from 1400-1450.
+Difference from S to V channel 228: 50 to 0.
+Plateau region for row 19, col 1, and LED 1 is from 1400-1575.
+Difference from S to V channel 229: 0 to 25.
+Plateau region for row 19, col 1, and LED 2 is from 1400-1500.
+Difference from S to V channel 229: 0 to 0.
+Plateau region for row 19, col 1, and LED 3 is from 1400-1500.
+Difference from S to V channel 229: 0 to 25.
+Not enough data from row 19, col 1, and LED 4 to evaluate plateau.
+Difference from S to V channel 229: 8650 to -1350.
+Plateau region for row 19, col 2, and LED 1 is from 1400-1625.
+Difference from S to V channel 230: 0 to 25.
+Plateau region for row 19, col 2, and LED 2 is from 1400-1575.
+Difference from S to V channel 230: 0 to 25.
+Plateau region for row 19, col 2, and LED 3 is from 1400-1525.
+Difference from S to V channel 230: 0 to 0.
+Plateau region for row 19, col 2, and LED 4 is from 1400-1450.
+Difference from S to V channel 230: 0 to 25.
+Plateau region for row 19, col 3, and LED 1 is from 1400-1625.
+Difference from S to V channel 231: -50 to 25.
+Plateau region for row 19, col 3, and LED 2 is from 1400-1600.
+Difference from S to V channel 231: 0 to 0.
+Plateau region for row 19, col 3, and LED 3 is from 1400-1525.
+Difference from S to V channel 231: 50 to 0.
+Plateau region for row 19, col 3, and LED 4 is from 1400-1475.
+Difference from S to V channel 231: 50 to 0.
+Plateau region for row 19, col 4, and LED 1 is from 1500-1950.
+Difference from S to V channel 232: 50 to -100.
+Plateau region for row 19, col 4, and LED 2 is from 1500-1900.
+Difference from S to V channel 232: -150 to 0.
+Plateau region for row 19, col 4, and LED 3 is from 1500-1750.
+Difference from S to V channel 232: 50 to 0.
+Plateau region for row 19, col 4, and LED 4 is from 1500-1650.
+Difference from S to V channel 232: 50 to 0.
+Plateau region for row 19, col 5, and LED 1 is from 1500-1950.
+Difference from S to V channel 233: 50 to -100.
+Plateau region for row 19, col 5, and LED 2 is from 1500-1900.
+Difference from S to V channel 233: 50 to 0.
+Plateau region for row 19, col 5, and LED 3 is from 1500-1750.
+Difference from S to V channel 233: 50 to 0.
+Plateau region for row 19, col 5, and LED 4 is from 1500-1650.
+Difference from S to V channel 233: 50 to 0.
+Plateau region for row 19, col 6, and LED 1 is from 1500-1950.
+Difference from S to V channel 234: 50 to -100.
+Plateau region for row 19, col 6, and LED 2 is from 1500-1900.
+Difference from S to V channel 234: 50 to 0.
+Plateau region for row 19, col 6, and LED 3 is from 1500-1750.
+Difference from S to V channel 234: 50 to 0.
+Plateau region for row 19, col 6, and LED 4 is from 1500-1650.
+Difference from S to V channel 234: 50 to 0.
+Plateau region for row 19, col 7, and LED 1 is from 1500-1950.
+Difference from S to V channel 235: 50 to -100.
+Plateau region for row 19, col 7, and LED 2 is from 1500-1900.
+Difference from S to V channel 235: 50 to 0.
+Plateau region for row 19, col 7, and LED 3 is from 1500-1750.
+Difference from S to V channel 235: 50 to 0.
+Plateau region for row 19, col 7, and LED 4 is from 1500-1650.
+Difference from S to V channel 235: 50 to 50.
+Plateau region for row 19, col 8, and LED 1 is from 1400-1625.
+Difference from S to V channel 236: 0 to 25.
+Plateau region for row 19, col 8, and LED 2 is from 1400-1600.
+Difference from S to V channel 236: 50 to 25.
+Plateau region for row 19, col 8, and LED 3 is from 1400-1525.
+Difference from S to V channel 236: 50 to 0.
+Plateau region for row 19, col 8, and LED 4 is from 1400-1475.
+Difference from S to V channel 236: 50 to 0.
+Plateau region for row 19, col 9, and LED 1 is from 1400-1625.
+Difference from S to V channel 237: 50 to 25.
+Plateau region for row 19, col 9, and LED 2 is from 1400-1575.
+Difference from S to V channel 237: 50 to 0.
+Plateau region for row 19, col 9, and LED 3 is from 1400-1500.
+Difference from S to V channel 237: 50 to -25.
+Plateau region for row 19, col 9, and LED 4 is from 1400-1475.
+Difference from S to V channel 237: 50 to 25.
+Plateau region for row 19, col 10, and LED 1 is from 1400-1625.
+Difference from S to V channel 238: 0 to -50.
+Plateau region for row 19, col 10, and LED 2 is from 1400-1600.
+Difference from S to V channel 238: 50 to 0.
+Plateau region for row 19, col 10, and LED 3 is from 1400-1525.
+Difference from S to V channel 238: 50 to 0.
+Plateau region for row 19, col 10, and LED 4 is from 1400-1475.
+Difference from S to V channel 238: 50 to 0.
+Plateau region for row 19, col 11, and LED 1 is from 1400-1625.
+Difference from S to V channel 239: 0 to -50.
+Plateau region for row 19, col 11, and LED 2 is from 1400-1600.
+Difference from S to V channel 239: 0 to 0.
+Plateau region for row 19, col 11, and LED 3 is from 1400-1525.
+Difference from S to V channel 239: 0 to 0.
+Plateau region for row 19, col 11, and LED 4 is from 1400-1475.
+Difference from S to V channel 239: 50 to 0.
+Plateau region for row 20, col 0, and LED 1 is from 1400-1625.
+Difference from S to V channel 240: 0 to -50.
+Plateau region for row 20, col 0, and LED 2 is from 1400-1600.
+Difference from S to V channel 240: 0 to 0.
+Plateau region for row 20, col 0, and LED 3 is from 1400-1525.
+Difference from S to V channel 240: 50 to 0.
+Plateau region for row 20, col 0, and LED 4 is from 1400-1475.
+Difference from S to V channel 240: 0 to 0.
+Plateau region for row 20, col 1, and LED 1 is from 1400-1625.
+Difference from S to V channel 241: -50 to 25.
+Plateau region for row 20, col 1, and LED 2 is from 1400-1575.
+Difference from S to V channel 241: -25 to 0.
+Plateau region for row 20, col 1, and LED 3 is from 1400-1525.
+Difference from S to V channel 241: 0 to 0.
+Plateau region for row 20, col 1, and LED 4 is from 1400-1450.
+Difference from S to V channel 241: 0 to 0.
+Plateau region for row 20, col 2, and LED 1 is from 1400-1600.
+Difference from S to V channel 242: 0 to 50.
+Plateau region for row 20, col 2, and LED 2 is from 1400-1500.
+Difference from S to V channel 242: 0 to 25.
+Plateau region for row 20, col 2, and LED 3 is from 1400-1475.
+Difference from S to V channel 242: 0 to 0.
+Plateau region for row 20, col 2, and LED 4 is from 1400-1400.
+Difference from S to V channel 242: 50 to 0.
+Plateau region for row 20, col 3, and LED 1 is from 1400-1625.
+Difference from S to V channel 243: 0 to 25.
+Plateau region for row 20, col 3, and LED 2 is from 1400-1575.
+Difference from S to V channel 243: 0 to 50.
+Plateau region for row 20, col 3, and LED 3 is from 1400-1525.
+Difference from S to V channel 243: 0 to 0.
+Plateau region for row 20, col 3, and LED 4 is from 1400-1475.
+Difference from S to V channel 243: 50 to 75.
+Plateau region for row 20, col 4, and LED 1 is from 1500-1950.
+Difference from S to V channel 244: 50 to -100.
+Plateau region for row 20, col 4, and LED 2 is from 1500-1750.
+Difference from S to V channel 244: 1500 to 1750.
+Plateau region for row 20, col 4, and LED 3 is from 1500-1750.
+Difference from S to V channel 244: 50 to 0.
+Plateau region for row 20, col 4, and LED 4 is from 1500-1650.
+Difference from S to V channel 244: 50 to 0.
+Plateau region for row 20, col 5, and LED 1 is from 1500-1950.
+Difference from S to V channel 245: 50 to -100.
+Plateau region for row 20, col 5, and LED 2 is from 1500-1900.
+Difference from S to V channel 245: 50 to 0.
+Plateau region for row 20, col 5, and LED 3 is from 1500-1750.
+Difference from S to V channel 245: 50 to 200.
+Plateau region for row 20, col 5, and LED 4 is from 1500-1600.
+Difference from S to V channel 245: 50 to 100.
+Plateau region for row 20, col 6, and LED 1 is from 1500-1950.
+Difference from S to V channel 246: 50 to -100.
+Plateau region for row 20, col 6, and LED 2 is from 1500-1900.
+Difference from S to V channel 246: 50 to 0.
+Plateau region for row 20, col 6, and LED 3 is from 1500-1750.
+Difference from S to V channel 246: 50 to 0.
+Plateau region for row 20, col 6, and LED 4 is from 1500-1650.
+Difference from S to V channel 246: 50 to 0.
+Plateau region for row 20, col 7, and LED 1 is from 1500-1950.
+Difference from S to V channel 247: 50 to -100.
+Plateau region for row 20, col 7, and LED 2 is from 1500-1900.
+Difference from S to V channel 247: 50 to 0.
+Plateau region for row 20, col 7, and LED 3 is from 1500-1750.
+Difference from S to V channel 247: 50 to 0.
+Plateau region for row 20, col 7, and LED 4 is from 1500-1650.
+Difference from S to V channel 247: 50 to 0.
+Plateau region for row 20, col 8, and LED 1 is from 1400-1625.
+Difference from S to V channel 248: -50 to 50.
+Plateau region for row 20, col 8, and LED 2 is from 1400-1600.
+Difference from S to V channel 248: 0 to 50.
+Plateau region for row 20, col 8, and LED 3 is from 1400-1500.
+Difference from S to V channel 248: 0 to 0.
+Plateau region for row 20, col 8, and LED 4 is from 1400-1475.
+Difference from S to V channel 248: 50 to 0.
+Plateau region for row 20, col 9, and LED 1 is from 1400-1625.
+Difference from S to V channel 249: 0 to -50.
+Plateau region for row 20, col 9, and LED 2 is from 1400-1600.
+Difference from S to V channel 249: 50 to 0.
+Plateau region for row 20, col 9, and LED 3 is from 1400-1525.
+Difference from S to V channel 249: 50 to 0.
+Plateau region for row 20, col 9, and LED 4 is from 1400-1475.
+Difference from S to V channel 249: 50 to 0.
+Plateau region for row 20, col 10, and LED 1 is from 1400-1625.
+Difference from S to V channel 250: -25 to -50.
+Plateau region for row 20, col 10, and LED 2 is from 1400-1600.
+Difference from S to V channel 250: 0 to 0.
+Plateau region for row 20, col 10, and LED 3 is from 1400-1525.
+Difference from S to V channel 250: 0 to 0.
+Plateau region for row 20, col 10, and LED 4 is from 1400-1475.
+Difference from S to V channel 250: 0 to 0.
+Plateau region for row 20, col 11, and LED 1 is from 1400-1625.
+Difference from S to V channel 251: -25 to -50.
+Plateau region for row 20, col 11, and LED 2 is from 1400-1600.
+Difference from S to V channel 251: 0 to 0.
+Plateau region for row 20, col 11, and LED 3 is from 1400-1525.
+Difference from S to V channel 251: 0 to 0.
+Plateau region for row 20, col 11, and LED 4 is from 1425-1475.
+Difference from S to V channel 251: 0 to 0.
+Plateau region for row 21, col 0, and LED 1 is from 1400-1625.
+Difference from S to V channel 252: 0 to -50.
+Plateau region for row 21, col 0, and LED 2 is from 1400-1600.
+Difference from S to V channel 252: 50 to 0.
+Plateau region for row 21, col 0, and LED 3 is from 1400-1525.
+Difference from S to V channel 252: 0 to 0.
+Plateau region for row 21, col 0, and LED 4 is from 1400-1475.
+Difference from S to V channel 252: 0 to 0.
+Plateau region for row 21, col 1, and LED 1 is from 1400-1625.
+Difference from S to V channel 253: -50 to 25.
+Plateau region for row 21, col 1, and LED 2 is from 1400-1575.
+Difference from S to V channel 253: 0 to 50.
+Plateau region for row 21, col 1, and LED 3 is from 1400-1500.
+Difference from S to V channel 253: 0 to 0.
+Plateau region for row 21, col 1, and LED 4 is from 1400-1425.
+Difference from S to V channel 253: 0 to 0.
+Plateau region for row 21, col 2, and LED 1 is from 1400-1625.
+Difference from S to V channel 254: 0 to 50.
+Plateau region for row 21, col 2, and LED 2 is from 1400-1525.
+Difference from S to V channel 254: 0 to 25.
+Plateau region for row 21, col 2, and LED 3 is from 1400-1500.
+Difference from S to V channel 254: 0 to 25.
+Plateau region for row 21, col 2, and LED 4 is from 1400-1400.
+Difference from S to V channel 254: 50 to 0.
+Plateau region for row 21, col 3, and LED 1 is from 1400-1575.
+Difference from S to V channel 255: -50 to 25.
+Plateau region for row 21, col 3, and LED 2 is from 1400-1525.
+Difference from S to V channel 255: 50 to 25.
+Plateau region for row 21, col 3, and LED 3 is from 1400-1475.
+Difference from S to V channel 255: 50 to 0.
+Plateau region for row 21, col 3, and LED 4 is from 1400-1450.
+Difference from S to V channel 255: 50 to 25.
+Plateau region for row 21, col 4, and LED 1 is from 1500-1950.
+Difference from S to V channel 256: -50 to -100.
+Plateau region for row 21, col 4, and LED 2 is from 1500-1900.
+Difference from S to V channel 256: 0 to 0.
+Plateau region for row 21, col 4, and LED 3 is from 1500-1750.
+Difference from S to V channel 256: 50 to 0.
+Plateau region for row 21, col 4, and LED 4 is from 1500-1650.
+Difference from S to V channel 256: 50 to 0.
+Plateau region for row 21, col 5, and LED 1 is from 1500-1950.
+Difference from S to V channel 257: 50 to -100.
+Plateau region for row 21, col 5, and LED 2 is from 1500-1900.
+Difference from S to V channel 257: 50 to 0.
+Plateau region for row 21, col 5, and LED 3 is from 1500-1750.
+Difference from S to V channel 257: 50 to 0.
+Plateau region for row 21, col 5, and LED 4 is from 1500-1650.
+Difference from S to V channel 257: 50 to 0.
+Plateau region for row 21, col 6, and LED 1 is from 1500-1950.
+Difference from S to V channel 258: 50 to -100.
+Plateau region for row 21, col 6, and LED 2 is from 1500-1900.
+Difference from S to V channel 258: 50 to 0.
+Plateau region for row 21, col 6, and LED 3 is from 1500-1750.
+Difference from S to V channel 258: 50 to 0.
+Plateau region for row 21, col 6, and LED 4 is from 1500-1650.
+Difference from S to V channel 258: 50 to 0.
+Plateau region for row 21, col 7, and LED 1 is from 1500-1950.
+Difference from S to V channel 259: -50 to -100.
+Plateau region for row 21, col 7, and LED 2 is from 1500-1900.
+Difference from S to V channel 259: 50 to 0.
+Plateau region for row 21, col 7, and LED 3 is from 1500-1750.
+Difference from S to V channel 259: 50 to 0.
+Plateau region for row 21, col 7, and LED 4 is from 1500-1650.
+Difference from S to V channel 259: 50 to 0.
+Plateau region for row 21, col 8, and LED 1 is from 1400-1625.
+Difference from S to V channel 260: -75 to 75.
+Plateau region for row 21, col 8, and LED 2 is from 1400-1575.
+Difference from S to V channel 260: -50 to 25.
+Plateau region for row 21, col 8, and LED 3 is from 1400-1525.
+Difference from S to V channel 260: 0 to 0.
+Plateau region for row 21, col 8, and LED 4 is from 1400-1475.
+Difference from S to V channel 260: 50 to 0.
+Plateau region for row 21, col 9, and LED 1 is from 1400-1625.
+Difference from S to V channel 261: 50 to -25.
+Plateau region for row 21, col 9, and LED 2 is from 1400-1600.
+Difference from S to V channel 261: 50 to 0.
+Plateau region for row 21, col 9, and LED 3 is from 1400-1525.
+Difference from S to V channel 261: 50 to 0.
+Plateau region for row 21, col 9, and LED 4 is from 1400-1475.
+Difference from S to V channel 261: 50 to 0.
+Plateau region for row 21, col 10, and LED 1 is from 1400-1625.
+Difference from S to V channel 262: 0 to -25.
+Plateau region for row 21, col 10, and LED 2 is from 1400-1600.
+Difference from S to V channel 262: 50 to 0.
+Plateau region for row 21, col 10, and LED 3 is from 1400-1525.
+Difference from S to V channel 262: 50 to 0.
+Plateau region for row 21, col 10, and LED 4 is from 1400-1475.
+Difference from S to V channel 262: 50 to 0.
+Plateau region for row 21, col 11, and LED 1 is from 1400-1625.
+Difference from S to V channel 263: 50 to 25.
+Plateau region for row 21, col 11, and LED 2 is from 1400-1575.
+Difference from S to V channel 263: 50 to 25.
+Plateau region for row 21, col 11, and LED 3 is from 1400-1525.
+Difference from S to V channel 263: 50 to 0.
+Plateau region for row 21, col 11, and LED 4 is from 1400-1475.
+Difference from S to V channel 263: -25 to 0.
+Plateau region for row 22, col 0, and LED 1 is from 1475-1625.
+Difference from S to V channel 264: -25 to -50.
+Plateau region for row 22, col 0, and LED 2 is from 1400-1600.
+Difference from S to V channel 264: -75 to 0.
+Plateau region for row 22, col 0, and LED 3 is from 1400-1525.
+Difference from S to V channel 264: 50 to 0.
+Plateau region for row 22, col 0, and LED 4 is from 1400-1475.
+Difference from S to V channel 264: -25 to 0.
+Plateau region for row 22, col 1, and LED 1 is from 1400-1625.
+Difference from S to V channel 265: 50 to -50.
+Plateau region for row 22, col 1, and LED 2 is from 1400-1600.
+Difference from S to V channel 265: 0 to 0.
+Plateau region for row 22, col 1, and LED 3 is from 1400-1525.
+Difference from S to V channel 265: 0 to 0.
+Plateau region for row 22, col 1, and LED 4 is from 1400-1475.
+Difference from S to V channel 265: 0 to 0.
+Plateau region for row 22, col 2, and LED 1 is from 1400-1625.
+Difference from S to V channel 266: 0 to 25.
+Plateau region for row 22, col 2, and LED 2 is from 1400-1600.
+Difference from S to V channel 266: 0 to 25.
+Plateau region for row 22, col 2, and LED 3 is from 1400-1500.
+Difference from S to V channel 266: 0 to 0.
+Plateau region for row 22, col 2, and LED 4 is from 1400-1450.
+Difference from S to V channel 266: 50 to 0.
+Plateau region for row 22, col 3, and LED 1 is from 1400-1575.
+Difference from S to V channel 267: 0 to 0.
+Plateau region for row 22, col 3, and LED 2 is from 1400-1550.
+Difference from S to V channel 267: 0 to 25.
+Plateau region for row 22, col 3, and LED 3 is from 1400-1475.
+Difference from S to V channel 267: 0 to 0.
+Plateau region for row 22, col 3, and LED 4 is from 1400-1450.
+Difference from S to V channel 267: 50 to 25.
+Plateau region for row 22, col 4, and LED 1 is from 1500-1950.
+Difference from S to V channel 268: 50 to -100.
+Plateau region for row 22, col 4, and LED 2 is from 1500-1900.
+Difference from S to V channel 268: 50 to 0.
+Plateau region for row 22, col 4, and LED 3 is from 1500-1750.
+Difference from S to V channel 268: 50 to 0.
+Plateau region for row 22, col 4, and LED 4 is from 1500-1650.
+Difference from S to V channel 268: 50 to 0.
+Plateau region for row 22, col 5, and LED 1 is from 1500-1950.
+Difference from S to V channel 269: 50 to -100.
+Plateau region for row 22, col 5, and LED 2 is from 1500-1900.
+Difference from S to V channel 269: 50 to 0.
+Plateau region for row 22, col 5, and LED 3 is from 1500-1750.
+Difference from S to V channel 269: 50 to 100.
+Plateau region for row 22, col 5, and LED 4 is from 1500-1650.
+Difference from S to V channel 269: 50 to 0.
+Plateau region for row 22, col 6, and LED 1 is from 1550-1950.
+Difference from S to V channel 270: 100 to -100.
+Plateau region for row 22, col 6, and LED 2 is from 1500-1900.
+Difference from S to V channel 270: 50 to 0.
+Plateau region for row 22, col 6, and LED 3 is from 1500-1750.
+Difference from S to V channel 270: 50 to 0.
+Plateau region for row 22, col 6, and LED 4 is from 1500-1650.
+Difference from S to V channel 270: 50 to 0.
+Plateau region for row 22, col 7, and LED 1 is from 1500-1950.
+Difference from S to V channel 271: -50 to -100.
+Plateau region for row 22, col 7, and LED 2 is from 1500-1900.
+Difference from S to V channel 271: 50 to 0.
+Plateau region for row 22, col 7, and LED 3 is from 1500-1750.
+Difference from S to V channel 271: 50 to 0.
+Plateau region for row 22, col 7, and LED 4 is from 1500-1650.
+Difference from S to V channel 271: 50 to 0.
+Plateau region for row 22, col 8, and LED 1 is from 1400-1600.
+Difference from S to V channel 272: 0 to 50.
+Plateau region for row 22, col 8, and LED 2 is from 1400-1575.
+Difference from S to V channel 272: 0 to 25.
+Plateau region for row 22, col 8, and LED 3 is from 1400-1525.
+Difference from S to V channel 272: 0 to 25.
+Plateau region for row 22, col 8, and LED 4 is from 1400-1450.
+Difference from S to V channel 272: 0 to 50.
+Plateau region for row 22, col 9, and LED 1 is from 1400-1625.
+Difference from S to V channel 273: 50 to -50.
+Plateau region for row 22, col 9, and LED 2 is from 1400-1600.
+Difference from S to V channel 273: 50 to 0.
+Plateau region for row 22, col 9, and LED 3 is from 1400-1525.
+Difference from S to V channel 273: 50 to 0.
+Plateau region for row 22, col 9, and LED 4 is from 1400-1475.
+Difference from S to V channel 273: 50 to 0.
+Plateau region for row 22, col 10, and LED 1 is from 1400-1625.
+Difference from S to V channel 274: -50 to -50.
+Plateau region for row 22, col 10, and LED 2 is from 1400-1600.
+Difference from S to V channel 274: 0 to 0.
+Plateau region for row 22, col 10, and LED 3 is from 1400-1525.
+Difference from S to V channel 274: 0 to 0.
+Plateau region for row 22, col 10, and LED 4 is from 1400-1475.
+Difference from S to V channel 274: 0 to 0.
+Plateau region for row 22, col 11, and LED 1 is from 1400-1625.
+Difference from S to V channel 275: 0 to -25.
+Plateau region for row 22, col 11, and LED 2 is from 1400-1600.
+Difference from S to V channel 275: 50 to 25.
+Plateau region for row 22, col 11, and LED 3 is from 1400-1525.
+Difference from S to V channel 275: 50 to 0.
+Plateau region for row 22, col 11, and LED 4 is from 1400-1475.
+Difference from S to V channel 275: 50 to 0.
+Plateau region for row 23, col 0, and LED 1 is from 1425-1625.
+Difference from S to V channel 276: -25 to -50.
+Plateau region for row 23, col 0, and LED 2 is from 1400-1600.
+Difference from S to V channel 276: -25 to 0.
+Plateau region for row 23, col 0, and LED 3 is from 1425-1525.
+Difference from S to V channel 276: 0 to 0.
+Plateau region for row 23, col 0, and LED 4 is from 1425-1475.
+Difference from S to V channel 276: 0 to 0.
+Plateau region for row 23, col 1, and LED 1 is from 1400-1625.
+Difference from S to V channel 277: -50 to -50.
+Plateau region for row 23, col 1, and LED 2 is from 1400-1600.
+Difference from S to V channel 277: -50 to 0.
+Plateau region for row 23, col 1, and LED 3 is from 1400-1525.
+Difference from S to V channel 277: -25 to 0.
+Plateau region for row 23, col 1, and LED 4 is from 1400-1475.
+Difference from S to V channel 277: 0 to 0.
+Plateau region for row 23, col 2, and LED 1 is from 1450-1450.
+Difference from S to V channel 278: 0 to -225.
+Plateau region for row 23, col 2, and LED 2 is from 1400-1600.
+Difference from S to V channel 278: 0 to 0.
+Plateau region for row 23, col 2, and LED 3 is from 1400-1525.
+Difference from S to V channel 278: 50 to 0.
+Plateau region for row 23, col 2, and LED 4 is from 1400-1475.
+Difference from S to V channel 278: 0 to 0.
+Plateau region for row 23, col 3, and LED 1 is from 1425-1625.
+Difference from S to V channel 279: -25 to -25.
+Plateau region for row 23, col 3, and LED 2 is from 1400-1600.
+Difference from S to V channel 279: -25 to 0.
+Plateau region for row 23, col 3, and LED 3 is from 1400-1525.
+Difference from S to V channel 279: 0 to 0.
+Plateau region for row 23, col 3, and LED 4 is from 1400-1475.
+Difference from S to V channel 279: 0 to 0.
+Plateau region for row 23, col 4, and LED 1 is from 1500-1950.
+Difference from S to V channel 280: 50 to -100.
+Plateau region for row 23, col 4, and LED 2 is from 1500-1900.
+Difference from S to V channel 280: 50 to 0.
+Plateau region for row 23, col 4, and LED 3 is from 1500-1750.
+Difference from S to V channel 280: 50 to 0.
+Plateau region for row 23, col 4, and LED 4 is from 1500-1650.
+Difference from S to V channel 280: 50 to 0.
+Plateau region for row 23, col 5, and LED 1 is from 1500-1950.
+Difference from S to V channel 281: 50 to -100.
+Plateau region for row 23, col 5, and LED 2 is from 1500-1900.
+Difference from S to V channel 281: 50 to 0.
+Plateau region for row 23, col 5, and LED 3 is from 1500-1750.
+Difference from S to V channel 281: 50 to 0.
+Plateau region for row 23, col 5, and LED 4 is from 1500-1650.
+Difference from S to V channel 281: 50 to 0.
+Plateau region for row 23, col 6, and LED 1 is from 1500-1950.
+Difference from S to V channel 282: 50 to -100.
+Plateau region for row 23, col 6, and LED 2 is from 1500-1900.
+Difference from S to V channel 282: 50 to 0.
+Plateau region for row 23, col 6, and LED 3 is from 1500-1750.
+Difference from S to V channel 282: 50 to 0.
+Plateau region for row 23, col 6, and LED 4 is from 1500-1650.
+Difference from S to V channel 282: 50 to 0.
+Plateau region for row 23, col 7, and LED 1 is from 1500-1950.
+Difference from S to V channel 283: 50 to -100.
+Plateau region for row 23, col 7, and LED 2 is from 1500-1900.
+Difference from S to V channel 283: 50 to 0.
+Plateau region for row 23, col 7, and LED 3 is from 1500-1750.
+Difference from S to V channel 283: 50 to 0.
+Plateau region for row 23, col 7, and LED 4 is from 1500-1650.
+Difference from S to V channel 283: 50 to 0.
+Plateau region for row 23, col 8, and LED 1 is from 1400-1575.
+Difference from S to V channel 284: 0 to 0.
+Plateau region for row 23, col 8, and LED 2 is from 1400-1550.
+Difference from S to V channel 284: 50 to 25.
+Plateau region for row 23, col 8, and LED 3 is from 1400-1500.
+Difference from S to V channel 284: 50 to 0.
+Plateau region for row 23, col 8, and LED 4 is from 1400-1475.
+Difference from S to V channel 284: 50 to 25.
+Plateau region for row 23, col 9, and LED 1 is from 1400-1625.
+Difference from S to V channel 285: 0 to -25.
+Plateau region for row 23, col 9, and LED 2 is from 1400-1600.
+Difference from S to V channel 285: 0 to 0.
+Plateau region for row 23, col 9, and LED 3 is from 1400-1525.
+Difference from S to V channel 285: 50 to 0.
+Plateau region for row 23, col 9, and LED 4 is from 1400-1475.
+Difference from S to V channel 285: 0 to 0.
+Plateau region for row 23, col 10, and LED 1 is from 1400-1625.
+Difference from S to V channel 286: 0 to 25.
+Plateau region for row 23, col 10, and LED 2 is from 1400-1575.
+Difference from S to V channel 286: 0 to 0.
+Plateau region for row 23, col 10, and LED 3 is from 1400-1525.
+Difference from S to V channel 286: 50 to 0.
+Plateau region for row 23, col 10, and LED 4 is from 1400-1475.
+Difference from S to V channel 286: 0 to 0.
+Plateau region for row 23, col 11, and LED 1 is from 1400-1625.
+Difference from S to V channel 287: 0 to -50.
+Plateau region for row 23, col 11, and LED 2 is from 1400-1600.
+Difference from S to V channel 287: 0 to 0.
+Plateau region for row 23, col 11, and LED 3 is from 1400-1525.
+Difference from S to V channel 287: 0 to 0.
+Plateau region for row 23, col 11, and LED 4 is from 1400-1475.
+Difference from S to V channel 287: 50 to 0.

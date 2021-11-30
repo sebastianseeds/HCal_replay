@@ -1,0 +1,122 @@
+TFile *_file0 = TFile::Open("SignalCentering_11587.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("SignalCentering_11587.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("SignalCentering_11587.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("SignalCentering_11965.root")
+new TBrowser
+.q
+.q
+TFile *_file0 = TFile::Open("SignalCentering_11965.root")
+new TBrowser
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("SignalCentering_11965_435ns.root")
+.q
+TFile *_file0 = TFile::Open("SignalCentering_11965_cut95ns.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("SignalCentering_11965_585ns.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("SignalCentering_11965_435ns.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("SignalCentering_11967.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("SignalCentering_11965.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("SignalCentering_11965_v2.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("SignalCentering_11967_v2.root")
+new TBrowser
+TFile *_file0 = TFile::Open("SignalCentering_11967_v2.root")
+TBrowser b
+.q
+TFile *_file0 = TFile::Open("SignalCentering_11965_v2.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("SignalCentering_11967_v2.root")
+new TBrowse4r
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("SignalCentering_11965_v2.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("SignalCentering_11967_v2.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("SignalCentering_11965_v2.root")
+new TBrowser
+TFile *_file0 = TFile::Open("SignalCentering_11967_v2.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("SignalCentering_11965_v2.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("SignalCentering_11967_v2.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("SignalCentering_11967_v2.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("SignalCentering_11970_v2.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("SignalCentering_11970_v2.root")
+TBrowser b
+.q
+.q
+TFile *_file0 = TFile::Open("SignalCentering_11970_v2.root")
+TBrowser b
+.q
+TFile *_file0 = TFile::Open("SignalCentering_11989_v2.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("SignalCentering_12039_v2.root")
+TBrowser b
+T->Draw("sbs.hcal.a_p[41]")
+.q
+TFile *_file0 = TFile::Open("SignalCentering_12039_v2.root")
+TBrowser b
+.q
+TFile *_file0 = TFile::Open("SignalCentering_12039_v2.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("SignalCentering_12039_v2.root")
+TBrowser b
+TFile *_file0 = TFile::Open("SignalCentering_12039_v2.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("SignalCentering_12039_v2.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("SignalCentering_12250_v2.root")
+new TBrowser
+.q
+.q
+TFile *_file0 = TFile::Open("SignalCentering_12254_v2.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("SignalCentering_12276_v2.root")
+TBrowser b
+.q
+TFile *_file0 = TFile::Open("SignalCentering_12276_v2.root")
+TBrowser b
+.q
+TFile *_file0 = TFile::Open("SignalCentering_12276_v2.root")
+TBrowser b
+.q
+TFile *_file0 = TFile::Open("SignalCentering_12276_v2.root")
+TBrowser b
+TFile *_file0 = TFile::Open("SignalCentering_12280_v2.root")
+new TBrowser
+.q
+.q

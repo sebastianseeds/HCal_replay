@@ -1,0 +1,64 @@
+#Expert HCal output file for GMn
+
+#ADC from calorimeter
+block sbs.hcal.*
+block bb.tr.*
+block bb.tdctrig.*
+block sbs.*
+block e.kine.*
+block bb.sh.*
+block bb.ps.*
+
+#block *.gold.*
+#block *grinch_tdc*
+
+############
+#Histograms#
+############ 
+
+#ADC Histograms
+th2d hADCtime_vs_elem_hcal 'ADC time vs element ID : HCAL' sbs.hcal.adcelemID[I] sbs.hcal.a_time[I] 288 -0.5 287.5 250 -50 200 sbs.hcal.a_time[I]>0 
+th2d hADCint_vs_elem_hcal 'ADC integral vs element ID : HCAL' sbs.hcal.adcelemID[I] sbs.hcal.a_p[I] 288 -0.5 287.5 300 0 300 sbs.hcal.a_time[I]>0 
+th2d hADCintE_vs_elem_hcal 'ADC Energy vs element ID : HCAL' sbs.hcal.adcelemID[I] sbs.hcal.a_c[I] 288 -0.5 287.5 100 0 1 sbs.hcal.a_time[I]>0 
+th2d hADCamp_vs_elem_hcal 'ADC amplitude vs element ID : HCAL' sbs.hcal.adcelemID[I] sbs.hcal.a_amp_p[I] 288 -0.5 287.5 300 0 300 sbs.hcal.a_time[I]>0 
+
+#TDC Histograms
+th2d hTDC_vs_elem_hcal 'TDC vs element ID : HCAL' sbs.hcal.adcelemID[I] sbs.hcal.tdc[I] 288 -0.5 287.5 300 0 300 sbs.hcal.a_time[I]>0 
+
+#Cluster Histograms
+th1d hNClus_vs_elem_hcal 'Number of clusters per event : HCAL' sbs.hcal.nclus 35 -0.5 34.5 #Multiplicity
+th1d hNBlkperClus_vs_ev_hcal 'Number of blocks per cluster : HCal' sbs.hcal.clus.nblk 35 -0.5 34.5
+th1d hclusID_vs_elem_hcal 'Cluster ID over all events : HCAL' sbs.hcal.idblk 288 0.5 288.5 #Position, zero element is primary block in cluster
+th1d hClusADC_vs_elem_hcal 'Cluster ADC : HCAL' sbs.hcal.e 100 0 1 
+th1d hClusE_vs_elem_hcal 'Cluster Energy : HCAL' sbs.hcal.e_c 100 0 1
+th2d hClus_pos_hcal 'Position of best cluster : HCal' sbs.hcal.colblk sbs.hcal.rowblk 12 -0.5 11.5 24 -0.5 23.5 sbs.hcal.nclus>0
+th2d hClus_pos_hcal 'Cluster Position Elastic Cut : HCal' sbs.hcal.colblk sbs.hcal.rowblk 12 -0.5 11.5 24 -0.5 23.5 e.kine.W2<1.1
+th2d hBlk_time_vs_BB_trig 'HCAL Cluster Block ADC Time vs BB Trigger' sbs.hcal.clus_blk.atime bb.tdctrig.tdc[5] 120 0 120 120 0 120
+
+#Trigger Histograms
+th2d htrigTime_vs_elem_hcal 'Trigger ADC time : HCAL' bb.tdctrig.tdc[5] sbs.hcal.a_time[I] 16 0 16 200 -50 150 
+
+#Kinematic Histograms
+th1d hq2 'Q2' e.kine.Q2 100 0.0 5.0
+th1d hw2 'W2' e.kine.W2 100 0.0 2.0
+th1d hnu 'nu' e.kine.nu 100 0.0 5.0
+th1d heps 'eps' e.kine.epsilon 100 0.0 1.0
+
+#Misc. histograms
+th1d hnev_vs_elem_hcal 'Number events vs element ID : HCAL' sbs.hcal.adcelemID 288 -0.5 287.5 sbs.hcal.a_time[I]>0
+th2d hped_vs_elem_hcal 'Pedestal vs element ID : HCAL' sbs.hcal.adcelemID[I] sbs.hcal.ped[I] 288 -0.5 287.5 200 0 200 sbs.hcal.a_time[I]>0 
+
+#ADC Block Histograms
+th2d hADCtime_vs_blk_hcal 'ADC Block Time vs Block ID : HCAL' sbs.hcal.clus_blk.id[I] sbs.hcal.clus_blk.atime[I] 288 -0.5 287.5 250 -50 200 sbs.hcal.clus_blk.atime[I]>0 
+th2d hADCint_vs_blk_hcal 'ADC integral vs Block ID : HCAL' sbs.hcal.clus_blk.id[I] sbs.hcal.clus_blk.e[I] 288 -0.5 287.5 300 0 15 sbs.hcal.clus_blk.atime[I]>0 
+th2d hADCe_vs_blk_hcal 'Energy Dep vs Block ID : HCAL' sbs.hcal.clus_blk.id[I] sbs.hcal.clus_blk.e_c[I] 288 -0.5 287.5 300 0 15 sbs.hcal.clus_blk.atime[I]>0 
+
+#Correlation Histograms
+th2f hAz_vs_clus_x_hcal 'BB track Azymuthal Angle vs HCal Vertical Position' bb.tr.ph sbs.hcal.clus.x 250 -0.1 0.1 250 -2.8 0.2
+th2f hPo_vs_clus_y_hcal 'BB track Polar Angle vs HCal Horizontal Position' bb.tr.th sbs.hcal.clus.y 250 -1.4 0.6 250 -0.4 0.3 
+
+#Kinematic Histograms
+th1d hq2 'electron Q2' e.kine.Q2 100 0.0 5.0
+th1d hw2 'electron W2' e.kine.W2 100 0.0 2.0
+th1d hnu 'electron nu' e.kine.nu 100 0.0 5.0
+th1d heps 'electron eps' e.kine.epsilon 100 0.0 1.0
