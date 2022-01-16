@@ -1,0 +1,47 @@
+--------[ 2021-10-22 15:30:00 -0400 ]
+Lrb.BPMA.detmap =
+      10   14     5     8     1  250
+Lrb.BPMA.calib_rot = 0.01887
+Lrb.BPMA.pedestals = 44690.145 44907.537 43831.036 43394.717
+Lrb.BPMA.rotmatrix = -0.698707 0.658905 0.692455 0.759031 
+Lrb.BPMA.offsets = 0.00171819 -0.000869124
+
+--------[ 2021-10-21 20:00:00 -0400 ]
+Lrb.BPMA.detmap =
+      10   14     5     8     1  250
+Lrb.BPMA.calib_rot = 0.01887
+Lrb.BPMA.pedestals = 48260 48340 47590 47170  
+Lrb.BPMA.rotmatrix = -0.698707 0.658905 0.692455 0.759031 
+Lrb.BPMA.offsets = 0.00171819 -0.000869124
+
+--------[ 2021-10-12 18:00:00 -0400 ]
+Lrb.BPMA.detmap =
+      10   14     5     8     1  250
+Lrb.BPMA.calib_rot = 0.01887
+Lrb.BPMA.pedestals = 34413.968 34555.159 33556.017 33177.552
+Lrb.BPMA.rotmatrix = -0.698707 0.658905 0.692455 0.759031 
+Lrb.BPMA.offsets = 0.00171819 -0.000869124
+
+--------[ 2021-10-12 17:00:00 -0400 ]
+Lrb.BPMA.detmap =
+      10   14     5     8     1  250
+Lrb.BPMA.calib_rot = 0.01887
+Lrb.BPMA.pedestals = 26160  26290  17500  17600
+Lrb.BPMA.rotmatrix = -0.698707 0.658905 0.692455 0.759031 
+Lrb.BPMA.offsets = 0.00171819 -0.000869124
+
+--------[ 2021-10-12 12:00:00 -0400 ]
+Lrb.BPMA.detmap =
+      10   14     4     7     1  250
+Lrb.BPMA.calib_rot = 0.01887
+Lrb.BPMA.pedestals = 26160  26290  17500  17600
+Lrb.BPMA.rotmatrix = -0.698707 0.658905 0.692455 0.759031 
+Lrb.BPMA.offsets = 0.00171819 -0.000869124
+
+--------[ 2021-09-18 00:00:00 -0400 ]
+Lrb.BPMA.detmap =
+      10   14     8     11     1  250
+Lrb.BPMA.calib_rot = 0.01887
+Lrb.BPMA.pedestals = 26160  26290  17500  17600
+Lrb.BPMA.rotmatrix = -0.698707 0.658905 0.692455 0.759031
+Lrb.BPMA.offsets = 0.00171819 -0.000869124

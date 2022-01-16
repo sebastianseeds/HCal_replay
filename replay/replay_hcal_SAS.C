@@ -108,6 +108,8 @@ void replay_hcal_SAS(int run_number = 124, uint nev = -1, uint nseg = 0)
     std::cout<<seg_path<<std::endl;
     //if( gSystem->AccessPathName("/adaqfs/home/a-onl/sbs/data/hcal_trigtest_183.evio.0")) {
     
+    std::cout << "Searching for segment " << seg_path << ".." << std::endl;
+
     if( gSystem->AccessPathName(seg_path)) {
       seg_ok = false;
       std::cout << "Segment " << nseg << " not found. Exiting" << std::endl;
@@ -117,6 +119,8 @@ void replay_hcal_SAS(int run_number = 124, uint nev = -1, uint nseg = 0)
       std::cout<<"Found "<<Form(RunFileNamePattern,run_number)<<"."<<std::endl;
     }
     
+    std::cout << data_path << std::endl;    
+
     THaRun* run = new THaRun( pathList, Form(RunFileNamePattern, run_number) );
     
     run->SetDataRequired(7);//for the time being

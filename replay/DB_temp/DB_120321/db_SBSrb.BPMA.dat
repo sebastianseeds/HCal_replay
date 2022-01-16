@@ -1,0 +1,7 @@
+--------[ 2021-09-18 00:00:00 -0400 ]
+SBSrb.BPMA.detmap =
+      1   20     4     7     1  250
+SBSrb.BPMA.calib_rot = 0.01887
+SBSrb.BPMA.pedestals = 26160  26290  17500  17600
+SBSrb.BPMA.rotmatrix = -0.698707 0.658905 0.692455 0.759031 
+SBSrb.BPMA.offsets = 0.00171819 -0.000869124

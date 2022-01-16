@@ -146,9 +146,15 @@ void replay_gmn_SAS(UInt_t runnum=10491, Long_t nevents=-1, Long_t firstevent=0,
   
   if( prefix != "/adaqeb1/data1" )
     pathlist.push_back( "/adaqeb1/data1" );
+
+  if( prefix != "/adaqeb2/data1" )
+    pathlist.push_back( "/adaqeb2/data2" );
   
   if( prefix != "/adaq1/data1/sbs" )
     pathlist.push_back( "/adaq1/data1/sbs" );
+
+  if( prefix != "/cache/halla/sbs/raw" )
+    pathlist.push_back( "/cache/halla/sbs/raw" );
   
   if( prefix != "/cache/mss/halla/sbs/raw" )
     pathlist.push_back( "/cache/mss/halla/sbs/raw" );

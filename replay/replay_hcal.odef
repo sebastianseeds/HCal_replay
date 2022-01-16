@@ -2,10 +2,23 @@
 
 #HCal Branches to root file
 block sbs.hcal.*
+block sbs.trig.*
 block bb.tdctrig.*
 block bb.tr.*
 block bb.ps.*
 block bb.sh.*
+block e.kine*
+
+#Currently not working. Creates branch but doesn't populate it.
+begin epics
+     IBC1H04CRCUR2 
+     HAHV17:00:000:IMon
+     HAHV17:00:000:V0Setr
+     HAHV17:00:000:VMon
+     HAHV20:00:000:IMon
+     HAHV20:00:000:V0Setr
+     HAHV20:00:000:VMon
+end epics
 
 ############
 #Histograms#
@@ -38,14 +51,15 @@ th1d hnev_ADC_vs_elem_hcal 'Number ADC events vs module : HCAL' sbs.hcal.adcelem
 th2d hped_vs_elem_hcal 'Pedestal vs element ID : HCAL' sbs.hcal.adcelemID[I] sbs.hcal.ped[I] 288 0.5 288.5 400 0 2000 sbs.hcal.a_amp_p[I]>20 
 
 #11.29.21
-th1d hTDC_HCAL 'Cluster TDC over all channels : HCAL' sbs.hcal.clus.tdctime 250 -150 100 #sbs.hcal.clus.e[I]>0.05
-th2d hTDC_vs_clus_ID 'Cluster TDC vs Module : HCAL' sbs.hcal.clus.id[I] sbs.hcal.clus.tdctime[I] 288 0.5 288.5 250 -150 100 #sbs.hcal.clus.e[I]>0.05
-th1d hATime_HCAL 'Cluster ADC time over all channels : HCAL' sbs.hcal.clus.atime 320 0 160 sbs.hcal.clus.e[I]>0.05
+th1d hTDC_HCAL 'Cluster TDC over all channels : HCAL' sbs.hcal.clus.tdctime 250 -150 100 #sbs.hcal.clus.e_c[I]>0.35
+th2d hTDC_vs_clus_ID 'Cluster TDC vs Module : HCAL' sbs.hcal.clus.id[I] sbs.hcal.clus.tdctime[I] 288 0.5 288.5 250 -150 100 #sbs.hcal.clus.e_c[I]>0.35
+th1d hATime_HCAL 'Cluster ADC time over all channels : HCAL' sbs.hcal.clus.atime 320 0 160 sbs.hcal.clus.e_c[I]>0.35
 th2d hAmp_vs_elem_ID 'Amplitude vs Module (saturation check): HCAL' sbs.hcal.adcelemID[I] sbs.hcal.a_amp_p[I] 288 0.5 288.5 9000 2 9002
-th2d hADC_vs_clus_ID 'ADC vs module : HCAL' sbs.hcal.clus.id[I] sbs.hcal.clus.e[I] 288 0.5 288.5 100 0 1
+th2d hADC_vs_clus_ID 'ADC vs module : HCAL' sbs.hcal.clus.id[I] sbs.hcal.clus.e_c[I] 288 0.5 288.5 100 0 1
 th1d hnev_TDC_vs_elem_ID 'Number TDC events vs Module : HCAL' sbs.hcal.tdcelemID 288 0.5 288.5 sbs.hcal.tdc[I]<1000
 th2d hAmp_vs_int 'ADC amp vs int : HCAL' sbs.hcal.a_p[I] sbs.hcal.a_amp_p[I] 100 0 10 200 0 40 sbs.hcal.a_time[I]>0
 th2d hE_vs_mult_clus 'Cluster E vs Multiplicity' sbs.hcal.clus.e[I] sbs.hcal.clus.nblk[I] 40 0 0.4 12 0 12 
+th2d hTDC_vs_ADC 'HCal TDCvsADC' sbs.hcal.tdc[I] sbs.hcal.a_time[I] 160 0.5 160.5 350 -300 400 sbs.hcal.tdc[I]<1000
 
 #cluster energy vs nblk
 
