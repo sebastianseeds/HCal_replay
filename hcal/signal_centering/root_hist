@@ -189,3 +189,39 @@ new TBrowser
 .q
 .x hcal_signal_centering.C(12280)
 .q
+.x hcal_signal_centering.C(12471)
+.q
+.x hcal_signal_centering.C(12489)
+.q
+.x hcal_signal_centering.C()
+.q
+.x hcal_signal_centering.C()
+.q
+.x hcal_signal_centering.C(12489)
+.q
+.x hcal_signal_centering.C(12489)
+.q
+.x hcal_signal_centering.C(12491)
+.q
+.x hcal_signal_centering.C(12497)
+cd out
+.q
+.x hcal_signal_centering.C(12497)
+.q
+.x hcal_signal_centering.C(12497)
+.q
+.x hcal_signal_centering.C(12499)
+.q
+.q
+.x hcal_signal_centering.C(13157)
+.q
+.x hcal_signal_centering.C(13157)
+.q
+.x hcal_signal_centering.C(13165)
+.q
+.x hcal_signal_centering.C(13165)
+.q
+.x hcal_signal_centering.C(13166)
+.q
+.x hcal_signal_centering.C(13193)
+.q

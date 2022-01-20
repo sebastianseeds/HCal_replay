@@ -217,8 +217,8 @@ Int_t hcal_dispTrig(Int_t run = 1198, Int_t event = -1)
 
   // Initialize function with user commands
 
-  cout << "Enter run number for analysis." << endl;
-  cin >> run;
+  //cout << "Enter run number for analysis." << endl;
+  //cin >> run;
 
   hcalgui::SetupTGUI();
   gStyle->SetLabelSize(0.05,"XY");
@@ -227,7 +227,10 @@ Int_t hcal_dispTrig(Int_t run = 1198, Int_t event = -1)
   if(!T) { 
     T = new TChain("T");
     //T->Add(TString::Format("%s/e1209019_%d*.root",getenv("DATA_DIR"),run));
-    T->Add(TString::Format("%s/hcal_gmn_%d*.root",getenv("DATA_DIR"),run));
+    //T->Add(TString::Format("%s/hcal_gmn_%d*.root",getenv("DATA_DIR"),run));
+    //T->Add(TString::Format("%s/hcal_trim_%d_10000*.root",getenv("DATA_DIR"),run));
+    T->Add(Form("/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_%d_200000.root",run));
+    //T->Add(Form("/adaqfs/home/a-onl/sbs/Rootfiles/hcal_trim_%d_10000.root",run));
     T->SetBranchStatus("*",0);
     T->SetBranchStatus("sbs.hcal.*",1);
     T->SetBranchStatus("sbs.trig.*",2);

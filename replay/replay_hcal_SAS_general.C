@@ -33,11 +33,11 @@
 #include "SBSRasteredBeam.h"
 #endif
 
-void replay_hcal_SAS_general(int run_number = 124, uint nev = -1, uint nseg = 0)
+void replay_hcal_SAS_general(int run_number = 124, uint nev = -1, uint nseg = 0, Int_t pedestalmode=0)
 {
   //load SBS-offline
-  gSystem->Load("libsbs.so");
-  
+  //gSystem->Load("libsbs.so");
+
   //Add BB information for energy calibration
   SBSBigBite* bigbite = new SBSBigBite("bb", "BigBite spectrometer" );
   SBSBBTotalShower* ts= new SBSBBTotalShower("ts", "sh", "ps", "BigBite shower");
@@ -56,8 +56,8 @@ void replay_hcal_SAS_general(int run_number = 124, uint nev = -1, uint nseg = 0)
   SBSGenericDetector* tdctrig= new SBSGenericDetector("tdctrig","BigBite shower TDC trig");
   tdctrig->SetModeADC(SBSModeADC::kNone);
   tdctrig->SetModeTDC(SBSModeTDC::kTDC);
+  tdctrig->SetStoreEmptyElements(kFALSE);
   bigbite->AddDetector( tdctrig );
-  gHaApps->Add(bigbite);
 
   SBSTimingHodoscope* hodotdc = new  SBSTimingHodoscope("hodotdc", "BigBite hodo");
   hodotdc->SetModeTDC(SBSModeTDC::kTDC);
@@ -74,6 +74,12 @@ void replay_hcal_SAS_general(int run_number = 124, uint nev = -1, uint nseg = 0)
   //bigbite->AddDetector( new THaShower("ps", "BigBite preshower") );
   bigbite->AddDetector(hodotdc);
   bigbite->AddDetector(hodoadc);
+  SBSGEMSpectrometerTracker *bbgem = new SBSGEMSpectrometerTracker("gem", "BigBite Hall A GEM data");
+  bool pm =  ( pedestalmode != 0 );
+  //this will override the database setting:
+  ( static_cast<SBSGEMTrackerBase *> (bbgem) )->SetPedestalMode( pm );
+  bigbite->AddDetector(bbgem);
+  gHaApps->Add(bigbite);
 
   SBSEArm *harm = new SBSEArm("sbs","Hadron Arm with HCal");
   SBSHCal* hcal =  new SBSHCal("hcal","HCAL");
@@ -234,7 +240,7 @@ void replay_hcal_SAS_general(int run_number = 124, uint nev = -1, uint nseg = 0)
   // Clean up
   analyzer->Close();
   delete analyzer;
-  gHaVars->Clear();
+  //gHaVars->Clear();
   gHaPhysics->Delete();
   gHaApps->Delete();
 }

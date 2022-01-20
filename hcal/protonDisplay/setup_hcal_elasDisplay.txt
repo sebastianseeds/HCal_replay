@@ -2,18 +2,42 @@
 #/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11311*.root
 #/adaqfs/home/a-onl/sbs/Rootfiles/hcal_11311*.root
 #/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11311*.root
-/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11182*.root
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11182*.root
 #/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11302*
 #/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11303*
 #/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11304*
 #/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11420*
 #/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11421*
 #/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_11422*
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_13222*
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_13225*
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_13227*
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_13228*
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_13230*
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_13235*
+/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_13240*
+/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_13241*
+/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_13242*
+/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_13243*
+/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_13244*
+/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_13241*
+/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_13312*
+/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_13313*
+/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_13320*
+/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_13321*
+/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_13345*
+/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_13346*
+/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_13348*
+/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_13349*
+/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_13351*
+/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_13352*
+/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_13379*
+#/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_13312_10000.root
 endlist
 hcalt::ce>0
 hcalt::a_time>0
 endcut
-E_e 3.84
+E_e 6.0
 current 1.0
 W_mean 1.442
 W_sigma 0.098

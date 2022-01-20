@@ -252,8 +252,8 @@ Int_t hcal_display(Int_t run = 1198, Int_t event = -1)
 
   if(!T) { 
     T = new TChain("T");
-    T->Add(TString::Format("/volatile/halla/sbs/seeds/rootfiles/hcal_%d*.root",run));
-    //T->Add(TString::Format("/adaqfs/home/a-onl/sbs/Rootfiles/hcal_%d*.root",run));
+    //T->Add(TString::Format("/volatile/halla/sbs/seeds/rootfiles/hcal_%d*.root",run));
+    T->Add(TString::Format("/adaqfs/home/a-onl/sbs/Rootfiles/hcal_trim_%d*.root",run));
     //T->Add(TString::Format("rootFiles/LED/fadc_f1tdc_%d.root",run));
     T->SetBranchStatus("*",0);
     T->SetBranchStatus("sbs.hcal.*",1);

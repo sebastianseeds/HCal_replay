@@ -11,4 +11,3 @@ export DATA_DIR=/adaqeb1/data1
 export OUT_DIR=/adaqfs/home/a-onl/sbs/Rootfiles
 #export DB_DIR=/adaqfs/home/a-onl/sbs/HCal_replay/replay/DB
 export DB_DIR=/adaqfs/home/a-onl/sbs/sbs_devel/SBS-replay/DB
-

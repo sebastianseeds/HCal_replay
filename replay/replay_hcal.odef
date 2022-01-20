@@ -54,6 +54,7 @@ th2d hped_vs_elem_hcal 'Pedestal vs element ID : HCAL' sbs.hcal.adcelemID[I] sbs
 th1d hTDC_HCAL 'Cluster TDC over all channels : HCAL' sbs.hcal.clus.tdctime 250 -150 100 #sbs.hcal.clus.e_c[I]>0.35
 th2d hTDC_vs_clus_ID 'Cluster TDC vs Module : HCAL' sbs.hcal.clus.id[I] sbs.hcal.clus.tdctime[I] 288 0.5 288.5 250 -150 100 #sbs.hcal.clus.e_c[I]>0.35
 th1d hATime_HCAL 'Cluster ADC time over all channels : HCAL' sbs.hcal.clus.atime 320 0 160 sbs.hcal.clus.e_c[I]>0.35
+th1d hATime_HCAL_LED 'Cluster ADC time for LED events : HCAL' sbs.hcal.clus.atime 320 0 160 fEvtHdr.fTrigBits==32
 th2d hAmp_vs_elem_ID 'Amplitude vs Module (saturation check): HCAL' sbs.hcal.adcelemID[I] sbs.hcal.a_amp_p[I] 288 0.5 288.5 9000 2 9002
 th2d hADC_vs_clus_ID 'ADC vs module : HCAL' sbs.hcal.clus.id[I] sbs.hcal.clus.e_c[I] 288 0.5 288.5 100 0 1
 th1d hnev_TDC_vs_elem_ID 'Number TDC events vs Module : HCAL' sbs.hcal.tdcelemID 288 0.5 288.5 sbs.hcal.tdc[I]<1000
