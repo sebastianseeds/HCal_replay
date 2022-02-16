@@ -74,6 +74,7 @@ void hcal_elasDisplay( const char *configfilename, int run = -1 ){
     T = new TChain( "T" );
     T->SetBranchStatus( "*", 0 );
     T->SetBranchStatus( "sbs.hcal.*", 1 );
+    T->SetBranchStatus( "bb.tr.*", 1 );
     T->SetBranchAddress( "sbs.hcal.a_p", hcalt::a_p );
     T->SetBranchAddress( "sbs.hcal.a_amp", hcalt::a_amp );
     T->SetBranchAddress( "sbs.hcal.a_c", hcalt::a_c );
@@ -173,9 +174,11 @@ void hcal_elasDisplay( const char *configfilename, int run = -1 ){
   TH1D *h_KE_p = new TH1D( "Scattered Proton Kinetic Energy", "KE_pp", 500, 0.0, E_e*1.5 ); // Set limits based on energy conservation
   h_KE_p->GetXaxis()->SetTitle( "GeV" );
   TH1D *h_clusDist = new TH1D( "clusDist", "Cluster Distribution", 12, 0, 12 );
-  h_W->GetXaxis()->SetTitle( "GeV" );
-  TH1D *h_clusADist = new TH1D( "clusADist", "Cluster ADC Distribution", 520, -20, 520 );
-  h_W->GetXaxis()->SetTitle( "GeV" );
+  h_clusDist->GetXaxis()->SetTitle( "Number" );
+  TH1D *h_blkADist = new TH1D( "blkADist", "Cluster Block ADC Distribution", 520, -20, 520 );
+  h_blkADist->GetXaxis()->SetTitle( "GeV" );
+  TH1D *h_clusEDist = new TH1D( "clusEDist", "Cluster E Distribution", 520, -20, 520 );
+  h_clusEDist->GetXaxis()->SetTitle( "GeV" );
   TH1F *NEVvCh = new TH1F( "NEVvChannel", "Number Events vs Channel", kNcols*kNrows, 0, kNcols*kNrows );
   TH2D *Elastics_rowcol = new TH2D( "Elastics_rowcol", "", kNcols, 0.5, kNcols+0.5, kNrows, 0.5, kNrows+0.5 );
   TH2D *Elastics_rowcolALT = new TH2D( "Elastics_rowcolALT", "", kNcols, 0.5, kNcols+0.5, kNrows, 0.5, kNrows+0.5 );
@@ -225,7 +228,7 @@ void hcal_elasDisplay( const char *configfilename, int run = -1 ){
 
     for( int elem=0; elem<track_tot; elem++ ){            
       if( hcalt::BBtr_chi2[elem] < min )
-	track = elem;      
+	track = elem;
     }
     
     TVector3 lVep( hcalt::BBtr_px[track], hcalt::BBtr_py[track], hcalt::BBtr_pz[track] ); // Construct the scattered electron momentum vector from the tree (GEM reconstructed)
@@ -242,9 +245,27 @@ void hcal_elasDisplay( const char *configfilename, int run = -1 ){
     double Q2 = 2*E_e*E_ep*( 1-(hcalt::BBtr_pz[track]/p_ep) ); // Obtain Q2 from beam energy, outgoing electron energy, and momenta
     h_Q2->Fill( Q2 ); // Fill histogram
 
+    //cout << "track_tot = " << track_tot << endl;
+
+    //cout << "track = " << track << endl;
+
+    //cout << "E_e = " << E_e << endl;
+
+    //cout << "E_ep = " << E_ep << endl;
+
+    //cout << "BBtr_pz = " << hcalt::BBtr_pz[track] << endl;
+
     double nu = E_e-E_ep; // Obtain energy transfer
 
     double W2 = pow( M_p,2 )+2*M_p*nu-Q2; // Obtain W2 from Q2 and nu
+
+    //cout << "M_p = " << M_p << endl;
+
+    //cout << "nu = " << nu << endl;
+
+    //cout << "Q2 = " << Q2 << endl;
+
+    //cout << "W2 = " << W2 << endl;
 
     double W = 0;
     if( W2>0 ){
@@ -275,10 +296,12 @@ void hcal_elasDisplay( const char *configfilename, int run = -1 ){
 
       NEVvCh->Fill( hcalt::cid[0] );
 
+      h_clusEDist->Fill( hcalt::ce[0] );
+
       //cout << "mevent=" << mevent << endl;
       //cout << "clusters=" << hcalt::cnblk[0] << endl;
       for( int m = 0; m < hcalt::nblk[0]; m++ ) {
-	h_clusADist->Fill(hcalt::cblke[m]);
+	h_blkADist->Fill(hcalt::cblke[m]);
       }
       // Primary loop over all cells to return tree values
       // For some reason, need all a_time values (more than clusters alone) to resolve proton image on hcal... 
@@ -311,7 +334,7 @@ void hcal_elasDisplay( const char *configfilename, int run = -1 ){
 	  
 	  int id = hcalt::cblkid[m]-1;
 
-	  cout << "Block r:" << id/kNcols << " Col c:" << id%kNcols << " event:" << mevent << endl;
+	  //cout << "Block r:" << id/kNcols << " Col c:" << id%kNcols << " event:" << mevent << endl;
 
 	  cblkatime_rowcol->Fill( id%kNcols+1, id/kNcols+1, hcalt::cblkatime[m] );
 	 
@@ -371,8 +394,11 @@ void hcal_elasDisplay( const char *configfilename, int run = -1 ){
   h_clusDist->Write( "clusDist" );
   h_clusDist->Draw( "AP" );
 
-  h_clusADist->Write( "clusADist" );
-  h_clusADist->Draw( "AP" );
+  h_clusEDist->Write( "clusEDist" );
+  h_clusEDist->Draw( "AP" );
+
+  h_blkADist->Write( "clusADist" );
+  h_blkADist->Draw( "AP" );
 
   for( int r=0; r<kNrows; r++){
     for( int c=0; c<kNcols; c++){

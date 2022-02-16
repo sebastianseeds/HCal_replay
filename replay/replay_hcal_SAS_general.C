@@ -224,6 +224,7 @@ void replay_hcal_SAS_general(int run_number = 124, uint nev = -1, uint nseg = 0,
 
     analyzer->SetOdefFile( "/w/halla-scshelf2102/sbs/seeds/HCal_replay/replay/replay_hcal.odef" );
     analyzer->SetCutFile( "/w/halla-scshelf2102/sbs/seeds/HCal_replay/replay/replay_hcal.cdef" );
+
     // Set EPICS event type
     analyzer->SetEpicsEvtType(150);
     analyzer->SetEpicsEvtType(151);

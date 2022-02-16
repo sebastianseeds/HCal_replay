@@ -98,7 +98,11 @@ void hcal_signal_centering( int run = -1 ){
     //T->Add(Form("/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_%d*.root",run));
     //T->Add( inFile );
     //T->Add( "/adaqfs/home/a-onl/sbs/Rootfiles/hcal_12039_-1_1.root" );
-    T->Add( "/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_12276_100000.root" );
+    //T->Add( Form("/adaqfs/home/a-onl/sbs/Rootfiles/hcal_trim_%d_100000.root",run) );
+    T->Add( Form("/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_%d_200000.root",run) );
+
+    cout << "Just loaded run " << run << endl;
+
     //cout << "Loading branches from file: " << inFile << ".." << endl;
     T->SetBranchStatus( "*", 0 );
     T->SetBranchStatus( "sbs.hcal.*", 1 );

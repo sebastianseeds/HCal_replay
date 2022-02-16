@@ -1,0 +1,185 @@
+# SBS GMn Sept 2021
+# scaler.map file for Left HRS event type 140  
+# comments start with #
+
+# map syntax
+# scaler, type, crate, slot, header, mask, norm slot#
+# after the norm slot#:  clock chan# and clock frequency
+# scaler   type   crate   slot    header     mask        norm   ch   clk freq
+map      1151     8       0       abc00010   ffffffff    2 
+map      3800     8       1       abc10020   ffffffff    2        
+map      3800     8       2       abc20020   ffffffff    2      7    103900
+map      3800     8       3       abc30020   ffffffff    2 
+map      1151     8       4       abc40010   ffffffff    2 
+map      1151     8       5       abc50010   ffffffff    2 
+# map      3800   1       6       abc60000   ffff0000    1
+# map      3801   10      2       abc60000   ffff0000    1
+
+# Scaler in the LHRS, ROC10 
+# variable syntax
+# slot#, chan#, (1=cnt, 2=rate), var name, description string
+# var name gets "fName" prefix, e.g.
+# for L-HRS scalers with fname="Left", var name = "Left.bcm.u3"
+# type        slot   chan    cnt(1) or rate(2)   var name         description string 
+  variable       0        0        1        slot00.ch00.cnt       empty (ch 0)
+  variable       0        0        2        slot00.ch00.rate      empty (ch 0)
+  variable       0        1        1        slot00.ch01.cnt       empty (ch 1)
+  variable       0        1        2        slot00.ch01.rate      empty (ch 1)
+  variable       0        2        1        slot00.ch02.cnt       empty (ch 2)
+  variable       0        2        2        slot00.ch02.rate      empty (ch 2)
+  variable       0        3        1        slot00.ch03.cnt       empty (ch 3)
+  variable       0        3        2        slot00.ch03.rate      empty (ch 3)
+  variable       0        4        1        slot00.ch04.cnt       empty (ch 4)
+  variable       0        4        2        slot00.ch04.rate      empty (ch 4)
+  variable       0        5        1        slot00.ch05.cnt       empty (ch 5)
+  variable       0        5        2        slot00.ch05.rate      empty (ch 5)
+  variable       0        6        1        slot00.ch06.cnt       empty (ch 6)
+  variable       0        6        2        slot00.ch06.rate      empty (ch 6)
+  variable       0        7        1        slot00.ch07.cnt       empty (ch 7)
+  variable       0        7        2        slot00.ch07.rate      empty (ch 7)
+  variable       0        8        1        slot00.ch08.cnt       empty (ch 8)
+  variable       0        8        2        slot00.ch08.rate      empty (ch 8)
+  variable       0        9        1        slot00.ch09.cnt       empty (ch 9)
+  variable       0        9        2        slot00.ch09.rate      empty (ch 9)
+  variable       0        10       1        slot00.ch10.cnt       empty (ch 10)
+  variable       0        10       2        slot00.ch10.rate      empty (ch 10)
+  variable       0        11       1        slot00.ch11.cnt       empty (ch 11)
+  variable       0        11       2        slot00.ch11.rate      empty (ch 11)
+  variable       0        12       1        slot00.ch12.cnt       empty (ch 12)
+  variable       0        12       2        slot00.ch12.rate      empty (ch 12)
+  variable       0        13       1        slot00.ch13.cnt       empty (ch 13)
+  variable       0        13       2        slot00.ch13.rate      empty (ch 13)
+  variable       0        14       1        slot00.ch14.cnt       empty (ch 14)
+  variable       0        14       2        slot00.ch14.rate      empty (ch 14)
+  variable       0        15       1        slot00.ch15.cnt       empty (ch 15)
+  variable       0        15       2        slot00.ch15.rate      empty (ch 15)
+  variable       1        0        1        S0A.cnt               S0A 
+  variable       1        0        2        S0A.rate              S0A 
+  variable       1        1        1        S0B.cnt               S0B 
+  variable       1        1        2        S0B.rate              S0B 
+  variable       1        2        1        S3m.cnt               S3 (middle) 
+  variable       1        2        2        S3m.rate              S3 (middle) 
+  variable       1        3        1        UQ.cnt                UQ 
+  variable       1        3        2        UQ.rate               UQ 
+  variable       1        4        1        DQ.cnt                DQ 
+  variable       1        4        2        DQ.rate               DQ 
+  variable       1        5        1        ATin.cnt              ATin 
+  variable       1        5        2        ATin.rate             ATin 
+  variable       1        6        1        ATout.cnt             ATout 
+  variable       1        6        2        ATout.rate            ATout 
+  variable       1        7        1        S3near.cnt            S3 (near) 
+  variable       1        7        2        S3near.rate           S3 (near) 
+  variable       1        8        1        S3far.cnt             S3 (far) 
+  variable       1        8        2        S3far.rate            S3 (far) 
+  variable       1        9        1        slot01.ch09.cnt       empty (ch 9)
+  variable       1        9        2        slot01.ch09.rate      empty (ch 9)
+  variable       1        10       1        slot01.ch10.cnt       empty (ch 10)
+  variable       1        10       2        slot01.ch10.rate      empty (ch 10)
+  variable       1        11       1        slot01.ch11.cnt       empty (ch 11)
+  variable       1        11       2        slot01.ch11.rate      empty (ch 11)
+  variable       1        12       1        slot01.ch12.cnt       empty (ch 12)
+  variable       1        12       2        slot01.ch12.rate      empty (ch 12)
+  variable       1        13       1        slot01.ch13.cnt       empty (ch 13)
+  variable       1        13       2        slot01.ch13.rate      empty (ch 13)
+  variable       1        14       1        slot01.ch14.cnt       empty (ch 14)
+  variable       1        14       2        slot01.ch14.rate      empty (ch 14)
+  variable       1        15       1        slot01.ch15.cnt       empty (ch 15)
+  variable       1        15       2        slot01.ch15.rate      empty (ch 15)
+  variable       1        16       1        slot01.ch16.cnt       empty (ch 16)
+  variable       1        16       2        slot01.ch16.rate      empty (ch 16)
+  variable       1        17       1        slot01.ch17.cnt       empty (ch 17)
+  variable       1        17       2        slot01.ch17.rate      empty (ch 17)
+  variable       1        18       1        bcm.unew.cnt          new digital bcm upstream count
+  variable       1        18       2        bcm.unew.rate         new digital bcm upstream rate
+  variable       1        19       1        slot01.ch19.cnt       empty (ch 19)
+  variable       1        19       2        slot01.ch19.rate      empty (ch 19)
+  variable       1        20       1        bcm.dnew.cnt          new digital bcm downstream count
+  variable       1        20       2        bcm.dnew.rate         new digital bcm downstream rate
+  variable       1        21       1        slot01.ch21.cnt       empty (ch 21)
+  variable       1        21       2        slot01.ch21.rate      empty (ch 21)
+  variable       1        22       1        bcm.unser.cnt         unser counts
+  variable       1        22       2        bcm.unser.rate        unser rate
+  variable       1        23       1        slot01.ch23.cnt       empty (ch 23)
+  variable       1        23       2        slot01.ch23.rate      empty (ch 23)
+  variable       1        24       1        bcm.u1.cnt            bcm u1 upstream count
+  variable       1        24       2        bcm.u1.rate           bcm u1 upstream rate
+  variable       1        25       1        slot01.ch25.cnt       empty (ch 25)
+  variable       1        25       2        slot01.ch25.rate      empty (ch 25)
+  variable       1        26       1        bcm.d1.cnt            bcm d1 downstream count
+  variable       1        26       2        bcm.d1.rate           bcm d1 downstream rate
+  variable       1        27       1        slot01.ch27.cnt       empty (ch 27)
+  variable       1        27       2        slot01.ch27.rate      empty (ch 27)
+  variable       1        28       1        bcm.d3.cnt            bcm d3 downstream count
+  variable       1        28       2        bcm.d3.rate           bcm d3 downstream rate
+  variable       1        29       1        slot01.ch29.cnt       empty (ch 29)
+  variable       1        29       2        slot01.ch29.rate      empty (ch 29)
+  variable       1        30       1        bcm.d10.cnt           bcm d10 downstream count
+  variable       1        30       2        bcm.d10.rate          bcm d10 downstream rate
+  variable       1        31       1        slot01.ch31.cnt       empty (ch 31)
+  variable       1        31       2        slot01.ch31.rate      empty (ch 31)
+  variable       2        0        1        slot02.T1.cnt         Trigger S0A and S0B
+  variable       2        0        2        slot02.T1.rate        Trigger S0A and S0B
+  variable       2        1        1        slot02.S2m.cnt        Trigger S3
+  variable       2        1        2        slot02.S2m.rate       Trigger S3
+  variable       2        2        1        slot02.S0hA.cnt       S0A logic signal
+  variable       2        2        2        slot02.S0hA.rate      S0A logic signal
+  variable       2        3        1        slot02.S0hB.cnt       S0B logic signal
+  variable       2        3        2        slot02.S0hB.rate      S0B logic signal
+  variable       2        4        1        slot02.S0hAB.cnt      Trigger down quartz
+  variable       2        4        2        slot02.S0hAB.rate     Trigger down quartz
+  variable       2        5        1        slot02.T6.cnt         Trigger S0A and S0B and S3
+  variable       2        5        2        slot02.T6.rate        Trigger S0A and S0B and S3
+  variable       2        6        1        slot02.test.cnt       test 
+  variable       2        6        2        slot02.test.rate      test 
+  variable       2        7        1        104kHz_CLK.cnt        103.7 kHz clock 
+  variable       2        7        2        104kHz_CLK.rate       103.7 kHz clock 
+  variable       2        8        1        slot02.ch08.cnt       empty 
+  variable       2        8        2        slot02.ch08.rate      empty 
+  variable       2        9        1        slot02.ch09.cnt       empty 
+  variable       2        9        2        slot02.ch09.rate      empty 
+  variable       2        10       1        slot02.ch10.cnt       empty 
+  variable       2        10       2        slot02.ch10.rate      empty 
+  variable       2        11       1        slot02.RCLK1024.cnt   1024 Hz clock  
+  variable       2        11       2        slot02.RCLK1024.rate  1024 Hz clock  
+  variable       2        12       1        slot02.S0cA.cnt       S0 Cerenkov, PMT A
+  variable       2        12       2        slot02.S0cA.rate      S0 Cerenkov, PMT A
+  variable       2        13       1        slot02.S0cB.cnt       S0cB 
+  variable       2        13       2        slot02.S0cB.rate      S0cB 
+  variable       2        14       1        slot02.S0cAB.cnt      S0cAB 
+  variable       2        14       2        slot02.S0cAB.rate     S0cAB 
+  variable       2        15       1        slot02.ch15.cnt       empty 
+  variable       2        15       2        slot02.ch15.rate      empty 
+  variable       3        0        1        S2L0.cnt              S2 Left PMT ch 0
+  variable       3        0        2        S2L0.rate             S2 Left PMT ch 0
+  variable       3        1        1        S2L1.cnt              S2 Left PMT ch 1
+  variable       3        1        2        S2L1.rate             S2 Left PMT ch 1
+  variable       3        2        1        S2L2.cnt              S2 Left PMT ch 2
+  variable       3        2        2        S2L2.rate             S2 Left PMT ch 2
+  variable       3        3        1        S2L3.cnt              S2 Left PMT ch 3
+  variable       3        3        2        S2L3.rate             S2 Left PMT ch 3
+  variable       3        4        1        S2L4.cnt              S2 Left PMT ch 4
+  variable       3        4        2        S2L4.rate             S2 Left PMT ch 4
+  variable       3        5        1        S2L5.cnt              S2 Left PMT ch 5
+  variable       3        5        2        S2L5.rate             S2 Left PMT ch 5
+  variable       3        6        1        S2L6.cnt              S2 Left PMT ch 6
+  variable       3        6        2        S2L6.rate             S2 Left PMT ch 6
+  variable       3        7        1        S2L7.cnt              S2 Left PMT ch 7
+  variable       3        7        2        S2L7.rate             S2 Left PMT ch 7
+  variable       3        8        1        S2L8.cnt              S2 Left PMT ch 8
+  variable       3        8        2        S2L8.rate             S2 Left PMT ch 8
+  variable       3        9        1        S2L9.cnt              S2 Left PMT ch 9
+  variable       3        9        2        S2L9.rate             S2 Left PMT ch 9
+  variable       3        10       1        S2L10.cnt             S2 Left PMT ch 10
+  variable       3        10       2        S2L10.rate            S2 Left PMT ch 10
+  variable       3        11       1        S2L11.cnt             S2 Left PMT ch 11
+  variable       3        11       2        S2L11.rate            S2 Left PMT ch 11
+  variable       3        12       1        S2L12.cnt             S2 Left PMT ch 12
+  variable       3        12       2        S2L12.rate            S2 Left PMT ch 12
+  variable       3        13       1        S2L13.cnt             S2 Left PMT ch 13
+  variable       3        13       2        S2L13.rate            S2 Left PMT ch 13
+  variable       3        14       1        S2L14.cnt             S2 Left PMT ch 14
+  variable       3        14       2        S2L14.rate            S2 Left PMT ch 14
+  variable       3        15       1        S2L15.cnt             S2 Left PMT ch 15
+  variable       3        15       2        S2L15.rate            S2 Left PMT ch 15
+  variable       3        16       1        S2L16.cnt             S2 Left PMT ch 16
+  variable       3        16       2        S2L16.rate            S2 Left PMT ch 16

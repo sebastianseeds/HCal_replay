@@ -244,6 +244,9 @@ def initialize():
 def enable_chs():
     #Enables the output channels for the DVCS pulser.
     os.system('remex hcalROC17 \'dvcsPulserEnable(0x1d)\'')
+    #Set the frequency to 10 Hz by default.
+    os.system('remex hcalROC17 \'dvcsPulserSetFrequency(10)\'')
+    print('The DVCS pulser rate is now set to 10 Hz.')
 
 def save_settings():
     print('Save Test')

@@ -1,0 +1,15 @@
+--------[ 2021-09-18 00:00:00 -0500 ]
+sbsBCM.u1.offset = 0
+sbsBCM.u1.gain = 0.0003673
+sbsBCM.d1.offset = 0
+sbsBCM.d1.gain = 0.0003212
+sbsBCM.d3.offset = 0.2068
+sbsBCM.d3.gain = 0.0001076
+sbsBCM.d10.offset= 0.1775
+sbsBCM.d10.gain = 0.00003714
+sbsBCM.dnew.offset = 0.0127
+sbsBCM.dnew.gain = 0.0003486
+sbsBCM.unew.offset = -0.03138
+sbsBCM.unew.gain = 0.0003054
+sbsBCM.current_cut = 3.0 8.0 13.0 16.0 19.0
+

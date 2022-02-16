@@ -96,7 +96,6 @@ void trig_diff( int run = -1 ){
     //T->Add( Form("/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_%d_4100000_72.root",run) );
     //T->Add( Form("/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_%d_4100000_73.root",run) );
     //T->Add( Form("/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_%d_4100000_74.root",run) );
-
     //T->Add( Form("/adaqfs/home/a-onl/sbs/Rootfiles/hcal_trim_%d*.root",run) );
     T->SetBranchStatus( "*", 0 );
     T->SetBranchStatus( "sbs.hcal.*", 1 );

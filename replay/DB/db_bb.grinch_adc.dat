@@ -26,7 +26,7 @@ bb.grinch_adc.ncols = 4
 ## adc channels to mV assume F250 set fot 0.5V for 4096
 bb.grinch_adc.adc.conv = 0.12207
 # Threshold for pulse finding in waveform (mV)
-bb.grinch_adc.adc.thres = 20.
+bb.grinch_adc.adc.thres = 4.
 # Number of bins (bin=4ns) at the beginning of waveform used to determing average Pedestal
 bb.grinch_adc.adc.NPedBin = 4
 # Number of bins (bin=4ns) before Threshold Bin to use in integrating pulse

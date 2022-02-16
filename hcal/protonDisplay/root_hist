@@ -62,3 +62,30 @@ new TBrowser
 .q
 .x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
 .q
+.q
+.x hcal_elasDisplay.C("setup_chal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_chal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q

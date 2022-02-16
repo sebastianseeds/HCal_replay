@@ -79,3 +79,13 @@ bb.theta = 40.0
 bb.pcentral = 2.67
 bb.magdist = 1.85
 
+--------[ 2021-11-23 00:00:00 ] ## starting SBS-11 kinematics for GMN
+
+ebeam = 9.859 
+sbs.theta = -13.3 
+sbs.pcentral = 8.1
+
+bb.theta = 42.0
+bb.magdist = 1.55 
+bb.pcentral = 2.67
+

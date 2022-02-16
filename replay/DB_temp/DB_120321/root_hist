@@ -1,0 +1,5 @@
+TFile *_file0 = TFile::Open("/adaqfs/home/a-onl/sbs/Rootfiles/bbgem_replayed_1122_stream0_seg0_1.root")
+.q
+TFile *_file0 = TFile::Open("/adaqfs/home/a-onl/sbs/Rootfiles/bbgem_replayed_1122_stream0_seg0_1.root")
+.q
+.q
