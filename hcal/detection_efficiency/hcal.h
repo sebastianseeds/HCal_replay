@@ -25,6 +25,7 @@ namespace hcalt {
   Double_t ledbit = -1;
   Double_t ledcount = 0.0;
   Double_t atimeblk = 0.0;
+  //Double_t ce = 0.0;
   Double_t tdc[MAX_HCAL_TDC_MODULES+100] = {0.};
   Double_t a_time[MAX_HCAL_MODULES+1000] = {0.};
   Double_t e[MAX_HCAL_MODULES+1000] = {0.};

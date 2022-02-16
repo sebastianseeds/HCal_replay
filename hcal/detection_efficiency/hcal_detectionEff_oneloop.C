@@ -80,11 +80,11 @@ void hcal_detectionEff_oneloop( const char *configfilename, int run = -1 ){
     T->SetBranchStatus( "sbs.hcal.x", 1 );
     T->SetBranchStatus( "sbs.hcal.y", 1 );
     T->SetBranchStatus( "sbs.hcal.e", 1 );
-    T->SetBranchStatus( "sbs.hcal.clus.e", 1 );
-    T->SetBranchStatus( "sbs.hcal.clus.nblk", 1 );
-    T->SetBranchStatus( "sbs.hcal.clus.row", 1 );
-    T->SetBranchStatus( "sbs.hcal.clus.col", 1 );
-    T->SetBranchStatus( "sbs.hcal.nclus", 1 );
+    //T->SetBranchStatus( "sbs.hcal.clus.e", 1 );
+    //T->SetBranchStatus( "sbs.hcal.clus.nblk", 1 );
+    //T->SetBranchStatus( "sbs.hcal.clus.row", 1 );
+    //T->SetBranchStatus( "sbs.hcal.clus.col", 1 );
+    //T->SetBranchStatus( "sbs.hcal.nclus", 1 );
     T->SetBranchStatus( "bb.tr.n", 1 );
     T->SetBranchStatus( "bb.tr.p", 1 );
     T->SetBranchStatus( "bb.tr.px", 1 );
@@ -118,21 +118,21 @@ void hcal_detectionEff_oneloop( const char *configfilename, int run = -1 ){
     T->SetBranchAddress( "bb.ps.x", hcalt::BBps_x );
     T->SetBranchAddress( "bb.ps.y", hcalt::BBps_y );
     T->SetBranchAddress( "bb.ps.e", hcalt::BBps_e );
-    T->SetBranchAddress( "sbs.hcal.clus.row", hcalt::crow );
-    T->SetBranchAddress( "sbs.hcal.clus.col", hcalt::ccol );
+    //T->SetBranchAddress( "sbs.hcal.clus.row", hcalt::crow );
+    //T->SetBranchAddress( "sbs.hcal.clus.col", hcalt::ccol );
     T->SetBranchAddress( "sbs.hcal.x", hcalt::cx );
     T->SetBranchAddress( "sbs.hcal.y", hcalt::cy );
     T->SetBranchAddress( "sbs.hcal.e", hcalt::e );
-    T->SetBranchAddress( "sbs.hcal.clus.e", hcalt::ce );
-    T->SetBranchAddress( "sbs.hcal.clus.nblk", hcalt::cnblk );
-    T->SetBranchAddress( "sbs.hcal.nclus", hcalt::nclus );
+    //T->SetBranchAddress( "sbs.hcal.clus.e", hcalt::ce );
+    //T->SetBranchAddress( "sbs.hcal.clus.nblk", hcalt::cnblk );
+    //T->SetBranchAddress( "sbs.hcal.nclus", hcalt::nclus );
     T->SetBranchAddress( "bb.tdctrig.tdcelemID", hcalt::TDCT_id );
     T->SetBranchAddress( "bb.tdctrig.tdc", hcalt::TDCT_tdc );
     T->SetBranchAddress( "Ndata.bb.tdctrig.tdcelemID", &hcalt::TDCTndata );
   }
   
   double E_e = 1.92; // Energy of the beam
-  double emin = 0.5; // Minimum energy of a block to be considered in clusters
+  double emin = 0.05; // Minimum energy of a block to be considered in clusters
   double HCal_d = 14.5; // Distance to HCal from scattering chamber for comm1
   double HCal_th = 35.0; // Angle that the center of HCal is at  
   double opticsCorr = 1.05; // Correction to magnitude of p_e to account for misaligned optics
@@ -239,10 +239,10 @@ void hcal_detectionEff_oneloop( const char *configfilename, int run = -1 ){
   TH1D *hW = new TH1D( "hW",";W (GeV);", 400, 0.0, 4.0 );
   TH1D *hW_pCut = new TH1D( "hW_pCut",";W (GeV);", 400, 0.0, 4.0 );
   TH1D *hW_cut_emin = new TH1D( "hW_cut_emin",";W (GeV);", 400, 0., 4.0 );
-
+  TH1D *htDiff = new TH1D( "htDiff",";TDC_{HCal}-TDC_{BBCal} (ns);", 1000, -1000, 0 );
 
   //TH1D *hW_cut = new TH1D("hW_cut",";W (GeV);", 400,Wmin_elastic,Wmax_elastic);
-  TH1D *hW_cut = new TH1D( "hW_cut",";W (GeV);", 1150., 0., 1.15 );
+  TH1D *hW_cut = new TH1D( "hW_cut",";W (GeV);", 1400., 0., 1.4 );
 
   TH1D *hdx_HCAL = new TH1D("hdx_HCAL",";x_{HCAL}-x_{expect} (m);", 500, -2.5, 2.5);
   TH1D *hdy_HCAL = new TH1D("hdy_HCAL",";y_{HCAL}-y_{expect} (m);", 500, -1.25, 1.25);
@@ -317,6 +317,8 @@ void hcal_detectionEff_oneloop( const char *configfilename, int run = -1 ){
 	}
 	double diff = hcal_time - bbcal_time; 
 	
+	htDiff->Fill(diff);
+
 	//Count the number of elastic events with acceptable tracks in BB (reduction of pions with PS)
 	if( PgammaN.M() >= Wmin_elastic && 
 	    PgammaN.M() <= Wmax_elastic && 
@@ -371,7 +373,7 @@ void hcal_detectionEff_oneloop( const char *configfilename, int run = -1 ){
 	// Can add cut on proton spot here to populate W distribution
 	// Add fiducial cut here on both BB elastics and HCal elastics
 	// Fill denominator if conditions are met
-	if(  PgammaN.M()<1.15 &&
+	if(  PgammaN.M()<1.4 &&
 	     fabs( vertex.Z() )<=0.08 &&
 	     hcalt::BBps_e[0]>0.1 && 
 	     hcalt::BBsh_e[0]>0.1 &&
@@ -383,23 +385,28 @@ void hcal_detectionEff_oneloop( const char *configfilename, int run = -1 ){
 	  //if( hcalt::ce[0] > emin ) hW_cut_emin->Fill(PgammaN.M());
 	}
 	
-	//if(hcalt::crow[0]==0||hcalt::crow[0]==24||hcalt::ccol[0]==0||hcalt::ccol[0]==12) cout << hcalt::crow[0] << " " << hcalt::ccol[0] << endl;
+	//if(hcalt::crow[0]==0||hcalt::crow[0]==24||hcalt::ccol[0]==0||hcalt::ccol[0]==12) cout << hcalt::crow[0] << " " << hcalt::ccol[0] << endl;	    
+	//hcalt::cx[0] > -2.5 &&
+	//hcalt::cx[0] < 2.5 &&
+	//hcalt::cy[0] > -1.2 &&
+	//hcalt::cy[0] < 1.2 &&
 	
+
+	//cout << "BBCal-HCal tDiff: " << diff << endl;
+
 	// Fill Numerator if conditions are met
 	if( PgammaN.M() >= Wmin_elastic && 
 	    PgammaN.M() <= Wmax_elastic && 
 	    hcalt::BBps_e[0] > 0.1 &&
 	    hcalt::BBsh_e[0] > 0.1 &&
-	    hcalt::crow[0] > 0 &&
-	    hcalt::ccol[0] > 0 &&
-	    hcalt::crow[0] < 23 &&
-	    hcalt::ccol[0] < 11 &&
 	    fabs( vertex.Z() ) <= 0.08 &&
-	    fabs( diff-510. )<30 ){
+	    fabs( diff-370. )<20 ){
 	  
 	  hdx_HCAL->Fill( dx );
 	  hdy_HCAL->Fill( dy );
 	  if( hcalt::ce[0] > emin ) hdx_HCAL_emin->Fill( dx ); //Only fill these if the minimum energy of the cluster correlates well with more than a single block
+	  //cout << hcalt::ce[0] << endl;
+
 	  if( hcalt::ce[0] > emin ) hdy_HCAL_emin->Fill( dy );
 	  hdr_HCAL->Fill( dr );
 	  
@@ -408,6 +415,8 @@ void hcal_detectionEff_oneloop( const char *configfilename, int run = -1 ){
 	    hdx_HCAL_dyCut->Fill( dx );
 	  }
 	  hdxdy_HCAL->Fill( dy, dx );
+
+	  //cout << "dx dy: " << dx << " " << dy << endl;
 	  
 	  hxcorr_HCAL->Fill( xexpect_HCAL, hcalt::cx[0] );
 	  hycorr_HCAL->Fill( yexpect_HCAL, hcalt::cy[0] );
@@ -490,16 +499,18 @@ void hcal_detectionEff_oneloop( const char *configfilename, int run = -1 ){
   double sig_r;
   double sig_x_dyCut;
   double BB_elas;
-
+  
   hdx_HCAL->Fit("gaus","Q");
   f1=hdx_HCAL->GetFunction("gaus");
   sig_x = f1->GetParameter(2);
+  hdx_HCAL->SetTitle(Form("Fit Sigma = %f",sig_x));
 
   cout << "Sigma x = " << sig_x << endl;
 
   hdy_HCAL->Fit("gaus","Q");
   f2=hdy_HCAL->GetFunction("gaus");
   sig_y = f2->GetParameter(2);
+  hdy_HCAL->SetTitle(Form("Fit Sigma = %f",sig_y));
 
   cout << "Sigma y = " << sig_y << endl;
 
@@ -518,7 +529,7 @@ void hcal_detectionEff_oneloop( const char *configfilename, int run = -1 ){
   hW_cut->Fit(fe,"Q");
 
   cout << fe->GetParameter(0) << " " << fe->GetParameter(1) << endl;
-
+  
   //hW_cut->Fit("expo","Q");
   //f5=hW_cut->GetFunction("expo");
   //f5->FixParameter(1,2.5);
@@ -531,7 +542,7 @@ void hcal_detectionEff_oneloop( const char *configfilename, int run = -1 ){
   cout << "Total elastic events detected in BB = " << hits_elBB << endl;
 
   cout << "Or, alternatively with fits = " << BB_elas << endl;
-
+  
   fout->Write();
 
 
