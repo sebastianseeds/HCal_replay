@@ -111,6 +111,12 @@ sbs.hcal.dxdydz  =  0.15254  0.15254 0.0
 ## Mininum energy  for a cluster center (not really used right now)
 sbs.hcal.emin  = 0.0
 
+## Minimum seed energy for a cluster set to 100 MeV
+sbs.hcal.emin_clSeed = 0.1
+
+## Maximum time diff between seed and clus blocks 100 ns
+sbs.hcal.tmax = 100
+
 ## Add good time cut at 806ns
 sbs.hcal.tdc.GoodTimeCut = 806
 

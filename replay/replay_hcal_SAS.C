@@ -95,9 +95,10 @@ void replay_hcal_SAS(int run_number = 124, uint nev = -1, uint nseg = 0)
     vector<TString> pathList;
     pathList.push_back(".");
     //string data_path = "/adaqfs/home/a-onl/sbs/data/";
-    string data_path = "/adaqeb1/data1/";
+    //string data_path = "/adaqeb1/data1/";
+    string data_path = "/lustre19/expphy/cache/halla/sbs/raw/";
     //pathList.push_back(Form("%s/data","/adaqfs/home/a-onl/sbs"));
-    pathList.push_back(Form("%s/data1","/adaqeb1"));
+    pathList.push_back(Form("%s/raw","/lustre19/expphy/cache/halla/sbs"));
     //pathList.push_back(Form("%s/data","/adaqfs/home/a-onl/skbarcus"));
     
     // Check if segment exits
@@ -149,14 +150,14 @@ void replay_hcal_SAS(int run_number = 124, uint nev = -1, uint nseg = 0)
     //THaAnalyzer* analyzer = new THaAnalyzer;
     
     //TString out_dir = gSystem->Getenv("OUT_DIR");
-    TString out_dir ="/adaqfs/home/a-onl/sbs/Rootfiles";
+    TString out_dir = "/volatile/halla/sbs/seeds/rootfiles/";
     if( out_dir.IsNull() )  out_dir = ".";
     TString out_file = out_dir + "/" + exp + Form("_%d_%d.root", run_number,nev);
     
     analyzer->SetOutFile( out_file );
 
-    analyzer->SetOdefFile( "/adaqfs/home/a-onl/sbs/HCal_replay/replay/replay_hcal.odef" );
-    analyzer->SetCutFile( "/adaqfs/home/a-onl/sbs/HCal_replay/replay/replay_hcal.cdef" );
+    analyzer->SetOdefFile( "/w/halla-scshelf2102/sbs/seeds/HCal_replay/replay/replay_hcal.odef" );
+    analyzer->SetCutFile( "/w/halla-scshelf2102/sbs/seeds/HCal_replay/replay/replay_hcal.cdef" );
 
     analyzer->SetVerbosity(2);  // write cut summary to stdout
     analyzer->EnableBenchmarks();
