@@ -20,7 +20,7 @@ double expoFit(double *x, double *par) {
   double e = x[0];
   return offset+TMath::Exp(amp+coeff*e);
 }
-/*
+
 void plot_BB_HCAL_correlations(const char *rootfilename, 
 			       const char *outfilename="outfiles/BBHCALCOOR_SBS4.root", 
 			       double ebeam=3.7278, 
@@ -35,7 +35,7 @@ void plot_BB_HCAL_correlations(const char *rootfilename,
 			       double Wmax=0.85, 
 			       double dpel_min=-0.06, 
 			       double dpel_max=0.06 ){
-*/
+
 /*
 void plot_BB_HCAL_correlations(const char *rootfilename, 
 			       const char *outfilename="outfiles/BBHCALCOOR_SBS14.root", 
@@ -55,7 +55,7 @@ void plot_BB_HCAL_correlations(const char *rootfilename,
 
 
 void plot_BB_HCAL_correlations(const char *rootfilename, 
-			       const char *outfilename="outfiles/BBHCALCOOR_SBS8_LD2.root", 
+			       const char *outfilename="outfiles/BBHCALCOOR_SBS8_LH2.root", 
 			       double ebeam=5.965, 
 			       double bbtheta=26.5, 
 			       double sbstheta=29.4, 
@@ -113,7 +113,7 @@ void plot_BB_HCAL_correlations(const char *rootfilename,
   C->Add("/volatile/halla/sbs/puckett/GMN_REPLAYS/rootfiles/e1209019_fullreplay_13489*");
   C->Add("/volatile/halla/sbs/puckett/GMN_REPLAYS/rootfiles/e1209019_fullreplay_13490*");
   */
-
+  /*
   //SBS-8 LD2 ifarm
   C->Add("/volatile/halla/sbs/seeds/GMN_Replays/e1209019_fullreplay_13581*");
   C->Add("/volatile/halla/sbs/seeds/GMN_Replays/e1209019_fullreplay_13582*");
@@ -128,9 +128,18 @@ void plot_BB_HCAL_correlations(const char *rootfilename,
   C->Add("/volatile/halla/sbs/seeds/GMN_Replays/e1209019_fullreplay_13591*");
   C->Add("/volatile/halla/sbs/seeds/GMN_Replays/e1209019_fullreplay_13592*");
   C->Add("/volatile/halla/sbs/seeds/GMN_Replays/e1209019_fullreplay_13593*");
+  */
+
+  //SBS-8 LH2 ifarm
+  C->Add("/lustre19/expphy/volatile/halla/sbs/datta/gmn-replays/rootfiles/sbs8-sbs0p/e1209019_fullreplay_13459*");
+  C->Add("/lustre19/expphy/volatile/halla/sbs/datta/gmn-replays/rootfiles/sbs8-sbs100p/e1209019_fullreplay_13537*");
+  C->Add("/lustre19/expphy/volatile/halla/sbs/datta/gmn-replays/rootfiles/sbs8-sbs50p/e1209019_fullreplay_13580*");
+  C->Add("/lustre19/expphy/volatile/halla/sbs/datta/gmn-replays/rootfiles/sbs8-sbs70p/e1209019_fullreplay_13486*");
+  C->Add("/lustre19/expphy/volatile/halla/sbs/seeds/GMN_Replays/e1209019_fullreplay_13460*");
 
   //double uA_hr_SBS8_tot[8] = {7.13,3.08,2.92,6.32,7.44,6.78,5.89,6.90};
-  double uA_hr_SBS8_tot[13] = {2.98,5.2,5.25,5.25,5.5,2.06,5.35,5.2,5.4,0.64,5.45,0.16,1.6};
+  //double uA_hr_SBS8_tot[13] = {2.98,5.2,5.25,5.25,5.5,2.06,5.35,5.2,5.4,0.64,5.45,0.16,1.6}; //SBS8 LD2
+  double uA_hr_SBS8_tot[5] = {8.28,8.92,8.4,6.32,8.24}; //SBS8 LH2
 
   int totEvents = C->GetEntries();
 
@@ -350,239 +359,284 @@ void plot_BB_HCAL_correlations(const char *rootfilename,
   */
   TH1D *hvz_cut = new TH1D("hvz_cut",";vertex z (m);", 250,-0.125,0.125);
 
+  // Define a clock to check macro processing time
+  TStopwatch *sw = new TStopwatch();
+  TStopwatch *sw2 = new TStopwatch();
+  sw->Start();
+  sw2->Start();
+
   vector<long> elasEvent;
   long nevent = 0;
 
-  while( C->GetEntry( nevent++ ) ){
-    if( nevent % 100000 == 0 ) cout << "NEvents: " << nevent << "/" << totEvents << ", tracks: " << tracks+1 << ", PosCutCount: " << posCutCount << ", BBCutCount " << BBCutCount << ", WCutCount " << WCutCount << ", trigger: " << trig << ", inTime: " << inTime << "." << endl;
-
-    //if( trig!=0 ) cout << "TRIG: " << trig << endl;
-
-    if( ntrack > 0 ){
-
-      tracks++;
-
-      double etheta = acos( pz[0]/p[0] );
-      double ephi = atan2( py[0], px[0] );
-
-      TVector3 vertex(0,0,vz[0]);
-
-      TLorentzVector Pbeam(0,0,ebeam,ebeam); //Mass of e negligable
-      TLorentzVector kprime(px[0],py[0],pz[0],p[0]);
-      TLorentzVector Ptarg(0,0,0,Mp);
-
-      TLorentzVector q = Pbeam - kprime;
-
-      TLorentzVector PgammaN = Ptarg + q; //(-px, -py, ebeam - pz, Mp + ebeam - p)
+  //Loop over events
+  cout << "Main loop over all data commencing.." << endl;
+  Double_t progress = 0.;
+  Double_t timekeeper = 0., timeremains = 0.;
+  while(progress<1.0){
+    Int_t barwidth = 70;
+    for(Long64_t nevent = 0; nevent<totEvents; nevent++){
       
-      double pel = ebeam/(1.+ebeam/Mp*(1.-cos(etheta)));
-
-      hdpel->Fill( p[0]/pel - 1.0 );
-
-      hW->Fill( PgammaN.M() );
-
-      hvz->Fill( vertex.Z() );
-
-      double nu = ebeam - p[0];
-      double pp = sqrt(pow(nu,2)+2.*Mp*nu);
-      double phinucleon = ephi + TMath::Pi(); //assume coplanarity
-      double thetanucleon = acos( (ebeam - p[0]*cos(etheta))/pp ); //use elastic constraint on nucleon kinematics
+      //Create a progress bar
+      cout << "[";
+      Int_t pos = barwidth * progress;
+      for(Int_t i=0; i<barwidth; ++i){
+	if(i<pos) cout << "=";
+	else if(i==pos) cout << ">";
+	else cout << " ";
+      }
       
-      TVector3 pNhat( sin(thetanucleon)*cos(phinucleon),sin(thetanucleon)*sin(phinucleon),cos(thetanucleon));
+      //Calculate remaining time 
+      sw2->Stop();
+      timekeeper += sw2->RealTime();
+      if( nevent%100000 == 0 && nevent!=0 ) 
+	timeremains = timekeeper*( double(totEvents)/double(nevent) - 1. ); 
+      sw2->Reset();
+      sw2->Continue();
       
-      //Define HCal coordinate system
-      TVector3 HCAL_zaxis(-sin(sbstheta),0,cos(sbstheta));
-      TVector3 HCAL_xaxis(0,1,0);
-      TVector3 HCAL_yaxis = HCAL_zaxis.Cross(HCAL_xaxis).Unit();
+      progress = (double)((nevent+1.)/totEvents);
+      cout << "] " << int(progress*100.) << "%, inTime events: " << inTime << ", time remaining: " << int(timeremains/60.) << "m \r";
+      cout.flush();
       
-      TVector3 HCAL_origin = hcaldist * HCAL_zaxis + hcalheight * HCAL_xaxis;
+      C->GetEntry( nevent ); 
+
+      //cout << nevent << endl;
       
-      TVector3 TopRightBlockPos_DB(xoff_hcal,yoff_hcal,0);
+      //if( nevent % 100000 == 0 ) cout << "NEvents: " << nevent << "/" << totEvents << ", tracks: " << tracks+1 << ", PosCutCount: " << posCutCount << ", BBCutCount " << BBCutCount << ", WCutCount " << WCutCount << ", trigger: " << trig << ", inTime: " << inTime << "." << endl;
       
-      TVector3 TopRightBlockPos_Hall( hcalheight + (nrows_hcal/2-0.5)*blockspace_hcal,
-				      (ncols_hcal/2-0.5)*blockspace_hcal, 0 );
+      //if( trig!=0 ) cout << "TRIG: " << trig << endl;
       
-      
-      //Assume that HCAL origin is at the vertical and horizontal midpoint of HCAL and locate cluster position
-      xHCAL += TopRightBlockPos_Hall.X() - TopRightBlockPos_DB.X();
-      yHCAL += TopRightBlockPos_Hall.Y() - TopRightBlockPos_DB.Y();
-      
-      double sintersect = ( HCAL_origin - vertex ).Dot( HCAL_zaxis ) / (pNhat.Dot( HCAL_zaxis ) );
-      
-      TVector3 HCAL_intersect = vertex + sintersect * pNhat;
-      
-      double yexpect_HCAL = (HCAL_intersect - HCAL_origin).Dot( HCAL_yaxis );
-      double xexpect_HCAL = (HCAL_intersect - HCAL_origin).Dot( HCAL_xaxis );
-      
-      hdx_HCAL->Fill( xHCAL - xexpect_HCAL );
-      hdy_HCAL->Fill( yHCAL - yexpect_HCAL );
-      
-      //Calculate the proton spot
-      hdxdy_HCAL->Fill( yHCAL - yexpect_HCAL, xHCAL - xexpect_HCAL );
-      
-      //Plot correlation between obs and exp pos of nucleon
-      hxcorr_HCAL->Fill( xexpect_HCAL, xHCAL );
-      hycorr_HCAL->Fill( yexpect_HCAL, yHCAL );
-      
-      //Plot other correlations with horizontal pos of nucleon
-      hdy_HCAL_vs_z->Fill( vertex.Z(), yHCAL - yexpect_HCAL );
-      hdy_HCAL_vs_ptheta->Fill( thetanucleon, yHCAL - yexpect_HCAL );
+      if( ntrack > 0 ){
+	
+	tracks++;
+	
+	double etheta = acos( pz[0]/p[0] );
+	double ephi = atan2( py[0], px[0] );
+	
+	TVector3 vertex(0,0,vz[0]);
+	
+	TLorentzVector Pbeam(0,0,ebeam,ebeam); //Mass of e negligable
+	TLorentzVector kprime(px[0],py[0],pz[0],p[0]);
+	TLorentzVector Ptarg(0,0,0,Mp);
+	
+	TLorentzVector q = Pbeam - kprime;
+	
+	TLorentzVector PgammaN = Ptarg + q; //(-px, -py, ebeam - pz, Mp + ebeam - p)
+	
+	double pel = ebeam/(1.+ebeam/Mp*(1.-cos(etheta)));
+	
+	hdpel->Fill( p[0]/pel - 1.0 );
+	
+	hW->Fill( PgammaN.M() );
+	
+	hvz->Fill( vertex.Z() );
+	
+	double nu = ebeam - p[0];
+	double pp = sqrt(pow(nu,2)+2.*Mp*nu);
+	double phinucleon = ephi + TMath::Pi(); //assume coplanarity
+	double thetanucleon = acos( (ebeam - p[0]*cos(etheta))/pp ); //use elastic constraint on nucleon kinematics
+	
+	TVector3 pNhat( sin(thetanucleon)*cos(phinucleon),sin(thetanucleon)*sin(phinucleon),cos(thetanucleon));
+	
+	//Define HCal coordinate system
+	TVector3 HCAL_zaxis(-sin(sbstheta),0,cos(sbstheta));
+	TVector3 HCAL_xaxis(0,1,0);
+	TVector3 HCAL_yaxis = HCAL_zaxis.Cross(HCAL_xaxis).Unit();
+	
+	TVector3 HCAL_origin = hcaldist * HCAL_zaxis + hcalheight * HCAL_xaxis;
+	
+	TVector3 TopRightBlockPos_DB(xoff_hcal,yoff_hcal,0);
+	
+	TVector3 TopRightBlockPos_Hall( hcalheight + (nrows_hcal/2-0.5)*blockspace_hcal,
+					(ncols_hcal/2-0.5)*blockspace_hcal, 0 );
+	
+	
+	//Assume that HCAL origin is at the vertical and horizontal midpoint of HCAL and locate cluster position
+	xHCAL += TopRightBlockPos_Hall.X() - TopRightBlockPos_DB.X();
+	yHCAL += TopRightBlockPos_Hall.Y() - TopRightBlockPos_DB.Y();
+	
+	double sintersect = ( HCAL_origin - vertex ).Dot( HCAL_zaxis ) / (pNhat.Dot( HCAL_zaxis ) );
+	
+	TVector3 HCAL_intersect = vertex + sintersect * pNhat;
+	
+	double yexpect_HCAL = (HCAL_intersect - HCAL_origin).Dot( HCAL_yaxis );
+	double xexpect_HCAL = (HCAL_intersect - HCAL_origin).Dot( HCAL_xaxis );
+	
+	hdx_HCAL->Fill( xHCAL - xexpect_HCAL );
+	hdy_HCAL->Fill( yHCAL - yexpect_HCAL );
+	
+	//Calculate the proton spot
 
-      //Construct exp nucleon vectors
-      TVector3 HCALpos(xHCAL,yHCAL,0);
-      TVector3 HCALpos_global = HCAL_origin + HCALpos.X() * HCAL_xaxis + HCALpos.Y() * HCAL_yaxis;
+	// cout << "xHCAL: " << xHCAL << endl;
+	// cout << "xexpect_HCAL: " << xexpect_HCAL << endl;
+	// cout << "yHCAL: " << yHCAL << endl;
+	// cout << "yexpect_HCAL: " << yexpect_HCAL << endl;
 
-      TVector3 HCAL_ray = HCALpos_global - vertex;
-      HCAL_ray = HCAL_ray.Unit();
-
-      //Get angles of nucleon vector wrt beamline
-      double ptheta_recon = HCAL_ray.Theta();
-      double pphi_recon = HCAL_ray.Phi();
-
-      if( pphi_recon < 0.0 ) pphi_recon += 2.0*TMath::Pi();
-      if( pphi_recon > 2.0*TMath::Pi() ) pphi_recon -= 2.0*TMath::Pi();
-
-      //Plot exp - obs angles
-      hdeltaphi->Fill( pphi_recon - phinucleon );
-      hdeltaptheta->Fill( ptheta_recon - thetanucleon );
-      
-      double thetapq = acos( HCAL_ray.Dot( pNhat ) );
-      hthetapq->Fill( thetapq );
-
-      TVector3 pNrecon = pp*HCAL_ray;
-
-      //Get energy of nucleon
-      double Enucleon = sqrt(pow(pp,2)+pow(Mp,2));
-
-      TLorentzVector PNrecon( pNrecon,Enucleon );
-
-      TLorentzVector Pmiss = PgammaN - PNrecon;
-
-      double pmiss_perp = (Pmiss.Vect() - Pmiss.Vect().Dot(q.Vect().Unit())*q.Vect().Unit()).Mag();
-
-      hpmiss_perp->Fill( pmiss_perp );
-      
-      hE_HCAL->Fill( EHCAL );
-
-      //Nucleon position cut
-      if( pow( (xHCAL-xexpect_HCAL - dx0)/dxsigma,2) + pow( (yHCAL-yexpect_HCAL - dy0)/dysigma,2) <= pow(2.5,2) ){
-
-	posCutCount++;
-
-	//BB sh and ps cuts (E/p)
-	if( Eps_BB >= 0.15 && abs( (Eps_BB+Esh_BB)/p[0] - 1. ) < 0.25 ){
-
-	  BBCutCount++;
-
-	  Double_t bbcal_time=0., hcal_time=0.;
-	  for(Int_t ihit=0; ihit<Ndata_bb_tdctrig_tdcelemID; ihit++){
-	    if(bb_tdctrig_tdcelemID[ihit]==5) bbcal_time=bb_tdctrig_tdc[ihit];
-	    if(bb_tdctrig_tdcelemID[ihit]==0) hcal_time=bb_tdctrig_tdc[ihit];
-	  }
-	  Double_t BB_H_diff = hcal_time - bbcal_time; 
-	  /*
-	  if(fabs(diff-510.)<20.){
-	    h2_bbcal_hcal_corr->Fill( bb_sh_rowblk+1, sbs_hcal_rowblk+1);
-	  }
-	  */
-
-
-	  hW_cut_HCAL->Fill( PgammaN.M() );
-	  hdpel_cut_HCAL->Fill( p[0]/pel - 1.0 );
+	hdxdy_HCAL->Fill( yHCAL - yexpect_HCAL, xHCAL - xexpect_HCAL );
+	
+	//Plot correlation between obs and exp pos of nucleon
+	hxcorr_HCAL->Fill( xexpect_HCAL, xHCAL );
+	hycorr_HCAL->Fill( yexpect_HCAL, yHCAL );
+	
+	//Plot other correlations with horizontal pos of nucleon
+	hdy_HCAL_vs_z->Fill( vertex.Z(), yHCAL - yexpect_HCAL );
+	hdy_HCAL_vs_ptheta->Fill( thetanucleon, yHCAL - yexpect_HCAL );
+	
+	//Construct exp nucleon vectors
+	TVector3 HCALpos(xHCAL,yHCAL,0);
+	TVector3 HCALpos_global = HCAL_origin + HCALpos.X() * HCAL_xaxis + HCALpos.Y() * HCAL_yaxis;
+	
+	TVector3 HCAL_ray = HCALpos_global - vertex;
+	HCAL_ray = HCAL_ray.Unit();
+	
+	//Get angles of nucleon vector wrt beamline
+	double ptheta_recon = HCAL_ray.Theta();
+	double pphi_recon = HCAL_ray.Phi();
+	
+	if( pphi_recon < 0.0 ) pphi_recon += 2.0*TMath::Pi();
+	if( pphi_recon > 2.0*TMath::Pi() ) pphi_recon -= 2.0*TMath::Pi();
+	
+	//Plot exp - obs angles
+	hdeltaphi->Fill( pphi_recon - phinucleon );
+	hdeltaptheta->Fill( ptheta_recon - thetanucleon );
+	
+	double thetapq = acos( HCAL_ray.Dot( pNhat ) );
+	hthetapq->Fill( thetapq );
+	
+	TVector3 pNrecon = pp*HCAL_ray;
+	
+	//Get energy of nucleon
+	double Enucleon = sqrt(pow(pp,2)+pow(Mp,2));
+	
+	TLorentzVector PNrecon( pNrecon,Enucleon );
+	
+	TLorentzVector Pmiss = PgammaN - PNrecon;
+	
+	double pmiss_perp = (Pmiss.Vect() - Pmiss.Vect().Dot(q.Vect().Unit())*q.Vect().Unit()).Mag();
+	
+	hpmiss_perp->Fill( pmiss_perp );
+	
+	hE_HCAL->Fill( EHCAL );
+	
+	//Nucleon position cut
+	if( pow( (xHCAL-xexpect_HCAL - dx0)/dxsigma,2) + pow( (yHCAL-yexpect_HCAL - dy0)/dysigma,2) <= pow(2.5,2) ){
 	  
+	  posCutCount++;
 	  
-	  hE_HCAL_cut->Fill( EHCAL );
-
-	  //Cuts on elastics via W and p/p'
-	  if( Wmin < PgammaN.M() && PgammaN.M() < Wmax && dpel_min < p[0]/pel-1.&&p[0]/pel-1. < dpel_max ){
-	      
-	    WCutCount++;
-	    elasEvent.push_back(nevent);
-
-	    hep_cut->Fill( p[0] );
-	    hQ2_cut->Fill( 2.*ebeam*p[0]*(1.-cos(etheta)) );
-	    hptheta_cut->Fill( thetanucleon * TMath::RadToDeg() );
-	    hetheta_cut->Fill( etheta* TMath::RadToDeg() );
-	    hpp_cut->Fill( pp );
-	    hpEkin_cut->Fill( nu );
-
-	    //Uniformity plots
-	    hEHCALoverEkin->Fill( EHCAL/nu );
-	    hEHCALoverEkin_x->Fill( xHCAL, EHCAL/nu );
-	    hEHCALoverEkin_y->Fill( yHCAL, EHCAL/nu );
-
-	    //HCal/Hodo timing correlation
-	    if( EHCAL>0.02 && tHCAL_blk[0]>-400 && nClusHODO==1 ){
-	      htcorr_HCAL_HODO->Fill( tHCAL_blk[0], tHODO );
-	      htcorr_HCAL_BBTrig->Fill( tHCAL_blk[0], bbcal_time );
-
-	      //cout << bbcal_time << endl;
-
-	      double HHdiff = tHCAL_blk[0]-tHODO;
-	      double BBHdiff = bbcal_time-tHCAL_blk[0];
-	      htDiff_HODO_HCAL->Fill( HHdiff );
-	      htDiff_vs_HCALID->Fill( tdcID[0], HHdiff );
-
-	      //cout << BBHdiff << endl;
-
-	      htBBHDiff_vs_HCALID->Fill( tdcID[0], BBHdiff );
-
-	      int tdc = (int)tdcID[0];
-
-	      //cout << (int)tdcID[0] << " " << tdcID[0] << endl;
-
-	      if( tdc<0 || tdc>288 ) cout << "ERROR: TDC out of bounds at tdcID = " << tdc << endl;
-
-	      //if( aHCAL[0]<0 || aHCAL[0]>0.3 || HHdiff<-150 || HHdiff>0 ) cout << "E=" << aHCAL[0] << " tDiff=" << HHdiff << endl;
-
-	      // Cut out afterpulse with if statement
-	      if( HHdiff<-65. && HHdiff>-80. ) htDiff_vs_ADCint[tdc]->Fill( aHCAL[0], HHdiff );
-
-	      //if( tdcID[0]==175 ) htDiff_vs_ADCint_bl175->Fill( aHCAL[0], HHdiff );
-	      //if( tdcID[0]==224 ) htDiff_vs_ADCint_bl224->Fill( aHCAL[0], HHdiff );
-	      //if( tdcID[0]==92 ) htDiff_vs_ADCint_bl92->Fill( aHCAL[0], HHdiff );
-
-	      if( HHdiff<-65. && HHdiff>-80. ) htDiff_vs_HCALID_corr->Fill( tdcID[0], HHdiff+22.0*aHCAL[0] ); //Timewalk corrected from linear fit to time diff vs clus e
-
-	      inTime++;
+	  //BB sh and ps cuts (E/p)
+	  if( Eps_BB >= 0.15 && abs( (Eps_BB+Esh_BB)/p[0] - 1. ) < 0.25 ){
+	    
+	    BBCutCount++;
+	    
+	    Double_t bbcal_time=0., hcal_time=0.;
+	    for(Int_t ihit=0; ihit<Ndata_bb_tdctrig_tdcelemID; ihit++){
+	      if(bb_tdctrig_tdcelemID[ihit]==5) bbcal_time=bb_tdctrig_tdc[ihit];
+	      if(bb_tdctrig_tdcelemID[ihit]==0) hcal_time=bb_tdctrig_tdc[ihit];
 	    }
-	    hephi_cut->Fill( ephi * TMath::RadToDeg() );
-	    hpphi_cut->Fill( pphi_recon * TMath::RadToDeg() );
-
-	    hvz_cut->Fill( vz[0] );
-
+	    Double_t BB_H_diff = hcal_time - bbcal_time; 
+	    /*
+	      if(fabs(diff-510.)<20.){
+	      h2_bbcal_hcal_corr->Fill( bb_sh_rowblk+1, sbs_hcal_rowblk+1);
+	      }
+	    */
+	    
+	    
+	    hW_cut_HCAL->Fill( PgammaN.M() );
+	    hdpel_cut_HCAL->Fill( p[0]/pel - 1.0 );
+	    
+	    
+	    hE_HCAL_cut->Fill( EHCAL );
+	    
+	    //Cuts on elastics via W and p/p'
+	    if( Wmin < PgammaN.M() && PgammaN.M() < Wmax && dpel_min < p[0]/pel-1.&&p[0]/pel-1. < dpel_max ){
+	      
+	      WCutCount++;
+	      elasEvent.push_back(nevent);
+	      
+	      hep_cut->Fill( p[0] );
+	      hQ2_cut->Fill( 2.*ebeam*p[0]*(1.-cos(etheta)) );
+	      hptheta_cut->Fill( thetanucleon * TMath::RadToDeg() );
+	      hetheta_cut->Fill( etheta* TMath::RadToDeg() );
+	      hpp_cut->Fill( pp );
+	      hpEkin_cut->Fill( nu );
+	      
+	      //Uniformity plots
+	      hEHCALoverEkin->Fill( EHCAL/nu );
+	      hEHCALoverEkin_x->Fill( xHCAL, EHCAL/nu );
+	      hEHCALoverEkin_y->Fill( yHCAL, EHCAL/nu );
+	      
+	      //HCal/Hodo timing correlation
+	      if( EHCAL>0.02 && tHCAL_blk[0]>-400 && nClusHODO==1 ){
+		htcorr_HCAL_HODO->Fill( tHCAL_blk[0], tHODO );
+		htcorr_HCAL_BBTrig->Fill( tHCAL_blk[0], bbcal_time );
+		
+		//cout << bbcal_time << endl;
+		
+		double HHdiff = tHCAL_blk[0]-tHODO;
+		double BBHdiff = bbcal_time-tHCAL_blk[0];
+		htDiff_HODO_HCAL->Fill( HHdiff );
+		htDiff_vs_HCALID->Fill( tdcID[0], HHdiff );
+		
+		//cout << BBHdiff << endl;
+		
+		htBBHDiff_vs_HCALID->Fill( tdcID[0], BBHdiff );
+		
+		int tdc = (int)tdcID[0];
+		
+		//cout << (int)tdcID[0] << " " << tdcID[0] << endl;
+		
+		if( tdc<0 || tdc>288 ) cout << "ERROR: TDC out of bounds at tdcID = " << tdc << endl;
+		
+		//if( aHCAL[0]<0 || aHCAL[0]>0.3 || HHdiff<-150 || HHdiff>0 ) cout << "E=" << aHCAL[0] << " tDiff=" << HHdiff << endl;
+		
+		// Cut out afterpulse with if statement
+		if( HHdiff<-65. && HHdiff>-80. ) htDiff_vs_ADCint[tdc]->Fill( aHCAL[0], HHdiff );
+		
+		//if( tdcID[0]==175 ) htDiff_vs_ADCint_bl175->Fill( aHCAL[0], HHdiff );
+		//if( tdcID[0]==224 ) htDiff_vs_ADCint_bl224->Fill( aHCAL[0], HHdiff );
+		//if( tdcID[0]==92 ) htDiff_vs_ADCint_bl92->Fill( aHCAL[0], HHdiff );
+		
+		if( HHdiff<-65. && HHdiff>-80. ) htDiff_vs_HCALID_corr->Fill( tdcID[0], HHdiff+22.0*aHCAL[0] ); //Timewalk corrected from linear fit to time diff vs clus e
+		
+		inTime++;
+	      }
+	      hephi_cut->Fill( ephi * TMath::RadToDeg() );
+	      hpphi_cut->Fill( pphi_recon * TMath::RadToDeg() );
+	      
+	      hvz_cut->Fill( vz[0] );
+	      
+	    }
 	  }
-	}
-
-	//cut on elastic peak for EoverP and preshower cut plots:
-	if( Wmin < PgammaN.M() && PgammaN.M() < Wmax && dpel_min < p[0]/pel-1.&&p[0]/pel-1. < dpel_max ){ 
-	  hE_preshower_cut->Fill( Eps_BB );
-	  hEoverP_cut->Fill( (Eps_BB+Esh_BB)/p[0] );
-	  hEoverP_vs_preshower_cut->Fill( Eps_BB,  (Eps_BB+Esh_BB)/p[0] );
+	  
+	  //cut on elastic peak for EoverP and preshower cut plots:
+	  if( Wmin < PgammaN.M() && PgammaN.M() < Wmax && dpel_min < p[0]/pel-1.&&p[0]/pel-1. < dpel_max ){ 
+	    hE_preshower_cut->Fill( Eps_BB );
+	    hEoverP_cut->Fill( (Eps_BB+Esh_BB)/p[0] );
+	    hEoverP_vs_preshower_cut->Fill( Eps_BB,  (Eps_BB+Esh_BB)/p[0] );
+	    
+	  }
 	  
 	}
-
-      }
-
-      if( Eps_BB >= 0.15 && abs( (Eps_BB+Esh_BB)/p[0] - 1.0 ) <= 0.3 ){
-	hdpel_cutBBCAL->Fill( p[0]/pel - 1.0 );
-	hW_cutBBCAL->Fill( PgammaN.M() );
-	if( Wmin <= PgammaN.M() && PgammaN.M() <= Wmax && 
-	    dpel_min <= p[0]/pel - 1. && p[0]/pel - 1. < dpel_max ){
-	  hdx_HCAL_cut->Fill( xHCAL - xexpect_HCAL );
-	  hdy_HCAL_cut->Fill( yHCAL - yexpect_HCAL );
-	  hdxdy_HCAL_cut->Fill( yHCAL - yexpect_HCAL, xHCAL - xexpect_HCAL );
-
-	  hdeltaphi_cut->Fill( pphi_recon - phinucleon );
-	  hthetapq_cut->Fill( thetapq );
-	  hpmiss_perp_cut->Fill( pmiss_perp );
-	  hdeltaptheta_cut->Fill( ptheta_recon - thetanucleon );
+	
+	if( Eps_BB >= 0.15 && abs( (Eps_BB+Esh_BB)/p[0] - 1.0 ) <= 0.3 ){
+	  hdpel_cutBBCAL->Fill( p[0]/pel - 1.0 );
+	  hW_cutBBCAL->Fill( PgammaN.M() );
+	  if( Wmin <= PgammaN.M() && PgammaN.M() <= Wmax && 
+	      dpel_min <= p[0]/pel - 1. && p[0]/pel - 1. < dpel_max ){
+	    hdx_HCAL_cut->Fill( xHCAL - xexpect_HCAL );
+	    hdy_HCAL_cut->Fill( yHCAL - yexpect_HCAL );
+	    hdxdy_HCAL_cut->Fill( yHCAL - yexpect_HCAL, xHCAL - xexpect_HCAL );
+	    
+	    hdeltaphi_cut->Fill( pphi_recon - phinucleon );
+	    hthetapq_cut->Fill( thetapq );
+	    hpmiss_perp_cut->Fill( pmiss_perp );
+	    hdeltaptheta_cut->Fill( ptheta_recon - thetanucleon );
+	  }
 	}
+	
+	hE_preshower->Fill( Eps_BB );
+	hEoverP->Fill( (Eps_BB+Esh_BB)/p[0] );
+	hEoverP_vs_preshower->Fill( Eps_BB,  (Eps_BB+Esh_BB)/p[0] );
       }
-
-      hE_preshower->Fill( Eps_BB );
-      hEoverP->Fill( (Eps_BB+Esh_BB)/p[0] );
-      hEoverP_vs_preshower->Fill( Eps_BB,  (Eps_BB+Esh_BB)/p[0] );
     }
   }
 

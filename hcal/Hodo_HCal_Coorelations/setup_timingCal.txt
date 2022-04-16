@@ -80,31 +80,53 @@
 #/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11548*
 #/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11573*
 #LH2 NEW HV zero field 3.7 GeV
-/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11587*
-/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11588*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11587*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11588*
 #LH2 NEW HV half field 3.7 GeV
-/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11589*
-/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11590*
-/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11592*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11589*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11590*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11592*
 #LH2 NEW HV 1/3 field 3.7 GeV
-/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11616*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11616*
 #LH2 NEW HV 85% field
-/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11989*
-/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11990*
-/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11991*
-/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11992*
-/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11993*
-/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11994*
-/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_12000*
-/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_12008*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11989*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11990*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11991*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11992*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11993*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11994*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_12000*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_12008*
+#SBS8 LH2
+#/lustre19/expphy/volatile/halla/sbs/datta/gmn-replays/rootfiles/sbs8-sbs0p/e1209019_fullreplay_13459*
+#/lustre19/expphy/volatile/halla/sbs/datta/gmn-replays/rootfiles/sbs8-sbs100p/e1209019_fullreplay_13537*
+#/lustre19/expphy/volatile/halla/sbs/datta/gmn-replays/rootfiles/sbs8-sbs50p/e1209019_fullreplay_13580*
+#/lustre19/expphy/volatile/halla/sbs/datta/gmn-replays/rootfiles/sbs8-sbs70p/e1209019_fullreplay_13486*
+#/lustre19/expphy/volatile/halla/sbs/seeds/GMN_Replays/e1209019_fullreplay_13460*
+#SBS4 LH2
+/lustre19/expphy/volatile/halla/sbs/seeds/GMN_Replays/e1209019_fullreplay_11547*
+/lustre19/expphy/volatile/halla/sbs/seeds/GMN_Replays/e1209019_fullreplay_11548*
+/lustre19/expphy/volatile/halla/sbs/seeds/GMN_Replays/e1209019_fullreplay_11587*
+/lustre19/expphy/volatile/halla/sbs/seeds/GMN_Replays/e1209019_fullreplay_11588*
+/lustre19/expphy/volatile/halla/sbs/seeds/GMN_Replays/e1209019_fullreplay_11573*
+/lustre19/expphy/volatile/halla/sbs/seeds/GMN_Replays/e1209019_fullreplay_11589*
+/lustre19/expphy/volatile/halla/sbs/seeds/GMN_Replays/e1209019_fullreplay_11590*
+/lustre19/expphy/volatile/halla/sbs/seeds/GMN_Replays/e1209019_fullreplay_11592*
+/lustre19/expphy/volatile/halla/sbs/seeds/GMN_Replays/e1209019_fullreplay_11616*
+/lustre19/expphy/volatile/halla/sbs/seeds/GMN_Replays/e1209019_fullreplay_11616*
+/lustre19/expphy/volatile/halla/sbs/puckett/GMN_REPLAYS/rootfiles/e1209019_fullreplay_11500*
+
 endlist
 endcut
-E_e 7.906
-HCal_d 14
-HCal_th 16.1
-opticsCorr 1.05
-W_mean 0.9643
-W_sig 0.024
-ScaleFac 1.0
-
+kine 4
+E_e 3.728
+tFitMin 60
+HCal_d 11
+HCal_th 31.9
+W_mean 0.73
+W_sig 0.1
+dx0 0.9
+dy0 0.62
+dx_sig 0.09
+dy_sig 0.15
 
