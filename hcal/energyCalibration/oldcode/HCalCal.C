@@ -60,7 +60,7 @@ string getDate(){
   return date;
 }
 
-void HCalCal( const char *configfilename, int run = -1 ){
+void HCalCal( const char *configfilename="setup_HCalECal.cfg", int run = -1 ){
   
   // Define a clock to check macro processing time
   TStopwatch *st = new TStopwatch();
@@ -139,7 +139,7 @@ void HCalCal( const char *configfilename, int run = -1 ){
       }
       if( skey == "HCal_th" ){
 	TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
-	HCal_th = sval.Atof();	
+	HCal_th = sval.Atof() * TMath::DegToRad();	
 	cout << "Loading HCal angle: " << HCal_th << endl;
       }
       if( skey == "W_mean" ){
@@ -260,7 +260,7 @@ void HCalCal( const char *configfilename, int run = -1 ){
   sw2->Start();
   
   // Declare outfile
-  TFile *fout = new TFile( "eCalOut_3.root", "RECREATE" );
+  TFile *fout = new TFile( "eCalOut.root", "RECREATE" );
   
   // Initialize vectors and arrays
   double gOldConst[kNcell];

@@ -8,6 +8,7 @@ block bb.tr.*
 block bb.ps.*
 block bb.sh.*
 block e.kine*
+block bb.hodo*
 
 #Currently not working. Creates branch but doesn't populate it.
 begin epics

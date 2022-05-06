@@ -65,10 +65,10 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
   TChain *C = new TChain("T");
 
   // Paths for input/output files
-  string inConstPath = "/w/halla-scshelf2102/sbs/seeds/HCal_replay/hcal/setFiles/const_v2.txt"; //Settings from beam data for all runs prior to HV change
-  string constPath = "/w/halla-scshelf2102/sbs/seeds/HCal_replay/hcal/setFiles/newRatio.txt";
-  string ratioPath = "/w/halla-scshelf2102/sbs/seeds/HCal_replay/hcal/setFiles/ratio.txt";
-  string oneBlockPath = "/w/halla-scshelf2102/sbs/seeds/HCal_replay/hcal/setFiles/oneBlock.txt";
+  string inConstPath = "/w/halla-scshelf2102/sbs/seeds/HCal_replay/hcal/energyCalibration/setfiles/const_042622.txt"; //Settings from beam data for all runs prior to HV change
+  string constPath = "/w/halla-scshelf2102/sbs/seeds/HCal_replay/hcal/energyCalibration/outfiles/newRatio.txt";
+  string ratioPath = "/w/halla-scshelf2102/sbs/seeds/HCal_replay/hcal/energyCalibration/outfiles/ratio.txt";
+  string oneBlockPath = "/w/halla-scshelf2102/sbs/seeds/HCal_replay/hcal/energyCalibration/outfiles/oneBlock.txt";
 
   // Declare general physics parameters to be modified by input config file
   double kine = 8; // Keep track of kinematic calibrating from
@@ -277,8 +277,8 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
   TH1D *hvz_cut = new TH1D("hvz_cut",";vertex z (m);", 250,-0.125,0.125);
   TH2D *coefficients = new TH2D("coefficients",";Channel ;GeV/mV", 288,0,288,250,0,0.025);
   TH2D *coefficients_1b = new TH2D("coefficients_1b",";Channel ;GeV/mV", 288,0,288,250,0,0.025);
-  TH2D *hEDiff_vs_X = new TH2D("hEDiff_vs_X",";X-pos (cm);(E_exp-E_dep)/E_exp (GeV)",360,-2,2,100,-3,3);  
-  TH2D *hEDiff_vs_Y = new TH2D("hEDiff_vs_Y",";Y-pos (cm);(E_exp-E_dep)/E_exp (GeV)",180,-1,1,100,-3,3);
+  TH2D *hEDiff_vs_X = new TH2D("hEDiff_vs_X",";X-pos (m);(E_exp-E_dep)/E_exp (GeV)",360,-2,2,100,-5,3);  
+  TH2D *hEDiff_vs_Y = new TH2D("hEDiff_vs_Y",";Y-pos (m);(E_exp-E_dep)/E_exp (GeV)",180,-1,1,100,-3,3);
   TH2D *htDiff_vs_ADCint[kNcell+1];
   TH1D *htDiff[kNcell+1];
   TH1D *haDiff[kNcell+1];
@@ -391,7 +391,7 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
       hXY_HCAL->Fill( HCALy, HCALx );
 
       //Define intersection points for hadron vector
-      double sintersect = ( HCAL_origin - vertex ).Dot( HCAL_zaxis ) / (pNhat.Dot( HCAL_zaxis ) );
+      double sintersect = ( HCAL_origin - vertex ).Dot( HCAL_zaxis ) / ( pNhat.Dot( HCAL_zaxis ) );
 
       TVector3 HCAL_intersect = vertex + sintersect * pNhat;
 
@@ -401,12 +401,9 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
       //Calculate the proton spot - use for cut later on
       hdxdy_HCAL->Fill( HCALy - yexpect_HCAL, HCALx - xexpect_HCAL );
 
-      //cout << HCALy - yexpect_HCAL << " " << HCALx - xexpect_HCAL << endl;
-
       double E_ep = sqrt( pow(M_e,2) + pow(BBtr_p[0],2) ); // Obtain the scattered electron energy
       hE_ep->Fill( E_ep ); // Fill histogram
 	
-      //double p_ep = opticsCorr*BBtr_p[0]; // Obtain the magnitude of scattered electron momentum with correction factor
       double p_ep = BBtr_p[0];
       double Q2 = 2*E_e*E_ep*( 1-(BBtr_pz[0]/p_ep) ); // Obtain Q2 from beam energy, outgoing electron energy, and momenta
       hQ2->Fill( Q2 ); // Fill histogram
