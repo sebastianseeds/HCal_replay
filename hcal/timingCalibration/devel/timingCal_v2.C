@@ -1,4 +1,4 @@
-//SSeeds 3.22.22 - Post-production - Calibration code which employs best current cuts on elastic events to obtain timing offsets for HCal ADC time and TDC
+//SSeeds 3.22.22 - Post-production - Calibration code which employs basic cuts on elastic events to obtain timing offsets for HCal ADC time and TDC. Leaving out proton spot cuts at this stage to obtain better statistics (will improve with these cuts after first pass mass replay).
 
 #include <ctime>
 #include <iostream>
@@ -30,11 +30,7 @@ const int maxTracks = 1000; // Reasonable limit on tracks to be stored per event
 const int maxTdcChan = 10; // Set to accomodate original 5 TDCTrig channels with buffer
 
 //HCal position corrections - will add to DB file eventually
-double hcalheight = 0.365; //m The height of the center of HCAL above beam
-//The following are the positions of the "first" row and column from HCAL database (top right block as viewed from upstream)
-double xoff_hcal = 0.92835;
-double yoff_hcal = 0.47305;
-double blockspace_hcal = 0.15254;
+//double hcalheight = 0.365; //m The height of the center of HCAL above beam
 
 const double PI = TMath::Pi();
 const double M_e = 0.00051;
@@ -56,7 +52,7 @@ string getDate(){
   return date;
 }
 
-void timingCal( const char *configfilename="setup_timingCal.cfg", int run = -1 ){
+void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run = -1 ){
   
   // Define a clock to check macro processing time
   TStopwatch *st = new TStopwatch();
@@ -69,13 +65,14 @@ void timingCal( const char *configfilename="setup_timingCal.cfg", int run = -1 )
   TChain *C = new TChain("T");
 
   // Path for output file
-  string paramsPath = "/w/halla-scshelf2102/sbs/seeds/HCal_replay/hcal/Hodo_HCal_Coorelations/timingCalParams.txt";
+  string paramsPath = "/w/halla-scshelf2102/sbs/seeds/HCal_replay/hcal/Hodo_HCal_Coorelations/timingCalParams_v2.txt";
 
   // Declare general physics parameters to be modified by input config file
   double test = 1; // Keep track of DB read for analysis. 0: ../SBS_REPLAY/SBS_Replay/DB   1: ../seeds/SBS-replay/DB
   double diag = 0; // Keep track of diagnostic canvas pdf option printed at end
   double kine = 8; // Keep track of kinematic calibrating from
   double tFitMin = 30; // Minimum number of entries per channel to calibrate ADC/TDC time
+  double t_trig = 510; // Mean tdc trig value (HCAL - BB) 
   double E_e = 1.92; // Energy of beam (incoming electrons from accelerator)
   int TDCmiss = 0; // Keep track of TDC misses
   double HCal_d = 14.5; // Distance to HCal from scattering chamber for comm1
@@ -133,6 +130,11 @@ void timingCal( const char *configfilename="setup_timingCal.cfg", int run = -1 )
 	TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	tFitMin = sval.Atof();
 	cout << "Loading timing fit min entries: " << tFitMin << endl;
+      }
+      if( skey == "t_trig" ){
+	TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
+	t_trig = sval.Atof();
+	cout << "Loading mean timing difference BB/HCal trigger: " << t_trig << endl;
       }
       if( skey == "E_e" ){
 	TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
@@ -378,17 +380,15 @@ void timingCal( const char *configfilename="setup_timingCal.cfg", int run = -1 )
   double AtvsE[kNcell] = {0.0};
 
   // Initialize histograms	
-  TH1D *hTOFcorr = new TH1D( "hTOFcorr", "Time of Flight Corrections; ns", 200, 0, 1 );
+  TH1D *hTOF = new TH1D( "hTOF", "Time of Flight Corrections; ns", 200, 0, 10 );
+  TH1D *hTOF2 = new TH1D( "hTOF2", "Time of Flight Corrections (nu method); ns", 200, 0, 10 );
+  TH1D *hTOFvp = new TH1D( "hTOFvp", "Proton Velocity", 400, 0, 4 );
+  TH1D *hTOFvp2 = new TH1D( "hTOFvp2", "Proton Velocity (nu method)", 400, 0, 4 );
   TH1D *hCblkID = new TH1D( "hCblkID", "Block ID", 300, -10, 290 );
-  TH1D *hElas_vp = new TH1D( "hElas_vp", "Elastic Proton Velocity",400, 0, 4);
   TH1D *hCCol = new TH1D( "hCCol", "Cluster Seed Column", 15, -1, 14 );
-  TH1D *hDeltaE = new TH1D( "hDeltaE","1.0-Eclus/p_rec", 100, -1.5, 1.5 );
   TH1D *hHCALe = new TH1D( "hHCALe","E HCal Cluster E", 400, 0., 4 );
   TH1D *hHODOnclus = new TH1D( "hHODOnclus","Number of Hodoscope Clusters", 50, 0., 50. );
   TH1D *hDiff = new TH1D( "hDiff","HCal time - BBCal time (ns)", 1300, -500, 800 );
-  TH1D *hClusE = new TH1D( "hClusE","Best Cluster Energy", 100, 0.0, 2.0);
-  TH2D *hPAngleCorr = new TH2D( "hPAngCorr","Track p vs Track ang", 100, 30, 60, 100, 0.4, 1.2 );
-  TH2D *hPAngleCorr_2 = new TH2D( "hPAngCorr_2","Track p vs Track ang v2", 100, 30, 60, 100, 0.4, 1.2 );
   TH1D *hW = new TH1D( "W", "W", 250, 0.3, 1.5 );
   hW->GetXaxis()->SetTitle( "GeV" );
   TH1D *hNBlk = new TH1D( "hNBlk", "Number of Blocks in Primary Cluster", 25, 0, 25 );
@@ -403,29 +403,38 @@ void timingCal( const char *configfilename="setup_timingCal.cfg", int run = -1 )
   hE_pp->GetXaxis()->SetTitle( "GeV" );
   TH1D *hKE_p = new TH1D( "Scattered Proton Kinetic Energy", "KE_pp", 500, 0.0, E_e*1.5 );
   hKE_p->GetXaxis()->SetTitle( "GeV" );
-  TH2D *hADC = new TH2D( "hADC", "HCal Int_ADC Spectra: W Cut", 288, 0, 288, 100., 0., 1. );
+  //TH2D *hADC = new TH2D( "hADC", "HCal Int_ADC Spectra: W Cut", 288, 0, 288, 100., 0., 1. );
   TH2D *hTOFvID = new TH2D( "hTOFvID", "Time of Flight vs HCal ID", 288, 0, 288, 200., 0., 20. );
-  TH2D *hADC_amp = new TH2D( "hADC_amp", "HCal ADC_amp Spectra: W Cut", 288, 0, 288, 100., 0., 10. );
-  TH2D *hdxdy_HCAL = new TH2D("hdxdy_HCAL",";y_{HCAL}-y_{expect} (m); x_{HCAL}-x_{expect} (m)", 250, -5.0, 5.0, 250, -10, 10 );
-  TH2D *hXY_HCAL_ps = new TH2D("hXY_HCAL_ps",";y_{HCAL} (m); x_{HCAL} (m)", 250, -5.0, 5.0, 250, -10, 10 );
+  TH2D *hTOF2vID = new TH2D( "hTOFvID2", "Time of Flight vs HCal ID (nu method)", 288, 0, 288, 200., 0., 20. );
+  //TH2D *hADC_amp = new TH2D( "hADC_amp", "HCal ADC_amp Spectra: W Cut", 288, 0, 288, 100., 0., 10. );
+  //TH2D *hdxdy_HCAL = new TH2D("hdxdy_HCAL",";y_{HCAL}-y_{expect} (m); x_{HCAL}-x_{expect} (m)", 250, -5.0, 5.0, 250, -10, 10 );
+  //TH2D *hXY_HCAL_ps = new TH2D("hXY_HCAL_ps",";y_{HCAL} (m); x_{HCAL} (m)", 250, -5.0, 5.0, 250, -10, 10 );
   TH2D *hXY_HCAL = new TH2D("hXY_HCAL",";y_{HCAL} (m); x_{HCAL} (m)", 250, -5.0, 5.0, 250, -10, 10 );
-  TH1D *hvz = new TH1D("hvz",";vertex z (m);", 250,-0.125,0.125);
   TH1D *hvz_cut = new TH1D("hvz_cut",";vertex z (m);", 250,-0.125,0.125);
  
   // Timing histograms
-  TH2D *htcorr_HCAL_HODO = new TH2D("htcorr_HCAL_HODO",";TDC_{HCAL} (ns);TDC_{HODO} (ns)", 150, -150, 0, 150, -15, 15);
-  TH1D *htDiff_HODO_HCAL = new TH1D("htDiff_HODO_HCAL","",150,-150,0);
-  TH1D *haDiff_HODO_HCAL = new TH1D("haDiff_HODO_HCAL","",300,0,150);
-  TH1D *haDiff_HODO_HCAL_JLAB = new TH1D("haDiff_HODO_HCAL_JLAB","",300,0,150);
-  TH1D *haDiff_HODO_HCAL_CMU = new TH1D("haDiff_HODO_HCAL_CMU","",300,0,150);
-  TH1D *htDiff_HODO_HCAL_JLAB = new TH1D("htDiff_HODO_HCAL_JLAB","",300,-150,0);
-  TH1D *htDiff_HODO_HCAL_CMU = new TH1D("htDiff_HODO_HCAL_CMU","",300,-150,0);
+  TH2D *htcorr_HCAL_HODO = new TH2D("HCAL/HODO TDC/TDC Correlation",";TDC_{HCAL} (ns);TDC_{HODO} (ns)", 150, -150, 0, 150, -15, 15);  
+  TH2D *hacorr_HCAL_HODO = new TH2D("HCAL/HODO ADCt/TDC Correlation",";ADCt_{HCAL} (ns);TDC_{HODO} (ns)", 300, 0, 150, 150, -15, 15);
+  TH2D *htcorr_HCAL_HODO_corr = new TH2D("HCAL/HODO TDC/TDC Correlation (corrected)",";TDC_{HCAL} (ns);TDC_{HODO} (ns)", 150, -150, 0, 150, -15, 15);  
+  TH2D *hacorr_HCAL_HODO_corr = new TH2D("HCAL/HODO ADCt/TDC Correlation (corrected)",";ADCt_{HCAL} (ns);TDC_{HODO} (ns)", 300, 0, 150, 150, -15, 15);
+  TH1D *htDiff_HODO_HCAL = new TH1D("HCal_TDC-HODO_TDC","ns",150,-150,0);
+  TH1D *haDiff_HODO_HCAL = new TH1D("HCal_ADCt-HODO_TDC","ns",300,0,150);
+  TH1D *htDiff_HODO_HCAL_corr = new TH1D("HCal_TDC-HODO_TDC Corrected","ns",150,-150,0);
+  TH1D *haDiff_HODO_HCAL_corr = new TH1D("HCal_ADCt-HODO_TDC Corrected","ns",300,0,150);
+  TH1D *haDiff_HODO_HCAL_JLAB = new TH1D("HCal_ADCt-HODO_TDC JLAB","ns",300,0,150);
+  TH1D *haDiff_HODO_HCAL_CMU = new TH1D("HCal_ADCt-HODO_TDC CMU","ns",300,0,150);
+  TH1D *htDiff_HODO_HCAL_JLAB = new TH1D("HCal_TDC-HODO_TDC JLAB","ns",300,-150,0);
+  TH1D *htDiff_HODO_HCAL_CMU = new TH1D("HCal_TDC-HODO_TDC CMU","ns",300,-150,0);
+  TH1D *haDiff_HODO_HCAL_JLAB_corr = new TH1D("HCal_ADCt-HODO_TDC JLAB Corrected","ns",300,0,150);
+  TH1D *haDiff_HODO_HCAL_CMU_corr = new TH1D("HCal_ADCt-HODO_TDC CMU Corrected","ns",300,0,150);
+  TH1D *htDiff_HODO_HCAL_JLAB_corr = new TH1D("HCal_TDC-HODO_TDC JLAB Corrected","ns",300,-150,0);
+  TH1D *htDiff_HODO_HCAL_CMU_corr = new TH1D("HCal_TDC-HODO_TDC CMU Corrected","ns",300,-150,0);
   TH2D *htDiff_vs_ADCint_JLAB = new TH2D("htDiff_vs_ADCint_JLAB",";E_{JLAB} (GeV);TDC_{HCAL}-TDC_{HODO} (ns)",270,0.0,0.9,600,-250,50);
   TH2D *haDiff_vs_ADCint_JLAB = new TH2D("haDiff_vs_ADCint_JLAB",";E_{JLAB} (GeV);ADCt_{HCAL}-TDC_{HODO} (ns)",270,0.0,0.9,600,0,150);
   TH2D *htDiff_vs_ADCint_CMU = new TH2D("htDiff_vs_ADCint_CMU",";E_{CMU} (GeV);TDC_{HCAL}-TDC_{HODO} (ns)",270,0.0,0.9,600,-250,50);
   TH2D *haDiff_vs_ADCint_CMU = new TH2D("haDiff_vs_ADCint_CMU",";E_{CMU} (GeV);ADCt_{HCAL}-TDC_{HODO} (ns)",270,0.0,0.9,600,0,150);
-  TH1D *hTDCTimewalk = new TH1D("hTDCTimewalk","",500,0,50);
-  TH1D *hADCtTimewalk = new TH1D("hADCtTimewalk","",500,0,50);
+  TH1D *hTDCTimewalk = new TH1D("hTDCTimewalk","ns",500,0,50);
+  TH1D *hADCtTimewalk = new TH1D("hADCtTimewalk","ns",500,0,50);
   TH2D *htDiff_vs_HCALID = new TH2D("htDiff_vs_HCALID",";Channel;TDC_{HCAL}-TDC_{HODO} (ns)",288,0,288,300,-150,0);
   TH2D *haDiff_vs_HCALID = new TH2D("haDiff_vs_HCALID",";Channel;ADCtime_{HCAL}-TDC_{HODO} (ns)",288,0,288,300,0,150);
   TH2D *hTDCoffsets_vs_HCALID = new TH2D("hTDCoffsets_vs_HCALID",";Channel;TDC Offset (ns)",288,0,288,200,-50,50);
@@ -435,12 +444,17 @@ void timingCal( const char *configfilename="setup_timingCal.cfg", int run = -1 )
   TH2D *hTDCsig_vs_HCALID = new TH2D("hTDCsig_vs_HCALID",";Channel;TDC Std Dev (ns)",288,0,288,100,0,10);
   TH2D *hADCtsig_vs_HCALID = new TH2D("hADCtsig_vs_HCALID",";Channel;ADC Time Std Dev (ns)",288,0,288,500,0,50);
   TH2D *htDiff_vs_HCALID_corr = new TH2D("htDiff_vs_HCALID_corr",";Channel;TDC_{HCAL}-TDC_{HODO} (ns)",288,0,288,300,-150,0);
-  TH2D *htDiff_vs_ADCint[kNcell+1];
-  TH2D *haDiff_vs_ADCint[kNcell+1];
-  TH1D *htDiff[kNcell+1];
-  TH1D *haDiff[kNcell+1];
+  TH2D *haDiff_vs_HCALID_corr = new TH2D("haDiff_vs_HCALID_corr",";Channel;ADCt_{HCAL}-TDC_{HODO} (ns)",288,0,288,300,0.0,150.0);
+  TH2D *htDiff_vs_ADCint[kNcell];
+  TH2D *haDiff_vs_ADCint[kNcell];
+  TH1D *htDiff[kNcell];
+  TH1D *haDiff[kNcell];
+  TH1D *htDiff_corr[kNcell];
+  TH1D *haDiff_corr[kNcell];
   TH1D *haDiff_vs_col[kNcols];
   TH1D *htDiff_vs_col[kNcols];
+  TH1D *haDiff_vs_col_corr[kNcols];
+  TH1D *htDiff_vs_col_corr[kNcols];
   TH2D *htDiff_vs_ADCint_cols[kNcols];
   TH2D *haDiff_vs_ADCint_cols[kNcols];
 
@@ -448,7 +462,9 @@ void timingCal( const char *configfilename="setup_timingCal.cfg", int run = -1 )
 
   for( int i=0; i<kNcols; i++){
     haDiff_vs_col[i] = new TH1D(Form("haDiff_col%d",i),";ADCt_{HCAL}-TDC_{HODO} (ns)",300,0,150);
-    htDiff_vs_col[i] = new TH1D(Form("htDiff_col%d",i),";ADCt_{HCAL}-TDC_{HODO} (ns)",300,-150,0);
+    htDiff_vs_col[i] = new TH1D(Form("htDiff_col%d",i),";TDC_{HCAL}-TDC_{HODO} (ns)",300,-150,0);
+    haDiff_vs_col_corr[i] = new TH1D(Form("haDiff_col%d_corr",i),";ADCt_{HCAL}-TDC_{HODO} (ns)",300,0,150);
+    htDiff_vs_col_corr[i] = new TH1D(Form("htDiff_col%d_corr",i),";TDC_{HCAL}-TDC_{HODO} (ns)",300,-150,0);
     haDiff_vs_ADCint_cols[i] = new TH2D(Form("htDiff_vs_ADCint_col%d",i),Form(";E_{col%d} (GeV);TDC_{HCAL}-TDC_{HODO} (ns)",i),270,0.0,0.9,600,-250,50);
     htDiff_vs_ADCint_cols[i] = new TH2D(Form("haDiff_vs_ADCint_col%d",i),Form(";E_{col%d} (GeV);ADCt_{HCAL}-TDC_{HODO} (ns)",i),270,0.0,0.9,600,0,150);
   }
@@ -460,6 +476,8 @@ void timingCal( const char *configfilename="setup_timingCal.cfg", int run = -1 )
 
     htDiff[i] = new TH1D(Form("htDiff_bl%d",i),";TDC_{HCAL}-TDC_{HODO} (ns)",300,-150,0);
     haDiff[i] = new TH1D(Form("haDiff_bl%d",i),";ADCt_{HCAL}-TDC_{HODO} (ns)",1400,-400,300);
+    htDiff_corr[i] = new TH1D(Form("htDiff_bl%d",i),";TDC_{HCAL}-TDC_{HODO} (ns)",300,-150,0);
+    haDiff_corr[i] = new TH1D(Form("haDiff_bl%d",i),";ADCt_{HCAL}-TDC_{HODO} (ns)",1400,-400,300);
     haDiff[i]->Fill( 55 ); //To test fits
   }
 
@@ -472,8 +490,8 @@ void timingCal( const char *configfilename="setup_timingCal.cfg", int run = -1 )
   cout << endl << "All parameters loaded and initialization complete." << endl << endl;
   cout << "Opened up tree with nentries: " << C->GetEntries() << ", nentries passing globalcut: " << Nevents << "." << endl << endl;
 
-  //Loop over events
-  cout << "Main loop over all data commencing.." << endl;
+  //First loop over events to obtain mean TOF and timewalk params by channel
+  cout << "First loop over all data commencing.." << endl;
   Double_t progress = 0.;
   Double_t timekeeper = 0., timeremains = 0.;
   while(progress<1.0){
@@ -508,68 +526,39 @@ void timingCal( const char *configfilename="setup_timingCal.cfg", int run = -1 )
 	//cout << "Now analyzing run " << run_number << "." << endl;
       }
 
-      //Sort all tracks by lowest Chi^2 (highest confidence track)
-      int track_tot = (int)BBtr_n;
-      int track = 0;
-      double min = 1000.0; // Set arbitrarily high chi^2 to minimize with loop over tracks
-      for( int elem=0; elem<track_tot; elem++ ){            
-	if( BBtr_chi2[elem] < min )
-	  track = elem;      
-      }
+      double etheta = acos( BBtr_pz[0]/BBtr_p[0] );
+      double ephi = atan2( BBtr_py[0], BBtr_px[0] );
 
-      double etheta = acos( BBtr_pz[track]/BBtr_p[track] );
-      double ephi = atan2( BBtr_py[track], BBtr_px[track] );
-
-      TVector3 vertex(0,0,BBtr_vz[track]); // z location of vertex in hall coordinates
+      TVector3 vertex(0,0,BBtr_vz[0]); // z location of vertex in hall coordinates
       TLorentzVector Pbeam(0,0,E_e,E_e); //Mass of e negligable
-      TLorentzVector kprime(BBtr_px[track],BBtr_py[track],BBtr_pz[track],BBtr_p[track]);
+      TLorentzVector kprime(BBtr_px[0],BBtr_py[0],BBtr_pz[0],BBtr_p[0]);
       TLorentzVector Ptarg(0,0,0,M_p);
 
       TLorentzVector q = Pbeam - kprime;
       TLorentzVector PgammaN = Ptarg + q; //(-px, -py, ebeam - pz, Mp + ebeam - p)
 
       double pel = E_e/(1.+E_e/M_p*(1.-cos(etheta)));
-      double nu = E_e - BBtr_p[track];
+      double nu = E_e - BBtr_p[0];
       double pp = sqrt(pow(nu,2)+2.*M_p*nu); //momentum of the proton
-      double phinucleon = ephi + TMath::Pi(); //assume coplanarity
-      double thetanucleon = acos( (E_e - BBtr_p[track]*cos(etheta))/pp ); //use elastic constraint on nucleon kinematics
-	
-      TVector3 pNhat( sin(thetanucleon)*cos(phinucleon),sin(thetanucleon)*sin(phinucleon),cos(thetanucleon));
-
-      //Define HCal coordinate system
-      TVector3 HCAL_zaxis(sin(-HCal_th),0,cos(-HCal_th));
-      TVector3 HCAL_xaxis(0,-1,0);
-      TVector3 HCAL_yaxis = HCAL_zaxis.Cross(HCAL_xaxis).Unit();
-	
-      TVector3 HCAL_origin = HCal_d * HCAL_zaxis + hcalheight * HCAL_xaxis;
+      double phinucleon = ephi + PI; //assume coplanarity
+      double thetanucleon = acos( (E_e - BBtr_p[0]*cos(etheta))/pp ); //use elastic constraint on nucleon kinematics
 
       //Sanity check on position after offsets applied
       hXY_HCAL->Fill( HCALy, HCALx );
 
-      //Define intersection points for hadron vector
-      double sintersect = ( HCAL_origin - vertex ).Dot( HCAL_zaxis ) / ( pNhat.Dot( HCAL_zaxis ) );
-
-      TVector3 HCAL_intersect = vertex + sintersect * pNhat;
-
-      double yexpect_HCAL = (HCAL_intersect - HCAL_origin).Dot( HCAL_yaxis );
-      double xexpect_HCAL = (HCAL_intersect - HCAL_origin).Dot( HCAL_xaxis );
-
-      //Calculate the proton spot - use for cut later on
-      hdxdy_HCAL->Fill( HCALy - yexpect_HCAL, HCALx - xexpect_HCAL );
-
-      double E_ep = sqrt( pow(M_e,2) + pow(BBtr_p[track],2) ); // Obtain the scattered electron energy
+      double E_ep = sqrt( pow(M_e,2) + pow(BBtr_p[0],2) ); // Obtain the scattered electron energy
       hE_ep->Fill( E_ep ); // Fill histogram
 	
-      double p_ep = BBtr_p[track];
-      double Q2 = 2*E_e*E_ep*( 1-(BBtr_pz[track]/p_ep) ); // Obtain Q2 from beam energy, outgoing electron energy, and momenta
+      double p_ep = BBtr_p[0];
+      double Q2 = 2*E_e*E_ep*( 1-(BBtr_pz[0]/p_ep) ); // Obtain Q2 from beam energy, outgoing electron energy, and momenta
       hQ2->Fill( Q2 ); // Fill histogram
 	
       double W = PgammaN.M();
       hW->Fill( W );
 	
       //Use the electron kinematics to predict the proton momentum assuming elastic scattering on free proton at rest:
-      double E_pp = nu+M_p; // Get energy of the proton
-      double Enucleon = sqrt(pow(pp,2)+pow(M_p,2)); // Check on E_pp, same
+      double E_pp = nu+M_p; // Get total energy of the proton
+      //double Enucleon = sqrt(pow(pp,2)+pow(M_p,2)); // Check on E_pp, same
       hE_pp->Fill( E_pp ); // Fill histogram
 	
       double KE_p = nu; //For elastics
@@ -582,459 +571,268 @@ void timingCal( const char *configfilename="setup_timingCal.cfg", int run = -1 )
 	if(TDCT_id[ihit]==0) hcal_time=TDCT_tdc[ihit];
       }
       double diff = hcal_time - bbcal_time; 
-      hDiff->Fill( diff ); // Fill histogram
-	
-      //cout << "BBtr_p[track]: " << BBtr_p[track] << endl;
-      //cout << "BBtr_px[track]: " << BBtr_px[track] << endl;
-      //cout << "BBtr_py[track]: " << BBtr_py[track] << endl;
-      //cout << "BBtr_pz[track]: " << BBtr_pz[track] << endl;
-      //cout << "BBtr_vz[track]: " << BBtr_vz[track] << endl;
-      //cout << "BBtr_chi2[track]: " << BBtr_chi2[track] << endl;
-      //cout << "BBtr_n: " << BBtr_n << endl;
-      //cout << "BBps_x: " << BBps_x << endl;
-      //cout << "BBps_y: " << BBps_y << endl;
-      //cout << "BBps_e: " << BBps_e << endl;
-      //cout << "BBsh_x: " << BBsh_x << endl;
-      //cout << "BBsh_y: " << BBsh_y << endl;
-      //cout << "BBsh_e: " << BBsh_e << endl;
-      //cout << "TDCT_id[0]: " << TDCT_id[0] << endl;
-      //cout << "TDCT_tdc[0]: " << TDCT_tdc[0] << endl;
-      //cout << "TDCTndata: " << TDCTndata << endl;
-      //cout << "HCALx: " << HCALx << endl;
-      //cout << "HCALy: " << HCALy << endl;
-      //cout << "HCALe: " << HCALe << endl;
-      //cout << "crow: " << crow << endl;
-      //cout << "ccol: " << ccol << endl;
-      //cout << "nblk: " << nblk << endl;
-      //cout << "cblkid[0]: " << cblkid[0] << endl;
-      //cout << "cblke[0]: " << cblke[0] << endl;
-      //cout << "HCALa[0]: " << HCALa[0] << endl;
-      //cout << "HCALtdc[0]: " << HCALtdc[0] << endl;
-	
+      hDiff->Fill( diff );	
 
-      //cout << "HCALx: " << HCALx << endl;
-      //cout << "xexpect_HCAL: " << xexpect_HCAL << endl;
-      //cout << "HCALy: " << HCALy << endl;
-      //cout << "yexpect_HCAL: " << yexpect_HCAL << endl;
-
-      //cout << "runI: " << (int)runI << endl;
-      //cout << "runN: " << (int)runN << endl;
-      //cout << "runT: " << (int)runT << endl;
-
-      // Coincidence timing cut and vertex cut to resolve W well
-      if( fabs(diff+370)<40 && fabs(BBtr_vz[track])<0.08 ) hW_cuts->Fill( W );
-	
-      if( pow( (HCALx-xexpect_HCAL - dx0)/dx_sig,2) + pow( (HCALy-yexpect_HCAL - dy0)/dy_sig,2) <= pow(2.5,2) ){
-	//cout << "Position cut passed.." << endl;
-      }
-	
+      //Fill some HCal histos
       hHCALe->Fill( HCALe );
       hHODOnclus->Fill( nClusHODO );
+
+      //Check how often the tdc failed to register for an otherwise good event
       if( HCALe>0.02 && HCALtdc[0]<-400 && nClusHODO<10 ) TDCmiss++;
 	
       //Get timing offsets for tdc and adc from primary block in cluster
-      if( fabs(W-W_mean)<W_sig&&fabs(diff+370)<40 ){
-	// Get the TOF difference from beam plane normal to HCal
-	double vp_el = pp/M_p;
-	cout << vp_el << endl;
-	hElas_vp->Fill(vp_el);
-	double dd = sqrt( pow(HCal_d,2) + pow(HCALx,2) + pow(HCALy,2) ) - HCal_d;
-	double dt = dd/vp_el;
-	hTOFcorr->Fill( dt );
-	hTOFvID->Fill( cblkid[0], dt );
+      if( fabs( W-W_mean )<W_sig&&fabs( diff+t_trig )<40 ){
+	//Fill some basic histos
+	hW_cuts->Fill( W );
+	hCblkID->Fill( cblkid[0] );
+	hCCol->Fill( ccol );
+	hvz_cut->Fill( BBtr_vz[0] );
 
+	//Get total time of flight per elastic proton (very naive - need to use beta)
+	//Recall: p=(m*v)/sqrt(1-pow( beta, 2 )), beta = v/c, c=1
+	double vp = pp/M_p; //Assuming elastic
+	double vp2 = sqrt( 1/pow( M_p/pp, 2 )); //Via beta for comparison (and measure of inelastic contamination)?
+	hTOFvp->Fill( vp );
+	hTOFvp2->Fill( vp2 );
+
+	double dp = sqrt( pow(HCal_d,2) + pow(HCALx,2) + pow(HCALy,2) ); //Distance from vertex to center of cluster
+	double tp = dp/vp;
+	double tp2 = dp/vp2;
+	hTOF->Fill( tp );
+	hTOF2->Fill( tp2 );
+	hTOFvID->Fill( cblkid[0], tp );
+	hTOF2vID->Fill( cblkid[0], tp );
+
+	//Get time difference between ADCt/TDC and HODO TDC mean time
 	double HHdiff = HCALtdc[0]-tHODO; //time difference between HCal TDC and Hodo TDC
 	double HHAdiff = HCALa[0]-tHODO; //time difference between HCal ADC time and Hodo TDC
 	double e = cblke[0]; //energy deposited in primary block
 	int idx = (int)cblkid[0]-1; //index of primary block
 	int col = (int)ccol; //column of primary block
-	  
+	if( idx<0 || idx>=288 ) cout << "ERROR: indexing out of bounds at idx = " << idx << endl;
+
+	//Fill some unmodified time difference histos
 	htcorr_HCAL_HODO->Fill( HCALtdc[0], tHODO );
 	htDiff_HODO_HCAL->Fill( HHdiff );
 	haDiff_HODO_HCAL->Fill( HHAdiff );
-	if(ccol>3&&ccol<8){
-	  htDiff_HODO_HCAL_JLAB->Fill( HHdiff );
-	  haDiff_HODO_HCAL_JLAB->Fill( HHAdiff );
-	  htDiff_vs_ADCint_JLAB->Fill( e, HHdiff );
-	  haDiff_vs_ADCint_JLAB->Fill( e, HHAdiff );
-	}else{
-	  htDiff_HODO_HCAL_CMU->Fill( HHdiff );
-	  haDiff_HODO_HCAL_CMU->Fill( HHAdiff );
-	  htDiff_vs_ADCint_CMU->Fill( e, HHdiff );
-	  haDiff_vs_ADCint_CMU->Fill( e, HHAdiff );
-	}
-	
-	//if( cblkid[0]==135 ) cout << HHAdiff << endl;
-	hCblkID->Fill( cblkid[0] );
-	hCCol->Fill( ccol );
 	htDiff_vs_HCALID->Fill( cblkid[0], HHdiff );
 	haDiff_vs_HCALID->Fill( cblkid[0], HHAdiff );
-	  
 	htDiff[ idx ]->Fill( HHdiff );
 	haDiff[ idx ]->Fill( HHAdiff );
-	if( idx<0 || idx>288 ) cout << "ERROR: TDC out of bounds at tdcID = " << idx << endl;
-	if( HHdiff<-65. && HHdiff>-80. ){
-	  htDiff_vs_ADCint[idx]->Fill( e, HHdiff );
-	  htDiff_vs_ADCint_cols[col]->Fill( e, HHdiff );
-	}
-	if( HHdiff<-65. && HHdiff>-80. ) htDiff_vs_HCALID_corr->Fill( cblkid[0], HHdiff+22.0*e ); //Timewalk corrected from linear fit to time diff vs clus e
-	haDiff_vs_ADCint[idx]->Fill( e, HHAdiff );
-	haDiff_vs_ADCint_cols[col]->Fill( e, HHAdiff );
-	  
+	//To compare JLAB to CMU 
+	haDiff_vs_ADCint_cols[col]->Fill( e, HHAdiff ); 
 	haDiff_vs_col[col]->Fill( HHAdiff );
 	htDiff_vs_col[col]->Fill( HHdiff );
-	  
+
+	//Fill timing difference correlations with energy deposited for timewalk corrections
+	htDiff_vs_ADCint[idx]->Fill( e, HHdiff );
+	haDiff_vs_ADCint[idx]->Fill( e, HHAdiff );
       }
-	
-      //Fill vertex position histogram for cut on tracks
-      hvz_cut->Fill( BBtr_vz[track] );
 	
       //Events that pass the above cuts constitute elastics
       elasYield++;
-	
-      double clusE = 0.0;
-	
-      hNBlk->Fill( nblk );
-	
-      // Get energies with simplest scheme from clusters only
-      for( int blk = 0; blk<(int)nblk; blk++ ){
-	int blkid = int(cblkid[blk])-1; //-1 necessary since sbs.hcal.clus_blk.id ranges from 1 to 288 (different than just about everything else)
-	  
-	clusE += cblke[blk];
-	  
-	hADC->Fill( blkid, cblke[blk] );
-      }
-	
-      hDeltaE->Fill( 1.0-(clusE/KE_p) );
-      hClusE->Fill( clusE );
-      hPAngleCorr->Fill( ephi, p_ep );
-      hPAngleCorr_2->Fill( etheta, p_ep );
     }
   }
-  
-  cout << endl;
-
-  //Fit timing data and extract offsets
-  TF1 *f01;
-  TF1 *f02;
-  TF1 *f03;
-  TF1 *f04;
-  TF1 *f05;
-  TF1 *f06;
-  TF1 *f07;
-  TF1 *f08;
+  cout << "First loop complete. Time elapsed: " << st->CpuTime() << " s = " << st->CpuTime()/60.0 << " min. Real time = " << st->RealTime() << " s = " << st->RealTime()/60.0 << " min." << endl;
 
 
-  double JLAB_mean_TDC = 0.;
-  double CMU_mean_TDC = 0.;
-  double JLAB_mean_ADCt = 0.;
-  double CMU_mean_ADCt = 0.;
-  double JLAB_timewalkMean_TDC = 0.;
-  double CMU_timewalkMean_TDC = 0.;
-  double JLAB_timewalkMean_ADCt = 0.;
-  double CMU_timewalkMean_ADCt = 0.;
-
-  if( haDiff_HODO_HCAL_JLAB->GetEntries()>0 ){
-    haDiff_HODO_HCAL_JLAB->Fit("gaus","Q","",20,80);
-    f01=haDiff_HODO_HCAL_JLAB->GetFunction("gaus");
-    JLAB_mean_ADCt = f01->GetParameter(1);
-    cout << "JLAB ADCt mean =" << JLAB_mean_ADCt << "." << endl;
-  }else{
-    cout << "WARNING: Insufficient entries in haDiff_HODO_HCAL_JLAB to fit. Entries = " << haDiff_HODO_HCAL_JLAB->GetEntries() << "." << endl;
-  }
-
-  if( haDiff_HODO_HCAL_CMU->GetEntries()>0 ){
-    haDiff_HODO_HCAL_CMU->Fit("gaus","Q","",20,80);
-    f02=haDiff_HODO_HCAL_CMU->GetFunction("gaus");
-    CMU_mean_ADCt = f02->GetParameter(1);
-    cout << "CMU ADCt mean =" << CMU_mean_ADCt << "." << endl;
-  }else{
-    cout << "WARNING: Insufficient entries in haDiff_HODO_HCAL_CMU to fit. Entries = " << haDiff_HODO_HCAL_CMU->GetEntries() << "." << endl;
-  }
-
-  if( htDiff_HODO_HCAL_JLAB->GetEntries()>0 ){
-    htDiff_HODO_HCAL_JLAB->Fit("gaus","Q","",-150,-65);
-    f03=htDiff_HODO_HCAL_JLAB->GetFunction("gaus");
-    JLAB_mean_TDC = f03->GetParameter(1);
-    cout << "JLAB TDC mean =" << JLAB_mean_TDC << "." << endl;
-  }else{
-    cout << "WARNING: Insufficient entries in htDiff_HODO_HCAL_JLAB to fit. Entries = " << htDiff_HODO_HCAL_JLAB->GetEntries() << "." << endl;
-  }
-
-  if( htDiff_HODO_HCAL_CMU->GetEntries()>0 ){
-    htDiff_HODO_HCAL_CMU->Fit("gaus","Q","",-150,-65);
-    f04=htDiff_HODO_HCAL_CMU->GetFunction("gaus");
-    CMU_mean_TDC = f04->GetParameter(1);
-    cout << "CMU TDC mean =" << CMU_mean_TDC << "." << endl;
-  }else{
-    cout << "WARNING: Insufficient entries in htDiff_HODO_HCAL_CMU to fit. Entries = " << htDiff_HODO_HCAL_CMU->GetEntries() << "." << endl;
-  }
-
-  if( htDiff_vs_ADCint_JLAB->GetEntries()>0 ){
-    htDiff_vs_ADCint_JLAB->Fit("pol1","Q","",0.0,0.5);
-    f05=htDiff_vs_ADCint_JLAB->GetFunction("pol1");
-    JLAB_timewalkMean_TDC = f05->GetParameter(1);
-    cout << "JLAB TDC Timewalk mean =" << JLAB_timewalkMean_TDC << "." << endl;
-  }else{
-    cout << "WARNING: Insufficient entries in htDiff_vs_ADCint_JLAB to fit. Entries = " << htDiff_vs_ADCint_JLAB->GetEntries() << "." << endl;
-  }
-
-  if( htDiff_vs_ADCint_CMU->GetEntries()>0 ){
-    htDiff_vs_ADCint_CMU->Fit("pol1","Q","",0.0,0.5);
-    f06=htDiff_vs_ADCint_CMU->GetFunction("pol1");
-    CMU_timewalkMean_TDC = f06->GetParameter(1);
-    cout << "CMU TDC Timewalk mean =" << CMU_timewalkMean_TDC << "." << endl;
-  }else{
-    cout << "WARNING: Insufficient entries in htDiff_vs_ADCint_CMU to fit. Entries = " << htDiff_vs_ADCint_CMU->GetEntries() << "." << endl;
-  }
-
-  if( haDiff_vs_ADCint_JLAB->GetEntries()>0 ){
-    haDiff_vs_ADCint_JLAB->Fit("pol1","Q","",0.0,0.5);
-    f07=haDiff_vs_ADCint_JLAB->GetFunction("pol1");
-    JLAB_timewalkMean_ADCt = f07->GetParameter(1);
-    cout << "JLAB ADCt Timewalk mean =" << JLAB_timewalkMean_ADCt << "." << endl;
-  }else{
-    cout << "WARNING: Insufficient entries in haDiff_vs_ADCint_JLAB to fit. Entries = " << haDiff_vs_ADCint_JLAB->GetEntries() << "." << endl;
-  }
-
-  if( haDiff_vs_ADCint_CMU->GetEntries()>0 ){
-    haDiff_vs_ADCint_CMU->Fit("pol1","Q","",0.0,0.5);
-    f08=haDiff_vs_ADCint_CMU->GetFunction("pol1");
-    CMU_timewalkMean_ADCt = f08->GetParameter(1);
-    cout << "CMU ADCt Timewalk mean =" << CMU_timewalkMean_ADCt << "." << endl;
-  }else{
-    cout << "WARNING: Insufficient entries in haDiff_vs_ADCint_CMU to fit. Entries = " << haDiff_vs_ADCint_CMU->GetEntries() << "." << endl;
-  }
-
-  cout << "tFitMin: " << tFitMin << endl;
+  //Need to fit tdiff vs E histos and extract slope
+  cout << endl << endl << "Extracting timewalk slopes and TOF mean.. " << endl;
 
   for(int i=0; i<kNcell; i++){
 
     int r = (i-1)/kNcols;
     int c = (i-1)%kNcols;
 
-    TF1 *f1;
-    TF1 *f2;
-    TF1 *f3;
-    TF1 *f4;
+    TF1 *tw1;
+    TF1 *tw2;
 
-    //Fit HCal-TDC/Hodo-TDC difference histogram by cell and obtain offset parameters
-    if( htDiff[i]->GetEntries()>tFitMin ){
-      //Tuning 042522
-      
-      /*
-      if( i==5 || i==22 || i==35 || i==47 || i==72 || i==95 || i==120 || i==144 || i==155 || i==167 || i==179 || i==191 || i==251 || i==263 || i==275 || i==287 ){
-	htDiff[i]->Fit("gaus","Q","",-70,-50);
-      }else if( i==11 || i==203 || i==215 || i==227 || i==228 || i==239 || i==240 ){
-	htDiff[i]->Fit("gaus","Q","",-75,-55);
-      }else if( i==252 ){
-	htDiff[i]->Fit("gaus","Q","",-55,-35);
-      }else if( i==276 ){
-	htDiff[i]->Fit("gaus","Q","",-45,-30);
-      }else{
-	htDiff[i]->Fit("gaus","Q","",-80,-60);
-      }
-      */
-      //Tuning with zero offsets
-      /*
-      if( i==4 || i==5 || i==7 || i==16 || i==17 || i==18 || i==19 || i==28 || i==29 || i==30 || i==31 || i==67 || i==77 || i==78 || i==79 || i==91 || i==102 || i==103 || i==114 || i==115 || i==138 || i==139 || i==147 || i==196 || i==199 || i==212 || i==226 || i==227 || i==250 || i==251 ){
-	htDiff[i]->Fit("gaus","Q","",-85,-65);
-      }else if( i==6 || i==40 || i==41 || i==42 || i==43 || i==48 || i==49 || i==50 || i==51 || i==56 || i==57 || i==58 || i==59 || i==66 || i==70 || i==71 || i==74 || i==75 || i==88 || i==89 || i==90 || i==92 || i==93 || i==100 || i==101 || i==112 || i==113 || i==124 || i==125 || i==126 || i==127 || i==136 || i==137 || i==144 || i==145 || i==146 || i==152 || i==153 || i==154 || i==155 || i==160 || i==161 || i==162 || i==163 || i==172 || i==173 || i==174 || i==175 || i==180 || i==181 || i==184 || i==185 || i==197 || i==198 || i==206 || i==208 || i==209 || i==222 || i==223 || i==235 || i==246 || i==247 || i==256 || i==257 || i==258 || i==259 || i==268 || i==269 || i==270 || i==271 || i==277 || i==280 || i==281 ){
-	htDiff[i]->Fit("gaus","Q","",-80,-60);
-      }else if( i==12 ){
-	htDiff[i]->Fit("gaus","Q","",-45,-25);
-      }else if( i==36 || i==120 || i==156 || i==166 || i==167 || i==214 || i==276 ){
-	htDiff[i]->Fit("gaus","Q","",-60,-40);
-      }else if( i==37 ){
-	htDiff[i]->Fit("gaus","Q","",-70,-40);
-      }else if( i==52 || i==53 || i==54 || i==55 || i==64 || i==65 || i==76 || i==186 || i==187 || i==207 || i==213 || i==238 ){
-	htDiff[i]->Fit("gaus","Q","",-90,-70);
-      }else if( i==148 || i==149 || i==150 || i==151 || i==210 || i==211 || i==220 || i==221 || i==232 || i==233 || i==245 || i==282 || i==283 ){
-	htDiff[i]->Fit("gaus","Q","",-95,-80);
-      }else if( i==1 || i==9 ){
-	htDiff[i]->Fit("gaus","Q","",-66,-56);
-      }else if( i==23 ){
-	htDiff[i]->Fit("gaus","Q","",-52,-49);
-      }else if( i==38 ){
-	htDiff[i]->Fit("gaus","Q","",-64,-55);
-      }else if( i==60 ){
-	htDiff[i]->Fit("gaus","Q","",-120,0);
-      }else if( i==73 ){
-	htDiff[i]->Fit("gaus","Q","",-68,-62);
-      }else if( i==130 ){
-	htDiff[i]->Fit("gaus","Q","",-70,-54);
-      }else if( i==180 ){
-	htDiff[i]->Fit("gaus","Q","",-70,-62);
-      }else if( i==204 || i==205 ){
-	htDiff[i]->Fit("gaus","Q","",-81,-69);
-      }else if( i==228 ){
-	htDiff[i]->Fit("gaus","Q","",-60,-49);
-      }else if( i==239 ){
-	htDiff[i]->Fit("gaus","Q","",-130,-40);
-      }else{
-	htDiff[i]->Fit("gaus","Q","",-70,-50);
-      }
-      */
+    //Fit HCal-TDC/Hodo-TDC difference vs energy deposited in HCal to obtain TDC timewalk
+    if( htDiff_vs_ADCint[i]->GetEntries()>0 ){
+      //Will need to add by-hand tuning here
 
-      //cout << "Fitting block: " << i << endl;
-      
-      //if( i==149 ) continue;
-
-      //Tuning 050322
-      /*
-      if( i==0 || i==11 ){
-	htDiff[i]->Fit("gaus","Q","",-60,-50);
-      }else if( i==10 || i==36 || i==60 ){
-	htDiff[i]->Fit("gaus","Q","",-60,-40);
-      }else if( i==12 ){
-	htDiff[i]->Fit("gaus","Q","",-150,0);
-      }else if( i==18 || i==30 || i==31 || i==39 || i==61 || i==62 || i==63 || i==66 || i==68 || i==69 || i==74 || i==75 || i==76 || i==77 || i==78 || i==79 || i==80 || i==81 || i==86 || i==87 || i==88 || i==89 || i==90 || i==91 || i==92 || i==93 || i==94 || i==96 || i==97 || i==98 || i==99 || i==100 || i==101 || i==104 || i==105 || i==106 || i==107 || i==108 || i==109 || i==110 || i==111 || i==112 || i==113 || i==117 || i==118 || i==119 || i==121 || i==122 || i==123 || i==124 || i==128 || i==129 || i==134 || i==135 || i==136 || i==137 || i==138 || i==140 || i==141 || i==147 || i==148 || i==149 || i==150 || i==151 || i==152 || i==153 || i==162 || i==163 || i==165 || i==172 || i==173 || i==174 || i==175 || i==176 || i==177 || i==184 || i==185 || i==186 || i==187 || i==188 || i==189 || i==194 || i==195 || i==196 || i==197 || i==198 || i==199 || i==200 || i==201 || i==206 || i==207 || i==208 || i==209 || i==210 || i==211 || i==219 || i==220 || i==222 || i==223 || i==224 || i==225 || i==226 || i==229 || i==230 || i==231 || i==232 || i==233 || i==236 || i==237 || i==238 || i==245 || i==246 || i==247 || i==257 || i==258 || i==259 || i==268 || i==269 || i==270 || i==271 || i==281 || i==282 || i==283 ){
-	htDiff[i]->Fit("gaus","Q","",-80,-60);
-      }else if( i==24 || i==276 ){
-	htDiff[i]->Fit("gaus","Q","",-45,-25);
-      }else if( i==102 || i==103 || i==114 || i==115 || i==116 || i==125 || i==126 || i==127 || i==139 || i==212 || i==213 || i==221 || i==234 || i==235 ){
-	htDiff[i]->Fit("gaus","Q","",-90,-70);
-      }else if( i==19 || i==67 ){
-	htDiff[i]->Fit("gaus","Q","",-80,-70);
-      }else if( i==35 || i==37 || i==47 || i==155 || i==180 || i==192 ){
-	htDiff[i]->Fit("gaus","Q","",-65,-50);
-      }else if( i==130 ){
-	htDiff[i]->Fit("gaus","Q","",-80,-65);
-      }else if( i==240 ){
-	htDiff[i]->Fit("gaus","Q","",-65,-40);
-      }else if( i==263 ){
-	htDiff[i]->Fit("gaus","Q","",-65,-45);
-      }else if( i==239 ){
-	htDiff[i]->Fit("gaus","Q","",-64,-59);
-      }else if( i==95 ){
-	htDiff[i]->Fit("gaus","Q","",-61,-50);
-      }else{
-	htDiff[i]->Fit("gaus","Q","",-80,-50);
-      }
-      */
-      htDiff[i]->Fit("gaus","Q","",-90,-60);
-      f1=htDiff[i]->GetFunction("gaus");
-      htDiff[i]->SetTitle(Form("TDCGoodFitMean:%f",f1->GetParameter(1)));
-      TDCoffsets[i] = -75. - f1->GetParameter(1);
-      TDCsig[i] = f1->GetParameter(2);
-      double cs = f1->GetChisquare();
-      htDiff[i]->SetName(Form("htDiff_bl%d_r%d_c%d_cs%f",i,r,c,cs));	
-    }else if( htDiff[i]->GetEntries()>10 ){
-      TDCoffsets[i] = 0.; //Set to zero and default to cosmic-calibrated value
-      cout << "WARNING: Low statistics in cell " << i << ", defaulting to old calibration value: " << oldTDCoffsets[i] << "." << endl;
-      htDiff[i]->SetName(Form("htDiff_bl%d_r%d_c%d",i,r,c));
+      htDiff_vs_ADCint[i]->Fit("pol1","Q","",0.0,0.2);
+      tw1=htDiff_vs_ADCint[i]->GetFunction("pol1");
+      TvsE[i]=tw1->GetParameter(1);
+      hTDCTimewalk->Fill(tw1->GetParameter(1));
     }else{
-      cout << "WARNING: Low statistics in cell " << i << ", defaulting to old calibration value: " << oldTDCoffsets[i] << "." << endl;
-      if(c>3&&c<8){
-	TDCoffsets[i] = 0.;
-	htDiff[i]->SetName(Form("htDiff_bl%d_r%d_c%d_JLABm%f",i,r,c,JLAB_mean_TDC));	
-      }else{
-	TDCoffsets[i] = 0.;
-	htDiff[i]->SetName(Form("htDiff_bl%d_r%d_c%d_CMUm%f",i,r,c,CMU_mean_TDC));	
+      TvsE[i]=0;
+      cout << "No TDC data in channel " << i << "." << endl;
+    }
+
+    //Fit HCal-ADC-time/Hodo-TDC difference vs energy deposited in HCal to obtain ADCt timewalk
+    if( haDiff_vs_ADCint[i]->GetEntries()>0 ){
+      //Will need to add by-hand tuning here
+
+      haDiff_vs_ADCint[i]->Fit("pol1","Q","",0.0,0.2);
+      tw2=haDiff_vs_ADCint[i]->GetFunction("pol1");
+      AtvsE[i]=tw2->GetParameter(1);
+      hADCtTimewalk->Fill(tw2->GetParameter(1));
+    }else{
+      AtvsE[i]=0;
+      cout << "No ADCt data in channel " << i << "." << endl;
+    }
+  }
+
+  //Need to fit TOF and extract mean
+  TF1 *tof1;
+  hTOF2->Fit("gaus","Q","",0.0,10.0);
+  tof1=hTOF2->GetFunction("gaus");
+  double TOFmean = tof1->GetParameter(1);
+  cout << endl << endl << "Slopes extracted. TOF mean = " << TOFmean << "." << endl;
+
+
+  //Second loop over events with timewalk and TOF corrections applied
+  cout << "Second loop over all data commencing.." << endl;
+  progress = 0.;
+  timekeeper = 0., timeremains = 0.;
+  while(progress<1.0){
+    Int_t barwidth = 70;
+    for(Long64_t nevent = 0; nevent<Nevents; nevent++){
+      
+      //Create a progress bar
+      cout << "[";
+      Int_t pos = barwidth * progress;
+      for(Int_t i=0; i<barwidth; ++i){
+	if(i<pos) cout << "=";
+	else if(i==pos) cout << ">";
+	else cout << " ";
+      }
+      
+      //Calculate remaining time 
+      sw->Stop();
+      timekeeper += sw->RealTime();
+      if( nevent%100000 == 0 && nevent!=0 ) 
+	timeremains = timekeeper*( double(Nevents)/double(nevent) - 1. ); 
+      sw->Reset();
+      sw->Continue();
+      
+      progress = (double)((nevent+1.)/Nevents);
+      cout << "] " << int(progress*100.) << "%, elastic events: " << elasYield << ", time remaining: " << int(timeremains/60.) << "m \r";
+      cout.flush();
+      
+      C->GetEntry( elist->GetEntry( nevent ) ); 
+		
+      if( run_number!=runI ){
+	run_number=runI;
+	//cout << "Now analyzing run " << run_number << "." << endl;
+      }
+
+      //Reconstructing the events with timewalk/TOF corrections by event
+      double etheta = acos( BBtr_pz[0]/BBtr_p[0] );
+      double ephi = atan2( BBtr_py[0], BBtr_px[0] );
+      TVector3 vertex(0,0,BBtr_vz[0]);
+      TLorentzVector Pbeam(0,0,E_e,E_e);
+      TLorentzVector kprime(BBtr_px[0],BBtr_py[0],BBtr_pz[0],BBtr_p[0]);
+      TLorentzVector Ptarg(0,0,0,M_p);
+      TLorentzVector q = Pbeam - kprime;
+      TLorentzVector PgammaN = Ptarg + q;
+      double pel = E_e/(1.+E_e/M_p*(1.-cos(etheta)));
+      double nu = E_e - BBtr_p[0];
+      double pp = sqrt(pow(nu,2)+2.*M_p*nu);
+      double phinucleon = ephi + PI;
+      double thetanucleon = acos( (E_e - BBtr_p[0]*cos(etheta))/pp );
+      double E_ep = sqrt( pow(M_e,2) + pow(BBtr_p[0],2) );
+      double p_ep = BBtr_p[0];
+      double Q2 = 2*E_e*E_ep*( 1-(BBtr_pz[0]/p_ep) );	
+      double W = PgammaN.M();
+      double E_pp = nu+M_p;
+      double Enucleon = sqrt(pow(pp,2)+pow(M_p,2));
+      double KE_p = nu;
+	
+      //Could improve by parsing the elist on first loop...
+      double bbcal_time=0., hcal_time=0.;
+      for(int ihit=0; ihit<TDCTndata; ihit++){
+	if(TDCT_id[ihit]==5) bbcal_time=TDCT_tdc[ihit];
+	if(TDCT_id[ihit]==0) hcal_time=TDCT_tdc[ihit];
+      }
+      double diff = hcal_time - bbcal_time; 
+	
+      //Get timing offsets for tdc and adc from primary block in cluster
+      if( fabs(W-W_mean)<W_sig&&fabs(diff+t_trig)<40 ){
+	double vp2 = sqrt( 1/pow( M_p/pp, 2 ));
+	double dp = sqrt( pow(HCal_d,2) + pow(HCALx,2) + pow(HCALy,2) );
+	double tp2 = dp/vp2;
+	double tp_diff = tp2 - TOFmean; //Obtain difference from TOF mean to obtain relative correction
+
+	double HHdiff = HCALtdc[0]-tHODO;
+	double HHAdiff = HCALa[0]-tHODO;
+	double e = cblke[0];
+	int idx = (int)cblkid[0]-1;
+	int col = (int)ccol;
+	
+	//Fill histograms with the corrected time differences (base + timewalk + TOF)
+	htDiff_corr[ idx ]->Fill( HHdiff + TvsE[ idx ]*e + tp_diff );
+	haDiff_corr[ idx ]->Fill( HHAdiff + AtvsE[ idx ]*e + tp_diff );
+	htDiff_vs_HCALID_corr->Fill( idx, HHdiff + TvsE[ idx ]*e + tp_diff  );
+	haDiff_vs_HCALID_corr->Fill( idx, HHAdiff + AtvsE[ idx ]*e + tp_diff  );
+
+	htcorr_HCAL_HODO_corr->Fill( HCALtdc[0] + TvsE[ idx ]*e + tp_diff, tHODO );
+	hacorr_HCAL_HODO_corr->Fill( HCALa[0] + AtvsE[ idx ]*e + tp_diff, tHODO );
+	htDiff_HODO_HCAL_corr->Fill( HHdiff + TvsE[ idx ]*e + tp_diff );
+	haDiff_HODO_HCAL_corr->Fill( HHAdiff + AtvsE[ idx ]*e + tp_diff );
+	if(ccol>3&&ccol<8){
+	  htDiff_HODO_HCAL_JLAB_corr->Fill( HHdiff + TvsE[ idx ]*e + tp_diff );
+	  haDiff_HODO_HCAL_JLAB_corr->Fill( HHAdiff + AtvsE[ idx ]*e + tp_diff, tHODO );
+	}else{
+	  htDiff_HODO_HCAL_CMU_corr->Fill( HHdiff + TvsE[ idx ]*e + tp_diff );
+	  haDiff_HODO_HCAL_CMU_corr->Fill( HHAdiff + AtvsE[ idx ]*e + tp_diff, tHODO );
+	}
+	  
+	haDiff_vs_col_corr[col]->Fill( HHAdiff );
+	htDiff_vs_col_corr[col]->Fill( HHdiff );
+	  
       }
     }
-    htDiff[i]->SetTitle(Form("TDCDiff_Offset%f",TDCoffsets[i]));
+  }
+  
+  cout << endl;
 
-    int j=i+1; //Ham-handed fix to indexing problem and manual fits
+  cout << "tFitMin: " << tFitMin << endl;
 
+  for(int i=0; i<kNcell; i++){
+    
+    int r = (i-1)/kNcols;
+    int c = (i-1)%kNcols;
+    
+    TF1 *f1;
+    TF1 *f2;
+    
+    //Fit HCal-TDC/Hodo-TDC difference histogram by cell and obtain offset parameters
+    if( htDiff_corr[i]->GetEntries()>tFitMin ){
+      
+      htDiff_corr[i]->Fit("gaus","Q","",-90,-60); //May need to tune fits here
+      f1=htDiff_corr[i]->GetFunction("gaus");
+      htDiff_corr[i]->SetTitle(Form("TDCGoodFitMean:%f",f1->GetParameter(1)));
+      TDCoffsets[i] = -75. - f1->GetParameter(1);
+      TDCsig[i] = f1->GetParameter(2);
+      //double cs = f1->GetChisquare();
+      htDiff_corr[i]->SetName(Form("htDiff_bl%d",i));		
+    }else{   
+      TDCoffsets[i] = 0.;
+    }
+    
     //Fit HCal-ADC-time/Hodo-TDC difference histogram by cell and obtain offset parameters
     if( haDiff[i]->GetEntries()>tFitMin ){
-      //Tuning 042522
-      /*
-      if( j==1 || j==2 || j==3 || j==4 || j==11 || j==12 || j==13 || j==14 || j==23 || j==86 || j==133){
-	haDiff[i]->Fit("gaus","Q","",65,80);
-      }else if( j==20 || j==26 || j==36 || j==144 || j==157 || j==217 ){
-	haDiff[i]->Fit("gaus","Q","",40,55);
-      }else if( j==24 ){
-	haDiff[i]->Fit("gaus","Q","",66,71);
-      }else if( j==37 || j==48 || j==61 || j==62 || j==72 || j==84 || j==97 || j==120 || j==121 || j==132 || j==156 || j==168 || j==180 || j==181 || j==192 || j==193 || j==205 || j==229 || j==266 || j==276 || j==288 ){
-	haDiff[i]->Fit("gaus","Q","",45,60);
-      }else if( j==85 || j==169 || j==277 ){
-	haDiff[i]->Fit("gaus","Q","",60,80);
-      }else if( j==96 ){
-	haDiff[i]->Fit("gaus","Q","",-25,0);
-      }else if( j==109 ){
-	haDiff[i]->Fit("gaus","Q","",-80,-65);
-      }else if( j==112 ){
-	haDiff[i]->Fit("gaus","Q","",-195,-175);
-      }else if( j==117 ){
-	haDiff[i]->Fit("gaus","Q","",75,90);
-      }else if( j==134 ){
-	haDiff[i]->Fit("gaus","Q","",-90,-60);
-      }else if( j==135 ){ 
-	haDiff[i]->Fit("gaus","Q","",-245,-230);
-      }else if( j==253 || j==264 ){
-	haDiff[i]->Fit("gaus","Q","",0,25);
-      }else if( j==278 ){
-	haDiff[i]->Fit("gaus","Q","",-125,-100);
-      }else if( j==280 ){
-	haDiff[i]->Fit("gaus","Q","",-400,-280);
-      }else{
-	haDiff[i]->Fit("gaus","Q","",0,80);
-      }
-      */
-      haDiff[i]->Fit("gaus","Q","",0,80);
+      
+      haDiff[i]->Fit("gaus","Q","",30,70); //May need to tune fits here
       f2=haDiff[i]->GetFunction("gaus");
       haDiff[i]->SetTitle(Form("ADCtGoodFitMean:%f",f2->GetParameter(1)));
       ADCtoffsets[i] = 50. - f2->GetParameter(1);
       ADCtsig[i] = f2->GetParameter(2);
-      //cout << f2->GetParameter(1) << endl;
-      double cs = f2->GetChisquare();
-      haDiff[i]->SetName(Form("haDiff_bl%d_r%d_c%d_cs%f",i,r,c,cs));
-    }else if( htDiff[i]->GetEntries()>10 ){
-      ADCtoffsets[i] = 50. - haDiff[i]->GetMean();
-      cout << "WARNING: Low statistics in cell " << i << ", defaulting to 50. - arithmetic mean for ADCt offset:" << 50. - haDiff[i]->GetMean() << "." << endl;
-      haDiff[i]->SetName(Form("haDiff_bl%d_r%d_c%d",i,r,c));
+      //double cs = f2->GetChisquare();
+      haDiff[i]->SetName(Form("haDiff_bl%d",i));
     }else{
-      cout << "WARNING: Low statistics in cell " << i << ", defaulting to 50. - PMT type mean for ADCt offset:" << 50. - haDiff[i]->GetMean() << "." << endl;
-      if(c>3&&c<8){
-	ADCtoffsets[i] = 50. - JLAB_mean_ADCt;
-	haDiff[i]->SetName(Form("haDiff_bl%d_r%d_c%d_JLABm%f",i,r,c,JLAB_mean_ADCt));	
-      }else{
-        ADCtoffsets[i] = 50. - CMU_mean_ADCt;
-	haDiff[i]->SetName(Form("haDiff_bl%d_r%d_c%d_CMUm%f",i,r,c,CMU_mean_ADCt));	
-      }
-    }
-    haDiff[i]->SetTitle(Form("ADCtDiff_Offset%f",ADCtoffsets[i]));
-
-    //Fit HCal-TDC/Hodo-TDC difference vs energy deposited in HCal to obtain TDC timewalk
-    if( htDiff_vs_ADCint[i]->GetEntries()>tFitMin ){
-      htDiff_vs_ADCint[i]->Fit("pol1","Q","",0.0,0.2);
-      f3=htDiff_vs_ADCint[i]->GetFunction("pol1");
-      TvsE[i]=f3->GetParameter(1);
-      hTDCTimewalk->Fill(f3->GetParameter(1));
-    }else{
-      cout << "Low/absent statistics requires using mean TDCvsADCint slope by PMT type: ";
-      if(ccol>3&&ccol<8){
-	TvsE[i] = JLAB_timewalkMean_TDC;
-      }else{
-	TvsE[i] = CMU_timewalkMean_TDC;
-      }
-      cout << TvsE[i] << "." << endl;
-    }
-
-    //Fit HCal-ADC-time/Hodo-TDC difference vs energy deposited in HCal to obtain ADCt timewalk
-    if( haDiff_vs_ADCint[i]->GetEntries()>tFitMin ){
-      haDiff_vs_ADCint[i]->Fit("pol1","Q","",0.0,0.2);
-      f4=haDiff_vs_ADCint[i]->GetFunction("pol1");
-      AtvsE[i]=f4->GetParameter(1);
-      hADCtTimewalk->Fill(f4->GetParameter(1));
-    }else{
-      cout << "Low/absent statistics requires using mean ADCtvsADCint slope by PMT type: ";
-      if(ccol>3&&ccol<8){
-	AtvsE[i] = JLAB_timewalkMean_ADCt;
-      }else{
-	AtvsE[i] = CMU_timewalkMean_ADCt;
-      }
-      cout << AtvsE[i] << "." << endl;
+      ADCtoffsets[i] = 0.;
     }
   }
+  
 
   //Make offsets input-ready and improve readability
   for(int i=0; i<kNcell; i++){
     hTDCoffsets_vs_HCALID->Fill(i,TDCoffsets[i]);
     holdTDCoffsets_vs_HCALID->Fill(i,oldTDCoffsets[i]*TDCCalib);  
-    combTDCoffsets[i] = -TDCoffsets[i]/TDCCalib+oldTDCoffsets[i]; //TODO: Must double check this with new data
+    combTDCoffsets[i] = TDCoffsets[i]/TDCCalib+oldTDCoffsets[i];
     hcombTDCoffsets_vs_HCALID->Fill(i,combTDCoffsets[i]);     
     hTDCsig_vs_HCALID->Fill(i,TDCsig[i]);
     

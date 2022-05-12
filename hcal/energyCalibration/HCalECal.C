@@ -65,13 +65,15 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
   TChain *C = new TChain("T");
 
   // Paths for input/output files
-  string inConstPath = "/w/halla-scshelf2102/sbs/seeds/HCal_replay/hcal/energyCalibration/setfiles/const_042622.txt"; //Settings from beam data for all runs prior to HV change
+  //string inConstPath = "/w/halla-scshelf2102/sbs/seeds/HCal_replay/hcal/energyCalibration/setfiles/const_042622.txt"; //Settings from beam data for all runs prior to HV change
+
   string constPath = "/w/halla-scshelf2102/sbs/seeds/HCal_replay/hcal/energyCalibration/outfiles/newRatio.txt";
   string ratioPath = "/w/halla-scshelf2102/sbs/seeds/HCal_replay/hcal/energyCalibration/outfiles/ratio.txt";
   string oneBlockPath = "/w/halla-scshelf2102/sbs/seeds/HCal_replay/hcal/energyCalibration/outfiles/oneBlock.txt";
 
   // Declare general physics parameters to be modified by input config file
-  double kine = 8; // Keep track of kinematic calibrating from
+  int kine = 8; // Keep track of kinematic calibrating from
+  int test = 0; // Toggle between official replay and sseeds local replay for loading previous calibration params
   double E_e = 1.92; // Energy of beam (incoming electrons from accelerator)
   int minEventPerCell = 500; // Minimum number of scattered p in cell required to calibrate
   int maxEventPerCell = 4000; // Maximum number of scattered p events to contribute
@@ -108,8 +110,13 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
       TString skey = ( (TObjString*)(*tokens)[0] )->GetString();
       if( skey == "kine" ){
 	TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
-	kine = sval.Atof();
+	kine = sval.Atoi();
 	cout << "Loading kinematic setting: " << kine << endl;
+      }
+      if( skey == "test" ){
+	TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
+	test = sval.Atoi();
+	cout << "Loading test option: " << test << endl;
       }
       if( skey == "E_e" ){
 	TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
@@ -160,11 +167,72 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
     delete tokens;
   }
 
-  cout << "Setup parameters loaded." << endl;
+  // Path for previous ADC gain constants
+  string inConstPath;
+  if( test==0 ){
+    inConstPath = "/w/halla-scshelf2102/sbs/SBS_REPLAY/SBS-replay/DB/db_sbs.hcal.dat";
+  }else if( test==1 ){
+    inConstPath = "/w/halla-scshelf2102/sbs/seeds/SBS-replay/DB/db_sbs.hcal.dat";
+  }else{
+    cout << "ERROR: No database file where specified" << endl;
+    return 0;
+  }
+  
+  // Reading ADC gain parameters from database
+  double gOldConst[kNcell];
+  
+  cout << "Loading previous gain coefficients.." << endl;
+  ifstream inConstFile( inConstPath );
+  if( !inConstFile ){
+    cerr << endl << "ERROR: No input constant file present -> path to db_sbs.hcal.dat expected." << endl;
+    return 0;
+  }
 
+  int n1=0;
+  double d1=0;
+  string line;
+  bool skip_line = true;
+  bool skip_one_line = true;
+  //bool pass_first_cond = false;
+  //bool pass_all_cond = false;
+  
+  while( getline( inConstFile, line ) ){
+
+    if( n1==( kNcell ) ) break;
+
+    TString Tline = (TString)line;
+
+    if( Tline.BeginsWith("sbs.hcal.adc.gain") && skip_line==true ) skip_line = false;
+
+    if( skip_line==false && skip_one_line==true ){
+      skip_one_line = false;
+      continue;
+    }
+
+    if( skip_line==false && skip_one_line==false ){
+      istringstream iss( line );
+      while( iss >> d1 ){
+	gOldConst[n1] = d1;
+	n1++;
+      }
+    }
+  }
+  
+  cout << endl << endl << "Old ADC gain params: " << endl;
+
+  for( int r=0; r<kNrows; r++){
+    for( int c=0; c<kNcols; c++){
+      int i = r*kNcols+c;
+      cout << gOldConst[i] << " ";
+    }
+    cout << endl;
+  }
+  
+  cout << endl << endl << "Setup parameters loaded." << endl;
+  
   TEventList *elist = new TEventList("elist","Elastic Event List");
   C->Draw(">>elist",globalcut);
-
+  
   cout << "Event list populated with cut placed on elastics." << endl;
 
   // Declare general detector parameters
@@ -240,7 +308,6 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
   TFile *fout = new TFile( "eCalEOut.root", "RECREATE" );
   
   // Initialize vectors and arrays
-  double gOldConst[kNcell];
   double gRatio[kNcell] = {0.0}; //Old ratios from first iteration
   double oneBlock[kNcell] = {0.0};
   double GCoeff[kNcell] = {0.0};
@@ -293,7 +360,7 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
 
   // Set long int to keep track of total entries
   Long64_t Nevents = elist->GetN();
-
+  /*
   // Read in previous ADC gain constants
   ifstream inConstFile( inConstPath );
   if( !inConstFile ){
@@ -317,7 +384,7 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
       n1++;
     }
   }
-
+  */
   cout << endl << "All parameters loaded." << endl << endl;
   cout << "Opened up tree with nentries: " << Nevents << ".." << endl << endl;
 
@@ -505,7 +572,7 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
 	}
 	
 	//Fill some histograms
-	double E_exp = E_pp*sampFrac;
+	double E_exp = KE_p*sampFrac;
 	hDeltaE->Fill( 1.0-(clusE/KE_p) );
 	hClusE->Fill( clusE );
 	hE_pp_corr->Fill( E_exp );
@@ -522,11 +589,11 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
 	  ba(icol)+= A[icol];
 	  if(nblk==1){
 	    bb(icol)+= A[icol];
-	    oneBlock[icol]+= A[icol]*A[icol]/(KE_p*sampFrac);
+	    oneBlock[icol]+= A[icol]*A[icol]/E_exp;
 	  }
 	  for(int irow = 0; irow<kNcell; irow++){
-	    Ma(icol,irow) += A[icol]*A[irow]/(KE_p*sampFrac);
-	  
+	    //Ma(icol,irow) += A[icol]*A[irow]/(KE_p*sampFrac);
+	    Ma(icol,irow) += A[icol]*A[irow]/E_exp;
 	  } 
 	}
       }
