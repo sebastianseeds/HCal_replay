@@ -52,6 +52,14 @@ string getDate(){
   return date;
 }
 
+// Dying exponential fit for timewalk corrections
+double TW_fit(double *x, double *par){
+  double amp = par[0];
+  double str = par[1];
+  double offset = par[2];
+  return amp*exp(str*x[0])+offset;
+}
+
 void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run = -1 ){
   
   // Define a clock to check macro processing time
@@ -384,6 +392,8 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
   TH1D *hTOF2 = new TH1D( "hTOF2", "Time of Flight Corrections (nu method); ns", 200, 0, 10 );
   TH1D *hTOFvp = new TH1D( "hTOFvp", "Proton Velocity", 400, 0, 4 );
   TH1D *hTOFvp2 = new TH1D( "hTOFvp2", "Proton Velocity (nu method)", 400, 0, 4 );
+  TH1D *hPP = new TH1D( "hPP", "Proton Momentum; GeV", 200, 0, 10 );
+  TH1D *hPdp = new TH1D( "hPdp", "Proton Path Distance; m", 200, 0, 20 );
   TH1D *hCblkID = new TH1D( "hCblkID", "Block ID", 300, -10, 290 );
   TH1D *hCCol = new TH1D( "hCCol", "Cluster Seed Column", 15, -1, 14 );
   TH1D *hHCALe = new TH1D( "hHCALe","E HCal Cluster E", 400, 0., 4 );
@@ -591,11 +601,13 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
 	//Get total time of flight per elastic proton (very naive - need to use beta)
 	//Recall: p=(m*v)/sqrt(1-pow( beta, 2 )), beta = v/c, c=1
 	double vp = pp/M_p; //Assuming elastic
+	hPP->Fill( pp );
 	double vp2 = sqrt( 1/pow( M_p/pp, 2 )); //Via beta for comparison (and measure of inelastic contamination)?
 	hTOFvp->Fill( vp );
 	hTOFvp2->Fill( vp2 );
 
 	double dp = sqrt( pow(HCal_d,2) + pow(HCALx,2) + pow(HCALy,2) ); //Distance from vertex to center of cluster
+	hPdp->Fill( dp );
 	double tp = dp/vp;
 	double tp2 = dp/vp2;
 	hTOF->Fill( tp );
@@ -619,11 +631,22 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
 	haDiff_vs_HCALID->Fill( cblkid[0], HHAdiff );
 	htDiff[ idx ]->Fill( HHdiff );
 	haDiff[ idx ]->Fill( HHAdiff );
-	//To compare JLAB to CMU 
+	//To compare columns 
 	haDiff_vs_ADCint_cols[col]->Fill( e, HHAdiff ); 
 	haDiff_vs_col[col]->Fill( HHAdiff );
 	htDiff_vs_col[col]->Fill( HHdiff );
-
+	//To compare JLAB and CMU and obtain averages for timewalk corrections with low stats
+	if(ccol>3&&ccol<8){
+	  htDiff_HODO_HCAL_JLAB->Fill( HHdiff );
+	  haDiff_HODO_HCAL_JLAB->Fill( HHAdiff );
+	  if(HHdiff>-82&&HHdiff<-69) htDiff_vs_ADCint_JLAB->Fill( e, HHdiff );
+	  if(HHAdiff>42&&HHAdiff<60) haDiff_vs_ADCint_JLAB->Fill( e, HHAdiff );
+	}else{
+	  htDiff_HODO_HCAL_CMU->Fill( HHdiff );
+	  haDiff_HODO_HCAL_CMU->Fill( HHAdiff );
+	  if(HHdiff>-82&&HHdiff<-69) htDiff_vs_ADCint_CMU->Fill( e, HHdiff );
+	  if(HHAdiff>42&&HHAdiff<60) haDiff_vs_ADCint_CMU->Fill( e, HHAdiff );
+	}
 	//Fill timing difference correlations with energy deposited for timewalk corrections
 	htDiff_vs_ADCint[idx]->Fill( e, HHdiff );
 	haDiff_vs_ADCint[idx]->Fill( e, HHAdiff );
@@ -638,7 +661,26 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
 
   //Need to fit tdiff vs E histos and extract slope
   cout << endl << endl << "Extracting timewalk slopes and TOF mean.. " << endl;
+  
+  //By JLAB/CMU PMT construction
+  TF1 *fitTW_tJLAB = new TF1( "fitTW_tJLAB", TW_fit, 0, 1 );
+  htDiff_vs_ADCint_JLAB->Fit( "exp", "QNR+" );
+  double TDC_JLAB_amp = fitTW_tJLAB->GetParameter(0);
+  double TDC_JLAB_str = fitTW_tJLAB->GetParameter(1);
+  TF1 *fitTW_aJLAB = new TF1( "fitTW_aJLAB", TW_fit, 0, 1 );
+  haDiff_vs_ADCint_JLAB->Fit( "exp", "QNR+" );
+  double ADC_JLAB_amp = fitTW_aJLAB->GetParameter(0);
+  double ADC_JLAB_str = fitTW_aJLAB->GetParameter(1);
+  TF1 *fitTW_tCMU = new TF1( "fitTW_tCMU", TW_fit, 0, 1 );
+  htDiff_vs_ADCint_CMU->Fit( "exp", "QNR+" );
+  double TDC_CMU_amp = fitTW_tCMU->GetParameter(0);
+  double TDC_CMU_str = fitTW_tCMU->GetParameter(1);
+  TF1 *fitTW_aCMU = new TF1( "fitTW_aCMU", TW_fit, 0, 1 );
+  haDiff_vs_ADCint_CMU->Fit( "exp", "QNR+" );
+  double ADC_CMU_amp = fitTW_aCMU->GetParameter(0);
+  double ADC_CMU_str = fitTW_aCMU->GetParameter(1);
 
+  //By Cell
   for(int i=0; i<kNcell; i++){
 
     int r = (i-1)/kNcols;
@@ -760,8 +802,19 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
 	double e = cblke[0];
 	int idx = (int)cblkid[0]-1;
 	int col = (int)ccol;
-	
+
+	//Calculate timewalk corrections via exponential fit
+	double TW_JLAB_TDCcorr = TDC_JLAB_amp*exp( TDC_JLAB_str*e );
+	cout << "TW_JLAB_TDCcorr:" << TW_JLAB_TDCcorr << endl;
+	double TW_JLAB_ADCcorr = ADC_JLAB_amp*exp( ADC_JLAB_str*e );
+	cout << "TW_JLAB_ADCcorr:" << TW_JLAB_ADCcorr << endl;
+	double TW_CMU_TDCcorr = TDC_CMU_amp*exp( TDC_CMU_str*e );
+	cout << "TW_CMU_TDCcorr:" << TW_CMU_TDCcorr << endl;
+	double TW_CMU_ADCcorr = ADC_CMU_amp*exp( ADC_CMU_str*e );
+	cout << "TW_CMU_ADCcorr:" << TW_CMU_ADCcorr << endl;
+
 	//Fill histograms with the corrected time differences (base + timewalk + TOF)
+	/*
 	htDiff_corr[ idx ]->Fill( HHdiff + TvsE[ idx ]*e + tp_diff );
 	haDiff_corr[ idx ]->Fill( HHAdiff + AtvsE[ idx ]*e + tp_diff );
 	htDiff_vs_HCALID_corr->Fill( idx, HHdiff + TvsE[ idx ]*e + tp_diff  );
@@ -778,10 +831,27 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
 	  htDiff_HODO_HCAL_CMU_corr->Fill( HHdiff + TvsE[ idx ]*e + tp_diff );
 	  haDiff_HODO_HCAL_CMU_corr->Fill( HHAdiff + AtvsE[ idx ]*e + tp_diff, tHODO );
 	}
-	  
+	*/
+	//For now, with low stats, correct with timewalk by PMT type
+	htDiff_corr[ idx ]->Fill( HHdiff + TvsE[ idx ]*e + tp_diff );
+	haDiff_corr[ idx ]->Fill( HHAdiff + AtvsE[ idx ]*e + tp_diff );
+	htDiff_vs_HCALID_corr->Fill( idx, HHdiff + TvsE[ idx ]*e + tp_diff  );
+	haDiff_vs_HCALID_corr->Fill( idx, HHAdiff + AtvsE[ idx ]*e + tp_diff  );
+
+	htcorr_HCAL_HODO_corr->Fill( HCALtdc[0] + TvsE[ idx ]*e + tp_diff, tHODO );
+	hacorr_HCAL_HODO_corr->Fill( HCALa[0] + AtvsE[ idx ]*e + tp_diff, tHODO );
+	htDiff_HODO_HCAL_corr->Fill( HHdiff + TvsE[ idx ]*e + tp_diff );
+	haDiff_HODO_HCAL_corr->Fill( HHAdiff + AtvsE[ idx ]*e + tp_diff );
+	if(ccol>3&&ccol<8){
+	  htDiff_HODO_HCAL_JLAB_corr->Fill( HHdiff + TvsE[ idx ]*e + tp_diff );
+	  haDiff_HODO_HCAL_JLAB_corr->Fill( HHAdiff + AtvsE[ idx ]*e + tp_diff, tHODO );
+	}else{
+	  htDiff_HODO_HCAL_CMU_corr->Fill( HHdiff + TvsE[ idx ]*e + tp_diff );
+	  haDiff_HODO_HCAL_CMU_corr->Fill( HHAdiff + AtvsE[ idx ]*e + tp_diff, tHODO );
+	}
+
 	haDiff_vs_col_corr[col]->Fill( HHAdiff );
 	htDiff_vs_col_corr[col]->Fill( HHdiff );
-	  
       }
     }
   }
@@ -799,9 +869,9 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
     TF1 *f2;
     
     //Fit HCal-TDC/Hodo-TDC difference histogram by cell and obtain offset parameters
-    if( htDiff_corr[i]->GetEntries()>tFitMin ){
+    if( htDiff_corr[i]->GetEntries()>0 ){
       
-      htDiff_corr[i]->Fit("gaus","Q","",-90,-60); //May need to tune fits here
+      htDiff_corr[i]->Fit("gaus","Q","",-150,0); //May need to tune fits here
       f1=htDiff_corr[i]->GetFunction("gaus");
       htDiff_corr[i]->SetTitle(Form("TDCGoodFitMean:%f",f1->GetParameter(1)));
       TDCoffsets[i] = -75. - f1->GetParameter(1);
@@ -813,9 +883,9 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
     }
     
     //Fit HCal-ADC-time/Hodo-TDC difference histogram by cell and obtain offset parameters
-    if( haDiff[i]->GetEntries()>tFitMin ){
+    if( haDiff[i]->GetEntries()>0 ){
       
-      haDiff[i]->Fit("gaus","Q","",30,70); //May need to tune fits here
+      haDiff[i]->Fit("gaus","Q","",0,150); //May need to tune fits here
       f2=haDiff[i]->GetFunction("gaus");
       haDiff[i]->SetTitle(Form("ADCtGoodFitMean:%f",f2->GetParameter(1)));
       ADCtoffsets[i] = 50. - f2->GetParameter(1);

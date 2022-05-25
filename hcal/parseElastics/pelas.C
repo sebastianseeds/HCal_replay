@@ -577,7 +577,7 @@ void pelas( const char *configfilename="setup_pelas.cfg", const char *outputfile
 
 	  }
 
-	  elasYield++;a
+	  elasYield++;
 	  Tout->Fill();
 	}
       }else if( HCAL_on==true && is_p==true ){

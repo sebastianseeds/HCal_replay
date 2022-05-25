@@ -193,6 +193,7 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
   string line;
   bool skip_line = true;
   bool skip_one_line = true;
+  bool skip_first_instance = true;
   //bool pass_first_cond = false;
   //bool pass_all_cond = false;
   
@@ -202,7 +203,12 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
 
     TString Tline = (TString)line;
 
-    if( Tline.BeginsWith("sbs.hcal.adc.gain") && skip_line==true ) skip_line = false;
+    if( Tline.BeginsWith("sbs.hcal.adc.gain") && skip_first_instance==true ){
+      skip_first_instance = false;
+      continue;
+    }
+
+    if( Tline.BeginsWith("sbs.hcal.adc.gain") && skip_line==true && skip_first_instance==false ) skip_line = false;
 
     if( skip_line==false && skip_one_line==true ){
       skip_one_line = false;
@@ -317,11 +323,17 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
 
   // Initialize histograms	
   TH1D *hDeltaE = new TH1D( "hDeltaE","1.0-Eclus/p_rec", 100, -1.5, 1.5 );
-  TH1D *hHCALe = new TH1D( "hHCALe","E HCal Cluster E", 400, 0., 4 );
+  //TH1D *hHCALe_noCut = new TH1D( "hHCALe_noCut","HCal Cluster E, No Cut", 400, 0., 4 );
+  TH1D *hHCALe = new TH1D( "hHCALe","HCal Cluster E", 400, 0., 1. );
   TH1D *hDiff = new TH1D( "hDiff","HCal time - BBCal time (ns)", 1300, -500, 800 );
   TH1D *hClusE = new TH1D( "hClusE","Best Cluster Energy", 100, 0.0, 2.0);
+  TH2D *hClusBlk_ClusE = new TH2D( "hClusBlk_ClusE","Cluster Size vs Recon Cluster E", 8, 0, 8, 100, 2.0, 3.0 );
   TH2D *hPAngleCorr = new TH2D( "hPAngCorr","Track p vs Track ang", 100, 30, 60, 100, 0.4, 1.2 );
   TH2D *hPAngleCorr_2 = new TH2D( "hPAngCorr_2","Track p vs Track ang v2", 100, 30, 60, 100, 0.4, 1.2 );
+  TH2D *hClusE_vs_X = new TH2D("hClusE_vs_X",";X-pos (m);E_dep (GeV)",500,-3,2,100,0.0,1.0);  
+  TH2D *hClusE_vs_Y = new TH2D("hClusE_vs_Y",";Y-pos (m);E_dep (GeV)",200,-1,1,100,0.0,1.0);  
+  //TH2D *hClusE_vs_X_noCut = new TH2D("hClusE_vs_X_noCut",";X-pos (m);E_dep (GeV)",360,-2,2,100,0.0,10.0);  
+  //TH2D *hClusE_vs_Y_noCut = new TH2D("hClusE_vs_Y_noCut",";Y-pos (m);E_dep (GeV)",360,-2,2,100,0.0,10.0);  
   TH1D *hW = new TH1D( "W", "W", 250, 0.3, 1.5 );
   hW->GetXaxis()->SetTitle( "GeV" );
   TH1D *hNBlk = new TH1D( "hNBlk", "Number of Blocks in Primary Cluster", 25, 0, 25 );
@@ -339,13 +351,14 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
   TH2D *hADC = new TH2D( "hADC", "HCal Int_ADC Spectra: W Cut", 288, 0, 288, 100., 0., 1. );
   TH2D *hADC_amp = new TH2D( "hADC_amp", "HCal ADC_amp Spectra: W Cut", 288, 0, 288, 100., 0., 10. );
   TH2D *hdxdy_HCAL = new TH2D("hdxdy_HCAL",";y_{HCAL}-y_{expect} (m); x_{HCAL}-x_{expect} (m)", 250, -5.0, 5.0, 250, -10, 10 );
+  TH2D *hXY = new TH2D("hXY",";y_{expect} (m); x_{expect} (m)", 250, -5.0, 5.0, 250, -10, 10 );
   TH2D *hXY_HCAL = new TH2D("hXY_HCAL",";y_{HCAL} (m); x_{HCAL} (m)", 250, -5.0, 5.0, 250, -10, 10 );
   TH1D *hvz = new TH1D("hvz",";vertex z (m);", 250,-0.125,0.125);
   TH1D *hvz_cut = new TH1D("hvz_cut",";vertex z (m);", 250,-0.125,0.125);
   TH2D *coefficients = new TH2D("coefficients",";Channel ;GeV/mV", 288,0,288,250,0,0.025);
   TH2D *coefficients_1b = new TH2D("coefficients_1b",";Channel ;GeV/mV", 288,0,288,250,0,0.025);
-  TH2D *hEDiff_vs_X = new TH2D("hEDiff_vs_X",";X-pos (m);(E_exp-E_dep)/E_exp (GeV)",360,-2,2,100,-5,3);  
-  TH2D *hEDiff_vs_Y = new TH2D("hEDiff_vs_Y",";Y-pos (m);(E_exp-E_dep)/E_exp (GeV)",180,-1,1,100,-3,3);
+  TH2D *hEDiff_vs_X = new TH2D("hEDiff_vs_X",";X-pos (m);(E_exp-E_dep)/E_exp (GeV)",500,-3,2,100,-5,3);  
+  TH2D *hEDiff_vs_Y = new TH2D("hEDiff_vs_Y",";Y-pos (m);(E_exp-E_dep)/E_exp (GeV)",200,-1,1,100,-3,3);
   TH2D *htDiff_vs_ADCint[kNcell+1];
   TH1D *htDiff[kNcell+1];
   TH1D *haDiff[kNcell+1];
@@ -426,6 +439,10 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
       
       C->GetEntry( elist->GetEntry( nevent ) ); 
       
+      //hHCALe_noCut->Fill( HCALe );
+      //hClusE_vs_X_noCut->Fill( HCALx, HCALe );
+      //hClusE_vs_Y_noCut->Fill( HCALy, HCALe );
+
       memset(A, 0, kNcell*sizeof(double));
 	
       double etheta = acos( BBtr_pz[0]/BBtr_p[0] );
@@ -467,6 +484,8 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
 
       //Calculate the proton spot - use for cut later on
       hdxdy_HCAL->Fill( HCALy - yexpect_HCAL, HCALx - xexpect_HCAL );
+
+      hXY->Fill( yexpect_HCAL, xexpect_HCAL );
 
       double E_ep = sqrt( pow(M_e,2) + pow(BBtr_p[0],2) ); // Obtain the scattered electron energy
       hE_ep->Fill( E_ep ); // Fill histogram
@@ -574,6 +593,12 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
 	//Fill some histograms
 	double E_exp = KE_p*sampFrac;
 	hDeltaE->Fill( 1.0-(clusE/KE_p) );
+
+	//cout << "nblk:" << nblk << " KE_p:" << KE_p << endl;
+
+	hClusBlk_ClusE->Fill( nblk, KE_p ); //As function of reconstructed energy
+	hClusE_vs_X->Fill( HCALx, HCALe );
+	hClusE_vs_Y->Fill( HCALy, HCALe );
 	hClusE->Fill( clusE );
 	hE_pp_corr->Fill( E_exp );
 	hPAngleCorr->Fill( ephi, p_ep );
