@@ -12,7 +12,7 @@ Directory and subdirectory descriptions follow:
 - DB_old: Contains old and out-of-use database parameters with timestamps for reference or rollback.
 - detection_efficiency: Produces plots which evaluate the relative detection efficiency between protons and neutrons in the calorimeter.
 - displays: Produces interactive GUIs which allow for viewing of full waveform data from the calorimeter. Also contains similar display GUIs for clustering and the dedicated trigger signal fADC.
-- energyCalibration: The central platform containing scripts necessary to produce fADC gain parameters (included in the HCal DB file 'db_sbs.hcal.dat') from in-beam signal. With these parameters can also produce target HV parameters for reset. NOTE: Changing HV should not be done unless absolutely necessary. Consult SME before making any changes to HV.
+- energyCalibration: The central platform containing scripts necessary to produce fADC gain parameters (included in the HCal DB file db_sbs.hcal.dat) from in-beam signal. With these parameters can also produce target HV parameters for reset. NOTE: Changing HV should not be done unless absolutely necessary. Consult SME before making any changes to HV.
 - GUI: Repo of all necessary GUI to control HCal functions for recording purposes. NOTE: These copies are not meant to be active for use.
 - HV: Contains HV GUI configuration files for record.
 - oldCode (Under Maintenance): Contains many out-of-use scripts used to produce simple comparisons and plots. Also contains alpha extraction, PMT quantum efficiency analysis, and cosmic fADC gain calibration scripts. These last three are under maintenance and will be moved up to hcal when complete.
@@ -36,7 +36,8 @@ Contains functional panguin build for evaluation of production-level online moni
 ## Replay
 Contains replay scripts for use with standalone SBS-Offline and analyzer builds for evaluation of HCal tree variables not included in standard replay. Also can be used to evaluate changes to SBS-Offline when needed.
 > Current Replay Script: replay_hcal_SAS_general.C
-NOTE: Replay will reference any '*.odef/*.cdef/*.dat' contained in replay directory before '$DB_DIR'
+
+NOTE: Replay will reference any *.odef/*.cdef/*.dat contained in replay directory before $DB_DIR
 
 ## scripts
 Contains several scripts to issue swif2 batch farm general and standalone replay jobs.
