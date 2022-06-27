@@ -10,7 +10,7 @@ echo 'working directory ='
 echo $PWD
 
 echo 'swif_job_work_dir='$SWIF_JOB_WORK_DIR
-
+#SWIF_JOB_WORK_DIR=$PWD
 # source login stuff since swif2 completely nukes any sensible default software environment
 #source /home/puckett/.cshrc
 #source /home/puckett/.login

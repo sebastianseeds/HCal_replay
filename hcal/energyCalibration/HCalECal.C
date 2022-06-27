@@ -74,12 +74,20 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
   // Declare general physics parameters to be modified by input config file
   int kine = 8; // Keep track of kinematic calibrating from
   int test = 0; // Toggle between official replay and sseeds local replay for loading previous calibration params
+  int uni_N = 400; // Total number of bins used to measure detection uniformity (hSampFrac histos)
+  const Int_t xN = 48; //2*kNrows, total number of dispersive bins detection uni
+  const Int_t yN = 24; //2*kNcols, total number of transverse bins detection uni
   double E_e = 1.92; // Energy of beam (incoming electrons from accelerator)
   int minEventPerCell = 500; // Minimum number of scattered p in cell required to calibrate
   int maxEventPerCell = 4000; // Maximum number of scattered p events to contribute
   double highDelta = 0.1; // Minimum M(i,j)/b(i) factor allowed 
   double HCal_d = 14.5; // Distance to HCal from scattering chamber for comm1
   double HCal_th = 35.0; // Angle that the center of HCal is at  
+  double HCal_div = 0.15; // Transverse width in x and y per cell
+  double HCal_Xi = -2.090; // Distance from beam center to top of HCal in analysis coordinates (m)
+  double HCal_Xf = 1.360; // Distance from beam center to bottom of HCal in analysis coordinates (m)
+  double HCal_Yi = -0.825; // Distance from beam center to opposite-beam side of HCal in analysis coordinates (m)
+  double HCal_Yf = 0.825; // Distance from beam center to beam side of HCal in analysis coordinates (m)
   double W_mean = 0.93; // Mean of W at current kinematic
   double W_sig = 0.039; // Width of W at current kinematic
   double dx0 = 0.9; // Position of proton spot, x-x_expected
@@ -89,12 +97,19 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
 
   int elasYield = 0; // Keep track of total elastics analyzed
 
+  //For position reconstruction
+  double HCal_Xmin = HCal_Xi-HCal_div/2;
+  double HCal_Xmax = HCal_Xf+HCal_div/2;
+  double HCal_Ymin = HCal_Yi-HCal_div/2;
+  double HCal_Ymax = HCal_Yf-HCal_div/2;
+
   // Reading config file
   ifstream configfile(configfilename);
   TString currentline;
   while( currentline.ReadLine( configfile ) && !currentline.BeginsWith("endlist") ){
     if( !currentline.BeginsWith("#") ){
       C->Add(currentline);
+      cout << "Loading file: " << currentline << ".." << endl;
     }    
   }
   TCut globalcut = "";
@@ -181,7 +196,7 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
   // Reading ADC gain parameters from database
   double gOldConst[kNcell];
   
-  cout << "Loading previous gain coefficients.." << endl;
+  cout << "Loading previous gain coefficients from file: " << inConstPath << ".." << endl;
   ifstream inConstFile( inConstPath );
   if( !inConstFile ){
     cerr << endl << "ERROR: No input constant file present -> path to db_sbs.hcal.dat expected." << endl;
@@ -325,7 +340,9 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
   TH1D *hDeltaE = new TH1D( "hDeltaE","1.0-Eclus/p_rec", 100, -1.5, 1.5 );
   //TH1D *hHCALe_noCut = new TH1D( "hHCALe_noCut","HCal Cluster E, No Cut", 400, 0., 4 );
   TH1D *hHCALe = new TH1D( "hHCALe","HCal Cluster E", 400, 0., 1. );
+  TH1D *hSampFrac = new TH1D( "hSampFrac","HCal Cluster E / Expected KE", 400, 0., 1. );
   TH1D *hDiff = new TH1D( "hDiff","HCal time - BBCal time (ns)", 1300, -500, 800 );
+  TH1D *hEDiffChan = new TH1D( "hEDiffChan","EDiff Events Per Channel", 288, 0, 288 );
   TH1D *hClusE = new TH1D( "hClusE","Best Cluster Energy", 100, 0.0, 2.0);
   TH2D *hClusBlk_ClusE = new TH2D( "hClusBlk_ClusE","Cluster Size vs Recon Cluster E", 8, 0, 8, 100, 2.0, 3.0 );
   TH2D *hPAngleCorr = new TH2D( "hPAngCorr","Track p vs Track ang", 100, 30, 60, 100, 0.4, 1.2 );
@@ -334,6 +351,9 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
   TH2D *hClusE_vs_Y = new TH2D("hClusE_vs_Y",";Y-pos (m);E_dep (GeV)",200,-1,1,100,0.0,1.0);  
   //TH2D *hClusE_vs_X_noCut = new TH2D("hClusE_vs_X_noCut",";X-pos (m);E_dep (GeV)",360,-2,2,100,0.0,10.0);  
   //TH2D *hClusE_vs_Y_noCut = new TH2D("hClusE_vs_Y_noCut",";Y-pos (m);E_dep (GeV)",360,-2,2,100,0.0,10.0);  
+  TH1D *hpp = new TH1D( "hpp", "Elastic Proton Momentum", 600, 0, 6 );
+  TH1D *hdx = new TH1D( "hdx", "HCal X - X Expected", 400, -2, 2 );
+  TH1D *hdy = new TH1D( "hdy", "HCal Y - Y Expected", 400, -2, 2 );
   TH1D *hW = new TH1D( "W", "W", 250, 0.3, 1.5 );
   hW->GetXaxis()->SetTitle( "GeV" );
   TH1D *hNBlk = new TH1D( "hNBlk", "Number of Blocks in Primary Cluster", 25, 0, 25 );
@@ -357,20 +377,35 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
   TH1D *hvz_cut = new TH1D("hvz_cut",";vertex z (m);", 250,-0.125,0.125);
   TH2D *coefficients = new TH2D("coefficients",";Channel ;GeV/mV", 288,0,288,250,0,0.025);
   TH2D *coefficients_1b = new TH2D("coefficients_1b",";Channel ;GeV/mV", 288,0,288,250,0,0.025);
-  TH2D *hEDiff_vs_X = new TH2D("hEDiff_vs_X",";X-pos (m);(E_exp-E_dep)/E_exp (GeV)",500,-3,2,100,-5,3);  
-  TH2D *hEDiff_vs_Y = new TH2D("hEDiff_vs_Y",";Y-pos (m);(E_exp-E_dep)/E_exp (GeV)",200,-1,1,100,-3,3);
+  TH2D *hEDiff_vs_X = new TH2D("hEDiff_vs_X",";X-pos (m);(E_exp-E_dep)/E_exp (GeV)",xN,HCal_Xi,HCal_Xf,100,-3,3);  
+  TH2D *hEDiff_vs_Y = new TH2D("hEDiff_vs_Y",";Y-pos (m);(E_exp-E_dep)/E_exp (GeV)",yN,HCal_Yi,HCal_Yf,100,-3,3);
+  TH2D *hEDiff_vs_block = new TH2D("hEDiff_vs_block",";Block (cell);(E_exp-E_dep)/E_exp (GeV)",288,0,288,100,-3,3);
   TH2D *htDiff_vs_ADCint[kNcell+1];
+  TH2D *hSampFrac_vs_X = new TH2D( "hSampFrac_vs_X","Sampling Fraction ;X (m) ;HCal_E / Exp_KE", xN, HCal_Xi, HCal_Xf, uni_N, 0., 1. );
+  TH2D *hSampFrac_vs_Y = new TH2D( "hSampFrac_vs_Y","Sampling Fraction ;Y (m) ;HCal_E / Exp_KE", yN, HCal_Yi, HCal_Yf, uni_N, 0., 1. );
   TH1D *htDiff[kNcell+1];
   TH1D *haDiff[kNcell+1];
   TH1D *hE_pp_exp_cell[kNcell+1];
   TH1D *hE_pp_cell[kNcell+1];
+  TH1D *hEDiff_cell[kNcell+1];
   TH1D *hE_pp_corr = new TH1D( "Deposited Elastic Proton Energy", "E_pp_corr", 500, 0.0, E_e*1.5 );
+  //TH1D *Xslice[kNrows];
+  //TH1D *Yslice[kNcols];
 
   for( int i=0; i<kNcell+1; i++ ){
     hE_pp_exp_cell[i] = new TH1D(Form("hE_pp_exp_cell_bl%d",i),Form(";E_{bl%d} (GeV)",i), 500, 0.0, E_e*1.5);
     hE_pp_cell[i] = new TH1D(Form("hE_pp_cell_bl%d",i),Form(";E_{bl%d} (GeV)",i), 500, 0.0, E_e*1.5);
+    hEDiff_cell[i] = new TH1D(Form("hEDiff_cell_bl%d",i),Form(";E_{bl%d} (GeV)",i), 500, -3, 3);
+  }
+  /*
+  for( int r=0; r<kNrows; r++){
+    Xslice[r] = new TH1D(Form("sampFracXslice_r%d",r),Form(";E/KE_{exp} r%d (GeV)",r), uni_N, 0.0, 1.0);
   }
 
+  for( int c=0; c<kNcols; r++){
+    Yslice[c] = new TH1D(Form("sampFracYslice_c%d",c),Form(";E/KE_{exp} c%d (GeV)",c), uni_N, 0.0, 1.0);
+  }
+  */
   // Set long int to keep track of total entries
   Long64_t Nevents = elist->GetN();
   /*
@@ -483,7 +518,7 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
       double xexpect_HCAL = (HCAL_intersect - HCAL_origin).Dot( HCAL_xaxis );
 
       //Calculate the proton spot - use for cut later on
-      hdxdy_HCAL->Fill( HCALy - yexpect_HCAL, HCALx - xexpect_HCAL );
+      //hdxdy_HCAL->Fill( HCALy - yexpect_HCAL, HCALx - xexpect_HCAL );
 
       hXY->Fill( yexpect_HCAL, xexpect_HCAL );
 
@@ -549,13 +584,28 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
       //Coincidence timing cut and vertex cut to resolve W well
       if( fabs(diff-510)<40 && fabs(BBtr_vz[0])<0.06 ) hW_cuts->Fill( W );
 
+      //cout << diff << endl;
+
       //Additional cuts to select elastics
       if( fabs(W-W_mean)<W_sig && //Observed mean W cut
 	  fabs(diff-510)<40 //Observed coincidence trigger HCal/BB
 	  ){
+	
+	hpp->Fill( pp );
+	//if( fabs(xexpect_HCAL - dx0) < dx_sig ) hdx->Fill( HCALx - xexpect_HCAL );
+	hdx->Fill( HCALx - xexpect_HCAL );
+	//if( fabs(yexpect_HCAL - dy0) < dy_sig ) hdy->Fill( HCALy - yexpect_HCAL );
+	hdy->Fill( HCALy - yexpect_HCAL );
 
-	//Check energy deposited in HCal after elastics cuts
+	hdxdy_HCAL->Fill( HCALy - yexpect_HCAL, HCALx - xexpect_HCAL );
+      
+
+	//Check energy deposited and uniformity in HCal after elastics cuts
+	double SFrac = HCALe/KE_p;
 	hHCALe->Fill( HCALe );
+	hSampFrac->Fill( SFrac );
+	hSampFrac_vs_X->Fill( HCALx, SFrac );
+	hSampFrac_vs_Y->Fill( HCALy, SFrac );
 	
 	//Fill vertex position histogram for cut on tracks
 	hvz_cut->Fill( BBtr_vz[0] );
@@ -608,6 +658,15 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
 	double E_dev = (E_exp-clusE)/E_exp; //Energy deviation as percent of expected
 	hEDiff_vs_X->Fill( HCALx, E_dev );
 	hEDiff_vs_Y->Fill( HCALy, E_dev );
+	int rec_row = ( HCALx - HCal_Xmin )/HCal_div;
+	int rec_col = ( HCALy - HCal_Ymin )/HCal_div;
+	int rec_cell = rec_row*kNcols + rec_col;
+
+	//cout << "rec_cell:" << rec_cell << endl;
+
+	hEDiff_cell[ rec_cell ]->Fill( E_dev );
+	hEDiff_vs_block->Fill( rec_cell, E_dev );
+	hEDiffChan->Fill( rec_cell );
 	
 	//Build the matrix as simply as possible
 	for(int icol = 0; icol<kNcell; icol++){
@@ -733,7 +792,7 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
   ccgraph_divide->Write("constants_divide");
 
   //Write out diagnostic histos and print to console
-  fout->Write();
+  //fout->Write();
 
   cout << "Gain Coefficients: " << endl << endl;
 
@@ -762,6 +821,109 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
   ccgraph_Cdiff->GetXaxis()->SetTitle("Unitless");
   ccgraph_Cdiff->SetMarkerStyle(20); // idx 20 Circles, idx 21 Boxes
   ccgraph_Cdiff->Write("constants_diff");
+  
+  //Construct graphs for uniformity check
+  Double_t posErr[xN] = {0.};
+  TF1 *f1;
+  //For X (dispersive)
+  Double_t X[xN];
+  Double_t Xval[xN];
+  Double_t Xerr[xN];
+  TH1D *Xslice[xN];
+  for( int x=0; x<xN; x++ ){
+    X[x] = HCal_Xi + x*HCal_div;
+    Xslice[x] = hSampFrac_vs_X->ProjectionY(Form("Xslice_%d",x+1),x+1,x+1);
+    Xslice[x]->Fit("gaus","Q","",0.01,0.22);
+    f1=Xslice[x]->GetFunction("gaus");
+    if(Xslice[x]->GetEntries()>0){
+      Xval[x] = f1->GetParameter(1);
+      Xerr[x] = f1->GetParameter(2);
+    }
+  }
+  TGraphErrors *csampFrac_X = new TGraphErrors( xN, X, Xval, posErr, Xerr );
+  csampFrac_X->GetXaxis()->SetLimits(HCal_Xi-0.05,HCal_Xf+0.05);  
+  csampFrac_X->GetYaxis()->SetLimits(0.0,1.0);
+  csampFrac_X->SetTitle("Sampling Fraction - Dispersive X");
+  csampFrac_X->GetXaxis()->SetTitle("X (m)");
+  csampFrac_X->GetYaxis()->SetTitle("E_{HCAL}/KE_{exp}");
+  csampFrac_X->SetMarkerStyle(20); // idx 20 Circles, idx 21 Boxes
+  csampFrac_X->Write("csampFrac_X");
+
+  //For Y (transverse)
+  Double_t Y[yN];
+  Double_t Yval[yN];
+  Double_t Yerr[yN];
+  TH1D *Yslice[yN];
+  for( int x=0; x<yN; x++ ){
+    Y[x] = HCal_Yi + x*HCal_div;
+    Yslice[x] = hSampFrac_vs_Y->ProjectionY(Form("Yslice_%d",x+1),x+1,x+1);
+    Yslice[x]->Fit("gaus","Q","",0.01,0.22);
+    f1=Yslice[x]->GetFunction("gaus");
+    if(Yslice[x]->GetEntries()>0){
+      Yval[x] = f1->GetParameter(1);
+      Yerr[x] = f1->GetParameter(2);
+    }
+  }
+  TGraphErrors *csampFrac_Y = new TGraphErrors( yN, Y, Yval, posErr, Yerr );
+  csampFrac_Y->GetXaxis()->SetLimits(HCal_Yi-0.05,HCal_Yf+0.05);  
+  csampFrac_Y->GetYaxis()->SetLimits(0.0,1.0);
+  csampFrac_Y->SetTitle("Sampling Fraction - Transverse Y");
+  csampFrac_Y->GetXaxis()->SetTitle("Y (m)");
+  csampFrac_Y->GetYaxis()->SetTitle("E_{HCAL}/KE_{exp}");
+  csampFrac_Y->SetMarkerStyle(20); // idx 20 Circles, idx 21 Boxes
+  csampFrac_Y->Write("csampFrac_Y");
+
+  //Construct graphs for energy calibration check
+  TF1 *f2;
+  //For X (dispersive)
+  for( int x=0; x<xN; x++ ){
+    X[x] = HCal_Xi + x*HCal_div;
+    Xslice[x] = hEDiff_vs_X->ProjectionY(Form("eXslice_%d",x+1),x+1,x+1);
+    Xslice[x]->Fit("gaus","Q","",-1.0,1.0);
+    f2=Xslice[x]->GetFunction("gaus");
+    if(Xslice[x]->GetEntries()>0){
+      Xval[x] = f2->GetParameter(1);
+      Xerr[x] = f2->GetParameter(2);
+    }else{
+      Xval[x] = 0.;
+      Xerr[x] = 0.;
+      cout << "Warning: Not enough statistics at X-pos " << x << " for calibration check." << endl;
+    }
+  }
+  TGraphErrors *cEDiff_X = new TGraphErrors( xN, X, Xval, posErr, Xerr );
+  cEDiff_X->GetXaxis()->SetLimits(HCal_Xi-0.05,HCal_Xf+0.05);  
+  cEDiff_X->GetYaxis()->SetLimits(0.0,1.0);
+  cEDiff_X->SetTitle("Energy Calibration Check - Dispersive X");
+  cEDiff_X->GetXaxis()->SetTitle("X (m)");
+  cEDiff_X->GetYaxis()->SetTitle("KE_{exp}-E_{HCAL}/KE_{exp}");
+  cEDiff_X->SetMarkerStyle(20); // idx 20 Circles, idx 21 Boxes
+  cEDiff_X->Write("cEDiff_X");
+
+  //For Y (transverse)
+  for( int x=0; x<yN; x++ ){
+    Y[x] = HCal_Yi + x*HCal_div;
+    Yslice[x] = hEDiff_vs_Y->ProjectionY(Form("eYslice_%d",x+1),x+1,x+1);
+    Yslice[x]->Fit("gaus","Q","",-1.,1.);
+    f2=Yslice[x]->GetFunction("gaus");
+    if(Yslice[x]->GetEntries()>0){
+      Yval[x] = f2->GetParameter(1);
+      Yerr[x] = f2->GetParameter(2);
+    }else{
+      Yval[x] = 0.;
+      Yerr[x] = 0.;
+      cout << "Warning: Not enough statistics at Y-pos " << x << " for calibration check." << endl;
+    }
+  }
+  TGraphErrors *cEDiff_Y = new TGraphErrors( yN, Y, Yval, posErr, Yerr );
+  cEDiff_Y->GetXaxis()->SetLimits(HCal_Yi-0.05,HCal_Yf+0.05);  
+  cEDiff_Y->GetYaxis()->SetLimits(0.0,1.0);
+  cEDiff_Y->SetTitle("Energy Calibration Check - Transverse Y");
+  cEDiff_Y->GetXaxis()->SetTitle("Y (m)");
+  cEDiff_Y->GetYaxis()->SetTitle("KE_{exp}-E_{HCAL}/KE_{exp}");
+  cEDiff_Y->SetMarkerStyle(20); // idx 20 Circles, idx 21 Boxes
+  cEDiff_Y->Write("cEDiff_Y");
+
+  fout->Write();
 
   cout << endl << "Gain Coefficients diff from cosmic value: " << endl;
 

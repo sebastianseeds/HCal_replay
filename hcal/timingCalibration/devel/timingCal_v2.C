@@ -30,7 +30,7 @@ const int maxTracks = 1000; // Reasonable limit on tracks to be stored per event
 const int maxTdcChan = 10; // Set to accomodate original 5 TDCTrig channels with buffer
 
 //HCal position corrections - will add to DB file eventually
-//double hcalheight = 0.365; //m The height of the center of HCAL above beam
+double hcalheight = 0.365; //m The height of the center of HCAL above beam
 
 const double PI = TMath::Pi();
 const double M_e = 0.00051;
@@ -79,6 +79,7 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
   double test = 1; // Keep track of DB read for analysis. 0: ../SBS_REPLAY/SBS_Replay/DB   1: ../seeds/SBS-replay/DB
   double diag = 0; // Keep track of diagnostic canvas pdf option printed at end
   double kine = 8; // Keep track of kinematic calibrating from
+  double spotcut = 0;
   double tFitMin = 30; // Minimum number of entries per channel to calibrate ADC/TDC time
   double t_trig = 510; // Mean tdc trig value (HCAL - BB) 
   double E_e = 1.92; // Energy of beam (incoming electrons from accelerator)
@@ -128,6 +129,11 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
 	TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	diag = sval.Atof();
 	cout << "Loading diagnostic setting: " << diag << endl;
+      }
+      if( skey == "spotcut" ){
+	TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
+	spotcut = sval.Atof();
+	cout << "Loading cut on hadron spot setting: " << spotcut << endl;
       }
       if( skey == "kine" ){
 	TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
@@ -205,7 +211,7 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
   }
 
   // Reading ADC and TDC timing offsets from database
-  cout << "Loading previous offsets.." << endl;
+  cout << endl << endl << "Loading previous offsets from file: " << inConstPath << ".." << endl;
   ifstream inConstFile( inConstPath );
   if( !inConstFile ){
     cerr << endl << "ERROR: No input constant file present -> path to db_sbs.hcal.dat expected." << endl;
@@ -394,11 +400,24 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
   TH1D *hTOFvp2 = new TH1D( "hTOFvp2", "Proton Velocity (nu method)", 400, 0, 4 );
   TH1D *hPP = new TH1D( "hPP", "Proton Momentum; GeV", 200, 0, 10 );
   TH1D *hPdp = new TH1D( "hPdp", "Proton Path Distance; m", 200, 0, 20 );
+  TH1D *hdx = new TH1D( "hdx", "HCal X - X Expected", 400, -2, 2 );
+  TH1D *hdy = new TH1D( "hdy", "HCal Y - Y Expected", 400, -2, 2 );
   TH1D *hCblkID = new TH1D( "hCblkID", "Block ID", 300, -10, 290 );
   TH1D *hCCol = new TH1D( "hCCol", "Cluster Seed Column", 15, -1, 14 );
   TH1D *hHCALe = new TH1D( "hHCALe","E HCal Cluster E", 400, 0., 4 );
   TH1D *hHODOnclus = new TH1D( "hHODOnclus","Number of Hodoscope Clusters", 50, 0., 50. );
+  TH1D *hTBBt = new TH1D( "hTBBt","BBCal Trigger (L1A) (ns)", 500, 340, 390 );
+  TH1D *hTRF = new TH1D( "hTRF","RF Signature (ns)", 1700, -10, 160 );
+  TH1D *hTRFmod = new TH1D( "hTRFmod","RF Signature Modulo 4ns (ns)", 200, -10, 10 );
+  TH1D *hTEDTM = new TH1D( "hTEDTM","Electronic Dead Time Monitor Signal (ns)", 2000, -1, 2 );
+  TH1D *hTBBlo = new TH1D( "hTBBlo","BBCal Lo Trigger (ns)", 199, 1, 200 );
+  TH1D *hTBBhiv = new TH1D( "hTBBhiv","BBCal Lo (ns)", 2010, -10, 2000 );
+  TH1D *hTHCAL = new TH1D( "hTHCAL","HCal time (ns)", 1000, 800, 900 ); //trigger
+  TH1D *hTHODO = new TH1D( "hTHODO","Hodo mean TDC time (ns)", 2000, -1000, 1000 );
+  TH1D *hTHCALvRF = new TH1D( "hTHCALvRF","HCal time - RF Signature Modulo 4ns (ns)", 1000, 800, 900 );
   TH1D *hDiff = new TH1D( "hDiff","HCal time - BBCal time (ns)", 1300, -500, 800 );
+  //TH1D *hTDC = new TH1D( "hDiff","HCal time - BBCal time (ns)", 300, -150, 0 );
+  //TH1D *hTDCu = new TH1D( "hDiff","HCal time - BBCal time (ns)", 300, -150, 0 );
   TH1D *hW = new TH1D( "W", "W", 250, 0.3, 1.5 );
   hW->GetXaxis()->SetTitle( "GeV" );
   TH1D *hNBlk = new TH1D( "hNBlk", "Number of Blocks in Primary Cluster", 25, 0, 25 );
@@ -417,7 +436,7 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
   TH2D *hTOFvID = new TH2D( "hTOFvID", "Time of Flight vs HCal ID", 288, 0, 288, 200., 0., 20. );
   TH2D *hTOF2vID = new TH2D( "hTOFvID2", "Time of Flight vs HCal ID (nu method)", 288, 0, 288, 200., 0., 20. );
   //TH2D *hADC_amp = new TH2D( "hADC_amp", "HCal ADC_amp Spectra: W Cut", 288, 0, 288, 100., 0., 10. );
-  //TH2D *hdxdy_HCAL = new TH2D("hdxdy_HCAL",";y_{HCAL}-y_{expect} (m); x_{HCAL}-x_{expect} (m)", 250, -5.0, 5.0, 250, -10, 10 );
+  TH2D *hdxdy_HCAL = new TH2D("hdxdy_HCAL",";y_{HCAL}-y_{expect} (m); x_{HCAL}-x_{expect} (m)", 250, -5.0, 5.0, 250, -10, 10 );
   //TH2D *hXY_HCAL_ps = new TH2D("hXY_HCAL_ps",";y_{HCAL} (m); x_{HCAL} (m)", 250, -5.0, 5.0, 250, -10, 10 );
   TH2D *hXY_HCAL = new TH2D("hXY_HCAL",";y_{HCAL} (m); x_{HCAL} (m)", 250, -5.0, 5.0, 250, -10, 10 );
   TH1D *hvz_cut = new TH1D("hvz_cut",";vertex z (m);", 250,-0.125,0.125);
@@ -427,9 +446,10 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
   TH2D *hacorr_HCAL_HODO = new TH2D("HCAL/HODO ADCt/TDC Correlation",";ADCt_{HCAL} (ns);TDC_{HODO} (ns)", 300, 0, 150, 150, -15, 15);
   TH2D *htcorr_HCAL_HODO_corr = new TH2D("HCAL/HODO TDC/TDC Correlation (corrected)",";TDC_{HCAL} (ns);TDC_{HODO} (ns)", 150, -150, 0, 150, -15, 15);  
   TH2D *hacorr_HCAL_HODO_corr = new TH2D("HCAL/HODO ADCt/TDC Correlation (corrected)",";ADCt_{HCAL} (ns);TDC_{HODO} (ns)", 300, 0, 150, 150, -15, 15);
-  TH1D *htDiff_HODO_HCAL = new TH1D("HCal_TDC-HODO_TDC","ns",150,-150,0);
-  TH1D *haDiff_HODO_HCAL = new TH1D("HCal_ADCt-HODO_TDC","ns",300,0,150);
-  TH1D *htDiff_HODO_HCAL_corr = new TH1D("HCal_TDC-HODO_TDC Corrected","ns",150,-150,0);
+  TH1D *htHCAL = new TH1D("HCal_TDC","HCal TDC (All Channels);ns",300,-150,0);
+  TH1D *htDiff_HODO_HCAL = new TH1D("HCalHODO_TDC","HCal TDC (All Channels);ns",300,-150,0);
+  TH1D *haDiff_HODO_HCAL = new TH1D("HCal_ADCt-HODO_TDC","HCal ADCt (All Channels);ns",300,0,150);
+  TH1D *htDiff_HODO_HCAL_corr = new TH1D("HCal_TDC-HODO_TDC Corrected","ns",300,-150,0);
   TH1D *haDiff_HODO_HCAL_corr = new TH1D("HCal_ADCt-HODO_TDC Corrected","ns",300,0,150);
   TH1D *haDiff_HODO_HCAL_JLAB = new TH1D("HCal_ADCt-HODO_TDC JLAB","ns",300,0,150);
   TH1D *haDiff_HODO_HCAL_CMU = new TH1D("HCal_ADCt-HODO_TDC CMU","ns",300,0,150);
@@ -445,8 +465,16 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
   TH2D *haDiff_vs_ADCint_CMU = new TH2D("haDiff_vs_ADCint_CMU",";E_{CMU} (GeV);ADCt_{HCAL}-TDC_{HODO} (ns)",270,0.0,0.9,600,0,150);
   TH1D *hTDCTimewalk = new TH1D("hTDCTimewalk","ns",500,0,50);
   TH1D *hADCtTimewalk = new TH1D("hADCtTimewalk","ns",500,0,50);
+  TH2D *hHCALtdc_vs_HODOtdc = new TH2D("hHCALtdc_vs_HODOtdc",";TDC_{HODO} (ns);TDC_{HCAL} (ns)",150,-75,75,150,-150,0);
   TH2D *htDiff_vs_HCALID = new TH2D("htDiff_vs_HCALID",";Channel;TDC_{HCAL}-TDC_{HODO} (ns)",288,0,288,300,-150,0);
+  TH2D *htHCAL_vs_HCALID = new TH2D("htHCAL_vs_HCALID",";Channel;TDC_{HCAL} (ns)",288,0,288,300,-150,0);
+  TH2D *htHODO_vs_HCALID = new TH2D("htHODO_vs_HCALID",";Channel;TDC_{HODO} (ns)",288,0,288,300,-75,75);
+  TH2D *htDiff_bb_vs_HCALID = new TH2D("htDiff_bb_vs_HCALID",";Channel;TDC_{HCAL}-BB_{trigtime} (ns)",288,0,288,400,-500,-300);
+  TH2D *htDiff_bbrf_vs_HCALID = new TH2D("htDiff_bbrf_vs_HCALID",";Channel;TDC_{HCAL}-BB_{trigtime}-RFtime_mod4 (ns)",288,0,288,400,-500,-300);
+  TH2D *htDiffBB_vs_HCALID = new TH2D("htDiffBB_vs_HCALID",";Channel;TDC_{HCAL}-BBCalt (ns)",288,0,288,1000,-500,500);
+  TH2D *htDiffRF_vs_HCALID = new TH2D("htDiffRF_vs_HCALID",";Channel;(TDC_{HCAL}-RF)%4 (ns)",288,0,288,300,-150,0);
   TH2D *haDiff_vs_HCALID = new TH2D("haDiff_vs_HCALID",";Channel;ADCtime_{HCAL}-TDC_{HODO} (ns)",288,0,288,300,0,150);
+  TH2D *haHCAL_vs_HCALID = new TH2D("haHCAL_vs_HCALID",";Channel;ADCtime_{HCAL} (ns)",288,0,288,300,0,150);
   TH2D *hTDCoffsets_vs_HCALID = new TH2D("hTDCoffsets_vs_HCALID",";Channel;TDC Offset (ns)",288,0,288,200,-50,50);
   TH2D *holdTDCoffsets_vs_HCALID = new TH2D("holdTDCoffsets_vs_HCALID",";Channel;TDC Offset (ns)",288,0,288,200,-50,50);
   TH2D *hcombTDCoffsets_vs_HCALID = new TH2D("hcombTDCoffsets_vs_HCALID",";Channel;TDC Offset (ns)",288,0,288,200,-50,50);
@@ -458,6 +486,8 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
   TH2D *htDiff_vs_ADCint[kNcell];
   TH2D *haDiff_vs_ADCint[kNcell];
   TH1D *htDiff[kNcell];
+  TH1D *htDiff_bb[kNcell];
+  TH1D *htDiff_bbrf[kNcell];
   TH1D *haDiff[kNcell];
   TH1D *htDiff_corr[kNcell];
   TH1D *haDiff_corr[kNcell];
@@ -481,14 +511,18 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
 
   for( int i=0; i<kNcell; i++ ){
     htDiff_vs_ADCint[i] = new TH2D(Form("htDiff_vs_ADCint_bl%d",i),Form(";E_{bl%d} (GeV);TDC_{HCAL}-TDC_{HODO} (ns)",i),270,0.0,0.9,600,-250,50);
+    htDiff_vs_ADCint[i]->Fill( 0.1, -150 );
     haDiff_vs_ADCint[i] = new TH2D(Form("haDiff_vs_ADCint_bl%d",i),Form(";E_{bl%d} (GeV);ADCt_{HCAL}-TDC_{HODO} (ns)",i),270,0.0,0.9,600,0,150);
     haDiff_vs_ADCint[i]->Fill( 0.1, 55 ); //To test fits
 
     htDiff[i] = new TH1D(Form("htDiff_bl%d",i),";TDC_{HCAL}-TDC_{HODO} (ns)",300,-150,0);
+    htDiff_bb[i] = new TH1D(Form("htDiff_bb_bl%d",i),";TDC_{HCAL}-Trig_{BB} (ns)",400,-500,-300);
+    htDiff_bbrf[i] = new TH1D(Form("htDiff_bbrf_bl%d",i),";TDC_{HCAL}-Trig_{BB,rf corr} (ns)",400,-500,-300);
     haDiff[i] = new TH1D(Form("haDiff_bl%d",i),";ADCt_{HCAL}-TDC_{HODO} (ns)",1400,-400,300);
-    htDiff_corr[i] = new TH1D(Form("htDiff_bl%d",i),";TDC_{HCAL}-TDC_{HODO} (ns)",300,-150,0);
-    haDiff_corr[i] = new TH1D(Form("haDiff_bl%d",i),";ADCt_{HCAL}-TDC_{HODO} (ns)",1400,-400,300);
+    htDiff_corr[i] = new TH1D(Form("htDiff_corr_bl%d",i),";TDC_{HCAL}-TDC_{HODO} Corrected (ns)",300,-150,0);
+    haDiff_corr[i] = new TH1D(Form("haDiff_corr_bl%d",i),";ADCt_{HCAL}-TDC_{HODO} Corrected (ns)",1400,-400,300);
     haDiff[i]->Fill( 55 ); //To test fits
+    htDiff_corr[i]->Fill( -75. );
   }
 
   cout << "Variables and histograms defined." << endl;
@@ -553,8 +587,25 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
       double phinucleon = ephi + PI; //assume coplanarity
       double thetanucleon = acos( (E_e - BBtr_p[0]*cos(etheta))/pp ); //use elastic constraint on nucleon kinematics
 
-      //Sanity check on position after offsets applied
+      TVector3 pNhat( sin(thetanucleon)*cos(phinucleon),sin(thetanucleon)*sin(phinucleon),cos(thetanucleon));
+
+      //Define HCal coordinate system
+      TVector3 HCAL_zaxis(sin(-HCal_th),0,cos(-HCal_th));
+      TVector3 HCAL_xaxis(0,-1,0);
+      TVector3 HCAL_yaxis = HCAL_zaxis.Cross(HCAL_xaxis).Unit();
+	
+      TVector3 HCAL_origin = HCal_d * HCAL_zaxis + hcalheight * HCAL_xaxis;
+
+      //Plot 2D histo of position
       hXY_HCAL->Fill( HCALy, HCALx );
+
+      //Define intersection points for hadron vector
+      double sintersect = ( HCAL_origin - vertex ).Dot( HCAL_zaxis ) / ( pNhat.Dot( HCAL_zaxis ) );
+
+      TVector3 HCAL_intersect = vertex + sintersect * pNhat;
+
+      double yexpect_HCAL = (HCAL_intersect - HCAL_origin).Dot( HCAL_yaxis );
+      double xexpect_HCAL = (HCAL_intersect - HCAL_origin).Dot( HCAL_xaxis );
 
       double E_ep = sqrt( pow(M_e,2) + pow(BBtr_p[0],2) ); // Obtain the scattered electron energy
       hE_ep->Fill( E_ep ); // Fill histogram
@@ -574,29 +625,56 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
       double KE_p = nu; //For elastics
       hKE_p->Fill( KE_p );   
 	
-      //Cut on BBCal and HCal trigger coincidence
-      double bbcal_time=0., hcal_time=0.;
+      //Cut on BBCal and HCal trigger coincidence and plot all other trigger timing. All ref to tdcs need index adjustment (ihit+1).
+      double bbcal_time=0., hcal_time=0., RF_time=0.; 
+      double bbcalLO_time=0., bbcalHIveto_time=0., edtm_time=0.;
       for(int ihit=0; ihit<TDCTndata; ihit++){
-	if(TDCT_id[ihit]==5) bbcal_time=TDCT_tdc[ihit];
-	if(TDCT_id[ihit]==0) hcal_time=TDCT_tdc[ihit];
+	//cout << "TDCT_id[ihit]:" << TDCT_id[ihit] << ", TDCT_tdc:" << TDCT_tdc[ihit+1] << endl;
+	if(TDCT_id[ihit]==5) bbcal_time=TDCT_tdc[ihit+1];
+	if(TDCT_id[ihit]==4) RF_time=TDCT_tdc[ihit+1];
+	if(TDCT_id[ihit]==3) edtm_time=TDCT_tdc[ihit+1];
+	if(TDCT_id[ihit]==2) bbcalLO_time=TDCT_tdc[ihit+1];
+	if(TDCT_id[ihit]==1) bbcalHIveto_time=TDCT_tdc[ihit+1];
+	if(TDCT_id[ihit]==0) hcal_time=TDCT_tdc[ihit+1];
       }
       double diff = hcal_time - bbcal_time; 
-      hDiff->Fill( diff );	
+      double RFmod = std::fmod(RF_time,4); //RF Signature measures the bunch crossing of beam electrons at 4ns intervals
+      hTBBt->Fill( bbcal_time );
+      hTRF->Fill( RF_time );
+      hTRF->Fill( RFmod );
+      hTEDTM->Fill( edtm_time );
+      hTBBlo->Fill( bbcalLO_time );
+      hTBBhiv->Fill( bbcalHIveto_time );
+      hTHCAL->Fill( hcal_time );
+      hTHCALvRF->Fill( hcal_time - RFmod );
+
+      hDiff->Fill( diff );
 
       //Fill some HCal histos
       hHCALe->Fill( HCALe );
       hHODOnclus->Fill( nClusHODO );
 
+      double xDiff = HCALx - xexpect_HCAL;
+      double yDiff = HCALy - yexpect_HCAL;
+
       //Check how often the tdc failed to register for an otherwise good event
       if( HCALe>0.02 && HCALtdc[0]<-400 && nClusHODO<10 ) TDCmiss++;
 	
+      bool nogo = spotcut==1 && (fabs(xDiff-dx0)>dx_sig || fabs(yDiff-dy0)>dy_sig);
+
       //Get timing offsets for tdc and adc from primary block in cluster
-      if( fabs( W-W_mean )<W_sig&&fabs( diff+t_trig )<40 ){
+      if( fabs( W-W_mean )<W_sig&&fabs( diff+t_trig )<40&&nogo==false ){
+
 	//Fill some basic histos
 	hW_cuts->Fill( W );
 	hCblkID->Fill( cblkid[0] );
 	hCCol->Fill( ccol );
 	hvz_cut->Fill( BBtr_vz[0] );
+	//Draw some location plots for better cuts on elastics later on
+	hdxdy_HCAL->Fill( yDiff, xDiff );
+	hdy->Fill( yDiff );
+	hdx->Fill( xDiff );
+	//cout << "RF_time:" << RF_time << ", RFmod:" << RFmod << ", hcal_time:" << hcal_time << endl;
 
 	//Get total time of flight per elastic proton (very naive - need to use beta)
 	//Recall: p=(m*v)/sqrt(1-pow( beta, 2 )), beta = v/c, c=1
@@ -617,6 +695,9 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
 
 	//Get time difference between ADCt/TDC and HODO TDC mean time
 	double HHdiff = HCALtdc[0]-tHODO; //time difference between HCal TDC and Hodo TDC
+	double HBBdiff = HCALtdc[0]-bbcal_time; //time difference between HCal TDC and BBCal trigger
+	double HBBdiff_rf = HCALtdc[0]-bbcal_time-RFmod; //time difference between HCal TDC and BBCal trigger
+	double HRFdiff = HCALtdc[0]-RFmod; //time difference between HCal TDC and RF time modulo 4ns
 	double HHAdiff = HCALa[0]-tHODO; //time difference between HCal ADC time and Hodo TDC
 	double e = cblke[0]; //energy deposited in primary block
 	int idx = (int)cblkid[0]-1; //index of primary block
@@ -624,12 +705,26 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
 	if( idx<0 || idx>=288 ) cout << "ERROR: indexing out of bounds at idx = " << idx << endl;
 
 	//Fill some unmodified time difference histos
+	hTHODO->Fill( tHODO );
+	hHCALtdc_vs_HODOtdc->Fill( tHODO, HCALtdc[0] );
+	htHCAL->Fill( HCALtdc[0] );
+	htHCAL_vs_HCALID->Fill( cblkid[0], HCALtdc[0] );
+	htHODO_vs_HCALID->Fill( cblkid[0], tHODO );
 	htcorr_HCAL_HODO->Fill( HCALtdc[0], tHODO );
 	htDiff_HODO_HCAL->Fill( HHdiff );
 	haDiff_HODO_HCAL->Fill( HHAdiff );
+	haHCAL_vs_HCALID->Fill( cblkid[0], HCALa[0] );
+	htDiffBB_vs_HCALID->Fill( cblkid[0], HBBdiff );
+	htDiffRF_vs_HCALID->Fill( cblkid[0], HRFdiff );
 	htDiff_vs_HCALID->Fill( cblkid[0], HHdiff );
+	htDiff_bb_vs_HCALID->Fill( cblkid[0], HBBdiff );
+	htDiff_bbrf_vs_HCALID->Fill( cblkid[0], HBBdiff_rf );
+
 	haDiff_vs_HCALID->Fill( cblkid[0], HHAdiff );
 	htDiff[ idx ]->Fill( HHdiff );
+	htDiff_bb[ idx ]->Fill( HBBdiff );
+	//cout << HBBdiff << endl;
+	htDiff_bbrf[ idx ]->Fill( HBBdiff_rf );
 	haDiff[ idx ]->Fill( HHAdiff );
 	//To compare columns 
 	haDiff_vs_ADCint_cols[col]->Fill( e, HHAdiff ); 
@@ -664,19 +759,19 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
   
   //By JLAB/CMU PMT construction
   TF1 *fitTW_tJLAB = new TF1( "fitTW_tJLAB", TW_fit, 0, 1 );
-  htDiff_vs_ADCint_JLAB->Fit( "exp", "QNR+" );
+  htDiff_vs_ADCint_JLAB->Fit( "expo", "QNR+" );
   double TDC_JLAB_amp = fitTW_tJLAB->GetParameter(0);
   double TDC_JLAB_str = fitTW_tJLAB->GetParameter(1);
   TF1 *fitTW_aJLAB = new TF1( "fitTW_aJLAB", TW_fit, 0, 1 );
-  haDiff_vs_ADCint_JLAB->Fit( "exp", "QNR+" );
+  haDiff_vs_ADCint_JLAB->Fit( "expo", "QNR+" );
   double ADC_JLAB_amp = fitTW_aJLAB->GetParameter(0);
   double ADC_JLAB_str = fitTW_aJLAB->GetParameter(1);
   TF1 *fitTW_tCMU = new TF1( "fitTW_tCMU", TW_fit, 0, 1 );
-  htDiff_vs_ADCint_CMU->Fit( "exp", "QNR+" );
+  htDiff_vs_ADCint_CMU->Fit( "expo", "QNR+" );
   double TDC_CMU_amp = fitTW_tCMU->GetParameter(0);
   double TDC_CMU_str = fitTW_tCMU->GetParameter(1);
   TF1 *fitTW_aCMU = new TF1( "fitTW_aCMU", TW_fit, 0, 1 );
-  haDiff_vs_ADCint_CMU->Fit( "exp", "QNR+" );
+  haDiff_vs_ADCint_CMU->Fit( "expo", "QNR+" );
   double ADC_CMU_amp = fitTW_aCMU->GetParameter(0);
   double ADC_CMU_str = fitTW_aCMU->GetParameter(1);
 
@@ -781,7 +876,15 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
       double E_pp = nu+M_p;
       double Enucleon = sqrt(pow(pp,2)+pow(M_p,2));
       double KE_p = nu;
-	
+      TVector3 pNhat( sin(thetanucleon)*cos(phinucleon),sin(thetanucleon)*sin(phinucleon),cos(thetanucleon));
+      TVector3 HCAL_zaxis(sin(-HCal_th),0,cos(-HCal_th));
+      TVector3 HCAL_xaxis(0,-1,0);
+      TVector3 HCAL_yaxis = HCAL_zaxis.Cross(HCAL_xaxis).Unit();
+      TVector3 HCAL_origin = HCal_d * HCAL_zaxis + hcalheight * HCAL_xaxis;
+      double sintersect = ( HCAL_origin - vertex ).Dot( HCAL_zaxis ) / ( pNhat.Dot( HCAL_zaxis ) );      TVector3 HCAL_intersect = vertex + sintersect * pNhat;
+      double yexpect_HCAL = (HCAL_intersect - HCAL_origin).Dot( HCAL_yaxis );
+      double xexpect_HCAL = (HCAL_intersect - HCAL_origin).Dot( HCAL_xaxis );
+
       //Could improve by parsing the elist on first loop...
       double bbcal_time=0., hcal_time=0.;
       for(int ihit=0; ihit<TDCTndata; ihit++){
@@ -789,9 +892,13 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
 	if(TDCT_id[ihit]==0) hcal_time=TDCT_tdc[ihit];
       }
       double diff = hcal_time - bbcal_time; 
-	
+
+      double xDiff = HCALx - xexpect_HCAL;
+      double yDiff = HCALy - yexpect_HCAL;
+      bool nogo = spotcut==1 && (fabs(xDiff-dx0)>dx_sig || fabs(yDiff-dy0)>dy_sig);
+
       //Get timing offsets for tdc and adc from primary block in cluster
-      if( fabs(W-W_mean)<W_sig&&fabs(diff+t_trig)<40 ){
+      if( fabs(W-W_mean)<W_sig&&fabs(diff+t_trig)<40&&nogo==false ){
 	double vp2 = sqrt( 1/pow( M_p/pp, 2 ));
 	double dp = sqrt( pow(HCal_d,2) + pow(HCALx,2) + pow(HCALy,2) );
 	double tp2 = dp/vp2;
@@ -805,13 +912,13 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
 
 	//Calculate timewalk corrections via exponential fit
 	double TW_JLAB_TDCcorr = TDC_JLAB_amp*exp( TDC_JLAB_str*e );
-	cout << "TW_JLAB_TDCcorr:" << TW_JLAB_TDCcorr << endl;
+	//cout << "TW_JLAB_TDCcorr:" << TW_JLAB_TDCcorr << endl;
 	double TW_JLAB_ADCcorr = ADC_JLAB_amp*exp( ADC_JLAB_str*e );
-	cout << "TW_JLAB_ADCcorr:" << TW_JLAB_ADCcorr << endl;
+	//cout << "TW_JLAB_ADCcorr:" << TW_JLAB_ADCcorr << endl;
 	double TW_CMU_TDCcorr = TDC_CMU_amp*exp( TDC_CMU_str*e );
-	cout << "TW_CMU_TDCcorr:" << TW_CMU_TDCcorr << endl;
+	//cout << "TW_CMU_TDCcorr:" << TW_CMU_TDCcorr << endl;
 	double TW_CMU_ADCcorr = ADC_CMU_amp*exp( ADC_CMU_str*e );
-	cout << "TW_CMU_ADCcorr:" << TW_CMU_ADCcorr << endl;
+	//cout << "TW_CMU_ADCcorr:" << TW_CMU_ADCcorr << endl;
 
 	//Fill histograms with the corrected time differences (base + timewalk + TOF)
 	/*
@@ -877,7 +984,7 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
       TDCoffsets[i] = -75. - f1->GetParameter(1);
       TDCsig[i] = f1->GetParameter(2);
       //double cs = f1->GetChisquare();
-      htDiff_corr[i]->SetName(Form("htDiff_bl%d",i));		
+      htDiff_corr[i]->SetName(Form("htDiff_corr_bl%d",i));		
     }else{   
       TDCoffsets[i] = 0.;
     }
@@ -912,45 +1019,168 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
   }
  
   //Make canvas to hold all fits for comparison to HCal geometry
-  TCanvas *TDC_top = new TCanvas("TDC_top","TDC_top",1600,1200);
-  TCanvas *TDC_bot = new TCanvas("TDC_bot","TDC_bot",1600,1200);
-  TCanvas *ADCt_top = new TCanvas("ADCt_top","ADCt_top",1600,1200);
-  TCanvas *ADCt_bot = new TCanvas("ADCt_bot","ADCt_bot",1600,1200);
+  if( diag==1 ){
+    TCanvas *TDC_top = new TCanvas("TDC_top","TDC_top",1600,1200);
+    TCanvas *TDC_bot = new TCanvas("TDC_bot","TDC_bot",1600,1200);
+    TCanvas *ADCt_top = new TCanvas("ADCt_top","ADCt_top",1600,1200);
+    TCanvas *ADCt_bot = new TCanvas("ADCt_bot","ADCt_bot",1600,1200);
 
-  TDC_top->Divide(12,12);
-  TDC_bot->Divide(12,12);
-  ADCt_top->Divide(12,12);
-  ADCt_bot->Divide(12,12);
+    TDC_top->Divide(12,12);
+    TDC_bot->Divide(12,12);
+    ADCt_top->Divide(12,12);
+    ADCt_bot->Divide(12,12);
 
-  gStyle->SetOptStat(0);
-  for(int i=0; i<kNcell; i++){
-    TDC_top->cd(i+1);
-    if( i>=144 ){
-      TDC_bot->cd(i-143);
-      gStyle->SetOptStat(0);
+    gStyle->SetOptStat(0);
+    for(int i=0; i<kNcell; i++){
+      TDC_top->cd(i+1);
+      if( i>=144 ){
+	TDC_bot->cd(i-143);
+	gStyle->SetOptStat(0);
+      }
+      if(htDiff[i]->GetEntries()<tFitMin){
+	htDiff[i]->SetAxisColor(2);
+      }else{
+	htDiff[i]->SetAxisColor(1);
+      }
+      htDiff[i]->Draw();
     }
-    if(htDiff[i]->GetEntries()<tFitMin){
-      htDiff[i]->SetAxisColor(2);
-    }else{
-      htDiff[i]->SetAxisColor(1);
+
+    gStyle->SetOptStat(0);
+    for(int i=0; i<kNcell; i++){
+      ADCt_top->cd(i+1);
+      if( i>=144 ){
+	ADCt_bot->cd(i-143);
+	gStyle->SetOptStat(0);
+      }
+      if(haDiff[i]->GetEntries()<tFitMin){
+	haDiff[i]->SetAxisColor(2);
+      }else{
+	haDiff[i]->SetAxisColor(1);
+      }
+      haDiff[i]->Draw();
     }
-    htDiff[i]->Draw();
   }
 
-  gStyle->SetOptStat(0);
-  for(int i=0; i<kNcell; i++){
-    ADCt_top->cd(i+1);
-    if( i>=144 ){
-      ADCt_bot->cd(i-143);
-      gStyle->SetOptStat(0);
-    }
-    if(haDiff[i]->GetEntries()<tFitMin){
-      haDiff[i]->SetAxisColor(2);
+  //Construct graphs for TDC timing resolution
+  const Int_t xN = 288; //total channels
+  Double_t posErr[xN] = {0.};
+  TF1 *f1;
+  //For TDC corrected
+  Double_t X[xN];
+  Double_t Xval[xN];
+  Double_t Xerr[xN];
+  TH1D *Xslice[xN];
+  Double_t sigmaX[2] = {0,0};
+  Double_t minSigmaX[2] = {0,100};
+  for( int x=0; x<xN; x++ ){
+    X[x] = x;
+    Xslice[x] = htDiff_vs_HCALID->ProjectionY(Form("Xslice_%d",x+1),x+1,x+1);
+    Xslice[x]->Fill(-75); //Add one point to fix fits
+    Xslice[x]->Fit("gaus","Q","",-80,-65);
+    f1=Xslice[x]->GetFunction("gaus");
+    if(Xslice[x]->GetEntries()>100){
+      Xval[x] = f1->GetParameter(1);
+      Xerr[x] = f1->GetParameter(2);
+      sigmaX[0]++;
+      sigmaX[1]+=Xerr[x];
+      if( Xerr[x]<minSigmaX[1] ){
+	minSigmaX[0] = x;
+	minSigmaX[1] = Xerr[x];
+      }
     }else{
-      haDiff[i]->SetAxisColor(1);
+      Xval[x] = -10;
+      Xerr[x] = 0.;
     }
-    haDiff[i]->Draw();
   }
+  cout << endl << "Avg TDC sigma: " << sigmaX[1]/sigmaX[0] << endl << endl;
+  cout << "Best TDC: " << minSigmaX[0] << " sig: " << minSigmaX[1] << endl;
+  TGraphErrors *ctdcres_Ch = new TGraphErrors( xN, X, Xval, posErr, Xerr );
+  ctdcres_Ch->GetXaxis()->SetLimits(0,xN);  
+  ctdcres_Ch->GetYaxis()->SetLimits(-100,-40);
+  ctdcres_Ch->SetTitle("Timing Resolution TDC");
+  ctdcres_Ch->GetXaxis()->SetTitle("Channel");
+  ctdcres_Ch->GetYaxis()->SetTitle("TDC_{HCal}-TDC_{HODO} (ns)");
+  ctdcres_Ch->SetMarkerStyle(20); // idx 20 Circles, idx 21 Boxes
+  ctdcres_Ch->Write("ctdcres_Ch");
+
+  //For TDC uncorrected
+  Double_t Xu[xN];
+  Double_t Xvalu[xN];
+  Double_t Xerru[xN];
+  TH1D *Xsliceu[xN];
+  Double_t sigmaXu[2] = {0,0};
+  Double_t minSigmaXu[2] = {0,100};
+  for( int x=0; x<xN; x++ ){
+    Xu[x] = x-0.5;
+    Xsliceu[x] = htHCAL_vs_HCALID->ProjectionY(Form("Xsliceu_%d",x+1),x+1,x+1);
+    Xsliceu[x]->Fill(-75); //Add one point to fix fits
+    Xsliceu[x]->Fit("gaus","Q","",-80,-65);
+    f1=Xsliceu[x]->GetFunction("gaus");
+    if(Xsliceu[x]->GetEntries()>100){
+      Xvalu[x] = f1->GetParameter(1);
+      Xerru[x] = f1->GetParameter(2);
+      sigmaXu[0]++;
+      sigmaXu[1]+=Xerr[x];
+      if( Xerru[x]<minSigmaXu[1] ){
+	minSigmaXu[0] = x;
+	minSigmaXu[1] = Xerr[x];
+      }
+    }else{
+      Xvalu[x] = -10;
+      Xerru[x] = 0.;
+    }
+  }
+  cout << endl << "Avg TDC uncorrected sigma: " << sigmaXu[1]/sigmaXu[0] << endl << endl;
+  cout << "Best TDC: " << minSigmaXu[0] << " sig: " << minSigmaXu[1] << endl;
+  TGraphErrors *ctdcresu_Ch = new TGraphErrors( xN, Xu, Xvalu, posErr, Xerru );
+  ctdcresu_Ch->GetXaxis()->SetLimits(0,xN);  
+  ctdcresu_Ch->GetYaxis()->SetLimits(-100,-40);
+  ctdcresu_Ch->SetTitle("Timing Resolution TDC Uncorrected");
+  ctdcresu_Ch->GetXaxis()->SetTitle("Channel");
+  ctdcresu_Ch->GetYaxis()->SetTitle("TDC_{HCal} (ns)");
+  ctdcresu_Ch->SetMarkerColor(2);
+  ctdcresu_Ch->SetLineColor(2);
+  ctdcresu_Ch->SetMarkerStyle(24); // idx 24 open circles
+  ctdcresu_Ch->Write("ctdcresu_Ch");
+
+  //For ADC time
+  Double_t Y[xN];
+  Double_t Yval[xN];
+  Double_t Yerr[xN];
+  TH1D *Yslice[xN];
+  Double_t sigmaY[2] = {0,0};
+  Double_t minSigmaY[2] = {0,100};
+  for( int x=0; x<xN; x++ ){
+    Y[x] = x;
+    Yslice[x] = haDiff_vs_HCALID->ProjectionY(Form("Yslice_%d",x+1),x+1,x+1);
+    Yslice[x]->Fill(55); //Add point to fix fits
+    Yslice[x]->Fit("gaus","Q","",40,60);
+    f1=Yslice[x]->GetFunction("gaus");
+    if(Yslice[x]->GetEntries()>100){
+      Yval[x] = f1->GetParameter(1);
+      Yerr[x] = f1->GetParameter(2);
+      sigmaY[0]++;
+      sigmaY[1]+=Yerr[x];
+      if( Yerr[x]<minSigmaY[1] ){
+	minSigmaY[0] = x;
+	minSigmaY[1] = Yerr[x];
+      }
+    }else{
+      Yval[x] = 80;
+      Yerr[x] = 0.;
+    }
+  }
+  cout << endl << "Avg ADCt sigma: " << sigmaY[1]/sigmaY[0] << endl << endl;
+  cout << "Best ADC: " << minSigmaY[0] << " sig: " << minSigmaY[1] << endl;
+  TGraphErrors *cadcres_Ch = new TGraphErrors( xN, Y, Yval, posErr, Yerr );
+  cadcres_Ch->GetXaxis()->SetLimits(0,xN);  
+  cadcres_Ch->GetYaxis()->SetLimits(20,80);
+  cadcres_Ch->SetTitle("Timing Resolution ADCt");
+  cadcres_Ch->GetXaxis()->SetTitle("Channel");
+  cadcres_Ch->GetYaxis()->SetTitle("ADCt_{HCal}-TDC_{HODO} (ns)");
+  cadcres_Ch->SetMarkerStyle(20); // idx 20 Circles, idx 21 Boxes
+  cadcres_Ch->Write("cadcres_Ch");
+
 
   //Write out diagnostic histos and print to console
   fout->Write();
@@ -1058,7 +1288,7 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
   }
 
   params.close();
-
+  /*
   if( diag==1 ){
     TString plotsfilename = outputfilename;
     plotsfilename.ReplaceAll(".root","_1.pdf");
@@ -1070,7 +1300,7 @@ void timingCal_v2( const char *configfilename="setup_timingCal_v2.cfg", int run 
     plotsfilename.ReplaceAll(".root","_4.pdf");
     ADCt_bot->Print(plotsfilename.Data(),"pdf");
   }
-
+  */
   cout << endl << endl << "Elastic yield for analyzed runs: " << elasYield << ". Total events analyzed: " << Nevents << ". Total TDC misses: " << TDCmiss << "." << endl << endl;
 
   cout << "Timing offset analysis complete and parameters written to file." << endl;

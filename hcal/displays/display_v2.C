@@ -260,7 +260,8 @@ Int_t display_v2(Int_t run = 290, Int_t event = -1)
     //T->Add(TString::Format("%s/e1209019_%d*.root",getenv("OUT_DIR"),run));
     //T->Add(Form("/adaqfs/home/a-onl/sbs/Rootfiles/hcal_%d*.root",run));
     //T->Add(Form("/adaqfs/home/a-onl/sbs/Rootfiles/hcal_trim_%d_50001*.root",run));
-    T->Add(Form("/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_%d_-1*.root",run));
+    //T->Add(Form("/adaqfs/home/a-onl/sbs/Rootfiles/hcal_general_%d_-1*.root",run));
+    T->Add(Form("/lustre19/expphy/volatile/halla/sbs/seeds/rootfiles/hcal_general_%d*",run));
     //T->Add(Form("/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_%d_10000*.root",run));
     //T->Add(Form("/adaqfs/home/a-onl/sbs/Rootfiles/hcal_10416*.root",run));
     //T->Add(Form("/adaqfs/home/a-onl/sbs/Rootfiles/hcal_gmn_%d*.root",run));

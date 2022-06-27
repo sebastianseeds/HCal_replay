@@ -33,7 +33,7 @@
 #include "SBSRasteredBeam.h"
 #endif
 
-void replay_hcal_SAS_general(int run_number = 124, uint nev = -1, uint nseg = 0, Int_t pedestalmode=0)
+void replay_hcal_SAS_general(int run_number, uint nev = -1, uint nseg = 0, Int_t pedestalmode=0)
 {
   //load SBS-offline
   //gSystem->Load("libsbs.so");

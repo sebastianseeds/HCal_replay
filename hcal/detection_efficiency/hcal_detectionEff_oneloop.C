@@ -63,7 +63,7 @@ double gausFit_alt(double *X,double *p) //Single parameter fits - GOING FOR THE 
 }
 */
 
-void hcal_detectionEff_oneloop( const char *configfilename, int run = -1 ){
+void hcal_detectionEff_oneloop( const char *configfilename="setup_hcal_detectionEff.cfg", int run = -1 ){
 
   //const char *outfilename, double ebeam=3.7278, double bbtheta=36.0, double sbstheta=31.9, double hcaldist=11.0 ){
 
@@ -400,18 +400,18 @@ void hcal_detectionEff_oneloop( const char *configfilename, int run = -1 ){
 	    hcalt::BBps_e[0] > 0.1 &&
 	    hcalt::BBsh_e[0] > 0.1 &&
 	    fabs( vertex.Z() ) <= 0.08 &&
-	    fabs( diff-370. )<20 ){
+	    fabs( diff+370. )<20 ){
 	  
 	  hdx_HCAL->Fill( dx );
 	  hdy_HCAL->Fill( dy );
-	  if( hcalt::ce[0] > emin ) hdx_HCAL_emin->Fill( dx ); //Only fill these if the minimum energy of the cluster correlates well with more than a single block
-	  //cout << hcalt::ce[0] << endl;
+	  if( hcalt::e[0] > emin ) hdx_HCAL_emin->Fill( dx ); //Only fill these if the minimum energy of the cluster correlates well with more than a single block
+	  //cout << hcalt::e[0] << endl;
 
-	  if( hcalt::ce[0] > emin ) hdy_HCAL_emin->Fill( dy );
+	  if( hcalt::e[0] > emin ) hdy_HCAL_emin->Fill( dy );
 	  hdr_HCAL->Fill( dr );
 	  
 	  if(dy>-0.5&&dy<0.5) {
-	    if( hcalt::ce[0] > emin ) hdx_HCAL_dyCut_emin->Fill( dx );
+	    if( hcalt::e[0] > emin ) hdx_HCAL_dyCut_emin->Fill( dx );
 	    hdx_HCAL_dyCut->Fill( dx );
 	  }
 	  hdxdy_HCAL->Fill( dy, dx );
@@ -429,7 +429,7 @@ void hcal_detectionEff_oneloop( const char *configfilename, int run = -1 ){
 	//Plot another distribution of W cutting on the region which should contain elastics on HCal
 	if(dy>-0.5&&dy<0.5 && dx>-0.5&&dx<0.5) {
 	  hW_pCut->Fill(PgammaN.M());
-	  if( hcalt::ce[0] > emin ) hW_cut_emin->Fill(PgammaN.M());
+	  if( hcalt::e[0] > emin ) hW_cut_emin->Fill(PgammaN.M());
 	}
       }
       
@@ -486,6 +486,7 @@ void hcal_detectionEff_oneloop( const char *configfilename, int run = -1 ){
   //fe->FixParameter(1,5.27608);
   fe->FixParameter(0,-0.585486);
   fe->FixParameter(1,5.15219);
+  //fe->FixParameter(1,7.15219);
 
   //Can do sideband analysis with RejectPoint() on TF1
 

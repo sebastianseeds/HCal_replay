@@ -4,6 +4,8 @@
 block sbs.hcal.*
 block bb.tr.*
 block bb.tdctrig.*
+block bb.hodotdc.*
+block bb.hodoadc.*
 block sbs.*
 block e.kine.*
 block bb.sh.*
