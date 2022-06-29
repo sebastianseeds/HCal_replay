@@ -1,7 +1,7 @@
 #HCAL output definition file
 
 #HCal Branches to root file
-block bb.grinch_tdc.*
+block bb.grinch*
 block sbs.hcal.*
 block sbs.trig.*
 block bb.tdctrig.*

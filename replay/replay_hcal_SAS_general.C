@@ -74,6 +74,24 @@ void replay_hcal_SAS_general(int run_number, uint nev = -1, uint nseg = 0, Int_t
   //bigbite->AddDetector( new THaShower("ps", "BigBite preshower") );
   bigbite->AddDetector(hodotdc);
   bigbite->AddDetector(hodoadc);
+
+  SBSGenericDetector *grinch_adc = new SBSGenericDetector("grinch_adc","GRINCH ADC data");
+  //grinch2->SetDisableRefADC(true);
+  grinch_adc->SetModeADC(SBSModeADC::kADC);
+  grinch_adc->SetModeTDC(SBSModeTDC::kNone);
+  grinch_adc->SetStoreEmptyElements(kFALSE);
+  grinch_adc->SetStoreRawHits(kTRUE); //kTRUE to get multiple hits from the ADC
+
+  SBSGenericDetector *grinch_tdc = new SBSGenericDetector("grinch_tdc","GRINCH TDC data");
+  grinch_tdc->SetModeTDC(SBSModeTDC::kTDC);
+  //grinch_tdc->SetModeTDC(SBSModeTDC::kCommonStartTDC);
+  grinch_tdc->SetModeADC(SBSModeADC::kNone);
+  grinch_tdc->SetDisableRefTDC(true);
+  grinch_tdc->SetStoreEmptyElements(kFALSE);
+  grinch_tdc->SetStoreRawHits(kTRUE); //kTRUE to get multiple hits from the TDC
+  bigbite->AddDetector(grinch_adc);
+  bigbite->AddDetector(grinch_tdc);
+
   SBSGEMSpectrometerTracker *bbgem = new SBSGEMSpectrometerTracker("gem", "BigBite Hall A GEM data");
   bool pm =  ( pedestalmode != 0 );
   //this will override the database setting:

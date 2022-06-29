@@ -108,6 +108,10 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
   string tar = "LH2"; // Target used during run set, LH2 liquid hydrogen, LD2 liquid deuterium
   vector<TString> log; // Log of runs analyzed
 
+  // Declare variables for keeping track of proton and neutron yield. Declared outside of while loop in order to keep track of totals over all events.
+  int Np = 0;
+  int Nn = 0;
+
   // Reading config file
   ifstream configfile(configfilename);
   TString currentline;
@@ -344,7 +348,7 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
   // Declare outfiles
   outputfilename = Form( "TOF_SBS%d_tar%s_%s.root", magSet, tar.c_str(), date.c_str() );
   TFile *fout = new TFile( outputfilename, "RECREATE" );
-  string logpath = Form( "TOFLog_%s.txt", date.c_str() );
+  string logpath = Form( "TOFLog_%s.log", date.c_str() );
 
   // Initialize misc. variables
   int elasYield = 0; // Keep track of total elastics analyzed
@@ -356,6 +360,8 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
 
   TH1D *h_W2 = new TH1D("h_W2",";W2 (GeV^2);",250,0,2); //Invarient mass squared 1D histo
   TH1D *h_W = new TH1D("h_W",";W (GeV);",250,0,2); //Invarient mass 1D histo
+  TH1D *h_Q2 = new TH1D("h_Q2",";Q2 (GeV^2)",500,0,5); //Inverse momentum transfer before W2 and timing cuts are applied
+  TH1D *h_Q2cut = new TH1D("h_Q2cut",";Q2 (GeV^2)",500,0,5); //Inverse momentum transfer after cuts to compare
 
   // Set long int to keep track of total entries after globalcut
   Long64_t Nevents = elist->GetN();
@@ -452,6 +458,7 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
       double p_ep = BBtr_p[0]; // Obtain scattered electron momentum
       
       double Q2 = 2*E_corr*E_ep*( 1-(BBtr_pz[0]/p_ep) ); // Obtain Q2 from beam energy, outgoing electron energy, and momentum
+      h_Q2->Fill(Q2); //Fill histogram before cut
       
       //Get invarient mass transfer W from the four-momentum of the scattered nucleon
       double W = PgammaN.M();
@@ -463,8 +470,10 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
 
       double dx = HCALx - xexpect_HCAL; // (Energy weighted center of cluster (x component)) - (straight line nucleon projection obtained from e' track HCal location (x component))
       double dy = HCALy - yexpect_HCAL; // (Energy weighted center of cluster (y component)) - (straight line nucleon projection obtained from e' track HCal location (y component))
-      
-      
+            
+      //Main cut on elastic invarient mass
+      if( fabs(W-W_mean)>W_sig ) continue; 
+
       //Check "elastic" events on center HCal for id with spot checks
       bool HCAL_on = false, is_p = false, is_n = false; //is_p = proton, is_n = neutron
       if( HCALy>-0.75 && HCALy<0.75 && HCALx>-2.015 && HCALx<1.285 ){ //Bounds set by acceptance of HCal in HCal coordinates, should probably not be hardcoded
@@ -478,8 +487,8 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
       }
       
       if( HCAL_on==true && is_n==true ){
-	if( (HCALx-dx_max)>-2.015 ){
-	  if( tar == "LD2" ){
+	if( (HCALx-dx_max)>-2.015 ){ //Fiducial check to verify that a scattered nucleon reconstructed from Bigbite would have landed on HCal
+	  if( tar == "LD2" ){ //Consider neutrons only if we have a dueterium target
 	   
 	    double pelastic = E_corr/(1.+(E_corr/M_p)*(1.0-cos(etheta))); //Corrected momentum of elastic nucleon
       
@@ -491,13 +500,16 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
 
 	    h_W2->Fill(W2recon);
 	    h_W->Fill(W);
+	    h_Q2cut->Fill(Q2);
 
+	    Np++;
+
+	    elasYield++;
 	  }
 
-	  elasYield++;
 	}
       }else if( HCAL_on==true && is_p==true ){
-	if( (HCALx+dx_max)<1.285 ){
+	if( (HCALx+dx_max)<1.285 ){ //Fiducial check to verify that a scattered nucleon reconstructed from Bigbite would have landed on HCal
 	 
 	  double pelastic = E_corr/(1.+(E_corr/M_p)*(1.0-cos(etheta))); //Corrected momentum of elastic nucleon
       
@@ -509,13 +521,13 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
 
 	  h_W2->Fill(W2recon);
 	  h_W->Fill(W);
+	  h_Q2cut->Fill(Q2);
+	 
+	  Np++;
 
 	  elasYield++;
 	}
       }
-
-      //Main cut on elastic invarient mass
-      if( fabs(W-W_mean)>W_sig ) continue; 
 
       ////!!!!One could add additional code here populate histograms with TOF information from events that pass cuts
       ////
@@ -536,7 +548,12 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
   logfile.close();
 
   cout << endl << endl << "Elastic yield for analyzed runs: " << elasYield << ". Total events analyzed: " << Nevents << "." << endl << endl;
-  cout << "New root file generated with elastic cuts placed at " << outputfilename << endl;
+
+  cout << endl << "Elastic proton yield: " << Np << "." << endl;
+
+  cout << endl << "Elastic neutron yield: " << Nn << "." << endl;
+
+  cout << endl << endl << "New root file generated with elastic cuts placed at " << outputfilename << endl;
 
   fout->Write();
 

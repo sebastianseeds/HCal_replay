@@ -10,3 +10,5 @@
 ## Ignore emacs temporary files
 *#
 .#*
+## Ignore log files
+*.log

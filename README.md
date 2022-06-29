@@ -1,5 +1,6 @@
 # HCal_replay
-SBS HCal Combined Analysis Platform
+**SBS HCal Combined Analysis Platform**
+
 The purpose of this repository is to provide a software platform for evaluating the performance of the SBS Hadron Calorimeter, to process data collected from the calorimeter, and to generate calibration parameters for the calorimeter. A history of significant configurations are also included. Please reference each individual script or file for usage and details.
 
 Please see [wiki](https://sbs.jlab.org/wiki/index.php/HOW_TOs#BigBite_Spectrometer_.28BB.29) for more instructions.
@@ -34,7 +35,7 @@ Contains many production HCal and GRINCH HV settings for record.
 Contains functional panguin build for evaluation of production-level online monitoring script updates for HCal
 
 ## Replay
-Contains replay scripts for use with standalone SBS-Offline and analyzer builds for evaluation of HCal tree variables not included in standard replay. Also can be used to evaluate changes to SBS-Offline when needed.
+Contains replay scripts using standalone SBS-Offline and analyzer builds for evaluation of HCal tree variables not included in standard replay. Also can be used to evaluate changes to SBS-Offline when needed.
 > Current Replay Script: replay_hcal_SAS_general.C
 
 NOTE: Replay will reference any *.odef/*.cdef/*.dat contained in replay directory before $DB_DIR
