@@ -6,9 +6,10 @@
 #include <fstream>
 #include <string>
 #include <vector>
-1#include <set>
+#include <set>
 #include <map>
 #include "TChain.h"
+
 #include "TSystem.h"
 #include "TStopwatch.h"
 #include "TTree.h"
@@ -344,7 +345,7 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
   // Declare outfiles
   outputfilename = Form( "TOF_SBS%d_tar%s_%s.root", magSet, tar.c_str(), date.c_str() );
   TFile *fout = new TFile( outputfilename, "RECREATE" );
-  string logpath = Form( "TOFLog_%s.txt", date.c_str() );
+  string logpath = Form( "TOFLog_%s.log", date.c_str() );
 
   // Initialize misc. variables
   int elasYield = 0; // Keep track of total elastics analyzed
@@ -356,6 +357,7 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
 
   TH1D *h_W2 = new TH1D("h_W2",";W2 (GeV^2);",250,0,2); //Invarient mass squared 1D histo
   TH1D *h_W = new TH1D("h_W",";W (GeV);",250,0,2); //Invarient mass 1D histo
+  TH1D *add = new TH1D("add", ";addname;", 250,0,5);
 
   // Set long int to keep track of total entries after globalcut
   Long64_t Nevents = elist->GetN();
@@ -491,6 +493,7 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
 
 	    h_W2->Fill(W2recon);
 	    h_W->Fill(W);
+	    add->Fill(HCALe);
 
 	  }
 
@@ -509,6 +512,8 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
 
 	  h_W2->Fill(W2recon);
 	  h_W->Fill(W);
+	  add->Fill(HCALe);
+
 
 	  elasYield++;
 	}
