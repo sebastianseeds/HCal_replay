@@ -9,6 +9,7 @@
 #include <set>
 #include <map>
 #include "TChain.h"
+
 #include "TSystem.h"
 #include "TStopwatch.h"
 #include "TTree.h"
@@ -360,6 +361,9 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
 
   TH1D *h_W2 = new TH1D("h_W2",";W2 (GeV^2);",250,0,2); //Invarient mass squared 1D histo
   TH1D *h_W = new TH1D("h_W",";W (GeV);",250,0,2); //Invarient mass 1D histo
+
+  TH1D *add = new TH1D("add", ";addname;", 250,0,5);
+
   TH1D *h_Q2 = new TH1D("h_Q2",";Q2 (GeV^2)",500,0,5); //Inverse momentum transfer before W2 and timing cuts are applied
   TH1D *h_Q2cut = new TH1D("h_Q2cut",";Q2 (GeV^2)",500,0,5); //Inverse momentum transfer after cuts to compare
 
@@ -500,6 +504,7 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
 
 	    h_W2->Fill(W2recon);
 	    h_W->Fill(W);
+	    add->Fill(HCALe);
 	    h_Q2cut->Fill(Q2);
 
 	    Np++;
@@ -521,6 +526,9 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
 
 	  h_W2->Fill(W2recon);
 	  h_W->Fill(W);
+	  add->Fill(HCALe);
+
+
 	  h_Q2cut->Fill(Q2);
 	 
 	  Np++;
@@ -532,7 +540,7 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
       ////!!!!One could add additional code here populate histograms with TOF information from events that pass cuts
       ////
       ////
-      ////
+      ////asdfw
     }
   }
   
