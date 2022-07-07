@@ -346,7 +346,7 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
   sw->Start();
   
   // Declare outfiles
-  outputfilename = Form( "TOF_SBS%d_tar%s_%s.root", magSet, tar.c_str(), date.c_str() );
+  outputfilename = Form( "outfiles/TOF_SBS%d_tar%s_%s.root", magSet, tar.c_str(), date.c_str() );
   TFile *fout = new TFile( outputfilename, "RECREATE" );
   string logpath = Form( "TOFLog_%s.log", date.c_str() );
 
