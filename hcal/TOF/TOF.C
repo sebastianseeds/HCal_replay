@@ -9,7 +9,6 @@
 #include <set>
 #include <map>
 #include "TChain.h"
-
 #include "TSystem.h"
 #include "TStopwatch.h"
 #include "TTree.h"
@@ -105,7 +104,7 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
   double dy_sig_p = 0.15; // Max spread of proton spot, y-y_expected
   double dx_max = 0.65; // Max distance expected for p-n separation
   int magSet = 30;  // SBS Magnetic field strength (percent)
-  int useAlshield = 0; // Use 1/8" aluminum shield on scattering chamber exit?
+  int useAlshield = 1; // Use 1/8" aluminum shield on scattering chamber exit?
   string tar = "LH2"; // Target used during run set, LH2 liquid hydrogen, LD2 liquid deuterium
   vector<TString> log; // Log of runs analyzed
 
@@ -359,13 +358,19 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
   double Eloss_outgoing = celldiameter/2.0/sin(BB_th) * rho_tgt * dEdx_tgt; //Energy lost in target. Approximately 1 MeV, could correct further with raster position
   if( useAlshield != 0 ) Eloss_outgoing += Alshieldthick * rho_Al * dEdx_Al; //Add energy loss from aluminum shield for runs where relevant
 
-  TH1D *h_W2 = new TH1D("h_W2",";W2 (GeV^2);",250,0,2); //Invarient mass squared 1D histo
-  TH1D *h_W = new TH1D("h_W",";W (GeV);",250,0,2); //Invarient mass 1D histo
+  //TH1D *h_W2 = new TH1D("h_W2",";W2 (GeV^2);",250,0,2); //Invarient mass squared 1D histo
+  //TH1D *h_W = new TH1D("h_W",";W (GeV);",250,0,2); //Invarient mass 1D histo
 
-  TH1D *add = new TH1D("add", ";addname;", 250,0,5);
+  //TH1D *Pelastic = new TH1D("Pelastic","Pelastic", 250,0,5);
+  //TH1D *Precon = new TH1D("Precon","Precon",250,0,5);
+  //TH1D *dx_dz = new TH1D("dx_dz","dx_dz",250,-5,5);
+  //TH1D *dy_dz = new TH1D("dy_dz","dy_dz",250,-5,5);
 
-  TH1D *h_Q2 = new TH1D("h_Q2",";Q2 (GeV^2)",500,0,5); //Inverse momentum transfer before W2 and timing cuts are applied
-  TH1D *h_Q2cut = new TH1D("h_Q2cut",";Q2 (GeV^2)",500,0,5); //Inverse momentum transfer after cuts to compare
+  //TH1D *h_Q2 = new TH1D("h_Q2",";Q2 (GeV^2)",500,0,5); //Inverse momentum transfer before W2 and timing cuts are applied
+  //TH1D *h_Q2cut = new TH1D("h_Q2cut",";Q2 (GeV^2)",500,0,5); //Inverse momentum transfer after cuts to compare
+
+  TH1D *timep = new TH1D("t_p","t_p",250,4.6,5.8);
+  TH1D *timen = new TH1D("t_n","t_n",250,4.6,5.8);
 
   // Set long int to keep track of total entries after globalcut
   Long64_t Nevents = elist->GetN();
@@ -462,7 +467,8 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
       double p_ep = BBtr_p[0]; // Obtain scattered electron momentum
       
       double Q2 = 2*E_corr*E_ep*( 1-(BBtr_pz[0]/p_ep) ); // Obtain Q2 from beam energy, outgoing electron energy, and momentum
-      h_Q2->Fill(Q2); //Fill histogram before cut
+      //h_Q2->Fill(Q2); //Fill histogram before cut
+      //HCalx->Fill(HCALx);
       
       //Get invarient mass transfer W from the four-momentum of the scattered nucleon
       double W = PgammaN.M();
@@ -494,18 +500,31 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
 	if( (HCALx-dx_max)>-2.015 ){ //Fiducial check to verify that a scattered nucleon reconstructed from Bigbite would have landed on HCal
 	  if( tar == "LD2" ){ //Consider neutrons only if we have a dueterium target
 	   
-	    double pelastic = E_corr/(1.+(E_corr/M_p)*(1.0-cos(etheta))); //Corrected momentum of elastic nucleon
+	    double pelastic = E_corr/(1.+(E_corr/M_n)*(1.0-cos(etheta))); //Corrected momentum of elastic nucleon
       
-	    double precon = BBtr_p[0] + Eloss_outgoing; //reconstructed momentum, corrected for mean energy loss exiting the target (later we'll also want to include Al shielding on scattering chamber)
+	    //double precon = BBtr_p[0] + Eloss_outgoing; //reconstructed momentum, corrected for mean energy loss exiting the target (later we'll also want to include Al shielding on scattering chamber)
 
-	    double nu_recon = E_corr - precon;
-	    double Q2recon = 2.0*E_corr*precon*(1.0-cos(etheta));
-	    double W2recon = pow(M_p,2) + 2.0*M_p*nu_recon - Q2recon;
+	    //double nu_recon = E_corr - precon;
+	    //double Q2recon = 2.0*E_corr*precon*(1.0-cos(etheta));
+	    //double W2recon = pow(M_p,2) + 2.0*M_p*nu_recon - Q2recon;
 
-	    h_W2->Fill(W2recon);
-	    h_W->Fill(W);
-	    add->Fill(HCALe);
-	    h_Q2cut->Fill(Q2);
+	   
+
+	    double dxdz2 = pow((HCALx/HCal_d),2);
+	    double dydz2 = pow((HCALy/HCal_d),2);
+	    double part1 = (HCal_d)/(pow((1+(dxdz2)+(dydz2)),1/2));
+	    double part2 = (pow(pow(pelastic,2)+pow(M_n,2),1/2))/pelastic;
+	    double t_n = part1*part2;
+
+	    timen->Fill(t_n);
+	    //cout << "Neutron time-of-flight =" << t_n << "." << endl;
+	    //h_W2->Fill(W2recon);
+	    //h_W->Fill(W);
+	    //Pelastic->Fill(pelastic);
+	    //Precon->Fill(precon);
+	    //dx_dz->Fill(dxdz2);
+	    //dy_dz->Fill(dydz2);
+	    //h_Q2cut->Fill(Q2recon);
 
 	    Np++;
 
@@ -518,18 +537,28 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
 	 
 	  double pelastic = E_corr/(1.+(E_corr/M_p)*(1.0-cos(etheta))); //Corrected momentum of elastic nucleon
       
-	  double precon = BBtr_p[0] + Eloss_outgoing; //reconstructed momentum, corrected for mean energy loss exiting the target (later we'll also want to include Al shielding on scattering chamber)
+	  //double precon = BBtr_p[0] + Eloss_outgoing; //reconstructed momentum, corrected for mean energy loss exiting the target (later we'll also want to include Al shielding on scattering chamber)
 
-	  double nu_recon = E_corr - precon;
-	  double Q2recon = 2.0*E_corr*precon*(1.0-cos(etheta));
-	  double W2recon = pow(M_p,2) + 2.0*M_p*nu_recon - Q2recon;
+	  //double nu_recon = E_corr - precon;
+	  //double Q2recon = 2.0*E_corr*precon*(1.0-cos(etheta));
+	  //double W2recon = pow(M_p,2) + 2.0*M_p*nu_recon - Q2recon;
 
-	  h_W2->Fill(W2recon);
-	  h_W->Fill(W);
-	  add->Fill(HCALe);
+	  double dxdz2 = pow((HCALx/HCal_d),2);
+	  double dydz2 = pow((HCALy/HCal_d),2);
+	  double part1 = (HCal_d)/(pow((1+(dxdz2)+(dydz2)),1/2));
+	  double part2 = (pow(pow(pelastic,2)+pow(M_p,2),1/2))/pelastic;
+	  double t_p = part1*part2;
+
+	  timep->Fill(t_p);
+	  //h_W2->Fill(W2recon);
+	  //h_W->Fill(W);
+	  //Pelastic->Fill(pelastic);
+	  //Precon ->Fill(precon);
+	  //dx_dz->Fill(dxdz2);
+	  //dy_dz->Fill(dydz2);
 
 
-	  h_Q2cut->Fill(Q2);
+	  //h_Q2cut->Fill(Q2);
 	 
 	  Np++;
 
