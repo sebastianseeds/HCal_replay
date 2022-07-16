@@ -349,7 +349,7 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
   // Declare outfiles
   outputfilename = Form( "outfiles/TOF_SBS%d_tar%s_%s.root", magSet, tar.c_str(), date.c_str() );
   TFile *fout = new TFile( outputfilename, "RECREATE" );
-  string logpath = Form( "TOFLog_%s.log", date.c_str() );
+  string logpath = Form( "outfiles/TOFLog_%s.log", date.c_str() );
 
   // Initialize misc. variables
   int elasYield = 0; // Keep track of total elastics analyzed
