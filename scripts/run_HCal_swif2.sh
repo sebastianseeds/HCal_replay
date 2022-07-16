@@ -65,6 +65,7 @@ echo 'working directory = '$PWD
 export ANALYZER=/work/halla/sbs/ANALYZER/install
 source $ANALYZER/bin/setup.sh
 source /work/halla/sbs/SBS_OFFLINE/install/bin/sbsenv.sh
+#source sbsenv.sh
 
 #cp $SBS/run_replay_here/.rootrc $PWD
 

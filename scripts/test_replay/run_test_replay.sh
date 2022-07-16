@@ -11,10 +11,6 @@ echo $PWD
 
 echo 'swif_job_work_dir='$SWIF_JOB_WORK_DIR
 
-# source login stuff since swif2 completely nukes any sensible default software environment
-#source /home/puckett/.cshrc
-#source /home/puckett/.login
-
 #echo 'before sourcing environment, env = '
 #env 
 
@@ -64,7 +60,8 @@ echo 'working directory = '$PWD
 
 export ANALYZER=/work/halla/sbs/ANALYZER/install
 source $ANALYZER/bin/setup.sh
-source /work/halla/sbs/SBS_OFFLINE/install/bin/sbsenv.sh
+#source /work/halla/sbs/SBS_OFFLINE/install/bin/sbsenv.sh
+source /work/halla/sbs/seeds/sbs_devel/intall/bin/sbsenv.sh
 
 #cp $SBS/run_replay_here/.rootrc $PWD
 
