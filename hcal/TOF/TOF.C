@@ -42,6 +42,7 @@ const double PI = TMath::Pi();
 const double M_e = 0.00051; //Mass electron (GeV)
 const double M_p = 0.938272; //Mass proton (GeV)
 const double M_n = 0.939565; //Mass neutron (GeV)
+const double v_gamma = 299792458; //Speed of light (m/s)
 
 //Static Target Parameters
 const double l_tgt = 0.15; // Length of the target (m)
@@ -348,7 +349,7 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
   // Declare outfiles
   outputfilename = Form( "TOF_SBS%d_tar%s_%s.root", magSet, tar.c_str(), date.c_str() );
   TFile *fout = new TFile( outputfilename, "RECREATE" );
-  string logpath = Form( "TOFLog_%s.log", date.c_str() );
+  string logpath = Form( "outfiles/TOFLog_%s.log", date.c_str() );
 
   // Initialize misc. variables
   int elasYield = 0; // Keep track of total elastics analyzed
@@ -358,8 +359,8 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
   double Eloss_outgoing = celldiameter/2.0/sin(BB_th) * rho_tgt * dEdx_tgt; //Energy lost in target. Approximately 1 MeV, could correct further with raster position
   if( useAlshield != 0 ) Eloss_outgoing += Alshieldthick * rho_Al * dEdx_Al; //Add energy loss from aluminum shield for runs where relevant
 
-  //TH1D *h_W2 = new TH1D("h_W2",";W2 (GeV^2);",250,0,2); //Invarient mass squared 1D histo
-  //TH1D *h_W = new TH1D("h_W",";W (GeV);",250,0,2); //Invarient mass 1D histo
+  TH1D *h_W = new TH1D("h_W",";W (GeV);",250,0,2); //Invarient mass 1D histo
+  TH1D *h_Wcut = new TH1D("h_Wcut",";W (GeV);",250,0,2); //Invarient mass 1D histo
 
   //TH1D *Pelastic = new TH1D("Pelastic","Pelastic", 250,0,5);
   //TH1D *Precon = new TH1D("Precon","Precon",250,0,5);
@@ -369,6 +370,7 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
   //TH1D *h_Q2 = new TH1D("h_Q2",";Q2 (GeV^2)",500,0,5); //Inverse momentum transfer before W2 and timing cuts are applied
   //TH1D *h_Q2cut = new TH1D("h_Q2cut",";Q2 (GeV^2)",500,0,5); //Inverse momentum transfer after cuts to compare
 
+<<<<<<< HEAD
   TH1D *timep = new TH1D("t_p","t_p",250,4.6,5.8);
   TH1D *timen = new TH1D("t_n","t_n",250,4.6,5.8);
   TH2D *timep_vs_x = new TH2D("t_p_vs_x","t_px",500,-2.5,1,250,4.6,5.8);
@@ -377,6 +379,19 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
   TH2D *timen_vs_y = new TH2D("t_n_vs_y","t_ny",500,-3,3,250,4.6,5.8);
   TH2D *ny_vs_x = new TH2D("ny_vs_x","y_x",500,-1,1,250,-3,1);
   TH2D *py_vs_x = new TH2D("py_vs_x","y_x",500,-1,1,250,-3,1);
+=======
+  //Add hadron spot histogram to evaluate cuts on LD2
+  TH2D *hdxdy_HCAL = new TH2D("hdxdy_HCAL",";y_{HCAL}-y_{expect} (m); x_{HCAL}-x_{expect} (m)", 250, -2.0, 2.0, 500, -4, 4 );
+  TH1D *hdx_HCAL = new TH1D("hdx_HCAL",";x_{HCAL}-x_{expect} (m)",500,-4,4);
+  TH1D *hdy_HCAL = new TH1D("hdy_HCAL",";y_{HCAL}-y_{expect} (m)",250,-2,2);
+  TH1D *h_TOFn = new TH1D("h_TOFn","Time of Flight: Neutron; ns",600,36,42);
+  TH1D *h_TOFp = new TH1D("h_TOFp","Time of Flight: Proton; ns",600,36,42);
+  TH1D *h_nD = new TH1D("h_nD","Neutron Path Length",1000,10.5,11.5);
+  TH1D *h_pD = new TH1D("h_nP","Proton Path Length (Naive)",1000,10.5,11.5);
+  
+  TH1D *timep = new TH1D("t_p","t_p",300,0,6);
+  TH1D *timen = new TH1D("t_n","t_n",300,0,6);
+>>>>>>> a1b35764bc0b4903518c1bda4bb85009adf5f0ec
 
   // Set long int to keep track of total entries after globalcut
   Long64_t Nevents = elist->GetN();
@@ -447,6 +462,7 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
       
       double nu = E_corr - BBtr_p[0]; //momentum transferred to proton
       double pp = sqrt( pow(nu,2)+2.*M_p*nu ); //proton momentum
+      double pn = sqrt( pow(nu,2)+2.*M_n*nu ); //neutron momentum
       double phinucleon = ephi + PI; //nucleon phi angle from exit beamline assuming coplanarity between e' and p
       double thetanucleon = acos( (E_corr - BBtr_pz[0])/pp ); //nucleon theta angle from exit beamline using elastic constraint on nucleon kinematics
       
@@ -478,7 +494,9 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
       
       //Get invarient mass transfer W from the four-momentum of the scattered nucleon
       double W = PgammaN.M();
-      
+      //Fill histogram to check elastic cut
+      h_W->Fill( W );
+
       //Use the electron kinematics to predict the proton momentum assuming elastic scattering on free proton at rest (will need to correct for fermi motion):
       double E_pp = nu+M_p; // Get energy of the proton
       double Enucleon = sqrt(pow(pp,2)+pow(M_p,2)); // Check on E_pp, same
@@ -487,8 +505,14 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
       double dx = HCALx - xexpect_HCAL; // (Energy weighted center of cluster (x component)) - (straight line nucleon projection obtained from e' track HCal location (x component))
       double dy = HCALy - yexpect_HCAL; // (Energy weighted center of cluster (y component)) - (straight line nucleon projection obtained from e' track HCal location (y component))
             
+      //Calculate the hadron spot/s 
+      hdxdy_HCAL->Fill( dy, dx );
+      hdx_HCAL->Fill( dx );
+      hdy_HCAL->Fill( dy );
+
       //Main cut on elastic invarient mass
       if( fabs(W-W_mean)>W_sig ) continue; 
+      h_Wcut->Fill( W );
 
       //Check "elastic" events on center HCal for id with spot checks
       bool HCAL_on = false, is_p = false, is_n = false; //is_p = proton, is_n = neutron
@@ -513,8 +537,13 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
 	    //double nu_recon = E_corr - precon;
 	    //double Q2recon = 2.0*E_corr*precon*(1.0-cos(etheta));
 	    //double W2recon = pow(M_p,2) + 2.0*M_p*nu_recon - Q2recon;
+	    double nD = sqrt( pow(HCal_d,2) + pow(HCALx,2) + pow(HCALy,2) );
+	    h_nD->Fill( nD );
+	    double nGamma = pn/M_n;
+	    double nBeta = sqrt(1-pow(1/nGamma,2));
+	    double TOF_n = (nD/(nBeta*v_gamma))*pow(10,9);
 
-	   
+	    h_TOFn->Fill( TOF_n );
 
 	    double dxdz2 = pow((HCALx/HCal_d),2);
 	    double dydz2 = pow((HCALy/HCal_d),2);
@@ -535,7 +564,7 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
 	    //dy_dz->Fill(dydz2);
 	    //h_Q2cut->Fill(Q2recon);
 
-	    Np++;
+	    Nn++;
 
 	    elasYield++;
 	  }
@@ -551,12 +580,20 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
 	  //double nu_recon = E_corr - precon;
 	  //double Q2recon = 2.0*E_corr*precon*(1.0-cos(etheta));
 	  //double W2recon = pow(M_p,2) + 2.0*M_p*nu_recon - Q2recon;
+	  double pD = sqrt( pow(HCal_d,2) + pow(HCALx,2) + pow(HCALy,2) );
+	  h_pD->Fill( pD );
+	  double pGamma = pp/M_p;
+	  double pBeta = sqrt(1-pow(1/pGamma,2));
+	  double TOF_p = (pD/(pBeta*v_gamma))*pow(10,9);
+
+	  h_TOFp->Fill( TOF_p );
 
 	  double dxdz2 = pow((HCALx/HCal_d),2);
 	  double dydz2 = pow((HCALy/HCal_d),2);
 	  double part1 = (HCal_d)/(pow((1+(dxdz2)+(dydz2)),1/2));
 	  double part2 = (pow(pow(pelastic,2)+pow(M_p,2),1/2))/pelastic;
 	  double t_p = part1*part2;
+	  //cout << "Proton time-of-flight =" << t_p << "." << endl;
 
 	  timep->Fill(t_p);
 	  timep_vs_x->Fill(HCALx,t_p);
