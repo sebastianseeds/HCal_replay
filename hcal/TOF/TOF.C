@@ -346,7 +346,7 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
   sw->Start();
   
   // Declare outfiles
-  outputfilename = Form( "outfiles/TOF_SBS%d_tar%s_%s.root", magSet, tar.c_str(), date.c_str() );
+  outputfilename = Form( "TOF_SBS%d_tar%s_%s.root", magSet, tar.c_str(), date.c_str() );
   TFile *fout = new TFile( outputfilename, "RECREATE" );
   string logpath = Form( "TOFLog_%s.log", date.c_str() );
 
@@ -371,6 +371,12 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
 
   TH1D *timep = new TH1D("t_p","t_p",250,4.6,5.8);
   TH1D *timen = new TH1D("t_n","t_n",250,4.6,5.8);
+  TH2D *timep_vs_x = new TH2D("t_p_vs_x","t_px",500,-2.5,1,250,4.6,5.8);
+  TH2D *timen_vs_x = new TH2D("t_n_vs_x","t_nx",500,-3,3,250,4.6,5.8); 
+  TH2D *timep_vs_y = new TH2D("t_p_vs_y","t_py",500,-3,3,250,4.6,5.8);
+  TH2D *timen_vs_y = new TH2D("t_n_vs_y","t_ny",500,-3,3,250,4.6,5.8);
+  TH2D *ny_vs_x = new TH2D("ny_vs_x","y_x",500,-1,1,250,-3,1);
+  TH2D *py_vs_x = new TH2D("py_vs_x","y_x",500,-1,1,250,-3,1);
 
   // Set long int to keep track of total entries after globalcut
   Long64_t Nevents = elist->GetN();
@@ -517,6 +523,9 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
 	    double t_n = part1*part2;
 
 	    timen->Fill(t_n);
+	    timen_vs_x->Fill(HCALx,t_n);
+	    timen_vs_y->Fill(HCALy,t_n);
+	    ny_vs_x->Fill(HCALy,HCALx);
 	    //cout << "Neutron time-of-flight =" << t_n << "." << endl;
 	    //h_W2->Fill(W2recon);
 	    //h_W->Fill(W);
@@ -550,6 +559,9 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
 	  double t_p = part1*part2;
 
 	  timep->Fill(t_p);
+	  timep_vs_x->Fill(HCALx,t_p);
+	  timep_vs_y->Fill(HCALy,t_p);
+	  py_vs_x->Fill(HCALy,HCALx);
 	  //h_W2->Fill(W2recon);
 	  //h_W->Fill(W);
 	  //Pelastic->Fill(pelastic);
