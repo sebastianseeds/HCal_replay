@@ -21,15 +21,23 @@ namespace hcalt {
   Double_t ped[MAX_HCAL_MODULES+1000] = {0};
   Double_t a_amp[MAX_HCAL_MODULES+1000] = {0};
   Double_t a_amp_p[MAX_HCAL_MODULES+1000] = {0};
+  Double_t tdc_mult[MAX_HCAL_MODULES+1000] = {0};
+  Double_t x[MAX_HCAL_MODULES+1000] = {0};
+  Double_t y[MAX_HCAL_MODULES+1000] = {0};
   Int_t ndata = 0;
   Double_t ledbit = -1;
   Double_t ledcount = 0;
   Double_t atimeblk = 0;
+  Double_t nclus = 0;
+  Double_t nblk = 0;
+  Double_t idblk[MAX_HCAL_TDC_MODULES+100] = {0};
   Double_t tdc[MAX_HCAL_TDC_MODULES+100] = {0};
   Double_t a_time[MAX_HCAL_MODULES+1000] = {0};
   //Cluster vars - TODO, check memory allocation for these 
-  Double_t nclus[MAX_HCAL_MODULES+1000] = {0}; 
-  Double_t nblk[MAX_HCAL_MODULES+1000] = {0};
+  //Double_t nclus[MAX_HCAL_MODULES+1000] = {0}; 
+  //Double_t nblk[MAX_HCAL_MODULES+1000] = {0};
+  Double_t cx[MAX_HCAL_MODULES+1000] = {0};
+  Double_t cy[MAX_HCAL_MODULES+1000] = {0};
   Double_t cid[MAX_HCAL_MODULES+1000] = {0};
   Double_t cblkid[MAX_HCAL_MODULES+1000] = {0};
   Double_t crow[MAX_HCAL_MODULES+1000] = {0};
@@ -39,6 +47,8 @@ namespace hcalt {
   Double_t ce[MAX_HCAL_MODULES+1000] = {0};
   Double_t ceblk[MAX_HCAL_MODULES+1000] = {0};
   Double_t cnblk[MAX_HCAL_MODULES+1000] = {0};
+  Double_t cblkx[MAX_HCAL_MODULES+1000] = {0};
+  Double_t cblky[MAX_HCAL_MODULES+1000] = {0};
   Double_t cblke[MAX_HCAL_MODULES+1000] = {0};
   Double_t cblkatime[MAX_HCAL_MODULES+1000] = {0};
   Double_t catime[MAX_HCAL_MODULES+1000] = {0};
@@ -56,6 +66,7 @@ namespace hcalt {
   Double_t BBtr_px[MAX_BB_MODULES+1000] = {0};
   Double_t BBtr_py[MAX_BB_MODULES+1000] = {0};
   Double_t BBtr_pz[MAX_BB_MODULES+1000] = {0};
+  Double_t BBtr_vz[MAX_BB_MODULES+1000] = {0};
   Double_t BBtr_p[MAX_BB_MODULES+1000] = {0};
   Double_t BBtr_chi2[MAX_BB_MODULES+1000] = {0};
   Double_t BBtr_n[MAX_BB_MODULES+1000] = {0};

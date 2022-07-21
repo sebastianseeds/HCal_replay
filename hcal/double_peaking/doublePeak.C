@@ -301,6 +301,7 @@ void doublePeak( const char *configfilename="sPeak.cfg", int run = -1 ){
   double TDCT_id[maxTdcChan], TDCT_tdc[maxTdcChan]; 
   int TDCTndata;
   UInt_t runI, runN;
+  UInt_t TBits;
   ULong64_t runT;
   
   double HCALx, HCALy, HCALe, HCALbit, HCALttb;
@@ -346,6 +347,7 @@ void doublePeak( const char *configfilename="sPeak.cfg", int run = -1 ){
   C->SetBranchStatus( "fEvtHdr.fRun", 1 );
   C->SetBranchStatus( "fEvtHdr.fEvtTime", 1 );
   C->SetBranchStatus( "fEvtHdr.fEvtNum", 1 );
+  C->SetBranchStatus( "fEvtHdr.fTrigBits", 1 );
   
   if( waveform==1 || cosmic==1 ){
     C->SetBranchStatus( "sbs.hcal.a_p", 1 );
@@ -398,6 +400,7 @@ void doublePeak( const char *configfilename="sPeak.cfg", int run = -1 ){
   C->SetBranchAddress( "fEvtHdr.fRun", &runI );
   C->SetBranchAddress( "fEvtHdr.fEvtTime", &runT );
   C->SetBranchAddress( "fEvtHdr.fEvtNum", &runN );
+  C->SetBranchAddress( "fEvtHdr.fTrigBits", &TBits );
   
   cout << "Tree variables linked." << endl;
   
@@ -421,6 +424,7 @@ void doublePeak( const char *configfilename="sPeak.cfg", int run = -1 ){
   
   // Initialize histograms
   // Peak cut histos
+  TH1D *hTBits = new TH1D( "hTBits", "TrigBits", 40, 0, 40);  
   TH1D *honeblk_dt = new TH1D( "honeblk_dt", "TDC All Channels, One Block Clusters", 300, -150, 0);
   TH1D *hclusblk_dt = new TH1D( "hclusblk_dt", "Time Difference Between Blocks in Cluster (ns)", 1000, -50, 50);
   TH1D *hblk_dt = new TH1D( "hblk_dt", "Time Difference Between Primary Hit and Next Adjacent Block", 1000, -50, 50);
@@ -649,6 +653,8 @@ void doublePeak( const char *configfilename="sPeak.cfg", int run = -1 ){
       
       C->GetEntry( elist->GetEntry( nevent ) ); 
       
+      hTBits->Fill(TBits);
+
       if( run_number!=runI ){
 	run_number=runI;
 	//cout << "Now analyzing run " << run_number << "." << endl;
