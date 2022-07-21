@@ -35,7 +35,7 @@
 //Static Detector Parameters
 const int maxTracks = 1000; // Reasonable limit on tracks to be stored per event
 const int maxTdcChan = 10; // Set to accomodate original 5 TDCTrig channels with buffer
-const double hcalheight = -0.2897; // Height of HCal above beamline
+const double hcalheight = 0.365; // Height of HCal above beamline
 
 //Constants
 const double PI = TMath::Pi();
@@ -342,12 +342,143 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
 
   cout << "Tree variables linked." << endl;
 
+  double IDx;
+
+ if(HCALx >= -0.2165 && HCALx < -0.2015){
+   IDx = 0;
+      }
+ if(HCALx >= -0.2015 && HCALx < -0.1865){
+   IDx = 12;
+      }
+ if(HCALx >= -0.1865 && HCALx < -0.1715){
+   IDx = 24;
+      }
+ if(HCALx >= -0.1715 && HCALx < -0.1565){
+   IDx = 36;
+      }
+ if(HCALx >= -0.1565 && HCALx < -0.1415){
+   IDx = 48;
+      }
+ if(HCALx >= -0.1415 && HCALx < -0.1265){
+   IDx = 60;
+      }
+ if(HCALx >= -0.1265 && HCALx < -0.1115){
+   IDx = 72;
+      }
+ if(HCALx >= -0.1115 && HCALx < -0.0965){
+   IDx = 84;
+      }
+ if(HCALx >= -0.0965 && HCALx < -0.0815){
+   IDx = 96;
+      }
+ if(HCALx >= -0.0815 && HCALx < -0.0655){
+   IDx = 108;
+      }
+ if(HCALx >= -0.0655 && HCALx < -0.0515){
+   IDx = 120;
+      }
+ if(HCALx >= -0.0515 && HCALx < -0.0365){
+   IDx = 132;
+      }
+ if(HCALx >= -0.0355 && HCALx < -0.0215){
+   IDx = 144;
+      }
+ if(HCALx >= -0.0215 && HCALx < -0.0065){
+   IDx = 156;
+      }
+ if(HCALx >= -0.0065 && HCALx < 0.0085){
+   IDx = 168;
+      }
+ if(HCALx >= 0.0085 && HCALx < 0.0235){
+   IDx = 180;
+      }
+ if(HCALx >= 0.0235 && HCALx < 0.0385){
+   IDx = 192;
+      }
+ if(HCALx >= 0.0385 && HCALx > 0.0535){
+   IDx = 204;
+      }
+ if(HCALx >= 0.0535 && HCALx < 0.0685){
+   IDx = 216;
+      }
+ if(HCALx >= 0.0685 && HCALx < 0.0835){
+   IDx = 228;
+      } 
+ if(HCALx >= 0.0835 && HCALx < 0.0985){
+   IDx = 240;
+      }
+ if(HCALx >= 0.0985 && HCALx < 0.1135){
+   IDx = 252;
+      }
+ if(HCALx >= 0.1135 && HCALx < 0.1285){
+   IDx = 264;
+      }
+ if(HCALx >= 0.1285 && HCALx <= 0.1435){
+   IDx = 276;
+      }
+
+ double IDy;
+
+ if(HCALy >= -0.090 && HCALy < -0.075){
+   IDy = 1;
+   cout << "IDy1" << endl;
+      }
+ if(HCALy >= -0.075 && HCALy < -0.060){
+   IDy = 2;
+   cout << "IDy2" << endl;
+      }
+ if(HCALy >= -0.060 && HCALy < -0.045){
+   IDy = 3;
+   cout << "IDy3" << endl;
+      }
+ if(HCALy >= -0.045 && HCALy < -0.030){
+   IDy = 4;
+   cout << "IDy4" << endl;
+      }
+ if(HCALy >= -0.030 && HCALy < -0.015){
+   IDy = 5;
+   cout << "IDy5" << endl;
+      }
+ if(HCALy >= -0.015 && HCALy < 0){
+   IDy = 6;
+   cout << "IDy6" << endl;
+      }
+ if(HCALy >= 0 && HCALy < 0.015){
+   IDy = 7;
+   cout << "IDy7" << endl;
+      }
+ if(HCALy >= 0.015 && HCALy < 0.030){
+   IDy = 8;
+   cout << "IDy8" << endl;
+      }
+ if(HCALy >= 0.030 && HCALy < 0.045){
+   IDy = 9;
+   cout << "IDy9" << endl;
+      }
+ if(HCALy >= 0.045 && HCALy < 0.060){
+   IDy = 10;
+   cout << "IDy10" << endl;
+      }
+ if(HCALy >= 0.060 && HCALy < 0.075){
+   IDy = 11;
+   cout << "IDy11" << endl;
+      }
+ if(HCALy >= 0.075 && HCALy <= 0.090){
+   IDy = 12;
+   cout << "IDy12" << endl;
+      }
+
+ //double IDx = HCALx;
+ //double IDy = HCALy;
+
+ double channelID = IDx + IDy;
+
   // Define a clock to check macro processing time
   TStopwatch *sw = new TStopwatch();
   sw->Start();
   
   // Declare outfiles
-  outputfilename = Form( "TOF_SBS%d_tar%s_%s.root", magSet, tar.c_str(), date.c_str() );
+  outputfilename = Form( "outfiles/TOF_SBS%d_tar%s_%s.root", magSet, tar.c_str(), date.c_str() );
   TFile *fout = new TFile( outputfilename, "RECREATE" );
   string logpath = Form( "outfiles/TOFLog_%s.log", date.c_str() );
 
@@ -370,16 +501,15 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
   //TH1D *h_Q2 = new TH1D("h_Q2",";Q2 (GeV^2)",500,0,5); //Inverse momentum transfer before W2 and timing cuts are applied
   //TH1D *h_Q2cut = new TH1D("h_Q2cut",";Q2 (GeV^2)",500,0,5); //Inverse momentum transfer after cuts to compare
 
-<<<<<<< HEAD
-  TH1D *timep = new TH1D("t_p","t_p",250,4.6,5.8);
-  TH1D *timen = new TH1D("t_n","t_n",250,4.6,5.8);
-  TH2D *timep_vs_x = new TH2D("t_p_vs_x","t_px",500,-2.5,1,250,4.6,5.8);
-  TH2D *timen_vs_x = new TH2D("t_n_vs_x","t_nx",500,-3,3,250,4.6,5.8); 
-  TH2D *timep_vs_y = new TH2D("t_p_vs_y","t_py",500,-3,3,250,4.6,5.8);
-  TH2D *timen_vs_y = new TH2D("t_n_vs_y","t_ny",500,-3,3,250,4.6,5.8);
+
+
+  TH2D *timep_vs_x = new TH2D("t_p_vs_x","t_px",500,-3,3,250,0,20);
+  TH2D *timen_vs_x = new TH2D("t_n_vs_x","t_nx",500,-3,3,250,0,20); 
+  TH2D *timep_vs_y = new TH2D("t_p_vs_y","t_py",500,-3,3,250,0,20);
+  TH2D *timen_vs_y = new TH2D("t_n_vs_y","t_ny",500,-3,3,250,0,20);
   TH2D *ny_vs_x = new TH2D("ny_vs_x","y_x",500,-1,1,250,-3,1);
   TH2D *py_vs_x = new TH2D("py_vs_x","y_x",500,-1,1,250,-3,1);
-=======
+
   //Add hadron spot histogram to evaluate cuts on LD2
   TH2D *hdxdy_HCAL = new TH2D("hdxdy_HCAL",";y_{HCAL}-y_{expect} (m); x_{HCAL}-x_{expect} (m)", 250, -2.0, 2.0, 500, -4, 4 );
   TH1D *hdx_HCAL = new TH1D("hdx_HCAL",";x_{HCAL}-x_{expect} (m)",500,-4,4);
@@ -391,7 +521,9 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
   
   TH1D *timep = new TH1D("t_p","t_p",300,0,6);
   TH1D *timen = new TH1D("t_n","t_n",300,0,6);
->>>>>>> a1b35764bc0b4903518c1bda4bb85009adf5f0ec
+
+  TH2D *t_nvID = new TH2D("tn_vs_ID","tn_vs_ID",288,0,288,200,37,40);
+  TH2D *t_pvID = new TH2D("tp_vs_ID","tp_vs_ID",288,0,288,200,37,40);
 
   // Set long int to keep track of total entries after globalcut
   Long64_t Nevents = elist->GetN();
@@ -551,6 +683,8 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
 	    double part2 = (pow(pow(pelastic,2)+pow(M_n,2),1/2))/pelastic;
 	    double t_n = part1*part2;
 
+	    t_nvID->Fill(channelID,TOF_n);
+
 	    timen->Fill(t_n);
 	    timen_vs_x->Fill(HCALx,t_n);
 	    timen_vs_y->Fill(HCALy,t_n);
@@ -594,6 +728,8 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
 	  double part2 = (pow(pow(pelastic,2)+pow(M_p,2),1/2))/pelastic;
 	  double t_p = part1*part2;
 	  //cout << "Proton time-of-flight =" << t_p << "." << endl;
+
+	  t_pvID->Fill(channelID,TOF_p);
 
 	  timep->Fill(t_p);
 	  timep_vs_x->Fill(HCALx,t_p);
