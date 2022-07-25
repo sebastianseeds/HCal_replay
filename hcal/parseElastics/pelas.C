@@ -34,7 +34,7 @@
 //Static Detector Parameters
 const int maxTracks = 1000; // Reasonable limit on tracks to be stored per event
 const int maxTdcChan = 10; // Set to accomodate original 5 TDCTrig channels with buffer
-const double hcalheight = -0.2897; // Height of HCal above beamline
+const double hcalheight = 0.365; // Height of HCal above beamline
 
 //Constants
 const double PI = TMath::Pi();
