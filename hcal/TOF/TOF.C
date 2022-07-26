@@ -342,136 +342,6 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
 
   cout << "Tree variables linked." << endl;
 
-  double IDx;
-
- if(HCALx >= -0.2165 && HCALx < -0.2015){
-   IDx = 0;
-      }
- if(HCALx >= -0.2015 && HCALx < -0.1865){
-   IDx = 12;
-      }
- if(HCALx >= -0.1865 && HCALx < -0.1715){
-   IDx = 24;
-      }
- if(HCALx >= -0.1715 && HCALx < -0.1565){
-   IDx = 36;
-      }
- if(HCALx >= -0.1565 && HCALx < -0.1415){
-   IDx = 48;
-      }
- if(HCALx >= -0.1415 && HCALx < -0.1265){
-   IDx = 60;
-      }
- if(HCALx >= -0.1265 && HCALx < -0.1115){
-   IDx = 72;
-      }
- if(HCALx >= -0.1115 && HCALx < -0.0965){
-   IDx = 84;
-      }
- if(HCALx >= -0.0965 && HCALx < -0.0815){
-   IDx = 96;
-      }
- if(HCALx >= -0.0815 && HCALx < -0.0655){
-   IDx = 108;
-      }
- if(HCALx >= -0.0655 && HCALx < -0.0515){
-   IDx = 120;
-      }
- if(HCALx >= -0.0515 && HCALx < -0.0365){
-   IDx = 132;
-      }
- if(HCALx >= -0.0355 && HCALx < -0.0215){
-   IDx = 144;
-      }
- if(HCALx >= -0.0215 && HCALx < -0.0065){
-   IDx = 156;
-      }
- if(HCALx >= -0.0065 && HCALx < 0.0085){
-   IDx = 168;
-      }
- if(HCALx >= 0.0085 && HCALx < 0.0235){
-   IDx = 180;
-      }
- if(HCALx >= 0.0235 && HCALx < 0.0385){
-   IDx = 192;
-      }
- if(HCALx >= 0.0385 && HCALx > 0.0535){
-   IDx = 204;
-      }
- if(HCALx >= 0.0535 && HCALx < 0.0685){
-   IDx = 216;
-      }
- if(HCALx >= 0.0685 && HCALx < 0.0835){
-   IDx = 228;
-      } 
- if(HCALx >= 0.0835 && HCALx < 0.0985){
-   IDx = 240;
-      }
- if(HCALx >= 0.0985 && HCALx < 0.1135){
-   IDx = 252;
-      }
- if(HCALx >= 0.1135 && HCALx < 0.1285){
-   IDx = 264;
-      }
- if(HCALx >= 0.1285 && HCALx <= 0.1435){
-   IDx = 276;
-      }
-
- double IDy;
-
- if(HCALy >= -0.090 && HCALy < -0.075){
-   IDy = 1;
-   cout << "IDy1" << endl;
-      }
- if(HCALy >= -0.075 && HCALy < -0.060){
-   IDy = 2;
-   cout << "IDy2" << endl;
-      }
- if(HCALy >= -0.060 && HCALy < -0.045){
-   IDy = 3;
-   cout << "IDy3" << endl;
-      }
- if(HCALy >= -0.045 && HCALy < -0.030){
-   IDy = 4;
-   cout << "IDy4" << endl;
-      }
- if(HCALy >= -0.030 && HCALy < -0.015){
-   IDy = 5;
-   cout << "IDy5" << endl;
-      }
- if(HCALy >= -0.015 && HCALy < 0){
-   IDy = 6;
-   cout << "IDy6" << endl;
-      }
- if(HCALy >= 0 && HCALy < 0.015){
-   IDy = 7;
-   cout << "IDy7" << endl;
-      }
- if(HCALy >= 0.015 && HCALy < 0.030){
-   IDy = 8;
-   cout << "IDy8" << endl;
-      }
- if(HCALy >= 0.030 && HCALy < 0.045){
-   IDy = 9;
-   cout << "IDy9" << endl;
-      }
- if(HCALy >= 0.045 && HCALy < 0.060){
-   IDy = 10;
-   cout << "IDy10" << endl;
-      }
- if(HCALy >= 0.060 && HCALy < 0.075){
-   IDy = 11;
-   cout << "IDy11" << endl;
-      }
- if(HCALy >= 0.075 && HCALy <= 0.090){
-   IDy = 12;
-   cout << "IDy12" << endl;
-      }
-
- //double IDx = HCALx;
- //double IDy = HCALy;
-
- double channelID = IDx + IDy;
 
   // Define a clock to check macro processing time
   TStopwatch *sw = new TStopwatch();
@@ -503,12 +373,12 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
 
 
 
-  TH2D *timep_vs_x = new TH2D("t_p_vs_x","t_px",500,-3,3,250,0,20);
-  TH2D *timen_vs_x = new TH2D("t_n_vs_x","t_nx",500,-3,3,250,0,20); 
-  TH2D *timep_vs_y = new TH2D("t_p_vs_y","t_py",500,-3,3,250,0,20);
-  TH2D *timen_vs_y = new TH2D("t_n_vs_y","t_ny",500,-3,3,250,0,20);
-  TH2D *ny_vs_x = new TH2D("ny_vs_x","y_x",500,-1,1,250,-3,1);
-  TH2D *py_vs_x = new TH2D("py_vs_x","y_x",500,-1,1,250,-3,1);
+  //TH2D *timep_vs_x = new TH2D("t_p_vs_x","t_px",500,-3,3,250,0,20);
+  //TH2D *timen_vs_x = new TH2D("t_n_vs_x","t_nx",500,-3,3,250,0,20); 
+  //TH2D *timep_vs_y = new TH2D("t_p_vs_y","t_py",500,-3,3,250,0,20);
+  //TH2D *timen_vs_y = new TH2D("t_n_vs_y","t_ny",500,-3,3,250,0,20);
+  TH2D *ny_vs_x = new TH2D("ny_vs_x","y_x",500,-1,1,250,-2.5,2);
+  TH2D *py_vs_x = new TH2D("py_vs_x","y_x",500,-1,1,250,-2.5,2);
 
   //Add hadron spot histogram to evaluate cuts on LD2
   TH2D *hdxdy_HCAL = new TH2D("hdxdy_HCAL",";y_{HCAL}-y_{expect} (m); x_{HCAL}-x_{expect} (m)", 250, -2.0, 2.0, 500, -4, 4 );
@@ -522,8 +392,10 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
   TH1D *timep = new TH1D("t_p","t_p",300,0,6);
   TH1D *timen = new TH1D("t_n","t_n",300,0,6);
 
-  TH2D *t_nvID = new TH2D("tn_vs_ID","tn_vs_ID",288,0,288,200,37,40);
-  TH2D *t_pvID = new TH2D("tp_vs_ID","tp_vs_ID",288,0,288,200,37,40);
+  TH2D *t_nvID = new TH2D("P_TOF_vs_ID",";HCal Channel;Neutron Time of Flight (ns)",288,0,288,200,37.5,39.5);
+  TH2D *t_pvID = new TH2D("N_TOF_vs_ID",";HCal Channel;Proton Time of Flight (ns)",288,0,288,200,37.5,39.5);
+  TH2D *tofvID = new TH2D("TOF_vs_ID",";HCal Channel;Time of Flight (ns)",288,0,288,200,37.75,39.5);
+
 
   // Set long int to keep track of total entries after globalcut
   Long64_t Nevents = elist->GetN();
@@ -650,13 +522,135 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
       bool HCAL_on = false, is_p = false, is_n = false; //is_p = proton, is_n = neutron
       if( HCALy>-0.75 && HCALy<0.75 && HCALx>-2.015 && HCALx<1.285 ){ //Bounds set by acceptance of HCal in HCal coordinates, should probably not be hardcoded
 	HCAL_on = true; //true when expected nucleon on hcal
-      }
+	}
       if( pow( (dx - dx0_p)/dx_sig_p,2) + pow( (dy - dy0_p)/dy_sig_p,2) <= pow(2.5,2) ){
 	is_p = true;
       }
       if( pow( (dx - dx0_n)/dx_sig_n,2) + pow( (dy - dy0_n)/dy_sig_n,2) <= pow(2.5,2) ){
 	is_n = true;
       }
+
+  double IDx;
+  double IDy;
+
+  //if (HCAL_on==true){
+
+ if(HCALx >= -0.2165 && HCALx < -0.2015){
+   IDx = 0;
+      }
+ if(HCALx >= -0.2015 && HCALx < -0.1865){
+   IDx = 12;
+      }
+ if(HCALx >= -0.1865 && HCALx < -0.1715){
+   IDx = 24;
+      }
+ if(HCALx >= -0.1715 && HCALx < -0.1565){
+   IDx = 36;
+      }
+ if(HCALx >= -0.1565 && HCALx < -0.1415){
+   IDx = 48;
+      }
+ if(HCALx >= -0.1415 && HCALx < -0.1265){
+   IDx = 60;
+      }
+ if(HCALx >= -0.1265 && HCALx < -0.1115){
+   IDx = 72;
+      }
+ if(HCALx >= -0.1115 && HCALx < -0.0965){
+   IDx = 84;
+      }
+ if(HCALx >= -0.0965 && HCALx < -0.0815){
+   IDx = 96;
+      }
+ if(HCALx >= -0.0815 && HCALx < -0.0655){
+   IDx = 108;
+      }
+ if(HCALx >= -0.0655 && HCALx < -0.0515){
+   IDx = 120;
+      }
+ if(HCALx >= -0.0515 && HCALx < -0.0365){
+   IDx = 132;
+      }
+ if(HCALx >= -0.0355 && HCALx < -0.0215){
+   IDx = 144;
+      }
+ if(HCALx >= -0.0215 && HCALx < -0.0065){
+   IDx = 156;
+      }
+ if(HCALx >= -0.0065 && HCALx < 0.0085){
+   IDx = 168;
+      }
+ if(HCALx >= 0.0085 && HCALx < 0.0235){
+   IDx = 180;
+      }
+ if(HCALx >= 0.0235 && HCALx < 0.0385){
+   IDx = 192;
+      }
+ if(HCALx >= 0.0385 && HCALx > 0.0535){
+   IDx = 204;
+      }
+ if(HCALx >= 0.0535 && HCALx < 0.0685){
+   IDx = 216;
+      }
+ if(HCALx >= 0.0685 && HCALx < 0.0835){
+   IDx = 228;
+      } 
+ if(HCALx >= 0.0835 && HCALx < 0.0985){
+   IDx = 240;
+      }
+ if(HCALx >= 0.0985 && HCALx < 0.1135){
+   IDx = 252;
+      }
+ if(HCALx >= 0.1135 && HCALx < 0.1285){
+   IDx = 264;
+      }
+ if(HCALx >= 0.1285 && HCALx <= 0.1435){
+   IDx = 276;
+      }
+
+
+ if(HCALy >= -0.090 && HCALy < -0.075){
+   IDy = 1;
+      }
+ if(HCALy >= -0.075 && HCALy < -0.060){
+   IDy = 2;
+      }
+ if(HCALy >= -0.060 && HCALy < -0.045){
+   IDy = 3;
+      }
+ if(HCALy >= -0.045 && HCALy < -0.030){
+   IDy = 4;
+      }
+ if(HCALy >= -0.030 && HCALy < -0.015){
+   IDy = 5;
+      }
+ if(HCALy >= -0.015 && HCALy < 0){
+   IDy = 6;
+      }
+ if(HCALy >= 0 && HCALy < 0.015){
+   IDy = 7;
+      }
+ if(HCALy >= 0.015 && HCALy < 0.030){
+   IDy = 8;
+      }
+ if(HCALy >= 0.030 && HCALy < 0.045){
+   IDy = 9;
+      }
+ if(HCALy >= 0.045 && HCALy < 0.060){
+   IDy = 10;
+      }
+ if(HCALy >= 0.060 && HCALy < 0.075){
+   IDy = 11;
+      }
+ if(HCALy >= 0.075 && HCALy <= 0.090){
+   IDy = 12;
+      }
+ //}
+
+
+ double channelID = IDx + IDy;
+
+
       
       if( HCAL_on==true && is_n==true ){
 	if( (HCALx-dx_max)>-2.015 ){ //Fiducial check to verify that a scattered nucleon reconstructed from Bigbite would have landed on HCal
@@ -684,10 +678,11 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
 	    double t_n = part1*part2;
 
 	    t_nvID->Fill(channelID,TOF_n);
+	    tofvID->Fill(channelID,TOF_n);
 
 	    timen->Fill(t_n);
-	    timen_vs_x->Fill(HCALx,t_n);
-	    timen_vs_y->Fill(HCALy,t_n);
+	    //timen_vs_x->Fill(HCALx,t_n);
+	    //timen_vs_y->Fill(HCALy,t_n);
 	    ny_vs_x->Fill(HCALy,HCALx);
 	    //cout << "Neutron time-of-flight =" << t_n << "." << endl;
 	    //h_W2->Fill(W2recon);
@@ -730,10 +725,11 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
 	  //cout << "Proton time-of-flight =" << t_p << "." << endl;
 
 	  t_pvID->Fill(channelID,TOF_p);
+	  tofvID->Fill(channelID,TOF_p);
 
 	  timep->Fill(t_p);
-	  timep_vs_x->Fill(HCALx,t_p);
-	  timep_vs_y->Fill(HCALy,t_p);
+	  //timep_vs_x->Fill(HCALx,t_p);
+	  //timep_vs_y->Fill(HCALy,t_p);
 	  py_vs_x->Fill(HCALy,HCALx);
 	  //h_W2->Fill(W2recon);
 	  //h_W->Fill(W);
