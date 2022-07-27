@@ -21,15 +21,15 @@ const Int_t kNcols = 12;
 const Int_t kNrows_clus = 5;
 const Int_t kNcols_clus = 5;
 const Int_t Tabs = 4;
-const double PI = TMath::Pi();
+const Double_t PI = TMath::Pi();
 const Double_t HCal_Xi = -2.090; // Distance from beam center to top of HCal in analysis coordinates (m)
 const Double_t HCal_Xf = 1.360; // Distance from beam center to bottom of HCal in analysis coordinates (m)
 const Double_t HCal_Yi = -0.825; // Distance from beam center to opposite-beam side of HCal in analysis coordinates (m)
 const Double_t HCal_Yf = 0.825; // Distance from beam center to beam side of HCal in analysis coordinates (m)
 const Double_t HCal_cd = 0.15; // Cell width (X and Y) (m)
-const double hcalheight = 0.365; // Height of HCal above beamline
-const double M_p = 0.938272; //Mass proton (GeV)
-const double M_n = 0.939565; //Mass neutron (GeV)
+const Double_t hcalheight = 0.365; // Height of HCal above beamline
+const Double_t M_p = 0.938272; //Mass proton (GeV)
+const Double_t M_n = 0.939565; //Mass neutron (GeV)
 Int_t Nrows;
 Int_t Ncols;
 
@@ -221,6 +221,7 @@ void displayEvent(Int_t entry = -1)
     Double_t adc_p[kNrows][kNcols];
     Double_t tdc[kNrows][kNcols];
     Double_t tdcmult[kNrows][kNcols];
+    Double_t pBlockPeak;
     Int_t errIdx = 1;
     for(r  = 0; r < kNrows; r++) {
       for(c  = 0; c < kNcols; c++) {
@@ -235,6 +236,8 @@ void displayEvent(Int_t entry = -1)
     for(Int_t m = 0; m < hcalt::ndata; m++) {
       r = hcalt::row[m];
       c = hcalt::col[m];
+      Int_t chan = kNcols*r+c;
+
       if(r < 0 || c < 0) {
 	std::cerr << "Why is row negative? Or col?" << std::endl;
 	continue;
@@ -247,23 +250,30 @@ void displayEvent(Int_t entry = -1)
       adc_p[r][c] = hcalt::a_p[m];
 
       heatMapHisto->SetBinContent( c+1, r+1, adc_p[r][c] );
-
+      
       tdc[r][c] = hcalt::tdc[m];
       tdcmult[r][c] = hcalt::tdc_mult[m];
-      bool saturated = false;
+      bool saturated = hcalt::a_amp_p[m]>3500;
+      bool mansat = false;
       bool negped = adc_p[r][c]<-5;
+      bool skip = true;
+      for( int b = 0; b < nblk; b++ ){
+	if( chan==(hcalt::cblkid[b]-1) ) skip=false;
+	//cout << chan << " " << hcalt::cblkid[b] << endl;
+      }
+      if( !saturated && !negped && skip==true ) continue;
+      
       bool displayed = false;
       for(Int_t s = DISP_MIN_SAMPLE; s < DISP_MAX_SAMPLE && s < n; s++) {
 	displayed = true;
 	histos[r][c]->SetBinContent(s+1-DISP_MIN_SAMPLE,hcalt::samps[idx+s]);
 	if(peak[r][c]<hcalt::samps[idx+s])
 	  peak[r][c]=hcalt::samps[idx+s];
-	if(peak[r][c]>4095) {
-	  saturated = true;
+	if(peak[r][c]>2) {
+	  mansat = true;
 	}
       }
       histos[r][c]->SetLineColor(kBlue+1);
-
       if( saturated==true || negped==true ){
 	cout << "Bad block found at r:" << r+1 << " c:" << c+1;
 	if( saturated==true ) cout << " -saturated";
@@ -294,7 +304,9 @@ void displayEvent(Int_t entry = -1)
 
     cout << "Number of blocks in primary cluster: " << hcalt::nblk << endl;
     for( int b = 0; b < nblk; b++ ){
-      cout << "                ..at r:" << (int)((hcalt::cblkid[b]-1)/kNcols) << " c:" << ((int)hcalt::cblkid[b]-1)%kNcols << " with ADCamp_p=" << hcalt::a_amp_p[b] << " E=" << hcalt::ceblk[b]*1000 << " (MeV)" << endl;
+      Int_t r = (int)((hcalt::cblkid[b]-1)/kNcols);
+      Int_t c = ((int)hcalt::cblkid[b]-1)%kNcols;
+      cout << "                ..at r:" << r << " c:" << c << " with ADCamp_p=" << peak[r][c]*1000 << "(mV) E=" << hcalt::ceblk[b]*1000 << "(MeV)" << endl;
     }
     // Check the cluster and set array values
     for( int el = 0; el < kNrows*kNcols; el++ ){
@@ -394,11 +406,11 @@ void displayEvent(Int_t entry = -1)
       cout << "Projected OFF HCal" << endl;
     }
     if( proj_check[0]==xexpect_HCAL || proj_check[1]==yexpect_HCAL ){
-      //expos = new TEllipse(0,0,0.,0.);
-      cout << "e' track repeated" << endl;
-      cout << "              ..with px=" << hcalt::BBtr_px[0] << endl;
-      cout << "              ..with py=" << hcalt::BBtr_py[0] << endl;
-      cout << "              ..with pz=" << hcalt::BBtr_pz[0] << endl;
+      expos = new TEllipse(0,0,0.,0.);
+      cout << "No e' track information." << endl;
+      //cout << "              ..with px=" << hcalt::BBtr_px[0] << endl;
+      //cout << "              ..with py=" << hcalt::BBtr_py[0] << endl;
+      //cout << "              ..with pz=" << hcalt::BBtr_pz[0] << endl;
     } 
     proj_check[0]=xexpect_HCAL;
     proj_check[1]=yexpect_HCAL;
@@ -414,9 +426,11 @@ void displayEvent(Int_t entry = -1)
     clrad->SetFillStyle(0);
     clrad->SetLineWidth(2);
     clrad->SetLineColor(kWhite);
-    TEllipse *clpos = new TEllipse(clposY,clposX,0.008,0.008);
+    TEllipse *clpos = new TEllipse(clposY,clposX,0.05,0.05);
     clpos->SetFillStyle(1001);
     clpos->SetFillColor(0);
+    clpos->SetLineWidth(3);
+    clpos->SetLineColor(kRed);
 
     gStyle->SetPalette(53);
     //cout << "cluster x:y " << clposX << ":" << clposY << endl;
@@ -522,6 +536,14 @@ Int_t clusDisplay_HCal(Int_t run = 1198, Int_t event = -1){
     T->SetBranchAddress("sbs.hcal.x",hcalt::x);
     T->SetBranchAddress("sbs.hcal.y",hcalt::y);
 
+    // Reference TDC branches
+    T->SetBranchAddress("sbs.hcal.Ref.tdc",hcalt::tdc);
+    T->SetBranchAddress("sbs.hcal.Ref.tdc",hcalt::tdc);
+    T->SetBranchAddress("sbs.hcal.Ref.tdc",hcalt::tdc);
+    T->SetBranchAddress("sbs.hcal.Ref.tdcelemID",hcalt::tdc);
+    T->SetBranchAddress("sbs.hcal.Ref.tdc_mult",hcalt::tdc);
+
+
     // Add track branches
     T->SetBranchAddress("bb.tr.p",hcalt::BBtr_p);
     T->SetBranchAddress("bb.tr.px",hcalt::BBtr_px);
@@ -544,8 +566,11 @@ Int_t clusDisplay_HCal(Int_t run = 1198, Int_t event = -1){
     T->SetBranchAddress("sbs.hcal.clus.y",hcalt::cy);
     T->SetBranchAddress("sbs.hcal.clus_blk.x",hcalt::cblkx);
     T->SetBranchAddress("sbs.hcal.clus_blk.y",hcalt::cblky);
+    //T->SetBranchAddress("sbs.hcal.tdctimeblk",hcalt::);
+    //T->SetBranchAddress("sbs.hcal.atimeblk",hcalt::);
 
     T->SetBranchStatus("Ndata.sbs.hcal.adcrow",1);
+    T->SetBranchStatus("Ndata.sbs.hcal.Ref.tdcelemID",1);
     T->SetBranchAddress("Ndata.sbs.hcal.adcrow",&hcalt::ndata);
     std::cerr << "Opened up tree with nentries=" << T->GetEntries() << std::endl;
     for(Int_t r = 0; r < kNrows; r++) {
