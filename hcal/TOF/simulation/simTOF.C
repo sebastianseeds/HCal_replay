@@ -34,6 +34,7 @@
 const int maxTracks = 1000; // Reasonable limit on tracks to be stored per event
 const int maxTdcChan = 10; // Set to accomodate original 5 TDCTrig channels with buffer
 const double hcalheight = -0.2897; // Height of HCal above beamline
+const int Nchan = 288;
 
 //Constants
 const double PI = TMath::Pi();
@@ -142,6 +143,58 @@ void simTOF(){
       }
     }
   }
+
+  //Construct graphs
+  Double_t posErr[Nchan] = {0.};
+  TF1 *f1;
+  //For X (dispersive)
+  Double_t X[Nchan];
+  Double_t Xval[Nchan];
+  Double_t Xerr[Nchan];
+  TH1D *Xslice[Nchan];
+  for( int x=0; x<Nchan; x++ ){
+    X[x] = x;
+    Xslice[x] = timep_vs_x->ProjectionY(Form("Xslice_%d",x+1),x+1,x+1);
+    Xslice[x]->Fit("gaus","Q","",0.01,0.22);
+    f1=Xslice[x]->GetFunction("gaus");
+    if(Xslice[x]->GetEntries()>10){
+      Xval[x] = f1->GetParameter(1);
+      Xerr[x] = f1->GetParameter(2);
+    }
+  }
+  TGraphErrors *cTOF_X = new TGraphErrors( xN, X, Xval, posErr, Xerr );
+  cTOF_X->GetXaxis()->SetLimits(HCal_Xi-0.05,HCal_Xf+0.05);  
+  cTOF_X->GetYaxis()->SetLimits(0.0,1.0);
+  cTOF_X->SetTitle("Time of Flight Proton - Dispersive X");
+  cTOF_X->GetXaxis()->SetTitle("X (m)");
+  cTOF_X->GetYaxis()->SetTitle("E_{HCAL}/KE_{exp}");
+  cTOF_X->SetMarkerStyle(20); // idx 20 Circles, idx 21 Boxes
+  cTOF_X->Write("cTOF_X");
+
+  //For Y (transverse)
+  Double_t Y[yN];
+  Double_t Yval[yN];
+  Double_t Yerr[yN];
+  TH1D *Yslice[yN];
+  for( int x=0; x<yN; x++ ){
+    Y[x] = HCal_Yi + x*HCal_div;
+    Yslice[x] = timep_vs_y->ProjectionY(Form("Yslice_%d",x+1),x+1,x+1);
+    Yslice[x]->Fit("gaus","Q","",0.01,0.22);
+    f1=Yslice[x]->GetFunction("gaus");
+    if(Yslice[x]->GetEntries()>10){
+      Yval[x] = f1->GetParameter(1);
+      Yerr[x] = f1->GetParameter(2);
+    }
+  }
+  TGraphErrors *cTOF_Y = new TGraphErrors( yN, Y, Yval, posErr, Yerr );
+  cTOF_Y->GetXaxis()->SetLimits(HCal_Yi-0.05,HCal_Yf+0.05);  
+  cTOF_Y->GetYaxis()->SetLimits(0.0,1.0);
+  cTOF_Y->SetTitle("Time of Flight Proton - Transverse Y");
+  cTOF_Y->GetXaxis()->SetTitle("Y (m)");
+  cTOF_Y->GetYaxis()->SetTitle("E_{HCAL}/KE_{exp}");
+  cTOF_Y->SetMarkerStyle(20); // idx 20 Circles, idx 21 Boxes
+  cTOF_Y->Write("cTOF_Y");
+
   fout->Write();
 
   st->Stop();
