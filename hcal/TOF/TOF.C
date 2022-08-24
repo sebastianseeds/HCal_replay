@@ -36,6 +36,11 @@
 const int maxTracks = 1000; // Reasonable limit on tracks to be stored per event
 const int maxTdcChan = 10; // Set to accomodate original 5 TDCTrig channels with buffer
 const double hcalheight = 0.365; // Height of HCal above beamline
+const double HCal_div = 0.15; // Transverse width in x and y per cell
+const double HCal_Xi = -2.090; // Distance from beam center to top of HCal in analysis coordinates (m)
+const double HCal_Xf = 1.360; // Distance from beam center to bottom of HCal in analysis coordinates (m)
+const double HCal_Yi = -0.825; // Distance from beam center to opposite-beam side of HCal in analysis coordinates (m)
+const double HCal_Yf = 0.825; // Distance from beam center to beam side of HCal in analysis coordinates (m)
 
 //Constants
 const double PI = TMath::Pi();
@@ -529,128 +534,22 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
       if( pow( (dx - dx0_n)/dx_sig_n,2) + pow( (dy - dy0_n)/dy_sig_n,2) <= pow(2.5,2) ){
 	is_n = true;
       }
-
-  double IDx;
-  double IDy;
-
-  //if (HCAL_on==true){
-
- if(HCALx >= -0.2165 && HCALx < -0.2015){
-   IDx = 0;
-      }
- if(HCALx >= -0.2015 && HCALx < -0.1865){
-   IDx = 12;
-      }
- if(HCALx >= -0.1865 && HCALx < -0.1715){
-   IDx = 24;
-      }
- if(HCALx >= -0.1715 && HCALx < -0.1565){
-   IDx = 36;
-      }
- if(HCALx >= -0.1565 && HCALx < -0.1415){
-   IDx = 48;
-      }
- if(HCALx >= -0.1415 && HCALx < -0.1265){
-   IDx = 60;
-      }
- if(HCALx >= -0.1265 && HCALx < -0.1115){
-   IDx = 72;
-      }
- if(HCALx >= -0.1115 && HCALx < -0.0965){
-   IDx = 84;
-      }
- if(HCALx >= -0.0965 && HCALx < -0.0815){
-   IDx = 96;
-      }
- if(HCALx >= -0.0815 && HCALx < -0.0655){
-   IDx = 108;
-      }
- if(HCALx >= -0.0655 && HCALx < -0.0515){
-   IDx = 120;
-      }
- if(HCALx >= -0.0515 && HCALx < -0.0365){
-   IDx = 132;
-      }
- if(HCALx >= -0.0355 && HCALx < -0.0215){
-   IDx = 144;
-      }
- if(HCALx >= -0.0215 && HCALx < -0.0065){
-   IDx = 156;
-      }
- if(HCALx >= -0.0065 && HCALx < 0.0085){
-   IDx = 168;
-      }
- if(HCALx >= 0.0085 && HCALx < 0.0235){
-   IDx = 180;
-      }
- if(HCALx >= 0.0235 && HCALx < 0.0385){
-   IDx = 192;
-      }
- if(HCALx >= 0.0385 && HCALx > 0.0535){
-   IDx = 204;
-      }
- if(HCALx >= 0.0535 && HCALx < 0.0685){
-   IDx = 216;
-      }
- if(HCALx >= 0.0685 && HCALx < 0.0835){
-   IDx = 228;
-      } 
- if(HCALx >= 0.0835 && HCALx < 0.0985){
-   IDx = 240;
-      }
- if(HCALx >= 0.0985 && HCALx < 0.1135){
-   IDx = 252;
-      }
- if(HCALx >= 0.1135 && HCALx < 0.1285){
-   IDx = 264;
-      }
- if(HCALx >= 0.1285 && HCALx <= 0.1435){
-   IDx = 276;
-      }
-
-
- if(HCALy >= -0.090 && HCALy < -0.075){
-   IDy = 1;
-      }
- if(HCALy >= -0.075 && HCALy < -0.060){
-   IDy = 2;
-      }
- if(HCALy >= -0.060 && HCALy < -0.045){
-   IDy = 3;
-      }
- if(HCALy >= -0.045 && HCALy < -0.030){
-   IDy = 4;
-      }
- if(HCALy >= -0.030 && HCALy < -0.015){
-   IDy = 5;
-      }
- if(HCALy >= -0.015 && HCALy < 0){
-   IDy = 6;
-      }
- if(HCALy >= 0 && HCALy < 0.015){
-   IDy = 7;
-      }
- if(HCALy >= 0.015 && HCALy < 0.030){
-   IDy = 8;
-      }
- if(HCALy >= 0.030 && HCALy < 0.045){
-   IDy = 9;
-      }
- if(HCALy >= 0.045 && HCALy < 0.060){
-   IDy = 10;
-      }
- if(HCALy >= 0.060 && HCALy < 0.075){
-   IDy = 11;
-      }
- if(HCALy >= 0.075 && HCALy <= 0.090){
-   IDy = 12;
-      }
- //}
-
-
- double channelID = IDx + IDy;
-
-
+      
+      double IDx;
+      double IDy;
+      
+      if (HCAL_on==false) continue;
+      
+      double X_shift = HCALx + HCal_Xi;
+      int row = X_shift/HCal_div;
+      
+      double Y_shift = HCALy + HCal_Yi;
+      int col = Y_shift/HCal_div;
+      
+      IDx = 12*row+col;
+      
+      int channelID = IDx;
+      
       
       if( HCAL_on==true && is_n==true ){
 	if( (HCALx-dx_max)>-2.015 ){ //Fiducial check to verify that a scattered nucleon reconstructed from Bigbite would have landed on HCal

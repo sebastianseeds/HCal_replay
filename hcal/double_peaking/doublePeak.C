@@ -52,7 +52,7 @@ string getDate(){
   return date;
 }
 
-void doublePeak( const char *configfilename="sPeak.cfg", int run = -1 ){
+void doublePeak( const char *configfilename="sPeak4.cfg", int run = -1 ){
   
   // Define a clock to check macro processing time
   TStopwatch *st = new TStopwatch();

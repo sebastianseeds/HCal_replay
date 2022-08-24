@@ -1,4 +1,4 @@
-#HCal Ratios from SBS-8 obtained 6_24_2022
+#HCal Ratios from SBS-8 obtained 8_6_2022
 #HCal_ratio = 
 1
 1

@@ -52,7 +52,7 @@ string getDate(){
   return date;
 }
 
-void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 ){
+void HCalECal_v2( const char *configfilename = "setup_HCalECal.cfg", int run = -1 ){
   
   // Define a clock to check macro processing time
   TStopwatch *st = new TStopwatch();
@@ -257,16 +257,16 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
   cout << "Event list populated with cut placed on elastics." << endl;
 
   // Declare general detector parameters
-  Double_t BBtr_p[maxTracks], BBtr_px[maxTracks], BBtr_py[maxTracks], BBtr_pz[maxTracks];
-  Double_t BBtr_vz[maxTracks], BBtr_chi2[maxTracks];
-  Double_t BBtr_n, BBps_x, BBps_y, BBps_e, BBsh_x, BBsh_y, BBsh_e;
+  double BBtr_p[maxTracks], BBtr_px[maxTracks], BBtr_py[maxTracks], BBtr_pz[maxTracks];
+  double BBtr_vz[maxTracks], BBtr_chi2[maxTracks];
+  double BBtr_n, BBps_x, BBps_y, BBps_e, BBsh_x, BBsh_y, BBsh_e;
 
-  Double_t TDCT_id[maxTdcChan], TDCT_tdc[maxTdcChan]; 
+  double TDCT_id[maxTdcChan], TDCT_tdc[maxTdcChan]; 
   int TDCTndata;
 
-  Double_t HCALx, HCALy, HCALe;
-  Double_t crow, ccol, nblk;
-  Double_t cblkid[kNcell], cblke[kNcell];
+  double HCALx, HCALy, HCALe;
+  double crow, ccol, nblk;
+  double cblkid[kNcell], cblke[kNcell];
 
 
   // Declare root tree variables and set values to memory locations in root file
@@ -351,7 +351,6 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
   TH2D *hClusE_vs_Y = new TH2D("hClusE_vs_Y",";Y-pos (m);E_dep (GeV)",200,-1,1,100,0.0,1.0);  
   //TH2D *hClusE_vs_X_noCut = new TH2D("hClusE_vs_X_noCut",";X-pos (m);E_dep (GeV)",360,-2,2,100,0.0,10.0);  
   //TH2D *hClusE_vs_Y_noCut = new TH2D("hClusE_vs_Y_noCut",";Y-pos (m);E_dep (GeV)",360,-2,2,100,0.0,10.0);  
-  TH1D *hept = new TH1D( "hept", "Targ P", 600, 0, 6 );
   TH1D *hpp = new TH1D( "hpp", "Elastic Proton Momentum", 600, 0, 6 );
   TH1D *hdx = new TH1D( "hdx", "HCal X - X Expected", 400, -2, 2 );
   TH1D *hdy = new TH1D( "hdy", "HCal Y - Y Expected", 400, -2, 2 );
@@ -439,8 +438,10 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
 
   //Declare matrices for chi-square min calibration scheme and keep track of calibrated events
   TMatrixD Ma(kNcell,kNcell);
+  TMatrixD Ma_err(kNcell,kNcell);
   TVectorD ba(kNcell);
   TVectorD bb(kNcell);
+  TVectorD ba_err(kNcell);
   int NEV[kNcell] = {0};
   int NEV_oneblock[kNcell] = {0};
   
@@ -591,7 +592,6 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
 	  ){
 	
 	hpp->Fill( pp );
-	hept->Fill( BBtr_p[0]+HCALe/0.066-5.965 );
 	//if( fabs(xexpect_HCAL - dx0) < dx_sig ) hdx->Fill( HCALx - xexpect_HCAL );
 	hdx->Fill( HCALx - xexpect_HCAL );
 	//if( fabs(yexpect_HCAL - dy0) < dy_sig ) hdy->Fill( HCALy - yexpect_HCAL );
@@ -672,12 +672,16 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
 	for(int icol = 0; icol<kNcell; icol++){
 	  ba(icol)+= A[icol];
 	  if(nblk==1){
-	    bb(icol)+= A[icol];
-	    oneBlock[icol]+= A[icol]*A[icol]/E_exp;
+	    //ba_err(icol)+=E_exp;
+	    //bb(icol)+= A[icol];
+	    bb(icol)+= E_exp;
+	    //oneBlock[icol]+= A[icol]*A[icol]/E_exp;
+	    oneBlock[icol]+= E_exp;
 	  }
 	  for(int irow = 0; irow<kNcell; irow++){
 	    //Ma(icol,irow) += A[icol]*A[irow]/(KE_p*sampFrac);
 	    Ma(icol,irow) += A[icol]*A[irow]/E_exp;
+	    //if(nblk==1) Ma_err(icol,irow) += E_exp;
 	  } 
 	}
       }
@@ -734,6 +738,7 @@ void HCalECal( const char *configfilename = "setup_HCalECal.cfg", int run = -1 )
   
   //Invert the matrix, solve for ratios
   TMatrixD M_inv = Ma.Invert();
+  //TMatrixD M_inv_err = Ma_err.Invert();
   TVectorD Coeff = M_inv*ba; // Stays unmodified for reference
   double oneBlockCoeff[kNcell];
 

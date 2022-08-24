@@ -35,6 +35,8 @@ const int maxTracks = 1000; // Reasonable limit on tracks to be stored per event
 const int maxTdcChan = 10; // Set to accomodate original 5 TDCTrig channels with buffer
 const double hcalheight = -0.2897; // Height of HCal above beamline
 const int Nchan = 288;
+const int Nrows = 24;
+const int Ncols = 12;
 
 //Constants
 const double PI = TMath::Pi();
@@ -76,7 +78,8 @@ void simTOF(){
   int nevent=1;
 
   //Load in data
-  C->Add("/work/halla/sbs/seeds/G4SBS/g4sbs_install/run_g4sbs_here/gmn_3.5GeV2_elastic_TOF.root");
+  //C->Add("/work/halla/sbs/seeds/G4SBS/g4sbs_install/run_g4sbs_here/gmn_3.5GeV2_elastic_TOF.root");
+  C->Add("/work/halla/sbs/ilsmythe/G4SBS/install/run_g4sbs_here/gmn_4.5GeV2.root");
 
   gmn_tree *T = new gmn_tree(C);
 
@@ -88,7 +91,6 @@ void simTOF(){
     return;
   }
   
-  
   //Define TOF histograms
   TH1D *TOF_all = new TH1D("TOF_all","Time of Flight over All Modules", 100, 35, 45);
   TH1D *TOF_all_p = new TH1D("TOF_all_p","Time of Flight over All Modules: Protons", 100, 35, 45);
@@ -96,6 +98,19 @@ void simTOF(){
   TH2D *TOF_vs_ID = new TH2D("TOF_vs_ID","Time of Flight vs Channel; channel; ns",288,0,288,100,35,45);
   TH2D *TOF_vs_ID_p = new TH2D("TOF_vs_ID_p","Time of Flight vs Channel: Protons; channel; ns",288,0,288,100,35,45);
   TH2D *TOF_vs_ID_n = new TH2D("TOF_vs_ID_n","Time of Flight vs Channel: Neutrons; channel; ns",288,0,288,100,35,45);
+  TH2D *TOF_vs_row_p = new TH2D("TOF_vs_row_p","Time of Flight vs Row Proton; row; ns",Nrows,0,Nrows,100,35,45);  
+  TH2D *TOF_vs_col_p = new TH2D("TOF_vs_col_p","Time of Flight vs Column Proton; col; ns",Ncols,0,Ncols,100,35,45);
+  TH2D *TOF_vs_row_n = new TH2D("TOF_vs_row_n","Time of Flight vs Row Neutron; row; ns",Nrows,0,Nrows,100,35,45);  
+  TH2D *TOF_vs_col_n = new TH2D("TOF_vs_col_n","Time of Flight vs Column Neutron; col; ns",Ncols,0,Ncols,100,35,45);
+
+  /*
+  TH1D *TOFp[Nchan];
+  TH1D *TOFn[Nchan];
+  for( int i=0; i<Nchan; i++ ){
+    TOFp[i] = new TH1D(Form("TOF Proton Channel %d",i),";TOF (ns)", 40, 35, 45);
+    TOFn[i] = new TH1D(Form("TOF Neutron Channel %d",i),";TOF (ns)", 40, 35, 45);
+  }
+  */
   //Define supplementary histograms
   TH1D *hvX = new TH1D("hvX","Number of Detections vs Transverse X; X (m)",100,-2,3);
   TH1D *pvX = new TH1D("pvX","Number of Protons vs Transverse X; X (m)",100,-2,3);
@@ -126,6 +141,9 @@ void simTOF(){
       //cout << hadPosY << endl;
 
       Int_t cell = (*(T->Harm_HCalScint_hit_cell))[ihit];
+
+      //cout << (int)cell/Ncols << " " << cell%Ncols << endl;
+
       hvY->Fill( hadPosY );
       hvX->Fill( hadPosX );
       TOF_all->Fill( BCtime );
@@ -135,71 +153,112 @@ void simTOF(){
 	pvX->Fill( hadPosX );
 	TOF_all_p->Fill( BCtime );
 	TOF_vs_ID_p->Fill( cell, BCtime );
+	TOF_vs_row_p->Fill( (int)cell/Ncols, BCtime );
+	TOF_vs_col_p->Fill( cell%Ncols, BCtime );
       }else if( PID==neut ){
 	nvY->Fill( hadPosY );
 	nvX->Fill( hadPosX );
 	TOF_all_n->Fill( BCtime );
 	TOF_vs_ID_n->Fill( cell, BCtime );
+	TOF_vs_row_n->Fill( (int)cell/Ncols, BCtime );
+	TOF_vs_col_n->Fill( cell%Ncols, BCtime );
       }
     }
   }
-
+  
   //Construct graphs
   Double_t posErr[Nchan] = {0.};
   TF1 *f1;
-  //For X (dispersive)
+  //For Protons
   Double_t X[Nchan];
   Double_t Xval[Nchan];
   Double_t Xerr[Nchan];
-  TH1D *Xslice[Nchan];
-  for( int x=0; x<Nchan; x++ ){
-    X[x] = x;
-    Xslice[x] = timep_vs_x->ProjectionY(Form("Xslice_%d",x+1),x+1,x+1);
-    Xslice[x]->Fit("gaus","Q","",0.01,0.22);
-    f1=Xslice[x]->GetFunction("gaus");
-    if(Xslice[x]->GetEntries()>10){
-      Xval[x] = f1->GetParameter(1);
-      Xerr[x] = f1->GetParameter(2);
+  TH1D *slice_p[Nchan];
+  Double_t TOFmin_p = 100;
+  Double_t corrErr[Nchan] = {0.};
+  for( Int_t x=1; x<=Nchan; x++ ){
+    X[x-1] = x-1;
+    slice_p[x-1] = TOF_vs_ID_p->ProjectionY(Form("slice_p_%d",x),x,x);
+    slice_p[x-1]->Fit("gaus","Q","",35.,45.);
+    f1=slice_p[x-1]->GetFunction("gaus");
+    if(slice_p[x-1]->GetEntries()>10){
+      Xval[x-1] = f1->GetParameter(1);
+      Xerr[x-1] = f1->GetParameter(2);
+      if( Xval[x-1]>38&&Xval[x-1]<TOFmin_p ) TOFmin_p=Xval[x-1];
     }
   }
-  TGraphErrors *cTOF_X = new TGraphErrors( xN, X, Xval, posErr, Xerr );
-  cTOF_X->GetXaxis()->SetLimits(HCal_Xi-0.05,HCal_Xf+0.05);  
-  cTOF_X->GetYaxis()->SetLimits(0.0,1.0);
-  cTOF_X->SetTitle("Time of Flight Proton - Dispersive X");
-  cTOF_X->GetXaxis()->SetTitle("X (m)");
-  cTOF_X->GetYaxis()->SetTitle("E_{HCAL}/KE_{exp}");
+  TGraphErrors *cTOF_X = new TGraphErrors( Nchan, X, Xval, posErr, Xerr );
+  cTOF_X->GetXaxis()->SetLimits(0,Nchan);  
+  cTOF_X->GetYaxis()->SetLimits(35.,45.);
+  cTOF_X->SetTitle("Time of Flight Proton");
+  cTOF_X->GetXaxis()->SetTitle("Channel");
+  cTOF_X->GetYaxis()->SetTitle("Time of Flight (ns)");
   cTOF_X->SetMarkerStyle(20); // idx 20 Circles, idx 21 Boxes
-  cTOF_X->Write("cTOF_X");
+  cTOF_X->Write("cTOF_P");
 
-  //For Y (transverse)
-  Double_t Y[yN];
-  Double_t Yval[yN];
-  Double_t Yerr[yN];
-  TH1D *Yslice[yN];
-  for( int x=0; x<yN; x++ ){
-    Y[x] = HCal_Yi + x*HCal_div;
-    Yslice[x] = timep_vs_y->ProjectionY(Form("Yslice_%d",x+1),x+1,x+1);
-    Yslice[x]->Fit("gaus","Q","",0.01,0.22);
-    f1=Yslice[x]->GetFunction("gaus");
-    if(Yslice[x]->GetEntries()>10){
-      Yval[x] = f1->GetParameter(1);
-      Yerr[x] = f1->GetParameter(2);
+  cout << TOFmin_p << endl << endl;
+  for( Int_t v=0; v<Nchan; v++ ){
+    Xval[v]-=TOFmin_p;
+    cout << Xval[v] << endl;
+  }
+
+  TGraphErrors *cTOF_X_corr = new TGraphErrors( Nchan, X, Xval, posErr, corrErr );
+  cTOF_X_corr->GetXaxis()->SetLimits(0,Nchan);  
+  cTOF_X_corr->GetYaxis()->SetLimits(35.,45.);
+  cTOF_X_corr->SetTitle("TOF Corrections Proton");
+  cTOF_X_corr->GetXaxis()->SetTitle("Channel");
+  cTOF_X_corr->GetYaxis()->SetTitle("Correction (ns)");
+  cTOF_X_corr->SetMarkerStyle(20); // idx 20 Circles, idx 21 Boxes
+  cTOF_X_corr->Write("cTOF_P_corr");
+  
+  //For Neutrons
+  Double_t Y[Nchan];
+  Double_t Yval[Nchan];
+  Double_t Yerr[Nchan];
+  Double_t Rval[Nrows];
+  Double_t Rerr[Nrows];
+  TH1D *slice_n[Nchan];
+  Double_t TOFmin_n=100;
+  for( Int_t x=1; x<=Nchan; x++ ){
+    Y[x-1] = x-1;
+    slice_n[x-1] = TOF_vs_ID_n->ProjectionY(Form("slice_n_%d",x),x,x);
+    slice_n[x-1]->Fit("gaus","Q","",35.,45.);
+    f1=slice_n[x-1]->GetFunction("gaus");
+    if(slice_n[x-1]->GetEntries()>10){
+      Yval[x-1] = f1->GetParameter(1);
+      Yerr[x-1] = f1->GetParameter(2);
+      if( Yval[x-1]>5&&Yval[x-1]<TOFmin_n ) TOFmin_n=Yval[x-1];
     }
   }
-  TGraphErrors *cTOF_Y = new TGraphErrors( yN, Y, Yval, posErr, Yerr );
-  cTOF_Y->GetXaxis()->SetLimits(HCal_Yi-0.05,HCal_Yf+0.05);  
-  cTOF_Y->GetYaxis()->SetLimits(0.0,1.0);
-  cTOF_Y->SetTitle("Time of Flight Proton - Transverse Y");
-  cTOF_Y->GetXaxis()->SetTitle("Y (m)");
-  cTOF_Y->GetYaxis()->SetTitle("E_{HCAL}/KE_{exp}");
+  TGraphErrors *cTOF_Y = new TGraphErrors( Nchan, Y, Yval, posErr, Yerr );
+  cTOF_Y->GetXaxis()->SetLimits(0,Nchan);  
+  cTOF_Y->GetYaxis()->SetLimits(30.,45.);
+  cTOF_Y->SetTitle("Time of Flight Neutron");
+  cTOF_Y->GetXaxis()->SetTitle("Channel");
+  cTOF_Y->GetYaxis()->SetTitle("Time of Flight (ns)");
   cTOF_Y->SetMarkerStyle(20); // idx 20 Circles, idx 21 Boxes
-  cTOF_Y->Write("cTOF_Y");
+  cTOF_Y->Write("cTOF_N");
+
+  cout << TOFmin_n << endl << endl;
+  for( Int_t v=0; v<Nchan; v++ ){ 
+    Yval[v]-=TOFmin_n;
+    cout << Yval[v] << endl;
+  }
+
+  TGraphErrors *cTOF_Y_corr = new TGraphErrors( Nchan, Y, Yval, posErr, corrErr );
+  cTOF_Y_corr->GetXaxis()->SetLimits(0,Nchan);  
+  cTOF_Y_corr->GetYaxis()->SetLimits(35.,45.);
+  cTOF_Y_corr->SetTitle("TOF Corrections Neutron");
+  cTOF_Y_corr->GetXaxis()->SetTitle("Channel");
+  cTOF_Y_corr->GetYaxis()->SetTitle("Correction (ns)");
+  cTOF_Y_corr->SetMarkerStyle(20); // idx 20 Circles, idx 21 Boxes
+  cTOF_Y_corr->Write("cTOF_N_corr");  
 
   fout->Write();
 
   st->Stop();
 
-cout << "Analysis complete. Results written to file: simTOFout.root" << endl;
+  cout << "Analysis complete. Results written to file: simTOFout.root" << endl;
 
   // Send time efficiency report to console
   cout << "CPU time elapsed = " << st->CpuTime() << " s = " << st->CpuTime()/60.0 << " min. Real time = " << st->RealTime() << " s = " << st->RealTime()/60.0 << " min." << endl;

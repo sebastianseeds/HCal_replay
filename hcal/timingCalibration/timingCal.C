@@ -101,6 +101,7 @@ void timingCal( const char *configfilename="setup_timingCal.cfg", int run = -1 )
     if( !currentline.BeginsWith("#") ){
       if(!currentline) cout << "WARNING: No file exists at " << currentline << "." << endl;
       C->Add(currentline);
+      cout << "File loaded at " << currentline << endl;
     }    
   }
   TCut globalcut = "";
@@ -364,7 +365,7 @@ void timingCal( const char *configfilename="setup_timingCal.cfg", int run = -1 )
   sw->Start();
   
   // Declare outfile
-  TString outputfilename = Form("timingCal_out_%s.root", date.c_str());
+  TString outputfilename = Form("timingCal_out_%d_corr.root", (int)kine);
   TFile *fout = new TFile( outputfilename, "RECREATE" );
   
   // Initialize vectors and arrays
@@ -380,7 +381,7 @@ void timingCal( const char *configfilename="setup_timingCal.cfg", int run = -1 )
   // Initialize histograms	
   TH1D *hTOFcorr = new TH1D( "hTOFcorr", "Time of Flight Corrections; ns", 200, 0, 1 );
   TH1D *hCblkID = new TH1D( "hCblkID", "Block ID", 300, -10, 290 );
-  TH1D *hElas_vp = new TH1D( "hElas_vp", "Elastic Proton Velocity",400, 0, 4);
+  TH1D *hElas_vp = new TH1D( "hElas_vp", "Elastic Proton Velocity", 400, 0, 4);
   TH1D *hCCol = new TH1D( "hCCol", "Cluster Seed Column", 15, -1, 14 );
   TH1D *hDeltaE = new TH1D( "hDeltaE","1.0-Eclus/p_rec", 100, -1.5, 1.5 );
   TH1D *hHCALe = new TH1D( "hHCALe","E HCal Cluster E", 400, 0., 4 );
@@ -389,20 +390,20 @@ void timingCal( const char *configfilename="setup_timingCal.cfg", int run = -1 )
   TH1D *hClusE = new TH1D( "hClusE","Best Cluster Energy", 100, 0.0, 2.0);
   TH2D *hPAngleCorr = new TH2D( "hPAngCorr","Track p vs Track ang", 100, 30, 60, 100, 0.4, 1.2 );
   TH2D *hPAngleCorr_2 = new TH2D( "hPAngCorr_2","Track p vs Track ang v2", 100, 30, 60, 100, 0.4, 1.2 );
-  TH1D *hW = new TH1D( "W", "W", 250, 0.3, 1.5 );
-  hW->GetXaxis()->SetTitle( "GeV" );
-  TH1D *hNBlk = new TH1D( "hNBlk", "Number of Blocks in Primary Cluster", 25, 0, 25 );
-  hW->GetXaxis()->SetTitle( "Number" );
-  TH1D *hW_cuts = new TH1D( "W_cuts", "W_cuts", 250, 0.3, 1.5 );
-  hW->GetXaxis()->SetTitle( "GeV" );
-  TH1D *hQ2 = new TH1D( "Q2", "Q2", 250, 0.5, 3.0 );
-  hQ2->GetXaxis()->SetTitle( "GeV" );
-  TH1D *hE_ep = new TH1D( "Scattered Electron Energy","E_ep", 500, 0.0, E_e*1.5 ); 
-  hE_ep->GetXaxis()->SetTitle( "GeV" );
-  TH1D *hE_pp = new TH1D( "Scattered Proton Energy", "E_pp", 500, 0.0, E_e*1.5 );
-  hE_pp->GetXaxis()->SetTitle( "GeV" );
-  TH1D *hKE_p = new TH1D( "Scattered Proton Kinetic Energy", "KE_pp", 500, 0.0, E_e*1.5 );
-  hKE_p->GetXaxis()->SetTitle( "GeV" );
+  TH1D *hW = new TH1D( "W", "W; GeV", 250, 0.3, 1.5 );
+  //hW->GetXaxis()->SetTitle( "GeV" );
+  TH1D *hNBlk = new TH1D( "hNBlk", "Number of Blocks in Primary Cluster; Number", 25, 0, 25 );
+  //hW->GetXaxis()->SetTitle( "Number" );
+  TH1D *hW_cuts = new TH1D( "W_cuts", "W_cuts; GeV", 250, 0.3, 1.5 );
+  //hW->GetXaxis()->SetTitle( "GeV" );
+  TH1D *hQ2 = new TH1D( "Q2", "Q2; GeV", 250, 0.5, 3.0 );
+  //hQ2->GetXaxis()->SetTitle( "GeV" );
+  TH1D *hE_ep = new TH1D( "Scattered Electron Energy; GeV","E_ep", 500, 0.0, E_e*1.5 ); 
+  //hE_ep->GetXaxis()->SetTitle( "GeV" );
+  TH1D *hE_pp = new TH1D( "Scattered Proton Energy; GeV", "E_pp", 500, 0.0, E_e*1.5 );
+  //hE_pp->GetXaxis()->SetTitle( "GeV" );
+  TH1D *hKE_p = new TH1D( "Scattered Proton Kinetic Energy; GeV", "KE_pp", 500, 0.0, E_e*1.5 );
+  //hKE_p->GetXaxis()->SetTitle( "GeV" );
   TH2D *hADC = new TH2D( "hADC", "HCal Int_ADC Spectra: W Cut", 288, 0, 288, 100., 0., 1. );
   TH2D *hTOFvID = new TH2D( "hTOFvID", "Time of Flight vs HCal ID", 288, 0, 288, 200., 0., 20. );
   TH2D *hADC_amp = new TH2D( "hADC_amp", "HCal ADC_amp Spectra: W Cut", 288, 0, 288, 100., 0., 10. );
@@ -636,7 +637,7 @@ void timingCal( const char *configfilename="setup_timingCal.cfg", int run = -1 )
       if( fabs(W-W_mean)<W_sig&&fabs(diff+370)<40 ){
 	// Get the TOF difference from beam plane normal to HCal
 	double vp_el = pp/M_p;
-	cout << vp_el << endl;
+	//cout << vp_el << endl;
 	hElas_vp->Fill(vp_el);
 	double dd = sqrt( pow(HCal_d,2) + pow(HCALx,2) + pow(HCALy,2) ) - HCal_d;
 	double dt = dd/vp_el;
@@ -669,7 +670,7 @@ void timingCal( const char *configfilename="setup_timingCal.cfg", int run = -1 )
 	hCCol->Fill( ccol );
 	htDiff_vs_HCALID->Fill( cblkid[0], HHdiff );
 	haDiff_vs_HCALID->Fill( cblkid[0], HHAdiff );
-	  
+
 	htDiff[ idx ]->Fill( HHdiff );
 	haDiff[ idx ]->Fill( HHAdiff );
 	if( idx<0 || idx>288 ) cout << "ERROR: TDC out of bounds at tdcID = " << idx << endl;
@@ -810,16 +811,18 @@ void timingCal( const char *configfilename="setup_timingCal.cfg", int run = -1 )
 
   for(int i=0; i<kNcell; i++){
 
-    int r = (i-1)/kNcols;
-    int c = (i-1)%kNcols;
+    int r = (i)/kNcols;
+    int c = (i)%kNcols;
 
     TF1 *f1;
     TF1 *f2;
     TF1 *f3;
     TF1 *f4;
 
+    //cout << "chan " << i << " htDiff " << htDiff[i]->GetEntries() << endl;
+
     //Fit HCal-TDC/Hodo-TDC difference histogram by cell and obtain offset parameters
-    if( htDiff[i]->GetEntries()>tFitMin ){
+    if( htDiff[i]->GetEntries()>tFitMin && i!=244 && i!=12 && i!=264 ){
       //Tuning 042522
       
       /*
@@ -912,24 +915,97 @@ void timingCal( const char *configfilename="setup_timingCal.cfg", int run = -1 )
 	htDiff[i]->Fit("gaus","Q","",-80,-50);
       }
       */
-      htDiff[i]->Fit("gaus","Q","",-90,-60);
+      //cout << i << " " << htDiff[i]->GetEntries() << endl;
+      if((i>47&&i<60)||i==64||i==65||i==70||i==71||(i>143&&i<156)||i==180||i==181||i==186||i==187){
+	htDiff[i]->Fit("gaus","Q","",-85,-64);
+      }else if(i==0){
+	htDiff[i]->Fit("gaus","Q","",-120,-118);
+      }else if(i==24){
+	htDiff[i]->Fit("gaus","Q","",-118,-112);
+      }else if(i==25){
+	htDiff[i]->Fit("gaus","Q","",-130,-115);
+      }else if(i==36){
+	htDiff[i]->Fit("gaus","Q","",-125,-123);
+      }else if(i==96){
+	htDiff[i]->Fit("gaus","Q","",-122,-110);
+      }else if(i==107){
+	htDiff[i]->Fit("gaus","Q","",-125,-105);
+      }else if(i==108){
+	htDiff[i]->Fit("gaus","Q","",-124,-114);
+      }else if(i==131){
+	htDiff[i]->Fit("gaus","Q","",-126,-112);
+      }else if(i==192){
+	htDiff[i]->Fit("gaus","Q","",-125,-105);
+      }else if(i==193){
+	htDiff[i]->Fit("gaus","Q","",-126,-112);
+      }else if(i==203||i==204||i==218||i==228||i==240||i==265||i==267){
+	htDiff[i]->Fit("gaus","Q","",-124,-110);
+      }else{
+	htDiff[i]->Fit("gaus","Q","",-140,-110);
+      }
       f1=htDiff[i]->GetFunction("gaus");
       htDiff[i]->SetTitle(Form("TDCGoodFitMean:%f",f1->GetParameter(1)));
+      if( f1->GetParameter(1)<-140||f1->GetParameter(1)>-60 ){
+	cout << "WARNING: Bad fit in cell " << i << ", defaulting to old calibration value: " << oldTDCoffsets[i] << "." << endl;
+	if(c>3&&c<8){
+	  TDCoffsets[i] = 0.;
+	  htDiff[i]->SetName(Form("htDiff_bl%d_r%d_c%d_JLABm%f",i,r,c,JLAB_mean_TDC));	
+	}else{
+	  TDCoffsets[i] = 0.;
+	  htDiff[i]->SetName(Form("htDiff_bl%d_r%d_c%d_CMUm%f",i,r,c,CMU_mean_TDC));	
+	}
+      }
       TDCoffsets[i] = -75. - f1->GetParameter(1);
+      if(i==0){
+	TDCoffsets[i] = -75. - -119.;
+      }
+      if(i==24){
+	TDCoffsets[i] = -75. - -116.;
+      }
+      if(i==36){
+	TDCoffsets[i] = -75. - -124.;
+      }
+      if(i==48){
+	TDCoffsets[i] = -75. - -72.;
+      }
+      if(i==72){
+	TDCoffsets[i] = -75. - -121.;
+      }
+      if(i==97){
+	TDCoffsets[i] = -75. - -116.;
+      }
+      if(i==155){
+	TDCoffsets[i] = -75. - -78.;
+      }
+      if(i==156){
+	TDCoffsets[i] = -75. - -113.;
+      }
+      if(i==240){
+	TDCoffsets[i] = -75. - -116.;
+      }
+      if(i==242){
+	TDCoffsets[i] = -75. - -120.;
+      }
+      if(i==265){
+	TDCoffsets[i] = -75. - -115.;
+      }
+      if(i==275){
+	TDCoffsets[i] = -75. - -114.;
+      }
       TDCsig[i] = f1->GetParameter(2);
       double cs = f1->GetChisquare();
-      htDiff[i]->SetName(Form("htDiff_bl%d_r%d_c%d_cs%f",i,r,c,cs));	
-    }else if( htDiff[i]->GetEntries()>10 ){
-      TDCoffsets[i] = 0.; //Set to zero and default to cosmic-calibrated value
+      htDiff[i]->SetName(Form("htDiff_bl%d_r%d_c%d_mean%f",i,r,c,f1->GetParameter(1)));	
+    }else if( htDiff[i]->GetEntries()>1 ){
+      //TDCoffsets[i] = 0.; //Set to zero and default to cosmic-calibrated value
       cout << "WARNING: Low statistics in cell " << i << ", defaulting to old calibration value: " << oldTDCoffsets[i] << "." << endl;
       htDiff[i]->SetName(Form("htDiff_bl%d_r%d_c%d",i,r,c));
     }else{
       cout << "WARNING: Low statistics in cell " << i << ", defaulting to old calibration value: " << oldTDCoffsets[i] << "." << endl;
       if(c>3&&c<8){
-	TDCoffsets[i] = 0.;
+	//TDCoffsets[i] = 0.;
 	htDiff[i]->SetName(Form("htDiff_bl%d_r%d_c%d_JLABm%f",i,r,c,JLAB_mean_TDC));	
       }else{
-	TDCoffsets[i] = 0.;
+	//TDCoffsets[i] = 0.;
 	htDiff[i]->SetName(Form("htDiff_bl%d_r%d_c%d_CMUm%f",i,r,c,CMU_mean_TDC));	
       }
     }
@@ -973,7 +1049,7 @@ void timingCal( const char *configfilename="setup_timingCal.cfg", int run = -1 )
 	haDiff[i]->Fit("gaus","Q","",0,80);
       }
       */
-      haDiff[i]->Fit("gaus","Q","",0,80);
+      haDiff[i]->Fit("gaus","Q","",0,150);
       f2=haDiff[i]->GetFunction("gaus");
       haDiff[i]->SetTitle(Form("ADCtGoodFitMean:%f",f2->GetParameter(1)));
       ADCtoffsets[i] = 50. - f2->GetParameter(1);
