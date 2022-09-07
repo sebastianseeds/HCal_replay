@@ -33,7 +33,7 @@
 #include "SBSRasteredBeam.h"
 #endif
 
-void replay_hcal_SAS_general(int run_number, uint nev = -1, uint nseg = 0, Int_t pedestalmode=0)
+void replay_hcal_SAS_GEn(int run_number, uint nev = -1, uint nseg = 0, Int_t pedestalmode=0)
 {
   //load SBS-offline
   //gSystem->Load("libsbs.so");
@@ -122,9 +122,9 @@ void replay_hcal_SAS_general(int run_number, uint nev = -1, uint nseg = 0, Int_t
   // Variables for searching for split data files.
   bool seg_ok = true;
   bool path_ok = true;
-  TString exp = "hcal_general";
+  TString exp = "hcal_GEn";
   // Create file name patterns.
-  string firstname = "/e1209019_%d";
+  string firstname = "/e1209016_%d";
   TString prefix = gSystem->Getenv("DATA_DIR");
   THaAnalyzer* analyzer = new THaAnalyzer;
 

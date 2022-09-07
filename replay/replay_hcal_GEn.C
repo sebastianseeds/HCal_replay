@@ -1,4 +1,4 @@
-// sseedso 11.18.21 HCAL expert replay designed to run more quickly and to perform HCAL standalone analysis.
+// sseeds 11.18.21 HCAL expert replay designed to run more quickly and to perform HCAL standalone analysis.
 #if !defined(__CLING__) || defined(__ROOTCLING__)
 #include <iostream>
 
@@ -33,7 +33,7 @@
 #include "SBSRasteredBeam.h"
 #endif
 
-void replay_hcal_SAS_general(int run_number, uint nev = -1, uint nseg = 0, Int_t pedestalmode=0)
+void replay_hcal_GEn(int run_number = 124, uint nev = -1, uint nseg = 0, Int_t pedestalmode=0)
 {
   //load SBS-offline
   //gSystem->Load("libsbs.so");
@@ -74,24 +74,6 @@ void replay_hcal_SAS_general(int run_number, uint nev = -1, uint nseg = 0, Int_t
   //bigbite->AddDetector( new THaShower("ps", "BigBite preshower") );
   bigbite->AddDetector(hodotdc);
   bigbite->AddDetector(hodoadc);
-
-  SBSGenericDetector *grinch_adc = new SBSGenericDetector("grinch_adc","GRINCH ADC data");
-  //grinch2->SetDisableRefADC(true);
-  grinch_adc->SetModeADC(SBSModeADC::kADC);
-  grinch_adc->SetModeTDC(SBSModeTDC::kNone);
-  grinch_adc->SetStoreEmptyElements(kFALSE);
-  grinch_adc->SetStoreRawHits(kTRUE); //kTRUE to get multiple hits from the ADC
-
-  SBSGenericDetector *grinch_tdc = new SBSGenericDetector("grinch_tdc","GRINCH TDC data");
-  grinch_tdc->SetModeTDC(SBSModeTDC::kTDC);
-  //grinch_tdc->SetModeTDC(SBSModeTDC::kCommonStartTDC);
-  grinch_tdc->SetModeADC(SBSModeADC::kNone);
-  grinch_tdc->SetDisableRefTDC(true);
-  grinch_tdc->SetStoreEmptyElements(kFALSE);
-  grinch_tdc->SetStoreRawHits(kTRUE); //kTRUE to get multiple hits from the TDC
-  bigbite->AddDetector(grinch_adc);
-  bigbite->AddDetector(grinch_tdc);
-
   SBSGEMSpectrometerTracker *bbgem = new SBSGEMSpectrometerTracker("gem", "BigBite Hall A GEM data");
   bool pm =  ( pedestalmode != 0 );
   //this will override the database setting:
@@ -122,10 +104,13 @@ void replay_hcal_SAS_general(int run_number, uint nev = -1, uint nseg = 0, Int_t
   // Variables for searching for split data files.
   bool seg_ok = true;
   bool path_ok = true;
-  TString exp = "hcal_general";
+  TString exp = "hcal_GEn";
   // Create file name patterns.
-  string firstname = "/e1209019_%d";
+  string firstname = "/e1209016_%d";
   TString prefix = gSystem->Getenv("DATA_DIR");
+
+  //std::cout<<"!!!!!!!!!!!!!!!!!"<<prefix<<std::endl;
+
   THaAnalyzer* analyzer = new THaAnalyzer;
 
   //Look for datafile
@@ -237,9 +222,8 @@ void replay_hcal_SAS_general(int run_number, uint nev = -1, uint nseg = 0, Int_t
     
     analyzer->SetOutFile( out_file );
 
-    analyzer->SetOdefFile( "/w/halla-scshelf2102/sbs/seeds/HCal_replay/replay/replay_hcal.odef" );
-    analyzer->SetCutFile( "/w/halla-scshelf2102/sbs/seeds/HCal_replay/replay/replay_hcal.cdef" );
-
+    analyzer->SetOdefFile( "/adaqfs/home/a-onl/sbs/HCal_replay/replay/replay_hcal.odef" );
+    analyzer->SetCutFile( "/adaqfs/home/a-onl/sbs/HCal_replay/replay/replay_hcal.cdef" );
     // Set EPICS event type
     analyzer->SetEpicsEvtType(150);
     analyzer->SetEpicsEvtType(151);

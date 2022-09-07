@@ -1,4 +1,4 @@
-// sseedso 11.18.21 HCAL expert replay designed to run more quickly and to perform HCAL standalone analysis.
+// sseeds 11.18.21 HCAL expert replay designed to run more quickly and to perform HCAL standalone analysis.
 #if !defined(__CLING__) || defined(__ROOTCLING__)
 #include <iostream>
 
@@ -33,7 +33,7 @@
 #include "SBSRasteredBeam.h"
 #endif
 
-void replay_hcal_SAS_general(int run_number, uint nev = -1, uint nseg = 0, Int_t pedestalmode=0)
+void replay_hcal_SAS_tdcalt(int run_number, uint nev = -1, uint nseg = 0, Int_t pedestalmode=0)
 {
   //load SBS-offline
   //gSystem->Load("libsbs.so");
@@ -111,6 +111,16 @@ void replay_hcal_SAS_general(int run_number, uint nev = -1, uint nseg = 0, Int_t
   sbstrig->SetStoreRawHits(kTRUE);
   //trig->SetDataOutputLevel(1);
   harm->AddDetector( sbstrig );
+
+
+  SBSGenericDetector* hcaltdc= new SBSGenericDetector("hcaltdc","HCal TDC");
+  hcal_tdc->SetModeTDC(SBSModeTDC::kTDC);
+  //hcal_tdc->SetModeTDC(SBSModeTDC::kCommonStartTDC);
+  hcal_tdc->SetModeADC(SBSModeADC::kNone);
+  hcal_tdc->SetDisableRefTDC(true);
+  hcal_tdc->SetStoreEmptyElements(kFALSE);
+  hcal_tdc->SetStoreRawHits(kTRUE); //kTRUE to get multiple hits from the TDC
+  harm->AddDetector(hcal_tdc);  
   
   gHaApps->Add( harm );
 
