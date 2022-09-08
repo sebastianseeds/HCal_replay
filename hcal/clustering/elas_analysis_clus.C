@@ -69,11 +69,13 @@ void elas_analysis_clus( Int_t run = -1, Double_t tmax = 20 ){
   Double_t cblke[kNcell] = {0};
   Double_t cblkatime[kNcell] = {0};
   Double_t catime[kNcell] = {0};
-  Double_t nclus[kNcell] = {0}; 
+  Double_t ctdctime[kNcell] = {0};
+  Double_t nclus; 
   Double_t cblkid[kNcell] = {0};
   Double_t BBtr_p[maxTracks], BBtr_px[maxTracks], BBtr_py[maxTracks], BBtr_pz[maxTracks];
   Double_t BBtr_vz[maxTracks], BBtr_chi2[maxTracks];
   Double_t BBtr_n, BBps_x, BBps_y, BBps_e, BBsh_x, BBsh_y, BBsh_e;
+  Double_t HCALx, HCALy, HCALe;
 
   Double_t TDCT_id[maxTdcChan], TDCT_tdc[maxTdcChan]; 
   Int_t TDCTndata;
@@ -85,10 +87,14 @@ void elas_analysis_clus( Int_t run = -1, Double_t tmax = 20 ){
 
     T->SetBranchStatus( "*", 0 ); //Turn off all branches for faster execution
     //Select only necessary branches for processing
+    T->SetBranchStatus( "sbs.hcal.x", 1 );
+    T->SetBranchStatus( "sbs.hcal.y", 1 );
+    T->SetBranchStatus( "sbs.hcal.e", 1 );
     T->SetBranchStatus( "sbs.hcal.clus.id", 1 );
     T->SetBranchStatus( "sbs.hcal.clus.row", 1 );
     T->SetBranchStatus( "sbs.hcal.clus.col", 1 );
     T->SetBranchStatus( "sbs.hcal.clus.atime", 1 );
+    T->SetBranchStatus( "sbs.hcal.clus.tdctime", 1 );
     T->SetBranchStatus( "sbs.hcal.clus_blk.atime", 1 );
     T->SetBranchStatus( "sbs.hcal.clus_blk.row", 1 );
     T->SetBranchStatus( "sbs.hcal.clus_blk.col", 1 );
@@ -118,21 +124,25 @@ void elas_analysis_clus( Int_t run = -1, Double_t tmax = 20 ){
     T->SetBranchStatus( "Ndata.bb.tdctrig.tdcelemID", 1 );
     
     //Set branches to variables
-    T->SetBranchAddress("sbs.hcal.clus.id",cid);
-    T->SetBranchAddress("sbs.hcal.clus.x",cx);
-    T->SetBranchAddress("sbs.hcal.clus.y",cy);
-    T->SetBranchAddress("sbs.hcal.clus.row",crow);
-    T->SetBranchAddress("sbs.hcal.clus.col",ccol);
-    T->SetBranchAddress("sbs.hcal.clus.atime",catime); //a_time for main block in each cluster
-    T->SetBranchAddress("sbs.hcal.clus_blk.atime",cblkatime); //a_time for each block in main cluster
-    T->SetBranchAddress("sbs.hcal.clus_blk.row",cbrow);
-    T->SetBranchAddress("sbs.hcal.clus_blk.col",cbcol);
-    T->SetBranchAddress("sbs.hcal.clus.e",ce);
-    T->SetBranchAddress("sbs.hcal.clus.eblk",ceblk); // Highest energy block
-    T->SetBranchAddress("sbs.hcal.clus.nblk",cnblk); //number of blocks in cluster per event
-    T->SetBranchAddress("sbs.hcal.nclus",nclus); //number of clusters
-    T->SetBranchAddress("sbs.hcal.clus_blk.id",cblkid);
-    T->SetBranchAddress("sbs.hcal.clus_blk.e",cblke); // Array of block energies
+    T->SetBranchAddress( "sbs.hcal.x", &HCALx );
+    T->SetBranchAddress( "sbs.hcal.y", &HCALy );
+    T->SetBranchAddress( "sbs.hcal.e", &HCALe );
+    T->SetBranchAddress( "sbs.hcal.clus.id", cid );
+    T->SetBranchAddress( "sbs.hcal.clus.x", cx );
+    T->SetBranchAddress( "sbs.hcal.clus.y", cy );
+    T->SetBranchAddress( "sbs.hcal.clus.row", crow );
+    T->SetBranchAddress( "sbs.hcal.clus.col", ccol );
+    T->SetBranchAddress( "sbs.hcal.clus.atime", catime ); //a_time for main block in each cluster
+    T->SetBranchAddress( "sbs.hcal.clus.tdctime", ctdctime ); //a_time for main block in each cluster
+    T->SetBranchAddress( "sbs.hcal.clus_blk.atime", cblkatime ); //a_time for each block in main cluster
+    T->SetBranchAddress( "sbs.hcal.clus_blk.row", cbrow );
+    T->SetBranchAddress( "sbs.hcal.clus_blk.col", cbcol );
+    T->SetBranchAddress( "sbs.hcal.clus.e", ce );
+    T->SetBranchAddress( "sbs.hcal.clus.eblk", ceblk ); // Highest energy block
+    T->SetBranchAddress( "sbs.hcal.clus.nblk", cnblk ); //number of blocks in cluster per event
+    T->SetBranchAddress( "sbs.hcal.nclus", &nclus ); //number of clusters
+    T->SetBranchAddress( "sbs.hcal.clus_blk.id", cblkid );
+    T->SetBranchAddress( "sbs.hcal.clus_blk.e", cblke ); // Array of block energies
     T->SetBranchAddress( "bb.tr.n", &BBtr_n );
     T->SetBranchAddress( "bb.tr.chi2", BBtr_chi2 );
     T->SetBranchAddress( "bb.tr.px", BBtr_px );
@@ -163,7 +173,7 @@ void elas_analysis_clus( Int_t run = -1, Double_t tmax = 20 ){
   string date = getDate();
   
   // Declare outfile
-  TFile *fout = new TFile( "outfiles/elas_analysis_clus_out.root", "RECREATE" );
+  TFile *fout = new TFile( "outfiles/elas_analysis4_clus_out.root", "RECREATE" );
   /*
   // Declare general vars (SBS4)
   Double_t E_e = 3.728; //GeV
@@ -179,19 +189,62 @@ void elas_analysis_clus( Int_t run = -1, Double_t tmax = 20 ){
   Double_t HCal_th = 29.4 * TMath::DegToRad(); //rad
   Double_t W_mean = 0.875; //GeV
   Double_t W_sig = 0.2; //GeV
-  
+  Double_t Ycut = 0.0; //m
+  Double_t Ysig = 0.4; //m
+  Double_t Xcut = 0.73; //m
+  Double_t Xsig = 0.35; //m
+
+  // Other general vars
+  Int_t Ntot = 0;
+  Int_t Nelas = 0;
 
   // Initialize global histograms
-  TH1D *hMaxClusT = new TH1D( "maxClusT", Form("maxClusT tmax%f",tmax), 310, -10, 300 );
-  TH2D *hMaxClusTvC = new TH2D( "maxClusTvC", Form("maxClusTvC tmax%f",tmax), 288, 0, 288, 310, -10, 300);
-  TH1D *hClusE = new TH1D( "ClusE", "ClusE", 100, 0., 1. );
+  TH1D *hTDC_clu_tcut = new TH1D("hTDC_clu_tcut", "TDC Time, Highest E Cluster after TDC Cut; ns", 400, -300, 100 );
+  TH1D *hADCt_clu_tcut = new TH1D("hADCt_clu_tcut", "ADCt Time, Highest E Cluster after ADCt Cut; ns", 200, -20, 180 );
+  TH1D *hTDC_clu_tcutelse = new TH1D("hTDC_clu_tcutelse", "TDC Time, All Other Clusters after TDC Cut; ns", 400, -300, 100 );
+  TH1D *hADCt_clu_tcutelse = new TH1D("hADCt_clu_tcutelse", "ADCt Time, All Other Clusters after ADCt Cut; ns", 200, -20, 180 );
+
+  TH1D *hClusE_nocut = new TH1D( "ClusE_nocut", "Primary Cluster E (no cuts); GeV", 100, 0., 1. );
+  TH1D *hNblk_nocut = new TH1D( "hNblk_nocut", "Blocks in Primary Cluster (no cuts)", 20, 0, 20 );
+  TH1D *hNclus_nocut = new TH1D( "hNclus_nocut", "Total Clusters (no cuts)", 20, 0, 20 );
+
+  TH1D *hTDC_clu0_nocut = new TH1D("hTDC_clu0_nocut", "TDC Time, Primary Cluster (no cuts); ns", 400, -300, 100 );
+  TH1D *hTDC_clu1_nocut = new TH1D("hTDC_clu1_nocut", "TDC Time, Cluster 2 (no cuts); ns", 400, -300, 100 );
+  TH1D *hTDC_clu2_nocut = new TH1D("hTDC_clu2_nocut", "TDC Time, Cluster 3 (no cuts); ns", 400, -300, 100 );
+  TH1D *hTDC_clu3_nocut = new TH1D("hTDC_clu3_nocut", "TDC Time, Cluster 4 (no cuts); ns", 400, -300, 100 );
+  TH1D *hTDC_clu4_nocut = new TH1D("hTDC_clu4_nocut", "TDC Time, Cluster 5 (no cuts); ns", 400, -300, 100 );
+  TH1D *hADCt_clu0_nocut = new TH1D("hADCt_clu0_nocut", "ADCt Time, Primary Cluster (no cuts); ns", 200, -20, 180 );
+  TH1D *hADCt_clu1_nocut = new TH1D("hADCt_clu1_nocut", "ADCt Time, Cluster 2 (no cuts); ns", 200, -20, 180 );
+  TH1D *hADCt_clu2_nocut = new TH1D("hADCt_clu2_nocut", "ADCt Time, Cluster 3 (no cuts); ns", 200, -20, 180 );
+  TH1D *hADCt_clu3_nocut = new TH1D("hADCt_clu3_nocut", "ADCt Time, Cluster 4 (no cuts); ns", 200, -20, 180 );
+  TH1D *hADCt_clu4_nocut = new TH1D("hADCt_clu4_nocut", "ADCt Time, Cluster 5 (no cuts); ns", 200, -20, 180 );
+
+  TH1D *hTDC_clu0 = new TH1D("hTDC_clu0", "TDC Time, Primary Cluster; ns", 400, -300, 100 );
+  TH1D *hTDC_clu1 = new TH1D("hTDC_clu1", "TDC Time, Cluster 2; ns", 400, -300, 100 );
+  TH1D *hTDC_clu2 = new TH1D("hTDC_clu2", "TDC Time, Cluster 3; ns", 400, -300, 100 );
+  TH1D *hTDC_clu3 = new TH1D("hTDC_clu3", "TDC Time, Cluster 4; ns", 400, -300, 100 );
+  TH1D *hTDC_clu4 = new TH1D("hTDC_clu4", "TDC Time, Cluster 5; ns", 400, -300, 100 );
+  TH1D *hADCt_clu0 = new TH1D("hADCt_clu0", "ADCt Time, Primary Cluster; ns", 200, -20, 180 );
+  TH1D *hADCt_clu1 = new TH1D("hADCt_clu1", "ADCt Time, Cluster 2; ns", 200, -20, 180 );
+  TH1D *hADCt_clu2 = new TH1D("hADCt_clu2", "ADCt Time, Cluster 3; ns", 200, -20, 180 );
+  TH1D *hADCt_clu3 = new TH1D("hADCt_clu3", "ADCt Time, Cluster 4; ns", 200, -20, 180 );
+  TH1D *hADCt_clu4 = new TH1D("hADCt_clu4", "ADCt Time, Cluster 5; ns", 200, -20, 180 );
+
+  TH1D *hMaxClusT = new TH1D( "maxClusT", Form("maxClusT tmax%f",tmax), 200, -20, 180 );
+  TH2D *hMaxClusTvC = new TH2D( "maxClusTvC", Form("maxClusTvC tmax%f",tmax), 288, 0, 288, 200, -20, 180 );
+  TH1D *hClusE = new TH1D( "ClusE", "Primary Cluster E; GeV", 100, 0., 1. );
+  TH1D *hNblk = new TH1D( "hNblk", "Blocks in Primary Cluster", 20, 0, 20 );
+  TH1D *hNclus = new TH1D( "hNclus", "Total Clusters", 20, 0, 20 );
   TH1D *hClusBlkE = new TH1D( "ClusBlkE", "ClusBlkE", 100, 0., 1. );
   TH1D *hClusPrimeBlkE = new TH1D( "ClusPrimeBlkE", "ClusPrimeBlkE", 100, 0., 1. );
   TH2D *hXY_pclus = new TH2D("hXY_pclus",";y_{HCAL} (m); x_{HCAL} (m)", 250, -5.0, 5.0, 250, -10, 10 );
   TH2D *hXY = new TH2D("hXY",";y_{expect} (m); x_{expect} (m)", 250, -5.0, 5.0, 250, -10, 10 );
+  TH2D *hdxdy_HCAL = new TH2D("hdxdy_HCAL",";y_{HCAL}-y_{expect} (m); x_{HCAL}-x_{expect} (m)", 250, -2.0, 2.0, 500, -4, 4 );
+  TH1D *hdx_HCAL = new TH1D("hdx_HCAL",";x_{HCAL}-x_{expect} (m)",500,-4,4);
+  TH1D *hdy_HCAL = new TH1D("hdy_HCAL",";y_{HCAL}-y_{expect} (m)",250,-2,2);
   TH1D *hE_ep = new TH1D( "Scattered Electron Energy","E_ep;GeV", 500, 0.0, E_e*1.5 ); 
   TH1D *hKE_p = new TH1D( "Scattered Proton Kinetic Energy", "KE_pp;GeV", 500, 0.0, E_e*1.5 );
-  TH1D *hDiff = new TH1D( "hDiff","HCal time - BBCal time (ns)", 1300, -500, 800 );
+  TH1D *hTrigDiff = new TH1D( "hTrigDiff","HCal time - BBCal time (ns)", 1300, -500, 800 );
   TH1D *hW = new TH1D( "W", "W;GeV", 250, 0.3, 1.5 );
   TH1D *hQ2 = new TH1D( "Q2", "Q2;GeV2", 250, 0.5, 3.0 );
   TH1D *hE_pp = new TH1D( "Scattered Proton Energy", "E_pp;GeV", 500, 0.0, E_e*1.5 );
@@ -235,11 +288,39 @@ void elas_analysis_clus( Int_t run = -1, Double_t tmax = 20 ){
       sw->Continue();
       
       progress = (Double_t)((nevent+1.)/Nevents);
-      cout << "] " << Int_t(progress*100.) << ", time remaining: " << Int_t(timeremains/60.) << "m \r";
+      cout << "] " << Int_t(progress*100.) << "%, elastics: " << Nelas << "/" << Ntot << ", time remaining: " << Int_t(timeremains/60.) << "m \r";
       cout.flush();
       
       T->GetEntry( nevent ); 
       
+      // Fill histograms without any cuts
+      hClusE_nocut->Fill(ce[0]);
+      hNblk_nocut->Fill(cnblk[0]);
+      hNclus->Fill(nclus);
+
+      for( Int_t c=0; c<nclus; c++ ){
+	if( c==0 ) {
+	  hTDC_clu0_nocut->Fill( ctdctime[0] );
+	  hADCt_clu0_nocut->Fill( catime[0] );
+	}
+	if( c==1 ) {
+	  hTDC_clu1_nocut->Fill( ctdctime[1] );
+	  hADCt_clu1_nocut->Fill( catime[1] );
+	}
+	if( c==2 ) {
+	  hTDC_clu2_nocut->Fill( ctdctime[2] );
+	  hADCt_clu2_nocut->Fill( catime[2] );
+	}
+	if( c==3 ) {
+	  hTDC_clu3_nocut->Fill( ctdctime[3] );
+	  hADCt_clu3_nocut->Fill( catime[3] );
+	}
+	if( c==4 ) {
+	  hTDC_clu4_nocut->Fill( ctdctime[4] );
+	  hADCt_clu4_nocut->Fill( catime[4] );
+	}
+      }
+
       //ELASTIC CUT//////
 	
       Double_t etheta = acos( BBtr_pz[0]/BBtr_p[0] );
@@ -301,7 +382,7 @@ void elas_analysis_clus( Int_t run = -1, Double_t tmax = 20 ){
 
       Double_t KE_p = nu; //For elastics
       hKE_p->Fill( KE_p );   
-	
+
       //Cut on BBCal and HCal trigger coincidence
       Double_t bbcal_time=0., hcal_time=0.;
       for(Int_t ihit=0; ihit<TDCTndata; ihit++){
@@ -309,7 +390,7 @@ void elas_analysis_clus( Int_t run = -1, Double_t tmax = 20 ){
 	if(TDCT_id[ihit]==0) hcal_time=TDCT_tdc[ihit];
       }
       Double_t diff = hcal_time - bbcal_time; 
-      hDiff->Fill( diff ); // Fill histogram
+      hTrigDiff->Fill( diff ); // Fill histogram
 	
       //Check that all branch addresses are set properly
       //cout << "BBtr_p[0]: " << BBtr_p[0] << endl;
@@ -347,19 +428,42 @@ void elas_analysis_clus( Int_t run = -1, Double_t tmax = 20 ){
       //if( fabs(diff-510)<40 && fabs(BBtr_vz[0])<0.06 ) hW_cuts->Fill( W );
 
       bool elaspass = false;
+      Ntot++;
 
       //Additional cuts to select elastics
       if( fabs(W-W_mean)<W_sig && //Observed mean W cut
-	  fabs(diff-510)<40 //Observed coincidence trigger HCal/BB
+	  fabs(diff-510)<10 && //Observed coincidence trigger HCal/BB
+	  BBtr_n==1 && //Single track in BigBite
+	  BBps_e>0.2 && //Preshower cut to remove pions
+	  abs(BBtr_vz[0])<0.08 && //Track points back to vertex inside target
+	  (BBps_e+BBsh_e)>1.7 //Total energy deposited in BigBite e' range
 	  ) elaspass = true;
 
       if(elaspass == false) continue;
 
+      bool spotCut = false;
+
+      // Evaluate p and n on HCal
+      Double_t dx = HCALx - xexpect_HCAL; // (Energy weighted center of cluster (x component)) - (straight line nucleon projection obtained from e' track HCal location (x component))
+      Double_t dy = HCALy - yexpect_HCAL; // (Energy weighted center of cluster (y component)) - (straight line nucleon projection obtained from e' track HCal location (y component))
+            
+      //Calculate the hadron spot/s 
+      hdxdy_HCAL->Fill( dy, dx );
+      hdx_HCAL->Fill( dx );
+      hdy_HCAL->Fill( dy );
+
+      if( abs(dx-Xcut)<Xsig && abs(dy-Ycut)<Ysig ) spotCut = true;
+
+      //if( spotCut==false ) continue;
+
+      Nelas++;
 
       //END ELASTIC CUT//
 
       // Fill primary cell histograms
       hClusE->Fill(ce[0]); //First element is primary cell in cluster
+      hNblk->Fill(cnblk[0]);
+      hNclus->Fill(nclus);
       hClusPrimeBlkE->Fill(cblke[0]);
       
       Double_t maxDiff = 0.0;
@@ -386,10 +490,10 @@ void elas_analysis_clus( Int_t run = -1, Double_t tmax = 20 ){
 
 	Int_t id = cblkid[b];
 	//if(id>200) cout << id << endl;
-	Double_t diff = fabs(cblkatime[b]-cblkatime[0]);
+	Double_t diffADCt = fabs(cblkatime[b]-cblkatime[0]);
 	
-	if( diff>maxDiff ){
-	  maxDiff = diff;
+	if( diffADCt>maxDiff ){
+	  maxDiff = diffADCt;
 	  maxDiffID = id;
 	}
 
@@ -402,10 +506,58 @@ void elas_analysis_clus( Int_t run = -1, Double_t tmax = 20 ){
 	//hMaxClusTpC[maxDiffID]->Fill(maxDiff);
 	hMaxClusTvC->Fill(maxDiffID,maxDiff);
       }
+
+      bool TDCclusAdd = false;
+      bool ADCtclusAdd = false;
+
+      for( Int_t c=0; c<nclus; c++ ){
+	if( c==0 ) {
+	  hTDC_clu0->Fill( ctdctime[0] );
+	  hADCt_clu0->Fill( catime[0] );
+	}
+	if( c==1 ) {
+	  hTDC_clu1->Fill( ctdctime[1] );
+	  hADCt_clu1->Fill( catime[1] );
+	}
+	if( c==2 ) {
+	  hTDC_clu2->Fill( ctdctime[2] );
+	  hADCt_clu2->Fill( catime[2] );
+	}
+	if( c==3 ) {
+	  hTDC_clu3->Fill( ctdctime[3] );
+	  hADCt_clu3->Fill( catime[3] );
+	}
+	if( c==4 ) {
+	  hTDC_clu4->Fill( ctdctime[4] );
+	  hADCt_clu4->Fill( catime[4] );
+	}
+
+	bool clusterpass = false;
+	double cdx = cx[c] - xexpect_HCAL;
+	double cdy = cy[c] - yexpect_HCAL;
+	if( abs(cdx-Xcut)<Xsig && abs(cdy-Ycut)<Ysig ) clusterpass = true;
+
+	if( abs(ctdctime[c]+92.41)<6.4 && TDCclusAdd == false && clusterpass==true ){ //Tuned from fits to sharp peak in all clusters (-92.41 =/- 3.2 (1 sig)
+	  TDCclusAdd = true;
+	  hTDC_clu_tcut->Fill( ctdctime[c] );
+	}else{
+	  hTDC_clu_tcutelse->Fill( ctdctime[c] );
+	}
+
+	if( abs(catime[c]-46.12)<7.8 && ADCtclusAdd == false && clusterpass==true ){ //Tuned from fits to sharp peak in all clusters (46.12 +/- 3.9 (1 sig)
+	  ADCtclusAdd = true;
+	  hADCt_clu_tcut->Fill( catime[c] );
+	}else{
+	  hADCt_clu_tcutelse->Fill( catime[c] );
+	}
+
+      }
     }
   }
   
   fout->Write();
+
+  cout << endl << endl << "Elastic rate: " << (Double_t)Nelas/Ntot << endl;
 
   // Send time efficiency report to console
   cout << "CPU time elapsed = " << st->CpuTime() << " s = " << st->CpuTime()/60.0 << " min. Real time = " << st->RealTime() << " s = " << st->RealTime()/60.0 << " min." << endl;

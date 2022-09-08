@@ -393,8 +393,8 @@ void TOF_alt( const char *configfilename="sTOF.cfg", const char *outputfilename=
   TH2D *hdxdy_HCAL = new TH2D("hdxdy_HCAL",";y_{HCAL}-y_{expect} (m); x_{HCAL}-x_{expect} (m)", 250, -2.0, 2.0, 500, -4, 4 );
   TH1D *hdx_HCAL = new TH1D("hdx_HCAL",";x_{HCAL}-x_{expect} (m)",500,-4,4);
   TH1D *hdy_HCAL = new TH1D("hdy_HCAL",";y_{HCAL}-y_{expect} (m)",250,-2,2);
-  TH1D *h_TOFn = new TH1D("h_TOFn","Time of Flight: Neutron; ns",600,36,42);
-  TH1D *h_TOFp = new TH1D("h_TOFp","Time of Flight: Proton; ns",600,36,42);
+  TH1D *h_TOFn = new TH1D("h_TOFn","Time of Flight: Neutron; ns",600,35,45);
+  TH1D *h_TOFp = new TH1D("h_TOFp","Time of Flight: Proton; ns",600,35,45);
   TH1D *h_nD = new TH1D("h_nD","Neutron Path Length",1000,10.5,11.5);
   TH1D *h_pD = new TH1D("h_nP","Proton Path Length (Naive)",1000,10.5,11.5);
 
@@ -642,6 +642,7 @@ void TOF_alt( const char *configfilename="sTOF.cfg", const char *outputfilename=
   
   cout << endl;
   
+  /*
   //Construct graphs for uniformity check
   Double_t posErr[xN] = {0.};
   TF1 *f1;
@@ -698,7 +699,7 @@ void TOF_alt( const char *configfilename="sTOF.cfg", const char *outputfilename=
   cTOF_Y->GetYaxis()->SetTitle("E_{HCAL}/KE_{exp}");
   cTOF_Y->SetMarkerStyle(20); // idx 20 Circles, idx 21 Boxes
   cTOF_Y->Write("cTOF_Y");
-
+  */
   ofstream logfile;
   logfile.open( logpath );
   logfile << "#Log of runs corresponding to root file with same date" << endl;

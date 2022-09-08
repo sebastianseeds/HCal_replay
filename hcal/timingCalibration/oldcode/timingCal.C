@@ -289,6 +289,8 @@ void timingCal( const char *configfilename="setup_timingCal.cfg", int run = -1 )
 
   double tHODO;
   double nClusHODO;
+
+  double kineW2;
   
   // Declare root tree variables and set values to memory locations in root file
   C->SetBranchStatus( "*", 0 );
@@ -323,6 +325,7 @@ void timingCal( const char *configfilename="setup_timingCal.cfg", int run = -1 )
   C->SetBranchStatus( "fEvtHdr.fRun", 1 );
   C->SetBranchStatus( "fEvtHdr.fEvtTime", 1 );
   C->SetBranchStatus( "fEvtHdr.fEvtNum", 1 );
+  C->SetBranchStatus( "e.kine.W2", 1 );
 
   C->SetBranchAddress( "sbs.hcal.x", &HCALx );
   C->SetBranchAddress( "sbs.hcal.y", &HCALy );
@@ -357,6 +360,7 @@ void timingCal( const char *configfilename="setup_timingCal.cfg", int run = -1 )
   C->SetBranchAddress( "fEvtHdr.fRun", &runI );
   C->SetBranchAddress( "fEvtHdr.fEvtTime", &runT );
   C->SetBranchAddress( "fEvtHdr.fEvtNum", &runN );
+  C->SetBranchAddress( "e.kine.W2", &kineW2 );
 
   cout << "Tree variables linked." << endl;
 
@@ -566,6 +570,8 @@ void timingCal( const char *configfilename="setup_timingCal.cfg", int run = -1 )
       hQ2->Fill( Q2 ); // Fill histogram
 	
       double W = PgammaN.M();
+      double W_2 = -pow(M_p,2)-2*pow(M_p,2)*(E_e-E_ep)+Q2;
+
       hW->Fill( W );
 	
       //Use the electron kinematics to predict the proton momentum assuming elastic scattering on free proton at rest:
@@ -635,6 +641,9 @@ void timingCal( const char *configfilename="setup_timingCal.cfg", int run = -1 )
 	
       //Get timing offsets for tdc and adc from primary block in cluster
       if( fabs(W-W_mean)<W_sig&&fabs(diff+370)<40 ){
+
+	cout << "W^2:" << pow(W,2) << " W_2^2:" << pow(W_2,2) << " kineW2:" << kineW2 << endl;
+
 	// Get the TOF difference from beam plane normal to HCal
 	double vp_el = pp/M_p;
 	//cout << vp_el << endl;
