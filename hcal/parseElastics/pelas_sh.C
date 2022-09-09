@@ -35,6 +35,7 @@
 #include "TLatex.h"
 #include "TCanvas.h"
 #include "pelas.h"
+#include "TTreeFormula.h"
 //#include "includes.h"
 
 
@@ -92,7 +93,7 @@ vector<Double_t> getDBParam( string file="", string param="", Int_t skip_lines =
 
   vector<Double_t> vec;
 
-  cout << endl << endl << "Loading constants from database file: " << file << ".." << endl;
+  cout << "Loading constants from database file: " << file << ".." << endl;
   ifstream inConstFile( file );
   if( !inConstFile ){
     cerr << endl << "ERROR: No input constant file present at " << file << "." << endl;
@@ -249,29 +250,27 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
 
   ///////////////
   ////HCal params
-  Int_t HCal_chan = 288;
   //ADC time offsets
   string HCal_ADCtoff = "sbs.hcal.adc.timeoffset";
-  vector<Double_t> HCal_ADCtoffsets = getDBParam( HCalConstPath, HCal_ADCtoff, 1, HCal_chan );
+  vector<Double_t> HCal_ADCtoffsets = getDBParam( HCalConstPath, HCal_ADCtoff, 1, maxHCalChan );
   //TDC offsets
   string HCal_TDCoff = "sbs.hcal.tdc.offset";
-  vector<Double_t> HCal_TDCoffsets = getDBParam( HCalConstPath, HCal_TDCoff, 1, HCal_chan );
+  vector<Double_t> HCal_TDCoffsets = getDBParam( HCalConstPath, HCal_TDCoff, 1, maxHCalChan );
   //ADC gain coefficients
   string HCal_ADCg = "-------[ 2021-10-24 04:30:00 ]";
-  vector<Double_t> HCal_ADCgains_211024043000 = getDBParam( HCalConstPath, HCal_ADCg, 2, HCal_chan );
+  vector<Double_t> HCal_ADCgains_211024043000 = getDBParam( HCalConstPath, HCal_ADCg, 2, maxHCalChan );
 
   ////////////////
   ////BBCal params
-  Int_t BBCalSh_chan = 189;
-  Int_t BBCalPS_chan = 52;
   //ADC gain coefficients
   //Shower 2022-02-01 22:00:00
   string BBCalSh_ADCg = "-------[ 2022-02-01 22:00:00 ]";
-  vector<Double_t> BBCalSh_ADCgains_220201220000 = getDBParam( BBCalShConstPath, BBCalSh_ADCg, 2, BBCalSh_chan );
+  vector<Double_t> BBCalSh_ADCgains_220201220000 = getDBParam( BBCalShConstPath, BBCalSh_ADCg, 2, maxBBCalShChan );
   //Preshower 2022-02-01 22:00:00
   string BBCalPS_ADCg = "-------[ 2022-02-01 22:00:00 ]";
-  vector<Double_t> BBCalPS_ADCgains_220201220000 = getDBParam( BBCalPSConstPath, BBCalPS_ADCg, 2, BBCalPS_chan );
+  vector<Double_t> BBCalPS_ADCgains_220201220000 = getDBParam( BBCalPSConstPath, BBCalPS_ADCg, 2, maxBBCalPSChan );
   
+  /*
   cout << endl << endl << "Test offsets: " << endl;
 
   int kNrows = 26;
@@ -284,11 +283,11 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
     }
     cout << endl;
   }
+  */
 
   cout << endl << endl << "Database parameters loaded." << endl;
 
-  TEventList *elist = new TEventList("elist","Elastic Event List");
-  C->Draw(">>elist",globalcut);
+  TTreeFormula *GlobalCut = new TTreeFormula( "GlobalCut", globalcut, C );
 
   cout << "Event list populated with cut placed on elastics." << endl;
 
@@ -299,16 +298,31 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
     Double_t dx;
     Double_t dy;
     Double_t W;
+    Double_t etheta;
+    Double_t ephi;
+    Double_t ebeam;
+    Double_t Q2recon;
+    Double_t W2recon;
+    Double_t nurecon;
+    Double_t Eprecon;
+    Double_t Epelastic;
+    Double_t Epincident;
     Double_t Hx_exp;
     Double_t Hy_exp;
   } PHYSICS;
   
   PHYSICS physics;
-
-
   /*
   typedef struct {
-    
+    Int_t chan;
+    Int_t rows;
+    Int_t cols;
+    Double_t adcoff
+  } HCALDET;
+
+  HCALDET hcal_det;
+  */
+  typedef struct {    
     Double_t vz;
     Double_t vy;
     Double_t vx;
@@ -316,9 +330,49 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
     Double_t py;
     Double_t px;
     Double_t p;
+    Int_t n;
+  } TRACK;
 
-  }
-  */
+  TRACK track;
+  
+  typedef struct {
+    Double_t x;
+    Double_t y;
+    Double_t e;
+    Int_t nblk;
+    Int_t nclus;
+    Double_t cblk_e[ maxHCalChan ];
+    Double_t cblk_tdc[ maxHCalChan ];
+    Double_t cblk_adct[ maxHCalChan ];
+  } HCAL;
+
+  HCAL hcal;
+
+  typedef struct {
+    Double_t x;
+    Double_t y;
+    Double_t e;
+    Int_t nblk;
+    Int_t nclus;
+    Double_t cblk_e[ maxBBCalPSChan ];
+    Double_t cblk_ec[ maxBBCalPSChan ];
+    Double_t cblk_atime[ maxBBCalPSChan ];
+  } BBCALPS;
+
+  BBCALPS bbcalps;
+
+  typedef struct {
+    Double_t x;
+    Double_t y;
+    Double_t e;
+    Int_t nblk;
+    Int_t nclus;
+    Double_t cblk_e[ maxBBCalShChan ];
+    Double_t cblk_ec[ maxBBCalShChan ];
+    Double_t cblk_atime[ maxBBCalShChan ];
+  } BBCALSH;
+
+  BBCALSH bbcalsh;
 
   /////////////////////////////////
   ////Declare input tree parameters
@@ -332,9 +386,13 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
   double BBfp_x[maxTracks], BBfp_y[maxTracks], BBfp_th[maxTracks], BBfp_ph[maxTracks];
   double BBtgt_x[maxTracks], BBtgt_y[maxTracks], BBtgt_th[maxTracks], BBtgt_ph[maxTracks];
   //BBCal
-  double BBtr_n, BBps_x, BBps_y, BBps_e, BBsh_x, BBsh_y, BBsh_e;
+  double BBtr_n, BBps_x, BBps_y, BBps_e, BBps_nblk, BBps_nclus, BBsh_x, BBsh_y, BBsh_e, BBsh_nblk, BBsh_nclus, BB_eOp;
+  double BBps_cblk_e[maxBBCalPSChan], BBps_cblk_ec[maxBBCalPSChan], BBps_cblk_atime[maxBBCalPSChan], BBps_cblk_id[maxBBCalPSChan];
+  double BBsh_cblk_e[maxBBCalShChan], BBsh_cblk_ec[maxBBCalShChan], BBsh_cblk_atime[maxBBCalShChan], BBsh_cblk_id[maxBBCalShChan];
+  //GEM
+  double BBgem_nplanes;
   //Trigger TDC
-  double TDCT_id[maxTdcChan], TDCT_tdc[maxTdcChan]; 
+  double TDCT_id[maxTDCTrigChan], TDCT_tdc[maxTDCTrigChan]; 
   int TDCTndata;
   //HCal
   double HCAL_x, HCAL_y, HCAL_e, HCAL_nblk, HCAL_nclus;
@@ -383,6 +441,21 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
   C->SetBranchStatus( "bb.sh.e", 1 );
   C->SetBranchStatus( "bb.sh.x", 1 );
   C->SetBranchStatus( "bb.sh.y", 1 );
+  C->SetBranchStatus( "bb.ps.clus_blk.e", 1 );
+  C->SetBranchStatus( "bb.ps.clus_blk.e_c", 1 );
+  C->SetBranchStatus( "bb.ps.clus_blk.atime", 1 );
+  C->SetBranchStatus( "bb.ps.clus_blk.id", 1 );
+  C->SetBranchStatus( "bb.ps.nblk", 1 );
+  C->SetBranchStatus( "bb.ps.nclus", 1 );
+  C->SetBranchStatus( "bb.sh.clus_blk.e", 1 );
+  C->SetBranchStatus( "bb.sh.clus_blk.e_c", 1 );
+  C->SetBranchStatus( "bb.sh.clus_blk.atime", 1 );
+  C->SetBranchStatus( "bb.sh.clus_blk.id", 1 );
+  C->SetBranchStatus( "bb.sh.nblk", 1 );
+  C->SetBranchStatus( "bb.sh.nclus", 1 );
+  C->SetBranchStatus( "bb.etot_over_p", 1 );
+  // GEM
+  C->SetBranchStatus( "bb.gem.track.nhits", 1 );
   // Trigger TDC
   C->SetBranchStatus( "bb.tdctrig.tdc", 1 );
   C->SetBranchStatus( "bb.tdctrig.tdcelemID", 1 );
@@ -435,6 +508,22 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
   C->SetBranchAddress( "bb.sh.e", &BBsh_e );
   C->SetBranchAddress( "bb.sh.x", &BBsh_x );
   C->SetBranchAddress( "bb.sh.y", &BBsh_y );
+  C->SetBranchAddress( "bb.ps.clus_blk.e", BBps_cblk_e );
+  C->SetBranchAddress( "bb.ps.clus_blk.e_c", BBps_cblk_ec );
+  C->SetBranchAddress( "bb.ps.clus_blk.atime", BBps_cblk_atime );
+  C->SetBranchAddress( "bb.ps.clus_blk.id", BBps_cblk_id );
+  C->SetBranchAddress( "bb.ps.nblk", &BBps_nblk );
+  C->SetBranchAddress( "bb.ps.nclus", &BBps_nclus );
+  C->SetBranchAddress( "bb.sh.clus_blk.e", BBsh_cblk_e );
+  C->SetBranchAddress( "bb.sh.clus_blk.e_c", BBsh_cblk_ec );
+  C->SetBranchAddress( "bb.sh.clus_blk.atime", BBsh_cblk_atime );
+  C->SetBranchAddress( "bb.sh.clus_blk.id", BBsh_cblk_id );
+  C->SetBranchAddress( "bb.sh.nblk", &BBsh_nblk );
+  C->SetBranchAddress( "bb.sh.nclus", &BBsh_nclus );
+  C->SetBranchAddress( "bb.etot_over_p", &BB_eOp );
+  // GEM
+  C->SetBranchAddress( "bb.gem.track.nhits", &BBgem_nplanes );
+
   // Trigger TDC
   C->SetBranchAddress( "bb.tdctrig.tdcelemID", TDCT_id );
   C->SetBranchAddress( "bb.tdctrig.tdc", TDCT_tdc );
@@ -447,10 +536,6 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
   C->SetBranchAddress( "e.kine.W2", &kineW2 );
   
   cout << "Tree variables linked." << endl;
-
-  // Define a clock to check macro processing time
-  TStopwatch *sw = new TStopwatch();
-  sw->Start();
   
   // Declare outfiles
   //outputfilename = Form( "/lustre19/expphy/volatile/halla/sbs/seeds/GMN_parsed/e1209019_parsed_short_SBS%d_tar%s_%s.root", kine, tar.c_str(), date.c_str() );
@@ -461,88 +546,62 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
   // Initialize misc. variables
   int elasYield = 0; // Keep track of total elastics analyzed
   double pBeam = E_e/(1.+E_e/M_p*(1.-cos(BB_th)));  
-
-  //Mean energy loss of the beam prior to the scattering:
-  double Eloss_outgoing = celldiameter/2.0/sin(BB_th) * rho_tgt * dEdx_tgt; //Approximately 1 MeV, could correct further with raster position
+  double Eloss_outgoing = celldiameter/2.0/sin(BB_th) * rho_tgt * dEdx_tgt; //Approximately 1 MeV
   if( useAlshield != 0 ) Eloss_outgoing += Alshieldthick * rho_Al * dEdx_Al;
 
+  // Declare Histograms
   TH1D *h_W2 = new TH1D("h_W2",";W2 (GeV^2);",250,0,2);
   TH1D *h_W = new TH1D("h_W",";W (GeV);",250,0,2);
 
+  // Create output tree
   TTree *Tout = new TTree("Tout","Tree containing variables after final cuts placed on W2 and HCal");
+
+  /*
+  // Declare output tree variables
+  //physics
   double T_ebeam, T_etheta, T_ephi, T_precon, T_pelastic, T_thetabend, T_dpel, T_W2, T_W;
   double T_pincident;
-  double T_BBtr_vx, T_BBtr_vy, T_BBtr_vz, T_BBtr_px, T_BBtr_py, T_BBtr_pz;
-  double T_BBtr_n, T_BBtr_p;
-  double T_HCAL_x, T_HCAL_y, T_HCAL_e, T_HCAL_nblk, T_HCAL_nclus;
-  double T_HCAL_cblk_tdctime[maxHCalChan], T_HCAL_cblk_atime[maxHCalChan], T_HCAL_cblk_id[maxHCalChan], T_HCAL_cblk_e[maxHCalChan];
-  double T_HCAL_ce[maxHCalChan], T_HCAL_catime[maxHCalChan], T_HCAL_cid[maxHCalChan], T_HCAL_cnblk[maxHCalChan], T_HCAL_ctdctime[maxHCalChan];
   double T_pp_expect, T_ptheta_expect, T_pphi_expect;
   double T_Q2;
+  double T_HCAL_xexpect, T_HCAL_yexpect;
+  //tracks
+  double T_BBtr_vx, T_BBtr_vy, T_BBtr_vz, T_BBtr_px, T_BBtr_py, T_BBtr_pz;
+  double T_BBtr_n, T_BBtr_p;
+  //HCal
+  double T_HCAL_x, T_HCAL_y, T_HCAL_e;
+  int T_HCAL_nblk, T_HCAL_nclus;
+  double T_HCAL_cblk_tdctime[maxHCalChan], T_HCAL_cblk_atime[maxHCalChan], T_HCAL_cblk_id[maxHCalChan], T_HCAL_cblk_e[maxHCalChan];
+  double T_HCAL_ce[maxHCalChan], T_HCAL_catime[maxHCalChan], T_HCAL_cid[maxHCalChan], T_HCAL_cnblk[maxHCalChan], T_HCAL_ctdctime[maxHCalChan];
+  //BBCal
   double T_BBps_x, T_BBps_y, T_BBps_e, T_BBsh_x, T_BBsh_y, T_BBsh_e;
   double T_BB_d, T_BB_th, T_HCal_d, T_HCal_th;
-
-  double T_HCAL_xexpect, T_HCAL_yexpect;
-
-  Tout->Branch( "physics", &physics, "Ep/D:KEp/D:dx/D:dy/D:Hx_exp/D:Hy_exp/D" );
-
-  Tout->Branch( "Ebeam", &T_ebeam, "Ebeam/D" );
-  Tout->Branch( "Q2", &T_Q2, "Q2/D"); 
-  Tout->Branch( "etheta", &T_etheta, "etheta/D");
-  Tout->Branch( "ephi", &T_ephi, "ephi/D");
-  Tout->Branch( "ep_recon", &T_precon, "ep_recon/D");
-  Tout->Branch( "ep_elastic", &T_pelastic, "ep_elastic/D");
-  Tout->Branch( "ep_incident", &T_pincident, "ep_incident/D");
-  Tout->Branch( "thetabend", &T_thetabend, "thetabend/D");
-  Tout->Branch( "dpel", &T_dpel, "dpel/D");
-  Tout->Branch( "W2", &T_W2, "W2/D");
-  Tout->Branch( "W", &T_W, "W/D");
-  Tout->Branch( "HCAL_xexpect", &T_HCAL_xexpect, "HCAL_xexpect/D");
-  Tout->Branch( "HCAL_yexpect", &T_HCAL_yexpect, "HCAL_yexpect/D");
-  Tout->Branch( "BBtr_n", &T_BBtr_n, "BBtr_n/D");
-  Tout->Branch( "BBtr_vx", &T_BBtr_vx, "BBtr_vx/D");
-  Tout->Branch( "BBtr_vy", &T_BBtr_vy, "BBtr_vy/D");
-  Tout->Branch( "BBtr_vz", &T_BBtr_vz, "BBtr_vz/D");
-  Tout->Branch( "BBtr_px", &T_BBtr_px, "BBtr_px/D");
-  Tout->Branch( "BBtr_py", &T_BBtr_py, "BBtr_py/D");
-  Tout->Branch( "BBtr_pz", &T_BBtr_pz, "BBtr_pz/D");
-  //Tout->Branch( "BBtr_p", &T_BBtr_p, "BBtr_p[(int)T_BBtr_n]/D");
-  Tout->Branch( "BBtr_p", &T_BBtr_p, "BBtr_p/D");
-  Tout->Branch( "BB_d", &T_BB_d, "BB_d/D");
-  Tout->Branch( "BB_th", &T_BB_th, "BB_th/D");
-  Tout->Branch( "HCal_d", &T_HCal_d, "HCal_d/D");
-  Tout->Branch( "HCal_th", &T_HCal_th, "HCal_th/D");
-  Tout->Branch( "HCAL_x", &T_HCAL_x, "HCAL_x/D");
-  Tout->Branch( "HCAL_y", &T_HCAL_y, "HCAL_y/D");
-  Tout->Branch( "HCAL_e", &T_HCAL_e, "HCAL_e/D");
-  Tout->Branch( "HCAL_nclus", &T_HCAL_nclus, "HCAL_nclus/D");
-  Tout->Branch( "HCAL_nblk", &T_HCAL_nblk, "HCAL_nblk/D");
-  Tout->Branch( "HCAL_cblk_tdctime", &T_HCAL_cblk_tdctime, "HCAL_cblk_tdctime/D");
-  Tout->Branch( "HCAL_cblk_atime", &T_HCAL_cblk_atime, "HCAL_cblk_atime/D");
-  Tout->Branch( "HCAL_cblk_id", &T_HCAL_cblk_id, "HCAL_cblk_id/D");
-  Tout->Branch( "HCAL_cblk_e", &T_HCAL_cblk_e, "HCAL_cblk_e/D");
-  Tout->Branch( "HCAL_ce", &T_HCAL_ce, "HCAL_ce/D");
-  Tout->Branch( "HCAL_catime", &T_HCAL_catime, "HCAL_catime/D");
-  Tout->Branch( "HCAL_cid", &T_HCAL_cid, "HCAL_cid/D");
-  Tout->Branch( "HCAL_cnblk", &T_HCAL_cnblk, "HCAL_cnblk/D");
-  Tout->Branch( "HCAL_ctdctime", &T_HCAL_ctdctime, "HCAL_ctdctime/D");
-  Tout->Branch( "pp_expect", &T_pp_expect, "pp_expect/D");
-  Tout->Branch( "ptheta_expect", &T_ptheta_expect, "ptheta_expect/D");
-  Tout->Branch( "pphi_expect", &T_pphi_expect, "pphi_expect/D");
-  Tout->Branch( "BBps_x", &T_BBps_x, "BBps_x/D");
-  Tout->Branch( "BBps_y", &T_BBps_y, "BBps_y/D");
-  Tout->Branch( "BBps_e", &T_BBps_e, "BBps_e/D");
-  Tout->Branch( "BBsh_x", &T_BBsh_x, "BBsh_x/D");
-  Tout->Branch( "BBsh_y", &T_BBsh_y, "BBsh_y/D");
-  Tout->Branch( "BBsh_e", &T_BBsh_e, "BBsh_e/D");
+  double T_BBps_cblk_e[maxBBCalPSChan], T_BBps_cblk_ec[maxBBCalPSChan], T_BBps_cblk_atime[maxBBCalPSChan];
+  double T_BBsh_cblk_e[maxBBCalShChan], T_BBsh_cblk_ec[maxBBCalShChan], T_BBsh_cblk_atime[maxBBCalShChan];
+  */
+  ////////////////
+  ////Set branches
+  //Physics
+  Tout->Branch( "physics", &physics, "Ep/D:KEp/D:dx/D:dy/D:W/D:etheta/D:ephi/D:ebeam/D:Q2recon/D:W2recon/D:nurecon/D:Eprecon/D:Epelastic/D:Epincident/D:Hx_exp/D:Hy_exp/D" );
+  //Tracks
+  Tout->Branch( "track", &track, "vz/D:vy/D:vx/D:pz/D:py/D:px/D:p/D:n/I" );
+  //HCal
+  Tout->Branch( "hcal", &hcal, Form("x/D:y/D:e/D:nblk/I:nclus/I:cblk_e[%d]/D:cblk_tdc[%d]/D:cblk_adct[%d]/D",maxHCalChan,maxHCalChan,maxHCalChan) );
+  //BBCal Preshower
+  Tout->Branch( "bbcalps", &bbcalps, Form("x/D:y/D:e/D:nblk/I:nclus/I:cblk_e[%d]/D:cblk_ec[%d]/D:cblk_atime[%d]/D",maxBBCalPSChan,maxBBCalPSChan,maxBBCalPSChan) );
+  //BBCal Shower
+  Tout->Branch( "bbcalsh", &bbcalsh, Form("x/D:y/D:e/D:nblk/I:nclus/I:cblk_e[%d]/D:cblk_ec[%d]/D:cblk_atime[%d]/D",maxBBCalShChan,maxBBCalShChan,maxBBCalShChan) );
 
   // Set long int to keep track of total entries
-  Long64_t Nevents = elist->GetN();
+  Long64_t Nevents = C->GetEntries();
+
+  Int_t treenum = 0, currenttreenum = 0;
 
   cout << endl << "Initialization complete." << endl << endl;
-  cout << "Opened up tree with nentries: " << C->GetEntries() << ", nentries passing globalcut: " << Nevents << "." << endl << endl;
+  cout << "Opened up tree with nentries: " << C->GetEntries() << "." << endl << endl;
 
   //Loop over events
+  TStopwatch *sw = new TStopwatch();
+  sw->Start( kTRUE );
   cout << "Main loop over all data commencing.." << endl;
   Double_t progress = 0.;
   Double_t timekeeper = 0., timeremains = 0.;
@@ -566,24 +625,36 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
 	timeremains = timekeeper*( double(Nevents)/double(nevent) - 1. ); 
       sw->Reset();
       sw->Continue();
-      
       progress = (double)((nevent+1.)/Nevents);
       cout << "] " << int(progress*100.) << "%, elastic events: " << elasYield << ", time remaining: " << int(timeremains/60.) << "m \r";
       cout.flush();
       
-      C->GetEntry( elist->GetEntry( nevent ) ); 
+      //Get each event for analysis
+      C->GetEntry( nevent );
 
-      //Cut on BBCal and HCal trigger coincidence
+      ////////
+      ////Cuts
+      //Use TTreeFormula to apply globalcut to speed up processing and cut on track qty=1
+      currenttreenum = C->GetTreeNumber();
+      if( nevent == 1 || currenttreenum != treenum ){
+	treenum = currenttreenum; 
+	GlobalCut->UpdateFormulaLeaves();
+      }
+      bool failedglobal = GlobalCut->EvalInstance(0) == 0;
+      if( int(BBtr_n) != 1 || failedglobal ) continue;
+       
+      //BBCal and HCal trigger coincidence
       double bbcal_time=0., hcal_time=0.;
       for(int ihit=0; ihit<TDCTndata; ihit++){
 	if(TDCT_id[ihit]==5) bbcal_time=TDCT_tdc[ihit];
 	if(TDCT_id[ihit]==0) hcal_time=TDCT_tdc[ihit];
       }
-      double diff = hcal_time - bbcal_time; 
-
-      //Cut here on BB trigger/HCal trigger coincidence time
+      double diff = hcal_time - bbcal_time;
+      //Cut on BB trigger/HCal trigger coincidence time
       if( fabs(diff-510.)>10. ) continue;
 
+      ///////////////
+      ////Corrections
       //Correct the beam energy with energy loss in target using vertex position
       double Eloss = (BBtr_vz[0]+l_tgt/2.0) * rho_tgt * dEdx_tgt + uwallthick_LH2 * rho_Al * dEdx_Al; //approximately 3 MeV
       double E_corr = E_e - Eloss;
@@ -593,188 +664,131 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
       //TBranch *bla = C->GetBranch("sbs.hcal.e");
       //cout << kineW2 << endl;
 
+      //////////////////////////////
+      ////Start Physics Calculations
       double p_corr = BBtr_p[0] - Eloss_outgoing; //Neglecting the mass of e'
-
-      //Proceed only if at least one track exists in BB arm - lowest chi2 track always first element
       double etheta = acos( BBtr_pz[0]/BBtr_p[0] ); //Will use the uncorrected track momentum to reconstruct e' theta
-      double ephi = atan2( BBtr_py[0], BBtr_px[0] );
-      
+      double ephi = atan2( BBtr_py[0], BBtr_px[0] );   
       TVector3 vertex( 0, 0, BBtr_vz[0] ); // z location of vertex in hall coordinates
       TLorentzVector Pbeam( 0, 0, E_corr, E_corr ); //Mass of e negligable
       TLorentzVector kprime( BBtr_px[0], BBtr_py[0], BBtr_pz[0], BBtr_p[0] );
-      TLorentzVector Ptarg( 0, 0, 0, M_p );
-      
+      TLorentzVector Ptarg( 0, 0, 0, M_p );   
       TLorentzVector q = Pbeam - kprime;
-      TLorentzVector PgammaN = Ptarg + q; //(-px, -py, ebeam - pz, Mp + ebeam - p)
-      
+      TLorentzVector PgammaN = Ptarg + q; //(-px, -py, ebeam - pz, Mp + ebeam - p)     
       double pel = E_corr/( 1.+E_corr/M_p*( 1.-cos(etheta) ) );
       double nu = E_corr - BBtr_p[0];
       double pp = sqrt( pow(nu,2)+2.*M_p*nu );
       double phinucleon = ephi + PI; //assume coplanarity
-      double thetanucleon = acos( (E_corr - BBtr_pz[0])/pp ); //use elastic constraint on nucleon kinematics
-      
+      double thetanucleon = acos( (E_corr - BBtr_pz[0])/pp ); //use elastic constraint on nucleon kinematics     
       TVector3 pNhat( sin(thetanucleon)*cos(phinucleon), sin(thetanucleon)*sin(phinucleon), cos(thetanucleon) );
       
       //Define HCal coordinate system
       TVector3 HCAL_zaxis( sin(-HCal_th), 0, cos(-HCal_th) );
       TVector3 HCAL_xaxis( 0, -1, 0 );
-      TVector3 HCAL_yaxis = HCAL_zaxis.Cross(HCAL_xaxis).Unit();
-      
-      TVector3 HCAL_origin = HCal_d * HCAL_zaxis + hcalheight * HCAL_xaxis;
-      
-      //Define intersection points for hadron vector
-      double sintersect = ( HCAL_origin - vertex ).Dot( HCAL_zaxis ) / (pNhat.Dot( HCAL_zaxis ) );
-      
-      TVector3 HCAL_intersect = vertex + sintersect * pNhat;
-      
-      //Define the expected position of hadron on HCal from BB track
-      double yexpect_HCAL = (HCAL_intersect - HCAL_origin).Dot( HCAL_yaxis );
-      double xexpect_HCAL = (HCAL_intersect - HCAL_origin).Dot( HCAL_xaxis );
-      
-      double E_ep = sqrt( pow(M_e,2) + pow(BBtr_p[0],2) ); // Obtain the scattered electron energy
-      
-      double p_ep = BBtr_p[0];
-      
-      double Q2 = 2*E_corr*E_ep*( 1-(BBtr_pz[0]/p_ep) ); // Obtain Q2 from beam energy, outgoing electron energy, and momenta
-      
-      //Get invarient mass transfer W from the four-momentum of the scattered nucleon
-      double W = PgammaN.M();
-      
-      //Use the electron kinematics to predict the proton momentum assuming elastic scattering on free proton at rest (will need to correct for fermi motion):
-      double E_pp = nu+M_p; // Get energy of the proton
-      double Enucleon = sqrt(pow(pp,2)+pow(M_p,2)); // Check on E_pp, same
-      //hE_pp->Fill( E_pp ); // Fill histogram
-      
-      double KE_p = nu; // For elastics
-      //hKE_p->Fill( KE_p );
+      TVector3 HCAL_yaxis = HCAL_zaxis.Cross(HCAL_xaxis).Unit();      
+      TVector3 HCAL_origin = HCal_d * HCAL_zaxis + HCALHeight * HCAL_xaxis;      
+      double sintersect = ( HCAL_origin - vertex ).Dot( HCAL_zaxis ) / (pNhat.Dot( HCAL_zaxis ) ); 
+      TVector3 HCAL_intersect = vertex + sintersect * pNhat;   
 
+      //Calculate quantities of interest
+      double yexpect_HCAL = (HCAL_intersect - HCAL_origin).Dot( HCAL_yaxis );
+      double xexpect_HCAL = (HCAL_intersect - HCAL_origin).Dot( HCAL_xaxis );  
+      double E_ep = sqrt( pow(M_e,2) + pow(BBtr_p[0],2) ); // Obtain the scattered electron energy 
+      double p_ep = BBtr_p[0];     
+      double Q2 = 2*E_corr*E_ep*( 1-(BBtr_pz[0]/p_ep) ); // Obtain Q2 from beam energy, outgoing electron energy, and momenta  
+      double W = PgammaN.M(); //Get invarient mass transfer W from the four-momentum of the scattered nucleon
+      //double W = sqrt(kineW2);
+      double E_pp = nu+M_p; // Get energy of the proton
+      double Enucleon = sqrt(pow(pp,2)+pow(M_p,2)); // Check on E_pp, same     
+      double KE_p = nu; // For elastics
       double dx = HCAL_x - xexpect_HCAL;
-      double dy = HCAL_y - yexpect_HCAL;
-      
+      double dy = HCAL_y - yexpect_HCAL;  
+      double pelastic = E_corr/(1.+(E_corr/M_p)*(1.0-cos(etheta))); 	
+      double precon = BBtr_p[0] + Eloss_outgoing; //reconstructed momentum, corrected for mean energy loss exiting the target (later we'll also want to include Al shielding on scattering chamber)
+      double nu_recon = E_corr - precon;
+      double Q2recon = 2.0*E_corr*precon*(1.0-cos(etheta));
+      double W2recon = pow(M_p,2) + 2.0*M_p*nu_recon - Q2recon;
+
+      //Fill physics variables
       physics.Ep = E_pp;
       physics.KEp = KE_p;
       physics.dx = dx;
       physics.dy = dy;
+      physics.W = W;
+      physics.etheta = etheta;
+      physics.ephi = ephi;
+      physics.ebeam = E_corr;
+      physics.Q2recon = Q2recon;
+      physics.W2recon = W2recon;
+      physics.nurecon = nu_recon;
+      physics.Eprecon = precon;
+      physics.Epelastic = pelastic;
+      physics.Epincident = pelastic - Eloss_outgoing;
       physics.Hx_exp = xexpect_HCAL;
       physics.Hy_exp = yexpect_HCAL;
  
-      
-      
-      
+      //Fill HCal detector variables. TODO - Inefficient, don't need to save per event
+      /*
+      T_BB_d = BB_d;
+      T_BB_th = BB_th;
+      T_HCal_d = HCal_d;
+      T_HCal_th = HCal_th;
+      */
 
-      if( tar == "LD2" ){
-	
-	T_BB_d = BB_d;
-	T_BB_th = BB_th;
-	T_HCal_d = HCal_d;
-	T_HCal_th = HCal_th;
-	
-	T_BBtr_vz = BBtr_vz[0];
-	T_BBtr_vy = BBtr_vy[0];
-	T_BBtr_vx = BBtr_vx[0];
-	T_BBtr_pz = BBtr_pz[0];
-	T_BBtr_py = BBtr_py[0];
-	T_BBtr_px = BBtr_px[0];
-	T_BBtr_p = BBtr_p[0];
-	
-	T_BBtr_n = BBtr_n;
-	
-	T_BBps_x = BBps_x;
-	T_BBps_y = BBps_y;
-	T_BBps_e = BBps_e;
-	T_BBsh_x = BBsh_x;
-	T_BBsh_y = BBsh_y;
-	T_BBsh_e = BBsh_e;
-	
-	T_HCAL_x = HCAL_x;
-	T_HCAL_y = HCAL_y;
-	T_HCAL_e = HCAL_e;
-	
-	T_etheta = etheta;
-	T_ephi = ephi;
-	
-	T_ebeam = E_corr;
-	
-	double pelastic = E_corr/(1.+(E_corr/M_p)*(1.0-cos(etheta))); 
-	
-	double precon = BBtr_p[0] + Eloss_outgoing; //reconstructed momentum, corrected for mean energy loss exiting the target (later we'll also want to include Al shielding on scattering chamber)
-	
-	T_precon = precon;
-	T_pelastic = pelastic; 
-	T_pincident = pelastic - Eloss_outgoing;
-	
-	double nu_recon = E_corr - precon;
-	double Q2recon = 2.0*E_corr*precon*(1.0-cos(etheta));
-	double W2recon = pow(M_p,2) + 2.0*M_p*nu_recon - Q2recon;
-	
-	T_Q2 = Q2recon;
-	T_W2 = W2recon;
-	T_W = W;
-	h_W2->Fill(W2recon);
-	h_W->Fill(W);
+      //Fill track variables
+      track.vz = BBtr_vz[0];
+      track.vy = BBtr_vy[0];
+      track.vx = BBtr_vx[0];
+      track.pz = BBtr_pz[0];
+      track.py = BBtr_py[0];
+      track.px = BBtr_px[0];
+      track.p = BBtr_p[0];
+      track.n = (Int_t)BBtr_n;
 
-	T_HCAL_xexpect = xexpect_HCAL;
-	T_HCAL_yexpect = yexpect_HCAL;
+      //Fill HCal variables from primary cluster
+      hcal.x = HCAL_x;
+      hcal.y = HCAL_y;
+      hcal.e = HCAL_e;
+      hcal.nblk = (Int_t)HCAL_nblk;
+      hcal.nclus = (Int_t)HCAL_nclus;
+      for( int b=0; b<HCAL_nblk; b++ ){	
+	int ID = HCAL_cblk_id[b];
 	
-	elasYield++;
-	Tout->Fill();
+	hcal.cblk_e[ ID ] = HCAL_cblk_e[ b ];
+	hcal.cblk_tdc[ ID ] = HCAL_cblk_tdctime[ b ];
+	hcal.cblk_adct[ ID ] = HCAL_cblk_atime[ b ];
       }
-      if( tar=="LH2" ){
 	
-	T_BB_d = BB_d;
-	T_BB_th = BB_th;
-	T_HCal_d = HCal_d;
-	T_HCal_th = HCal_th;
+      //Fill BBCal PS
+      bbcalps.x = BBps_x;
+      bbcalps.y = BBps_y;
+      bbcalps.e = BBps_e;
+      bbcalps.nblk = (Int_t)BBps_nblk;
+      bbcalps.nclus = (Int_t)BBps_nclus;
+      for( int b=0; b<BBps_nblk; b++ ){	
+	int ID = BBps_cblk_id[b];
 	
-	T_BBtr_vz = BBtr_vz[0];
-	T_BBtr_vy = BBtr_vy[0];
-	T_BBtr_vx = BBtr_vx[0];
-	T_BBtr_pz = BBtr_pz[0];
-	T_BBtr_py = BBtr_py[0];
-	T_BBtr_px = BBtr_px[0];
-	T_BBtr_p = BBtr_p[0];
-	
-	T_BBtr_n = BBtr_n;
-	
-	T_BBps_x = BBps_x;
-	T_BBps_y = BBps_y;
-	T_BBps_e = BBps_e;
-	T_BBsh_x = BBsh_x;
-	T_BBsh_y = BBsh_y;
-	T_BBsh_e = BBsh_e;
-	
-	T_HCAL_x = HCAL_x;
-	T_HCAL_y = HCAL_y;
-	T_HCAL_e = HCAL_e;
-	
-	T_etheta = etheta;
-	T_ephi = ephi;
-	
-	T_ebeam = E_corr;
-	
-	double pelastic = E_corr/(1.+(E_corr/M_p)*(1.0-cos(etheta))); 
-	
-	double precon = BBtr_p[0] + Eloss_outgoing; //reconstructed momentum, corrected for mean energy loss exiting the target (later we'll also want to include Al shielding on scattering chamber)
-	
-	T_precon = precon;
-	T_pelastic = pelastic; 
-	T_pincident = pelastic - Eloss_outgoing;
-	
-	double nu_recon = E_corr - precon;
-	double Q2recon = 2.0*E_corr*precon*(1.0-cos(etheta));
-	double W2recon = pow(M_p,2) + 2.0*M_p*nu_recon - Q2recon;
-
-	T_Q2 = Q2recon;
-	T_W2 = W2recon;
-	T_W = W;
-	h_W2->Fill(W2recon);
-	h_W->Fill(W);
-	
-	elasYield++;
-	Tout->Fill();
-	
-      
+	bbcalps.cblk_e[ ID ] = BBps_cblk_e[ b ];
+	bbcalps.cblk_ec[ ID ] = BBps_cblk_ec[ b ];
+	bbcalps.cblk_atime[ ID ] = BBps_cblk_atime[ b ];
       }
+      //Fill BBCal Sh
+      bbcalsh.x = BBsh_x;
+      bbcalsh.y = BBsh_y;
+      bbcalsh.e = BBsh_e;
+      bbcalsh.nblk = (Int_t)BBsh_nblk;
+      bbcalsh.nclus = (Int_t)BBsh_nclus;
+      for( int b=0; b<BBsh_nblk; b++ ){	
+	int ID = BBsh_cblk_id[b];
+	
+	bbcalsh.cblk_e[ ID ] = BBsh_cblk_e[ b ];
+	bbcalsh.cblk_ec[ ID ] = BBsh_cblk_ec[ b ];
+	bbcalsh.cblk_atime[ ID ] = BBsh_cblk_atime[ b ];
+      }
+	
+      elasYield++;
+      Tout->Fill();
+
     }
   
   }
@@ -795,10 +809,11 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
 
   fout->Write();
 
-  elist->Delete();
   st->Stop();
-
+  
   // Send time efficiency report to console
   cout << "CPU time elapsed = " << st->CpuTime() << " s = " << st->CpuTime()/60.0 << " min. Real time = " << st->RealTime() << " s = " << st->RealTime()/60.0 << " min." << endl;
+  
 
+  return;
 }
