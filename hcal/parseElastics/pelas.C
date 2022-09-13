@@ -258,6 +258,8 @@ void pelas( const char *configfilename="setup_pelas.cfg", const char *outputfile
 
   double HCALx, HCALy, HCALe;
 
+  double BLdnew, BLclk;
+
   // Declare root tree variables and set values to memory locations in root file
   // Switch them on
   C->SetBranchStatus( "*", 0 );
@@ -294,6 +296,9 @@ void pelas( const char *configfilename="setup_pelas.cfg", const char *outputfile
   C->SetBranchStatus( "bb.tdctrig.tdc", 1 );
   C->SetBranchStatus( "bb.tdctrig.tdcelemID", 1 );
   C->SetBranchStatus( "Ndata.bb.tdctrig.tdcelemID", 1 );
+  // Beamline
+  C->SetBranchStatus( "sbs.bcm.dnew.cnt", 1 );
+  C->SetBranchStatus( "sbs.104kHz_CLK.cnt", 1 );
 
   // Set the variables
   // HCal
@@ -329,6 +334,9 @@ void pelas( const char *configfilename="setup_pelas.cfg", const char *outputfile
   C->SetBranchAddress( "bb.tdctrig.tdcelemID", TDCT_id );
   C->SetBranchAddress( "bb.tdctrig.tdc", TDCT_tdc );
   C->SetBranchAddress( "Ndata.bb.tdctrig.tdcelemID", &TDCTndata );  
+  // Beamline
+  C->SetBranchAddress( "sbs.bcm.dnew.cnt", &BLdnew );
+  C->SetBranchAddress( "sbs.104kHz_CLK.cnt", &BLclk );
 
   cout << "Tree variables linked." << endl;
 

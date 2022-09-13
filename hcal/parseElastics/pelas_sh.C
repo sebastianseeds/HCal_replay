@@ -36,45 +36,14 @@
 #include "TCanvas.h"
 #include "pelas.h"
 #include "TTreeFormula.h"
+//#include "THaRun.h"
+//#include "Event.h"
 //#include "includes.h"
 
 
 //Declare Functions
 vector <Double_t> getDBParam( const char *file="", const char *param="", Int_t skip_lines = 0, Int_t chan = 0 );
 string getDate();
-
-/*
-//Static Detector Parameters
-const int maxTracks = 1000; // Reasonable limit on tracks to be stored per event
-const int maxTdcChan = 10; // Set to accomodate original 5 TDCTrig channels with buffer
-const int maxHCalChan = 288; // Total HCal channels
-const int maxBBCalShChan = 189; // Total BBCal Shower Channels
-const int maxBBCalPSChan = 52; // Total BBCal Preshower Channels
-const double hcalheight = 0.365; // Height of HCal above beamline
-
-//Constants
-const double PI = TMath::Pi();
-const double M_e = 0.00051;
-const double M_p = 0.938272;
-const double M_n = 0.939565;
-
-//Static Target Parameters
-const double l_tgt = 0.15; // Length of the target (m)
-const double rho_tgt = 0.0723; // Density of target (g/cc)
-const double rho_Al = 2.7; // Density of aluminum windows (g/cc)
-const double celldiameter = 1.6*2.54; //cm, right now this is a guess
-const double Ztgt = 1.0;
-const double Atgt = 1.0;
-const double Mmol_tgt = 1.008; //g/mol
-
-//For energy-loss correction to beam energy:
-const double dEdx_tgt=0.00574; //According to NIST ESTAR, the collisional stopping power of hydrogen is about 5.74 MeV*cm2/g at 2 GeV energy
-const double dEdx_Al = 0.0021; //According to NIST ESTAR, the collisional stopping power of Aluminum is about 2.1 MeV*cm2/g between 1-4 GeV
-const double uwallthick_LH2 = 0.0145; //cm
-const double dwallthick_LH2 = 0.015; //cm
-const double cellthick_LH2 = 0.02; //cm, this is a guess;
-const double Alshieldthick = 2.54/8.0; //= 1/8 inch * 2.54 cm/inch  
-*/
 
 // Get today's date
 string getDate(){
@@ -123,7 +92,6 @@ vector<Double_t> getDBParam( string file="", string param="", Int_t skip_lines =
   return vec;
 }
 
-
 void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfilename="test_out.root" ){
   
   // Define a clock to check macro processing time
@@ -132,22 +100,22 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
 
   // Get the date
   string date = getDate();
-  
+
   // Declare Chain for many root files
   TChain *C = new TChain("T");
 
   // Declare general physics parameters to be modified by input config file
-  int kine = 8; // Keep track of kinematic being analyzed
-  double E_e = 1.916; // Energy of beam (incoming electrons from accelerator)
-  double t_trig = 510; // Time difference between BBCal Hi (L1A) and HCal Trig (ns)
-  double BB_d = 1.7988; // Distance to bigbite spectrometer from target chamber (m)
-  double BB_th = 36.; // Angle BB spectrometer makes with exit beamline
-  double HCal_d = 14.5; // Distance to HCal from scattering chamber for comm1
-  double HCal_th = 35.; // Angle HCal center makes with exit beamline  
-  double W_mean = 0.93; // Mean of W at current kinematic
-  double W_sig = 0.039; // Width of W at current kinematic
-  int magSet = 30;  // SBS Magnetic field strength (percent)
-  int useAlshield = 0; //Use 1/8" al shield on scattering chamber exit? 0:no
+  Int_t kine = 8; // Keep track of kinematic being analyzed
+  Double_t E_e = 1.916; // Energy of beam (incoming electrons from accelerator)
+  Double_t t_trig = 510; // Time difference between BBCal Hi (L1A) and HCal Trig (ns)
+  Double_t BB_d = 1.7988; // Distance to bigbite spectrometer from target chamber (m)
+  Double_t BB_th = 36.; // Angle BB spectrometer makes with exit beamline
+  Double_t HCal_d = 14.5; // Distance to HCal from scattering chamber for comm1
+  Double_t HCal_th = 35.; // Angle HCal center makes with exit beamline  
+  Double_t W_mean = 0.93; // Mean of W at current kinematic
+  Double_t W_sig = 0.039; // Width of W at current kinematic
+  Int_t magSet = 30;  // SBS Magnetic field strength (percent)
+  Int_t useAlshield = 0; //Use 1/8" al shield on scattering chamber exit? 0:no
   string tar = "LH2";
   vector<TString> log;
 
@@ -165,6 +133,7 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
       }
     }    
   }
+
   TCut globalcut = "";
   while( currentline.ReadLine( configfile ) && !currentline.BeginsWith("endcut") ){
     if( !currentline.BeginsWith("#") ){
@@ -176,7 +145,7 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
 
   while( currentline.ReadLine( configfile ) && !currentline.BeginsWith("#") ){
     TObjArray *tokens = currentline.Tokenize(" ");
-    int ntokens = tokens->GetEntries();
+    Int_t ntokens = tokens->GetEntries();
     if( ntokens>1 ){
       TString skey = ( (TObjString*)(*tokens)[0] )->GetString();
       if( skey == "kine" ){
@@ -273,8 +242,8 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
   /*
   cout << endl << endl << "Test offsets: " << endl;
 
-  int kNrows = 26;
-  int kNcols = 2;
+  Int_t kNrows = 26;
+  Int_t kNcols = 2;
 
   for( Int_t r=0; r<kNrows; r++){
     for( Int_t c=0; c<kNcols; c++){
@@ -289,7 +258,7 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
 
   TTreeFormula *GlobalCut = new TTreeFormula( "GlobalCut", globalcut, C );
 
-  cout << "Event list populated with cut placed on elastics." << endl;
+  cout << "Elastic global cut obtained." << endl;
 
   //Set simple structures for complex branches
   typedef struct { 
@@ -312,6 +281,23 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
   } PHYSICS;
   
   PHYSICS physics;
+
+  typedef struct {
+    UInt_t runnumber;
+    UInt_t trigger;
+    UInt_t eventnumber;
+  } RUNDATA;
+
+  RUNDATA rundata;
+
+  typedef struct {
+    Double_t BLevent;
+    Double_t BLcharge;
+    Double_t BLclock;
+  } BEAMLINE;
+
+  BEAMLINE beamline;
+
   /*
   typedef struct {
     Int_t chan;
@@ -373,31 +359,43 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
   } BBCALSH;
 
   BBCALSH bbcalsh;
+  
+  //TSsbs tree struct for BCM data extraction and interpolation
+  typedef struct{
+    UInt_t rnumber;
+    Double_t enumber;
+    Double_t aggcharge;
+    Double_t clock;
+  } BCM;
 
+  vector<BCM> BLagg;
+  
   /////////////////////////////////
   ////Declare input tree parameters
   //Event and physics
-  UInt_t runI, runN, TBits; 
+  UInt_t runI; 
+  UInt_t runN, TBits; 
   //ULong64_t runT;
+
   Double_t kineW2;
   //BigBite Tracks
-  double BBtr_p[maxTracks], BBtr_px[maxTracks], BBtr_py[maxTracks], BBtr_pz[maxTracks];
-  double BBtr_vx[maxTracks], BBtr_vy[maxTracks], BBtr_vz[maxTracks], BBtr_chi2[maxTracks];
-  double BBfp_x[maxTracks], BBfp_y[maxTracks], BBfp_th[maxTracks], BBfp_ph[maxTracks];
-  double BBtgt_x[maxTracks], BBtgt_y[maxTracks], BBtgt_th[maxTracks], BBtgt_ph[maxTracks];
+  Double_t BBtr_p[maxTracks], BBtr_px[maxTracks], BBtr_py[maxTracks], BBtr_pz[maxTracks];
+  Double_t BBtr_vx[maxTracks], BBtr_vy[maxTracks], BBtr_vz[maxTracks], BBtr_chi2[maxTracks];
+  Double_t BBfp_x[maxTracks], BBfp_y[maxTracks], BBfp_th[maxTracks], BBfp_ph[maxTracks];
+  Double_t BBtgt_x[maxTracks], BBtgt_y[maxTracks], BBtgt_th[maxTracks], BBtgt_ph[maxTracks];
   //BBCal
-  double BBtr_n, BBps_x, BBps_y, BBps_e, BBps_nblk, BBps_nclus, BBsh_x, BBsh_y, BBsh_e, BBsh_nblk, BBsh_nclus, BB_eOp;
-  double BBps_cblk_e[maxBBCalPSChan], BBps_cblk_ec[maxBBCalPSChan], BBps_cblk_atime[maxBBCalPSChan], BBps_cblk_id[maxBBCalPSChan];
-  double BBsh_cblk_e[maxBBCalShChan], BBsh_cblk_ec[maxBBCalShChan], BBsh_cblk_atime[maxBBCalShChan], BBsh_cblk_id[maxBBCalShChan];
+  Double_t BBtr_n, BBps_x, BBps_y, BBps_e, BBps_nblk, BBps_nclus, BBsh_x, BBsh_y, BBsh_e, BBsh_nblk, BBsh_nclus, BB_eOp;
+  Double_t BBps_cblk_e[maxBBCalPSChan], BBps_cblk_ec[maxBBCalPSChan], BBps_cblk_atime[maxBBCalPSChan], BBps_cblk_id[maxBBCalPSChan];
+  Double_t BBsh_cblk_e[maxBBCalShChan], BBsh_cblk_ec[maxBBCalShChan], BBsh_cblk_atime[maxBBCalShChan], BBsh_cblk_id[maxBBCalShChan];
   //GEM
-  double BBgem_nplanes;
+  Double_t BBgem_nplanes;
   //Trigger TDC
-  double TDCT_id[maxTDCTrigChan], TDCT_tdc[maxTDCTrigChan]; 
-  int TDCTndata;
+  Double_t TDCT_id[maxTDCTrigChan], TDCT_tdc[maxTDCTrigChan]; 
+  Int_t TDCTndata;
   //HCal
-  double HCAL_x, HCAL_y, HCAL_e, HCAL_nblk, HCAL_nclus;
-  double HCAL_cblk_tdctime[maxHCalChan], HCAL_cblk_atime[maxHCalChan], HCAL_cblk_id[maxHCalChan], HCAL_cblk_e[maxHCalChan]; 
-  double HCAL_ce[maxHCalChan], HCAL_catime[maxHCalChan], HCAL_cid[maxHCalChan], HCAL_cnblk[maxHCalChan], HCAL_ctdctime[maxHCalChan];
+  Double_t HCAL_x, HCAL_y, HCAL_e, HCAL_nblk, HCAL_nclus;
+  Double_t HCAL_cblk_tdctime[maxHCalChan], HCAL_cblk_atime[maxHCalChan], HCAL_cblk_id[maxHCalChan], HCAL_cblk_e[maxHCalChan]; 
+  Double_t HCAL_ce[maxHCalChan], HCAL_catime[maxHCalChan], HCAL_cid[maxHCalChan], HCAL_cnblk[maxHCalChan], HCAL_ctdctime[maxHCalChan];
 
   // Declare root tree variables and set values to memory locations in root file
   C->SetBranchStatus( "*", 0 );  //Switch everything off first to save processing time
@@ -461,6 +459,7 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
   C->SetBranchStatus( "bb.tdctrig.tdcelemID", 1 );
   C->SetBranchStatus( "Ndata.bb.tdctrig.tdcelemID", 1 );
   // Event and physics
+  C->SetBranchStatus( "Event_Branch", 1 );
   C->SetBranchStatus( "e.kine.W2", 1 );
   C->SetBranchStatus( "fEvtHdr.fRun", 1 );
   //C->SetBranchStatus( "fEvtHdr.fEvtTime", 1 );
@@ -523,20 +522,20 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
   C->SetBranchAddress( "bb.etot_over_p", &BB_eOp );
   // GEM
   C->SetBranchAddress( "bb.gem.track.nhits", &BBgem_nplanes );
-
   // Trigger TDC
   C->SetBranchAddress( "bb.tdctrig.tdcelemID", TDCT_id );
   C->SetBranchAddress( "bb.tdctrig.tdc", TDCT_tdc );
   C->SetBranchAddress( "Ndata.bb.tdctrig.tdcelemID", &TDCTndata );
   // Event and physics
+  C->SetBranchAddress( "e.kine.W2", &kineW2 );
+  C->SetMakeClass(1);
   C->SetBranchAddress( "fEvtHdr.fRun", &runI );
   //C->SetBranchAddress( "fEvtHdr.fEvtTime", &runT );
   C->SetBranchAddress( "fEvtHdr.fEvtNum", &runN );
   C->SetBranchAddress( "fEvtHdr.fTrigBits", &TBits );
-  C->SetBranchAddress( "e.kine.W2", &kineW2 );
-  
+
   cout << "Tree variables linked." << endl;
-  
+
   // Declare outfiles
   //outputfilename = Form( "/lustre19/expphy/volatile/halla/sbs/seeds/GMN_parsed/e1209019_parsed_short_SBS%d_tar%s_%s.root", kine, tar.c_str(), date.c_str() );
   outputfilename = "test.root";
@@ -544,44 +543,25 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
   string logpath = Form( "/lustre19/expphy/volatile/halla/sbs/seeds/GMN_parsed/logs/parsedLog_%s.txt", date.c_str() );
 
   // Initialize misc. variables
-  int elasYield = 0; // Keep track of total elastics analyzed
-  double pBeam = E_e/(1.+E_e/M_p*(1.-cos(BB_th)));  
-  double Eloss_outgoing = celldiameter/2.0/sin(BB_th) * rho_tgt * dEdx_tgt; //Approximately 1 MeV
+  Int_t elasYield = 0; // Keep track of total elastics analyzed
+  Double_t pBeam = E_e/(1.+E_e/M_p*(1.-cos(BB_th)));  
+  Double_t Eloss_outgoing = celldiameter/2.0/sin(BB_th) * rho_tgt * dEdx_tgt; //Approximately 1 MeV
   if( useAlshield != 0 ) Eloss_outgoing += Alshieldthick * rho_Al * dEdx_Al;
 
   // Declare Histograms
   TH1D *h_W2 = new TH1D("h_W2",";W2 (GeV^2);",250,0,2);
   TH1D *h_W = new TH1D("h_W",";W (GeV);",250,0,2);
+  TH2D *h_accCh = new TH2D("h_accCh","Accumulated Charge vs CODA Run; Run Number; Coulombs", 2000, 0, 2000, 10000, 1000, 20000 );
 
   // Create output tree
   TTree *Tout = new TTree("Tout","Tree containing variables after final cuts placed on W2 and HCal");
 
-  /*
-  // Declare output tree variables
-  //physics
-  double T_ebeam, T_etheta, T_ephi, T_precon, T_pelastic, T_thetabend, T_dpel, T_W2, T_W;
-  double T_pincident;
-  double T_pp_expect, T_ptheta_expect, T_pphi_expect;
-  double T_Q2;
-  double T_HCAL_xexpect, T_HCAL_yexpect;
-  //tracks
-  double T_BBtr_vx, T_BBtr_vy, T_BBtr_vz, T_BBtr_px, T_BBtr_py, T_BBtr_pz;
-  double T_BBtr_n, T_BBtr_p;
-  //HCal
-  double T_HCAL_x, T_HCAL_y, T_HCAL_e;
-  int T_HCAL_nblk, T_HCAL_nclus;
-  double T_HCAL_cblk_tdctime[maxHCalChan], T_HCAL_cblk_atime[maxHCalChan], T_HCAL_cblk_id[maxHCalChan], T_HCAL_cblk_e[maxHCalChan];
-  double T_HCAL_ce[maxHCalChan], T_HCAL_catime[maxHCalChan], T_HCAL_cid[maxHCalChan], T_HCAL_cnblk[maxHCalChan], T_HCAL_ctdctime[maxHCalChan];
-  //BBCal
-  double T_BBps_x, T_BBps_y, T_BBps_e, T_BBsh_x, T_BBsh_y, T_BBsh_e;
-  double T_BB_d, T_BB_th, T_HCal_d, T_HCal_th;
-  double T_BBps_cblk_e[maxBBCalPSChan], T_BBps_cblk_ec[maxBBCalPSChan], T_BBps_cblk_atime[maxBBCalPSChan];
-  double T_BBsh_cblk_e[maxBBCalShChan], T_BBsh_cblk_ec[maxBBCalShChan], T_BBsh_cblk_atime[maxBBCalShChan];
-  */
   ////////////////
   ////Set branches
   //Physics
   Tout->Branch( "physics", &physics, "Ep/D:KEp/D:dx/D:dy/D:W/D:etheta/D:ephi/D:ebeam/D:Q2recon/D:W2recon/D:nurecon/D:Eprecon/D:Epelastic/D:Epincident/D:Hx_exp/D:Hy_exp/D" );
+  //Run Data
+  Tout->Branch( "rundata", &rundata, "runnumber/i:trigger/i:eventnumber/i" );
   //Tracks
   Tout->Branch( "track", &track, "vz/D:vy/D:vx/D:pz/D:py/D:px/D:p/D:n/I" );
   //HCal
@@ -591,10 +571,68 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
   //BBCal Shower
   Tout->Branch( "bbcalsh", &bbcalsh, Form("x/D:y/D:e/D:nblk/I:nclus/I:cblk_e[%d]/D:cblk_ec[%d]/D:cblk_atime[%d]/D",maxBBCalShChan,maxBBCalShChan,maxBBCalShChan) );
 
-  // Set long int to keep track of total entries
+  //Get charge and bcm data for all runs
+  //getCharge( log, BLagg);
+
+  //Create chain for epics/beamline tree
+  TChain *TS = new TChain("TSsbs");
+  //Chain together all files
+  for( Int_t l=0; l<log.size(); l++){
+    TS->Add( log[l] );
+  }
+  //Declare dummies and counters for needed vars
+  UInt_t BLrunnum = 0;
+  Double_t BLevnum = 0., BLdnew = 0., BLclk = 0.;
+  Int_t DumTN = 0, DumCurTN = 0;
+  Int_t fileN = -1;
+  Long64_t CurEv = 0;
+  Long64_t NumEv = TS->GetEntries();
+  //Switch on and set addresses for branches
+  TS->SetBranchStatus( "*", 0 );
+  TS->SetBranchStatus( "evNumber", 1 );
+  TS->SetBranchStatus( "sbs.bcm.dnew.cnt", 1 );
+  TS->SetBranchStatus( "sbs.104kHz_CLK.cnt", 1 );
+  TS->SetMakeClass(1);
+  TS->SetBranchAddress( "evNumber", &BLevnum );
+  TS->SetBranchAddress( "sbs.bcm.dnew.cnt", &BLdnew );
+  TS->SetBranchAddress( "sbs.104kHz_CLK.cnt", &BLclk );
+  //Loop over events (dt=2s for epics tree)
+  while( TS->GetEntry( CurEv++ ) ){
+    DumCurTN = TS->GetTreeNumber();
+    //Get the current run number if the tree changes
+    if( CurEv == 1 || DumCurTN != DumTN ){
+      fileN++;
+      DumTN = DumCurTN;
+      TString testline = (string)log[ fileN ]; 
+      //cout << "BEAMLINE: Switching to file: " << testline << endl;
+      TFile *f1 = TFile::Open( testline );
+      THaRun *run;
+      f1->GetObject("Run_Data",run);
+      BLrunnum = run->GetNumber();
+    }
+    
+    //Fill the beamline data structure with charge and clock corrections applied
+    BCM thisBCM = { BLrunnum, BLevnum, BLdnew/3318, BLclk/103700 };
+    BLagg.push_back( thisBCM );
+  }
+
+  cout << "Beamline and accumulated charge data extracted." << endl;
+
+  // Set long int to keep track of total entries in T tree
   Long64_t Nevents = C->GetEntries();
 
-  Int_t treenum = 0, currenttreenum = 0;
+  // Set variables to keep track of event sequence
+  Int_t treenum = 0, currenttreenum = 0, currentrunnumber = 0;
+  Int_t filenumber = -1;
+  UInt_t runnumb = 0;
+  Int_t BCMidx = 0;
+  Double_t BCM_event = 0, BCM_charge = 0, BCM_clock = 0;
+  BCM curBCM;
+  Int_t dummy = 0;
+  TString message = "";
+
+  // Set variable to keep track of charge
+  Double_t accCharge = 0.;
 
   cout << endl << "Initialization complete." << endl << endl;
   cout << "Opened up tree with nentries: " << C->GetEntries() << "." << endl << endl;
@@ -626,38 +664,67 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
       sw->Reset();
       sw->Continue();
       progress = (double)((nevent+1.)/Nevents);
-      cout << "] " << int(progress*100.) << "%, elastic events: " << elasYield << ", time remaining: " << int(timeremains/60.) << "m \r";
+      cout << "] " << int(progress*100.) << "%, elastic events: " << elasYield << "/" << Nevents << ", " << message << ", time remaining: " << int(timeremains/60.) << "m \r";
       cout.flush();
       
       //Get each event for analysis
       C->GetEntry( nevent );
+
+      //Return BCM data for current index
+      curBCM = BLagg[ BCMidx ];
+      //Check if T tree event is greater than TSsbs tree event and increment as necessary to continue interpolation
+      while( runN > (UInt_t)curBCM.enumber ){
+	BCMidx++;
+	curBCM = BLagg[ BCMidx ];
+      }
+      
+      //Set BCM variables for T tree block where T_tree_event < TSsbs_tree_event
+      BCM_event = curBCM.enumber;
+      BCM_charge = curBCM.aggcharge;
+      BCM_clock = curBCM.clock;
 
       ////////
       ////Cuts
       //Use TTreeFormula to apply globalcut to speed up processing and cut on track qty=1
       currenttreenum = C->GetTreeNumber();
       if( nevent == 1 || currenttreenum != treenum ){
+	filenumber++;
 	treenum = currenttreenum; 
 	GlobalCut->UpdateFormulaLeaves();
+
+	message = Form("switched to run %d", runI);
+	
+	//Access run data object and reset accumulated charge on new CODA run
+	if( currentrunnumber != runI || nevent == (Nevents-1) ){
+
+	  h_accCh->Fill( currentrunnumber, BCM_charge );
+
+	  currentrunnumber = runI;
+	}
+	
       }
+
+      //Accumulate charge on current CODA run before any cuts are applied
+      if( accCharge < BLdnew/chargeConvert ) accCharge = BLdnew/chargeConvert;
+
       bool failedglobal = GlobalCut->EvalInstance(0) == 0;
       if( int(BBtr_n) != 1 || failedglobal ) continue;
        
       //BBCal and HCal trigger coincidence
-      double bbcal_time=0., hcal_time=0.;
-      for(int ihit=0; ihit<TDCTndata; ihit++){
+      Double_t bbcal_time=0., hcal_time=0.;
+      for(Int_t ihit=0; ihit<TDCTndata; ihit++){
 	if(TDCT_id[ihit]==5) bbcal_time=TDCT_tdc[ihit];
 	if(TDCT_id[ihit]==0) hcal_time=TDCT_tdc[ihit];
       }
-      double diff = hcal_time - bbcal_time;
+      Double_t diff = hcal_time - bbcal_time;
       //Cut on BB trigger/HCal trigger coincidence time
       if( fabs(diff-510.)>10. ) continue;
 
       ///////////////
       ////Corrections
       //Correct the beam energy with energy loss in target using vertex position
-      double Eloss = (BBtr_vz[0]+l_tgt/2.0) * rho_tgt * dEdx_tgt + uwallthick_LH2 * rho_Al * dEdx_Al; //approximately 3 MeV
-      double E_corr = E_e - Eloss;
+      Double_t Eloss = (BBtr_vz[0]+l_tgt/2.0) * rho_tgt * dEdx_tgt + uwallthick_LH2 * rho_Al * dEdx_Al; //approximately 3 MeV
+      Double_t E_corr = E_e - Eloss;
 
       //cout << runI << endl;
       //TBranch *bla = C->GetBranch("fEvtHdr.fRun");
@@ -666,20 +733,20 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
 
       //////////////////////////////
       ////Start Physics Calculations
-      double p_corr = BBtr_p[0] - Eloss_outgoing; //Neglecting the mass of e'
-      double etheta = acos( BBtr_pz[0]/BBtr_p[0] ); //Will use the uncorrected track momentum to reconstruct e' theta
-      double ephi = atan2( BBtr_py[0], BBtr_px[0] );   
+      Double_t p_corr = BBtr_p[0] - Eloss_outgoing; //Neglecting the mass of e'
+      Double_t etheta = acos( BBtr_pz[0]/BBtr_p[0] ); //Will use the uncorrected track momentum to reconstruct e' theta
+      Double_t ephi = atan2( BBtr_py[0], BBtr_px[0] );   
       TVector3 vertex( 0, 0, BBtr_vz[0] ); // z location of vertex in hall coordinates
       TLorentzVector Pbeam( 0, 0, E_corr, E_corr ); //Mass of e negligable
       TLorentzVector kprime( BBtr_px[0], BBtr_py[0], BBtr_pz[0], BBtr_p[0] );
       TLorentzVector Ptarg( 0, 0, 0, M_p );   
       TLorentzVector q = Pbeam - kprime;
       TLorentzVector PgammaN = Ptarg + q; //(-px, -py, ebeam - pz, Mp + ebeam - p)     
-      double pel = E_corr/( 1.+E_corr/M_p*( 1.-cos(etheta) ) );
-      double nu = E_corr - BBtr_p[0];
-      double pp = sqrt( pow(nu,2)+2.*M_p*nu );
-      double phinucleon = ephi + PI; //assume coplanarity
-      double thetanucleon = acos( (E_corr - BBtr_pz[0])/pp ); //use elastic constraint on nucleon kinematics     
+      Double_t pel = E_corr/( 1.+E_corr/M_p*( 1.-cos(etheta) ) );
+      Double_t nu = E_corr - BBtr_p[0];
+      Double_t pp = sqrt( pow(nu,2)+2.*M_p*nu );
+      Double_t phinucleon = ephi + PI; //assume coplanarity
+      Double_t thetanucleon = acos( (E_corr - BBtr_pz[0])/pp ); //use elastic constraint on nucleon kinematics     
       TVector3 pNhat( sin(thetanucleon)*cos(phinucleon), sin(thetanucleon)*sin(phinucleon), cos(thetanucleon) );
       
       //Define HCal coordinate system
@@ -687,27 +754,27 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
       TVector3 HCAL_xaxis( 0, -1, 0 );
       TVector3 HCAL_yaxis = HCAL_zaxis.Cross(HCAL_xaxis).Unit();      
       TVector3 HCAL_origin = HCal_d * HCAL_zaxis + HCALHeight * HCAL_xaxis;      
-      double sintersect = ( HCAL_origin - vertex ).Dot( HCAL_zaxis ) / (pNhat.Dot( HCAL_zaxis ) ); 
+      Double_t sintersect = ( HCAL_origin - vertex ).Dot( HCAL_zaxis ) / (pNhat.Dot( HCAL_zaxis ) ); 
       TVector3 HCAL_intersect = vertex + sintersect * pNhat;   
 
       //Calculate quantities of interest
-      double yexpect_HCAL = (HCAL_intersect - HCAL_origin).Dot( HCAL_yaxis );
-      double xexpect_HCAL = (HCAL_intersect - HCAL_origin).Dot( HCAL_xaxis );  
-      double E_ep = sqrt( pow(M_e,2) + pow(BBtr_p[0],2) ); // Obtain the scattered electron energy 
-      double p_ep = BBtr_p[0];     
-      double Q2 = 2*E_corr*E_ep*( 1-(BBtr_pz[0]/p_ep) ); // Obtain Q2 from beam energy, outgoing electron energy, and momenta  
-      double W = PgammaN.M(); //Get invarient mass transfer W from the four-momentum of the scattered nucleon
-      //double W = sqrt(kineW2);
-      double E_pp = nu+M_p; // Get energy of the proton
-      double Enucleon = sqrt(pow(pp,2)+pow(M_p,2)); // Check on E_pp, same     
-      double KE_p = nu; // For elastics
-      double dx = HCAL_x - xexpect_HCAL;
-      double dy = HCAL_y - yexpect_HCAL;  
-      double pelastic = E_corr/(1.+(E_corr/M_p)*(1.0-cos(etheta))); 	
-      double precon = BBtr_p[0] + Eloss_outgoing; //reconstructed momentum, corrected for mean energy loss exiting the target (later we'll also want to include Al shielding on scattering chamber)
-      double nu_recon = E_corr - precon;
-      double Q2recon = 2.0*E_corr*precon*(1.0-cos(etheta));
-      double W2recon = pow(M_p,2) + 2.0*M_p*nu_recon - Q2recon;
+      Double_t yexpect_HCAL = (HCAL_intersect - HCAL_origin).Dot( HCAL_yaxis );
+      Double_t xexpect_HCAL = (HCAL_intersect - HCAL_origin).Dot( HCAL_xaxis );  
+      Double_t E_ep = sqrt( pow(M_e,2) + pow(BBtr_p[0],2) ); // Obtain the scattered electron energy 
+      Double_t p_ep = BBtr_p[0];     
+      Double_t Q2 = 2*E_corr*E_ep*( 1-(BBtr_pz[0]/p_ep) ); // Obtain Q2 from beam energy, outgoing electron energy, and momenta  
+      Double_t W = PgammaN.M(); //Get invarient mass transfer W from the four-momentum of the scattered nucleon
+      //Double_t W = sqrt(kineW2);
+      Double_t E_pp = nu+M_p; // Get energy of the proton
+      Double_t Enucleon = sqrt(pow(pp,2)+pow(M_p,2)); // Check on E_pp, same     
+      Double_t KE_p = nu; // For elastics
+      Double_t dx = HCAL_x - xexpect_HCAL;
+      Double_t dy = HCAL_y - yexpect_HCAL;  
+      Double_t pelastic = E_corr/(1.+(E_corr/M_p)*(1.0-cos(etheta))); 	
+      Double_t precon = BBtr_p[0] + Eloss_outgoing; //reconstructed momentum, corrected for mean energy loss exiting the target (later we'll also want to include Al shielding on scattering chamber)
+      Double_t nu_recon = E_corr - precon;
+      Double_t Q2recon = 2.0*E_corr*precon*(1.0-cos(etheta));
+      Double_t W2recon = pow(M_p,2) + 2.0*M_p*nu_recon - Q2recon;
 
       //Fill physics variables
       physics.Ep = E_pp;
@@ -727,6 +794,16 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
       physics.Hx_exp = xexpect_HCAL;
       physics.Hy_exp = yexpect_HCAL;
  
+      //Fill run data variables
+      rundata.runnumber = runI;
+      rundata.trigger = TBits;
+      rundata.eventnumber = runN;
+
+      //Fill beamline variables
+      beamline.BLevent = BCM_event;
+      beamline.BLcharge = BCM_charge;
+      beamline.BLclock = BCM_clock;
+
       //Fill HCal detector variables. TODO - Inefficient, don't need to save per event
       /*
       T_BB_d = BB_d;
@@ -751,8 +828,8 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
       hcal.e = HCAL_e;
       hcal.nblk = (Int_t)HCAL_nblk;
       hcal.nclus = (Int_t)HCAL_nclus;
-      for( int b=0; b<HCAL_nblk; b++ ){	
-	int ID = HCAL_cblk_id[b];
+      for( Int_t b=0; b<HCAL_nblk; b++ ){	
+	Int_t ID = HCAL_cblk_id[b];
 	
 	hcal.cblk_e[ ID ] = HCAL_cblk_e[ b ];
 	hcal.cblk_tdc[ ID ] = HCAL_cblk_tdctime[ b ];
@@ -765,8 +842,8 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
       bbcalps.e = BBps_e;
       bbcalps.nblk = (Int_t)BBps_nblk;
       bbcalps.nclus = (Int_t)BBps_nclus;
-      for( int b=0; b<BBps_nblk; b++ ){	
-	int ID = BBps_cblk_id[b];
+      for( Int_t b=0; b<BBps_nblk; b++ ){	
+	Int_t ID = BBps_cblk_id[b];
 	
 	bbcalps.cblk_e[ ID ] = BBps_cblk_e[ b ];
 	bbcalps.cblk_ec[ ID ] = BBps_cblk_ec[ b ];
@@ -778,14 +855,14 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
       bbcalsh.e = BBsh_e;
       bbcalsh.nblk = (Int_t)BBsh_nblk;
       bbcalsh.nclus = (Int_t)BBsh_nclus;
-      for( int b=0; b<BBsh_nblk; b++ ){	
-	int ID = BBsh_cblk_id[b];
+      for( Int_t b=0; b<BBsh_nblk; b++ ){	
+	Int_t ID = BBsh_cblk_id[b];
 	
 	bbcalsh.cblk_e[ ID ] = BBsh_cblk_e[ b ];
 	bbcalsh.cblk_ec[ ID ] = BBsh_cblk_ec[ b ];
 	bbcalsh.cblk_atime[ ID ] = BBsh_cblk_atime[ b ];
       }
-	
+
       elasYield++;
       Tout->Fill();
 
@@ -798,7 +875,7 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
   ofstream logfile;
   logfile.open( logpath );
   logfile << "#Log of runs corresponding to root file with same date" << endl;
-  for( int i=0; i<log.size(); i++ ){
+  for( Int_t i=0; i<log.size(); i++ ){
     logfile << log[i] << endl;
   }
 

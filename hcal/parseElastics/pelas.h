@@ -19,6 +19,9 @@ const Int_t maxBBCalShCols = 7;
 const Int_t maxBBCalPSChan = 52; // Total BBCal Preshower Channels
 const Int_t maxBBCalPSRows = 26;
 const Int_t maxBBCalPSCols = 2;
+//Beamline
+const Int_t chargeConvert = 3318; // See D.Flay Doc DB sbs.jlab.org/DocDB/0001/000164/002/dflay_bcm-ana-update_02-21-22.pdf p.8
+const Int_t clockActual = 103700; // Needed to convert the 104kHz clock to the actual counting rate
 
 ///////////////
 ///Physics/Math
