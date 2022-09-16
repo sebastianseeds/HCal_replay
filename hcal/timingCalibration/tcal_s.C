@@ -57,6 +57,15 @@ Double_t TW_fit(Double_t *x, Double_t *par){
   return amp*exp(-str*x[0])+offset;
 }
 
+// Gaussian fit (may just use built-in gaussian fit when convenient)
+double G_fit(double *x, double *par) {
+  double amp = par[0];
+  double loc = par[1];
+  double sigma = par[2];
+  double ADC = x[0];
+  return amp * TMath::Exp(-0.5 * pow(((ADC - loc) / sigma), 2));
+}
+
 // Inputs: run (run number to be analyzed), fresh (toggle to check previous ADC/TDC offsets or not, 1=no)
 void tcal_s( const char *configfilename="stcal_s.cfg", const char *outputfilename="tcal_sout.root"){
   
@@ -422,6 +431,7 @@ void tcal_s( const char *configfilename="stcal_s.cfg", const char *outputfilenam
   
   // Declare root tree variables and set values to memory locations in root file
   // Turn off all branches
+  C->SetMakeClass(1);
   C->SetBranchStatus( "*", 0 );
   // Turn on specific branches for analysis
   C->SetBranchStatus( "sbs.hcal.x", 1 );
@@ -511,10 +521,12 @@ void tcal_s( const char *configfilename="stcal_s.cfg", const char *outputfilenam
   sw->Start();
   
   // Declare outfile
-  TFile *fout = new TFile( outputfilename, "RECREATE" );
-  
+  //TFile *fout = new TFile( outputfilename, "RECREATE" );
+  TFile *fout = new TFile( Form( "tcalOUT_%s.root",date.c_str() ), "RECREATE" );
+
   // Initialize vectors and arrays
   Double_t TDCoffsets[kNcell] = {0.0};
+  Double_t TDCdeviations[kNcell] = {0.0};
   Double_t ADCtoffsets[kNcell] = {0.0};
   Double_t TDCsig[kNcell] = {0.0};
   Double_t ADCtsig[kNcell] = {0.0};
@@ -538,10 +550,10 @@ void tcal_s( const char *configfilename="stcal_s.cfg", const char *outputfilenam
   // Physics and trigger histograms
   //TH1D *el_ev = new TH1D( "el_ev",";Event", 50000, 0, 50000);
   TH1D *hDiff = new TH1D( "hDiff","HCal time - BBCal time (ns)", 1300, -500, 800 );
-  TH1D *hW = new TH1D( "W", "W; GeV", 250, 0.3, 1.5 );
+  TH1D *hW = new TH1D( "W", "W; GeV", 250, 0.3, 6 );
   TH1D *hNBlk = new TH1D( "hNBlk", "Number of Blocks in Primary Cluster; Number", 25, 0, 25 );
   TH1D *hNClus = new TH1D( "hNClus", "Number of Clusters; Number", 25, 0, 25 );
-  TH1D *hW_cut = new TH1D( "W_cut", "W Elastic Cut; GeV", 250, 0.3, 1.5 );
+  TH1D *hW_cut = new TH1D( "W_cut", "W Elastic Cut; GeV", 250, 0.3, 6 );
   TH1D *hQ2 = new TH1D( "Q2", "Q2; GeV", 250, 0.5, 3.0 );
   TH1D *hE_ep = new TH1D( "hE_ep","E_ep; GeV", 500, 0.0, E_e*1.5 ); 
   TH1D *hE_pp = new TH1D( "hE_pp", "E_pp; GeV", 500, 0.0, E_e*1.5 );
@@ -714,7 +726,8 @@ void tcal_s( const char *configfilename="stcal_s.cfg", const char *outputfilenam
       bool tightelastic = fabs( W-W_mean )<W_sig && fabs( diff+t_trig )<30 && (fabs(xDiff-dx0)<dx_sig || fabs(yDiff-dy0)<dy_sig); 
 
       //Loose cut: W elastic peak, BBCal/HCal timing coincidence
-      bool elastic = fabs( W-W_mean )<W_sig && fabs( diff-t_trig )<30;
+      //bool elastic = fabs( W-W_mean )<W_sig && fabs( diff-t_trig )<30;
+      bool elastic = fabs( diff-t_trig )<30 && HCALblka[0]<70 && HCALblka[0]>50;
 
       if( elastic ){
 	hdxdy_HCAL->Fill( yDiff, xDiff );
@@ -736,7 +749,7 @@ void tcal_s( const char *configfilename="stcal_s.cfg", const char *outputfilenam
       //Fill histograms. Note that this assumes that atime and tdc are fixed size arrays!
       for( Int_t i=0; i<nblk; i++ ){
 
-	Int_t ID = (Int_t)cblkid[i]-1;
+	Int_t ID = (Int_t)cblkid[i]-1; //Correct ID to start at 0
 	Double_t blkE = cblke[i]*1000; //Convert to MeV at this setting
 
 	//cout << i << " " << ID << endl;
@@ -784,7 +797,7 @@ void tcal_s( const char *configfilename="stcal_s.cfg", const char *outputfilenam
 
     X[i] = i;
 
-    if( i==244 || i==264 ) continue;
+    if( i==244 || i==264 ) continue; //These TDC channels are off for SBS4
 
     Int_t r = (i)/kNcols;
     Int_t c = (i)%kNcols;
@@ -792,13 +805,30 @@ void tcal_s( const char *configfilename="stcal_s.cfg", const char *outputfilenam
     TF1 *f1;
     TF1 *f2;
     TF1 *f3;
-    TF1 *fitTW = new TF1( "fitTW", TW_fit, 0, 50, 3 );
+    TF1 *fitTW = new TF1( "fitTW", TW_fit, 0, 300, 3 );
+    TF1 *fitG = new TF1( "fitG", G_fit, -130, -50, 3 );
+    if( i==242 ){
+      //fitG->SetParameters(30,-116,5);
+      fitG->SetParameter(1,-116);
+      fitG->SetParameter(2,5);
+    }else if( i==120 || i==279 ){
+      //fitG->SetParameters(4,-70,10);
+      fitG->SetParameter(1,-70);
+      fitG->SetParameter(2,3.5);
+    }else{
+      //fitG->SetParameters(30,-75,2.4);
+      fitG->SetParameter(1,-75);
+      fitG->SetParameter(2,2.4);
+    }
+    fitG->SetParLimits(1,-130,-50);
+    fitG->SetParLimits(2,0,20);
     fitTW->SetParameters(20,0.2,-80);
     fitTW->SetParLimits(0,0,30);
     fitTW->SetParLimits(1,0,1);
 
     //cout << i << " " << htdcDiff_corr[i]->GetEntries() << endl;
 
+    /*
     if( htdcDiff_corr[i]->GetEntries()>tFitMin ){
       htdcDiff_corr[i]->Fit("gaus","Q","",-200,50);
       f1=htdcDiff_corr[i]->GetFunction("gaus");
@@ -807,6 +837,24 @@ void tcal_s( const char *configfilename="stcal_s.cfg", const char *outputfilenam
       TDCerr[i] = TDCsig[i]/sqrt(htdc_corr[i]->GetEntries());
       //htdcDiff_corr[i]->SetName(Form("htdcDiff_corr_bl%d_r%d_c%d",i,r,c));
       htdcDiff_corr[i]->SetTitle(Form("TDC Diff Corr, Mean:%f Sig:%f",f1->GetParameter(1),f1->GetParameter(2)));
+    }
+    */
+
+    if( htdcDiff_corr[i]->GetEntries()>tFitMin ){
+      if( i==242 ){
+	htdcDiff_corr[i]->Fit("fitG","Q","",-130,-100);
+      }else{
+	htdcDiff_corr[i]->Fit("fitG","Q","",-100,-50);
+      }
+      TDCoffsets[i] = fitG->GetParameter(1)+75; //Target is -75ns
+      TDCsig[i] = fitG->GetParameter(2);
+      htdcDiff_corr[i]->SetTitle(Form("Amp:%f Mean:%f Sig:%f",fitG->GetParameter(0),fitG->GetParameter(1),fitG->GetParameter(2)));
+
+      TDCdeviations[i] = TDCoffsets[i]-oldTDCoffsets[i]*TDCCalib;
+
+      if( abs(TDCdeviations[i])>30 ) cout << "Channel " << i << " sees large deviation." << endl;
+    }else{
+      TDCoffsets[i] = oldTDCoffsets[i];
     }
 
     if( hatime[i]->GetEntries()>tFitMin ){
@@ -839,6 +887,15 @@ void tcal_s( const char *configfilename="stcal_s.cfg", const char *outputfilenam
       //cout << ".";
     }
   }
+
+  TGraphErrors *cTDCdev = new TGraphErrors( kNcell, X, TDCdeviations, posErr, posErr );
+  cTDCdev->GetXaxis()->SetLimits(0,kNcell);  
+  cTDCdev->GetYaxis()->SetLimits(-200,50);
+  cTDCdev->SetTitle("TDC Deviation from Current Offsets");
+  cTDCdev->GetXaxis()->SetTitle("Channel");
+  cTDCdev->GetYaxis()->SetTitle("TDC Time (ns)");
+  cTDCdev->SetMarkerStyle(20); // idx 20 Circles, idx 21 Boxes
+  cTDCdev->Write("cTDC_dev");
 
   TGraphErrors *cTDC = new TGraphErrors( kNcell, X, TDCoffsets, posErr, TDCsig );
   cTDC->GetXaxis()->SetLimits(0,kNcell);  
@@ -963,6 +1020,7 @@ void tcal_s( const char *configfilename="stcal_s.cfg", const char *outputfilenam
   }
   */
   //Write out diagnostic histos and print to console
+  cout << "Writing histograms and analysis plots to file: " << outputfilename << endl;
   fout->Write();
 
   cout << endl << endl << "TDC Offsets: " << endl << endl;
