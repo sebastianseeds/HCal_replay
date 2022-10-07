@@ -1,5 +1,4 @@
-//SSeeds 3.22.22 - Post-production - Calibration code which employs best current cuts on elastic events to obtain timing offsets for HCal ADC time and TDC
-
+//SSeeds 9.12.22 Cosmic timing calibration code designed to return TDC spectra for alignment and resolution. Reconstructed after sbs farm crash 9/22
 #include <ctime>
 #include <iostream>
 #include <fstream>

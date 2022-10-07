@@ -11,6 +11,7 @@ const Int_t maxTDCTrigChan = 10; // Set to accomodate original 5 TDCTrig channel
 const Int_t maxHCalChan = 288; // Total HCal channels
 const Int_t maxHCalRows = 24; // Total HCal rows
 const Int_t maxHCalCols = 12; // Total HCal cols
+const Int_t maxClusters = 10; // Total HCal clusters with information saved
 const Double_t HCALHeight = 0.365; // Height of HCal above beamline
 //BBCal
 const Int_t maxBBCalShChan = 189; // Total BBCal Shower Channels
@@ -22,6 +23,11 @@ const Int_t maxBBCalPSCols = 2;
 //Beamline
 const Int_t chargeConvert = 3318; // See D.Flay Doc DB sbs.jlab.org/DocDB/0001/000164/002/dflay_bcm-ana-update_02-21-22.pdf p.8
 const Int_t clockActual = 103700; // Needed to convert the 104kHz clock to the actual counting rate
+//SBS Magnet
+const Double_t Dgap = 48.0*2.54/100.0; //about 1.22 m
+const Double_t maxSBSfield = 1.26; //Tesla
+const Double_t SBSfield = 1.0; //fraction of max field. TODO: should be variable per run
+const Double_t SBSdist = 2.25; //m
 
 ///////////////
 ///Physics/Math

@@ -238,6 +238,21 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
   //Preshower 2022-02-01 22:00:00
   string BBCalPS_ADCg = "-------[ 2022-02-01 22:00:00 ]";
   vector<Double_t> BBCalPS_ADCgains_220201220000 = getDBParam( BBCalPSConstPath, BBCalPS_ADCg, 2, maxBBCalPSChan );
+  
+  /*
+  cout << endl << endl << "Test offsets: " << endl;
+
+  Int_t kNrows = 26;
+  Int_t kNcols = 2;
+
+  for( Int_t r=0; r<kNrows; r++){
+    for( Int_t c=0; c<kNcols; c++){
+      Int_t i = r*kNcols+c;
+      cout << BBCalPS_ADCgains_220201220000[i] << " ";
+    }
+    cout << endl;
+  }
+  */
 
   cout << endl << "Database parameters loaded." << endl;
 
@@ -261,23 +276,8 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
     Double_t Eprecon;
     Double_t Epelastic;
     Double_t Epincident;
-    Double_t pp_exp;
     Double_t Hx_exp;
     Double_t Hy_exp;
-    Double_t Hphi_exp;
-    Double_t Htheta_exp;
-    Double_t qx;
-    Double_t qy;
-    Double_t qz;
-    Double_t qmag;
-    Double_t qtheta;
-    Double_t qphi;
-    Double_t thetarecon_n;
-    Double_t thetarecon_p;
-    Double_t phirecon_n;
-    Double_t phirecon_p;
-    Double_t thetapq_n;
-    Double_t thetapq_p;
   } PHYSICS;
   
   PHYSICS physics;
@@ -339,11 +339,6 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
     Double_t ctdc[ maxClusters ];
     Double_t cx[ maxClusters ];
     Double_t cy[ maxClusters ];
-    Double_t gce;
-    Double_t gcx;
-    Double_t gcy;
-    Double_t gctdc;
-    Double_t gcatime;
   } HCAL;
 
   HCAL hcal;
@@ -494,7 +489,6 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
   C->SetBranchAddress( "sbs.hcal.clus_blk.id", HCAL_cblk_id );
   C->SetBranchAddress( "sbs.hcal.clus_blk.e", HCAL_cblk_e );
   C->SetBranchAddress( "sbs.hcal.clus.e", HCAL_ce );
-  C->SetBranchAddress( "sbs.hcal.clus.e", HCAL_ce );
   C->SetBranchAddress( "sbs.hcal.clus.eblk", HCAL_ceblk );
   C->SetBranchAddress( "sbs.hcal.clus.atime", HCAL_catime );
   C->SetBranchAddress( "sbs.hcal.clus.id", HCAL_cid );
@@ -573,31 +567,7 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
   TH1D *h_W2 = new TH1D("h_W2",";W2 (GeV^2);",250,0,2);
   TH1D *h_W = new TH1D("h_W",";W (GeV);",250,0,2);
   TH2D *h_charge = new TH2D("h_charge","Accumulated Charge vs CODA Run; Run Number; Coulombs", 10000, 10000, 20000, 1000, 0, 10000 ); 
-  TH2D *h_HCal_ADCg = new TH2D("h_HCal_ADCg","HCal ADC Gain Coefficients 2021-10-24; Run Number; ", maxHCalChan, 0, maxHCalChan, 1000, 0, 0.01 );
-  TH2D *h_BBCalSh_ADCg = new TH2D("h_BBCalSh_ADCg","BBCal Shower ADC Gain Coefficients 2022-02-01; Run Number; ", maxBBCalShChan, 0, maxBBCalShChan, 1000, 0, 0.01 ); 
-
   //TH2D *h_test = new TH2D("h_test","Scalar Clock vs Events", 6000, 0, 6000000, 100000, 0, 100000 );
-
-  //Write DB parameters to histos
-  cout << endl << endl << "Test offsets: " << endl;
-
-  for( Int_t r=0; r<maxHCalRows; r++){
-    for( Int_t c=0; c<maxHCalCols; c++){
-      Int_t i = r*maxHCalCols+c;
-      h_HCal_ADCg->Fill(i,HCal_ADCgains_211024043000[i]);
-      cout << HCal_ADCgains_211024043000[i] << " ";
-    }
-    cout << endl;
-  }
-
-  for( Int_t r=0; r<maxBBCalShRows; r++){
-    for( Int_t c=0; c<maxBBCalShCols; c++){
-      Int_t i = r*maxBBCalShCols+c;
-      h_BBCalSh_ADCg->Fill(i,BBCalSh_ADCgains_220201220000[i]);
-      cout << BBCalSh_ADCgains_220201220000[i] << " ";
-    }
-    cout << endl;
-  }
 
   // Create output tree
   TTree *AT = new TTree("AT","Tree containing aggregate variables and analysis parameters with simple elastic cuts.");
@@ -605,7 +575,7 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
   ////////////////
   ////Set branches
   //Physics
-  AT->Branch( "physics", &physics, "Ep/D:KEp/D:dx/D:dy/D:W2/D:etheta/D:ephi/D:ebeam/D:Q2recon/D:W2recon/D:nurecon/D:Eprecon/D:Epelastic/D:Epincident/D:Hx_exp/D:Hy_exp/D:qx/D:qy/D:qz/D:qmag/D:qtheta/D:qphi/D:thetarecon_n/D:thetarecon_p/D:phirecon_n/D:phirecon_p/D:thetapq_n/D:thetapq_p/D" );
+  AT->Branch( "physics", &physics, "Ep/D:KEp/D:dx/D:dy/D:W/D:etheta/D:ephi/D:ebeam/D:Q2recon/D:W2recon/D:nurecon/D:Eprecon/D:Epelastic/D:Epincident/D:Hx_exp/D:Hy_exp/D" );
   //Run Data
   AT->Branch( "rundata", &rundata, "run/i:trigger/i:event/i" );
   //Scalar
@@ -613,7 +583,7 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
   //Tracks
   AT->Branch( "track", &track, "vz/D:vy/D:vx/D:pz/D:py/D:px/D:p/D:n/I" );
   //HCal
-  AT->Branch( "hcal", &hcal, Form("x/D:y/D:e/D:nblk/I:nclus/I:cblk_e[%d]/D:cblk_tdc[%d]/D:cblk_adct[%d]/D:catime[%d]/D:ce[%d]/D:ceblk[%d]/D:cid[%d]/D:cnblk[%d]/D:ctdc[%d]/D:cx[%d]/D:cy[%d]/D:gce/D:gcx/D:gcy/D:gctdc/D:gcatime/D",maxHCalChan,maxHCalChan,maxHCalChan,maxClusters,maxClusters,maxClusters,maxClusters,maxClusters,maxClusters,maxClusters,maxClusters) );
+  AT->Branch( "hcal", &hcal, Form("x/D:y/D:e/D:nblk/I:nclus/I:cblk_e[%d]/D:cblk_tdc[%d]/D:cblk_adct[%d]/D:catime[%d]/D:ce[%d]/D:ceblk[%d]/D:cid[%d]/D:cnblk[%d]/D:ctdc[%d]/D:cx[%d]/D:cy[%d]/D",maxHCalChan,maxHCalChan,maxHCalChan,maxClusters,maxClusters,maxClusters,maxClusters,maxClusters,maxClusters,maxClusters,maxClusters) );
   //BBCal Preshower
   AT->Branch( "bbcalps", &bbcalps, Form("x/D:y/D:e/D:nblk/I:nclus/I:cblk_e[%d]/D:cblk_ec[%d]/D:cblk_atime[%d]/D",maxBBCalPSChan,maxBBCalPSChan,maxBBCalPSChan) );
   //BBCal Shower
@@ -690,7 +660,6 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
       if( Sevnum==1 ) evTCoff = 0; //Correct for the first event in the chain
       clkTCoff = clkDiff-Sclk/103700; //Same for clock
 
-      //cout << clkDiff << " " << Sclk/103700 << endl;
     }
 
     DumEvLast = Sevnum;
@@ -706,9 +675,9 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
     treechange = false;
   }
 
-  //cout << DumRun << " " << chargeLast << endl;
+  cout << DumRun << " " << chargeLast << endl;
   h_charge->Fill(DumRun,chargeLast);
-  //cout << "Total events counted on scalar tree: " << testevent << "." << endl;
+  cout << "Total events counted on scalar tree: " << testevent << "." << endl;
 
   cout << "Scalar and accumulated charge data extracted." << endl;
 
@@ -779,11 +748,8 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
 
 	//cout << "Segment Change!" << endl;
 	treechange = true;
-	//cout << EvOff << endl;
-
 	treenum = currenttreenum; 
 	GlobalCut->UpdateFormulaLeaves();
-
 	message = Form("analyzing run %d", runI);
 	
 	if(begin==true){ //If it is the first event of the chain, record the run number for comparison
@@ -794,13 +760,6 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
 	  EvOff = 0;
 	}
 
-	/*
-	//Access run data object and reset accumulated charge on new CODA run
-	if( currentrun != runI || nevent == (Nevents-1) ){
-	  h_accCh->Fill( currentrun, SCALAR_charge );
-	  currentrun = runI;
-	}
-	*/
       }
 
       if( treechange==false ){
@@ -814,8 +773,6 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
       }
 
       EvLast = runN;
-
-      //if( evTCoff != 0 ) cout << evTCoff << " " << runN+EvOff+evTCoff << " " << treechange << endl;
       
       //Return SCALAR data for current index
       curSCALAR = Sagg[ SCALARidx ];
@@ -829,7 +786,6 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
       SCALAR_event = curSCALAR.enumber;
       SCALAR_charge = curSCALAR.aggcharge;
       SCALAR_clock = curSCALAR.clock;      
-      //cout << runN+EvOff << " vs " << (UInt_t)curSCALAR.enumber << endl;
 
       //Accumulate charge on current CODA run before any cuts are applied
       if( accCharge < Sdnew/chargeConvert ) accCharge = Sdnew/chargeConvert;
@@ -880,14 +836,13 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
       TVector3 HCAL_zaxis( sin(-HCal_th), 0, cos(-HCal_th) );
       TVector3 HCAL_xaxis( 0, -1, 0 );
       TVector3 HCAL_yaxis = HCAL_zaxis.Cross(HCAL_xaxis).Unit();      
-      TVector3 HCAL_origin = HCal_d * HCAL_zaxis + HCALHeight * HCAL_xaxis;     
-      TVector3 HCALpos = HCAL_origin + HCAL_x * HCAL_xaxis + HCAL_y * HCAL_yaxis;
+      TVector3 HCAL_origin = HCal_d * HCAL_zaxis + HCALHeight * HCAL_xaxis;      
       Double_t sintersect = ( HCAL_origin - vertex ).Dot( HCAL_zaxis ) / (pNhat.Dot( HCAL_zaxis ) ); 
       TVector3 HCAL_intersect = vertex + sintersect * pNhat;   
 
       //Calculate quantities of interest
       Double_t yexpect_HCAL = (HCAL_intersect - HCAL_origin).Dot( HCAL_yaxis );
-      Double_t xexpect_HCAL = (HCAL_intersect - HCAL_origin).Dot( HCAL_xaxis ); 
+      Double_t xexpect_HCAL = (HCAL_intersect - HCAL_origin).Dot( HCAL_xaxis );  
       Double_t E_ep = sqrt( pow(M_e,2) + pow(BBtr_p[0],2) ); // Obtain the scattered electron energy 
       Double_t p_ep = BBtr_p[0];     
       Double_t Q2 = 2*E_corr*E_ep*( 1-(BBtr_pz[0]/p_ep) ); // Obtain Q2 from beam energy, outgoing electron energy, and momenta  
@@ -903,22 +858,11 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
       Double_t precon = BBtr_p[0] + Eloss_outgoing; //reconstructed momentum, corrected for mean energy loss exiting the target (later we'll also want to include Al shielding on scattering chamber)
       Double_t nu_recon = E_corr - precon;
       Double_t Q2recon = 2.0*E_corr*precon*(1.0-cos(etheta));
-      Double_t W2recon = pow(M_p,2) + 2.0*M_p*nu_recon - Q2recon;      
+      Double_t W2recon = pow(M_p,2) + 2.0*M_p*nu_recon - Q2recon;
 
-      //Calculate q vector
-      TLorentzVector Kprime_recon(precon*BBtr_px[0]/BBtr_p[0],precon*BBtr_py[0]/BBtr_p[0],precon*BBtr_pz[0]/BBtr_p[0],precon);
-      TLorentzVector q_recon = Pbeam - Kprime_recon;
-      TVector3 qvect_recon = q_recon.Vect();
-
-      //Get theta pq for neutron and proton
-      //Calculate expected neutron direction
-      TVector3 NeutronDirection = (HCALpos - vertex).Unit();
-
-      //Calculate expected proton direction with SBS deflection
-      double BdL = SBSfield * maxSBSfield * Dgap;
-      double proton_deflection = tan( 0.3 * BdL / qvect_recon.Mag() ) * (HCal_d - (SBSdist + Dgap/2.0) );
-      TVector3 ProtonDirection = (HCALpos + proton_deflection * HCAL_xaxis - vertex).Unit();
+      //Obtain good clusters in HCal
       
+
       //Fill physics variables
       physics.Ep = E_pp;
       physics.KEp = KE_p;
@@ -934,24 +878,9 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
       physics.Eprecon = precon;
       physics.Epelastic = pelastic;
       physics.Epincident = pelastic - Eloss_outgoing;
-      physics.pp_exp = pp;
       physics.Hx_exp = xexpect_HCAL;
       physics.Hy_exp = yexpect_HCAL;
-      physics.Hphi_exp = phinucleon;
-      physics.Htheta_exp = thetanucleon;
-      physics.qx = q_recon.Px();
-      physics.qy = q_recon.Py();
-      physics.qz = q_recon.Pz();
-      physics.qmag = q_recon.Mag();
-      physics.qtheta = qvect_recon.Theta();
-      physics.qphi = qvect_recon.Phi();
-      physics.thetarecon_n = acos( NeutronDirection.Z() );
-      physics.thetarecon_p = acos( ProtonDirection.Z() );
-      physics.phirecon_n = TMath::ATan2( NeutronDirection.Y(), NeutronDirection.X() );
-      physics.phirecon_p = TMath::ATan2( ProtonDirection.Y(), ProtonDirection.X() );
-      physics.thetapq_n = acos( NeutronDirection.Dot( qvect_recon.Unit() ) );
-      physics.thetapq_p = acos( ProtonDirection.Dot( qvect_recon.Unit() ) );
-
+ 
       //Fill run data variables
       rundata.run = runI;
       rundata.trigger = TBits;
@@ -997,10 +926,6 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
 	hcal.cblk_tdc[ ID ] = HCAL_cblk_tdctime[ b ];
 	hcal.cblk_adct[ ID ] = HCAL_cblk_atime[ b ];
       }
- 
-      Double_t minClusD = 1000;
-      Int_t minClusIdx = 0;
-
       for( Int_t c=0; c<HCAL_nclus; c++ ){
 	hcal.catime[ c ] = HCAL_catime[ c ];
 	hcal.ce[ c ] = HCAL_ce[ c ];
@@ -1010,24 +935,8 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
 	hcal.ctdc[ c ] = HCAL_ctdc[ c ];
 	hcal.cx[ c ] = HCAL_cx[ c ];
 	hcal.cy[ c ] = HCAL_cy[ c ];
-
-	//Obtain HCal good cluster variables via selection of cluster closest to nucleon projection location
-	Double_t ClusD = sqrt( pow(xexpect_HCAL-HCAL_cx[c],2) + pow(yexpect_HCAL-HCAL_cy[c],2) );
-	if( ClusD<minClusD ){
-	  minClusIdx=c;
-	  minClusD=ClusD;
-	}
-	//cout << ClusD << " " << minClusD << endl;
       }
-      //cout << minClusIdx << endl;
-
-      //Fill HCal good cluster variables with index
-      hcal.gce = HCAL_ce[ minClusIdx ];
-      hcal.gcx = HCAL_cx[ minClusIdx ];
-      hcal.gcy = HCAL_cy[ minClusIdx ];
-      hcal.gctdc = HCAL_ctdc[ minClusIdx ];
-      hcal.gcatime = HCAL_catime[ minClusIdx ];      
-
+	
       //Fill BBCal PS
       bbcalps.x = BBps_x;
       bbcalps.y = BBps_y;
@@ -1063,7 +972,7 @@ void pelas_sh( const char *configfilename="spelas_sh.cfg", const char *outputfil
 
   cout << endl;
   
-  //cout << "Total events counted on T tree: " << testevent << "." << endl;
+  cout << "Total events counted on T tree: " << testevent << "." << endl;
 
   ofstream logfile;
   logfile.open( logpath );

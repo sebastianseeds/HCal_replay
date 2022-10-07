@@ -1,4 +1,5 @@
 //SSeeds 11.03.21 - Production - Code designed with help from A.Puckett to project scattered proton during zero-field running to face of HCal and determine detection efficiency. Currently measures relative to BB elastic track detection and sets a limit on good hits in HCal at 2*sigma the proton peak at zero field.
+//Updates 10.6.22 - sseeds
 
 #include "TTree.h"
 #include "TLorentzVector.h"
@@ -41,6 +42,13 @@ double gausFit_alt(double *x, double *par) {
   return amp * TMath::Exp(-0.5 * pow(((ADC - loc) / sigma), 2)) * TMath::Exp( expo_0 + expo_1*ADC );
 }
 
+Double_t expoDFit(Double_t *x, Double_t *par){
+  Double_t amp = par[0];
+  Double_t str = par[1];
+  Double_t offset = par[2];
+  return amp*exp(-str*x[0])+offset;
+}
+
 double expoFit(double *x, double *par) {
   
   double expo_0 = par[0];
@@ -63,7 +71,7 @@ double gausFit_alt(double *X,double *p) //Single parameter fits - GOING FOR THE 
 }
 */
 
-void hcal_detectionEff_oneloop( const char *configfilename="setup_hcal_detectionEff.cfg", int run = -1 ){
+void hcal_detEff( const char *configfilename="setup_hcal_detectionEff.cfg", int run = -1 ){
 
   //const char *outfilename, double ebeam=3.7278, double bbtheta=36.0, double sbstheta=31.9, double hcaldist=11.0 ){
 

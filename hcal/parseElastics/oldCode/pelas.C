@@ -72,7 +72,7 @@ string getDate(){
   return date;
 }
 
-void pelas( const char *configfilename="setup_pelas.cfg", const char *outputfilename="outfiles/pelas_out.root" ){
+void pelas( const char *configfilename="setup_pelas.cfg", const char *outputfilename="outfiles/pelas_out_11547_0.root" ){
   
   // Define a clock to check macro processing time
   TStopwatch *st = new TStopwatch();
