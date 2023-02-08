@@ -1,0 +1,1460 @@
+Bad TDC on primary block after elastic cut on event: 233
+-1000
+Bad TDC on primary block after elastic cut on event: 474
+Bad TDC on primary block after elastic cut on event: 487
+-1000
+Bad TDC on primary block after elastic cut on event: 860
+Bad TDC on primary block after elastic cut on event: 884
+-1000
+Bad TDC on primary block after elastic cut on event: 888
+7198.84
+Bad TDC on primary block after elastic cut on event: 1479
+Bad TDC on primary block after elastic cut on event: 1508
+Bad TDC on primary block after elastic cut on event: 1668
+Bad TDC on primary block after elastic cut on event: 2973
+-1000
+Bad TDC on primary block after elastic cut on event: 3233
+-1000
+Bad TDC on primary block after elastic cut on event: 3276
+-1000
+Bad TDC on primary block after elastic cut on event: 3590
+-1000
+Bad TDC on primary block after elastic cut on event: 3761
+-1000
+Bad TDC on primary block after elastic cut on event: 4073
+-1000
+Bad TDC on primary block after elastic cut on event: 4085
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 4371
+7206.32
+7208.65
+7203.58
+7210.13
+-1000
+Bad TDC on primary block after elastic cut on event: 4559
+-1000
+-74.644
+-74.2138
+-73.8759
+Bad TDC on primary block after elastic cut on event: 4769
+7197.02
+Bad TDC on primary block after elastic cut on event: 4926
+-1000
+Bad TDC on primary block after elastic cut on event: 4968
+7205.68
+7212.41
+Bad TDC on primary block after elastic cut on event: 5028
+7204.41
+Bad TDC on primary block after elastic cut on event: 5527
+-1000
+Bad TDC on primary block after elastic cut on event: 6214
+7200.87
+Bad TDC on primary block after elastic cut on event: 6952
+-1000
+Bad TDC on primary block after elastic cut on event: 7426
+-1000
+Bad TDC on primary block after elastic cut on event: 7697
+-1000
+Bad TDC on primary block after elastic cut on event: 8150
+-1000
+Bad TDC on primary block after elastic cut on event: 8241
+-1000
+Bad TDC on primary block after elastic cut on event: 8449
+-1000
+Bad TDC on primary block after elastic cut on event: 8734
+-1000
+Bad TDC on primary block after elastic cut on event: 8820
+-1000
+Bad TDC on primary block after elastic cut on event: 9316
+-1000
+Bad TDC on primary block after elastic cut on event: 9561
+-1000
+Bad TDC on primary block after elastic cut on event: 9734
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 9744
+-1000
+-64.28
+-1000
+Bad TDC on primary block after elastic cut on event: 10080
+Bad TDC on primary block after elastic cut on event: 10676
+-1000
+Bad TDC on primary block after elastic cut on event: 11306
+-1000
+Bad TDC on primary block after elastic cut on event: 11492
+-1000
+-76.8939
+-74.6584
+Bad TDC on primary block after elastic cut on event: 11591
+-1000
+Bad TDC on primary block after elastic cut on event: 12579
+-1000
+Bad TDC on primary block after elastic cut on event: 12587
+-1000
+Bad TDC on primary block after elastic cut on event: 12833
+-1000
+Bad TDC on primary block after elastic cut on event: 12909
+-1000
+Bad TDC on primary block after elastic cut on event: 12925
+-1000
+Bad TDC on primary block after elastic cut on event: 14317
+-1000
+21.7625
+Bad TDC on primary block after elastic cut on event: 14715
+-1000
+Bad TDC on primary block after elastic cut on event: 14940
+-1000
+Bad TDC on primary block after elastic cut on event: 14966
+7205.59
+7207.42
+7206.26
+7206.68
+Bad TDC on primary block after elastic cut on event: 15403
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 16032
+-1000
+Bad TDC on primary block after elastic cut on event: 16610
+-1000
+-69.759
+-69.5012
+-1000
+Bad TDC on primary block after elastic cut on event: 16644
+-1000
+Bad TDC on primary block after elastic cut on event: 16654
+-1000
+Bad TDC on primary block after elastic cut on event: 16766
+-1000
+Bad TDC on primary block after elastic cut on event: 16926
+-1000
+Bad TDC on primary block after elastic cut on event: 17216
+7202.74
+7203.51
+-1000
+Bad TDC on primary block after elastic cut on event: 18203
+Bad TDC on primary block after elastic cut on event: 18465
+-1000
+Bad TDC on primary block after elastic cut on event: 18576
+-1000
+Bad TDC on primary block after elastic cut on event: 18842
+-1000
+Bad TDC on primary block after elastic cut on event: 18883
+-1000
+Bad TDC on primary block after elastic cut on event: 18910
+-1000
+Bad TDC on primary block after elastic cut on event: 19429
+-1000
+Bad TDC on primary block after elastic cut on event: 19540
+-1000
+Bad TDC on primary block after elastic cut on event: 19841
+-1000
+Bad TDC on primary block after elastic cut on event: 19919
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 19943
+-1000
+Bad TDC on primary block after elastic cut on event: 20172
+-1000
+Bad TDC on primary block after elastic cut on event: 20257
+-1000
+Bad TDC on primary block after elastic cut on event: 20711
+-1000
+-74.5811
+Bad TDC on primary block after elastic cut on event: 21131
+-1000
+-64.5606
+-1000
+Bad TDC on primary block after elastic cut on event: 21196
+-1000
+Bad TDC on primary block after elastic cut on event: 21328
+-1000
+Bad TDC on primary block after elastic cut on event: 21861
+-1000
+Bad TDC on primary block after elastic cut on event: 22016
+-1000
+Bad TDC on primary block after elastic cut on event: 22165
+-1000
+Bad TDC on primary block after elastic cut on event: 22601
+-1000
+-74.0628
+-73.2239
+-74.1662
+-1000
+Bad TDC on primary block after elastic cut on event: 23446
+7215.21
+Bad TDC on primary block after elastic cut on event: 23514
+-1000
+Bad TDC on primary block after elastic cut on event: 23576
+-1000
+Bad TDC on primary block after elastic cut on event: 23597
+-1000
+Bad TDC on primary block after elastic cut on event: 24203
+7200.15
+Bad TDC on primary block after elastic cut on event: 24480
+7206.45
+7207.31
+7206.01
+Bad TDC on primary block after elastic cut on event: 24821
+-1000
+Bad TDC on primary block after elastic cut on event: 24955
+Bad TDC on primary block after elastic cut on event: 25456
+-1000
+Bad TDC on primary block after elastic cut on event: 26215
+-1000
+Bad TDC on primary block after elastic cut on event: 26252
+-1000
+Bad TDC on primary block after elastic cut on event: 26373
+-1000
+Bad TDC on primary block after elastic cut on event: 26410
+-1000
+Bad TDC on primary block after elastic cut on event: 26452
+7203.08
+7203.83
+-1000
+Bad TDC on primary block after elastic cut on event: 26708
+7203.04
+7206.16
+Bad TDC on primary block after elastic cut on event: 26880
+-1000
+Bad TDC on primary block after elastic cut on event: 27064
+-1000
+-69.9544
+Bad TDC on primary block after elastic cut on event: 27450
+-1000
+Bad TDC on primary block after elastic cut on event: 27861
+-1000
+Bad TDC on primary block after elastic cut on event: 28384
+-1000
+Bad TDC on primary block after elastic cut on event: 28676
+-1000
+Bad TDC on primary block after elastic cut on event: 28846
+7203.24
+7206.13
+Bad TDC on primary block after elastic cut on event: 29009
+-1000
+Bad TDC on primary block after elastic cut on event: 29151
+-1000
+Bad TDC on primary block after elastic cut on event: 29191
+-1000
+Bad TDC on primary block after elastic cut on event: 29269
+7202.16
+7207.6
+Bad TDC on primary block after elastic cut on event: 29418
+-1000
+Bad TDC on primary block after elastic cut on event: 29929
+-1000
+Bad TDC on primary block after elastic cut on event: 29982
+7201.2
+-1000
+Bad TDC on primary block after elastic cut on event: 30066
+7198.65
+Bad TDC on primary block after elastic cut on event: 30382
+7202.73
+7148.01
+7207.61
+Bad TDC on primary block after elastic cut on event: 30547
+-1000
+Bad TDC on primary block after elastic cut on event: 30979
+-1000
+Bad TDC on primary block after elastic cut on event: 30984
+-1000
+Bad TDC on primary block after elastic cut on event: 31031
+-1000
+Bad TDC on primary block after elastic cut on event: 31189
+7202.23
+-1000
+Bad TDC on primary block after elastic cut on event: 31289
+-1000
+Bad TDC on primary block after elastic cut on event: 31370
+-1000
+Bad TDC on primary block after elastic cut on event: 31663
+-1000
+Bad TDC on primary block after elastic cut on event: 31713
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 31877
+-1000
+Bad TDC on primary block after elastic cut on event: 31892
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 31915
+-1000
+Bad TDC on primary block after elastic cut on event: 31975
+-1000
+-74.7981
+-1000
+Bad TDC on primary block after elastic cut on event: 32702
+7224.25
+Bad TDC on primary block after elastic cut on event: 32765
+7201.93
+7213.23
+Bad TDC on primary block after elastic cut on event: 32809
+-1000
+Bad TDC on primary block after elastic cut on event: 33304
+-1000
+Bad TDC on primary block after elastic cut on event: 33370
+-1000
+Bad TDC on primary block after elastic cut on event: 33503
+-1000
+-65.1895
+Bad TDC on primary block after elastic cut on event: 33575
+-1000
+-68.7601
+Bad TDC on primary block after elastic cut on event: 33598
+-1000
+Bad TDC on primary block after elastic cut on event: 34287
+-1000
+Bad TDC on primary block after elastic cut on event: 34760
+-1000
+Bad TDC on primary block after elastic cut on event: 35328
+-1000
+Bad TDC on primary block after elastic cut on event: 35459
+-1000
+Bad TDC on primary block after elastic cut on event: 36480
+-1000
+Bad TDC on primary block after elastic cut on event: 37008
+-1000
+Bad TDC on primary block after elastic cut on event: 37052
+-1000
+Bad TDC on primary block after elastic cut on event: 37182
+-1000
+Bad TDC on primary block after elastic cut on event: 37285
+-1000
+Bad TDC on primary block after elastic cut on event: 37377
+-1000
+Bad TDC on primary block after elastic cut on event: 37414
+-1000
+Bad TDC on primary block after elastic cut on event: 37531
+-1000
+Bad TDC on primary block after elastic cut on event: 37726
+-1000
+Bad TDC on primary block after elastic cut on event: 37801
+-1000
+Bad TDC on primary block after elastic cut on event: 38003
+-1000
+Bad TDC on primary block after elastic cut on event: 38062
+7201.85
+Bad TDC on primary block after elastic cut on event: 38993
+7168.26
+Bad TDC on primary block after elastic cut on event: 39168
+-1000
+-73.8209
+Bad TDC on primary block after elastic cut on event: 39652
+7203.42
+7204.44
+-1000
+Bad TDC on primary block after elastic cut on event: 39698
+-1000
+Bad TDC on primary block after elastic cut on event: 39932
+-1000
+Bad TDC on primary block after elastic cut on event: 40221
+-1000
+Bad TDC on primary block after elastic cut on event: 40264
+-1000
+-71.3484
+-64.159
+Bad TDC on primary block after elastic cut on event: 40270
+-1000
+Bad TDC on primary block after elastic cut on event: 40532
+-1000
+-73.182
+Bad TDC on primary block after elastic cut on event: 40900
+-1000
+Bad TDC on primary block after elastic cut on event: 40955
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 41123
+-1000
+-73.4611
+Bad TDC on primary block after elastic cut on event: 41215
+7202.63
+7206.26
+Bad TDC on primary block after elastic cut on event: 41245
+-1000
+-75.4771
+Bad TDC on primary block after elastic cut on event: 41908
+-1000
+Bad TDC on primary block after elastic cut on event: 41961
+-1000
+Bad TDC on primary block after elastic cut on event: 43033
+-1000
+Bad TDC on primary block after elastic cut on event: 43088
+-1000
+Bad TDC on primary block after elastic cut on event: 43464
+-1000
+Bad TDC on primary block after elastic cut on event: 43498
+7201.08
+7203.29
+7093.93
+-1000
+Bad TDC on primary block after elastic cut on event: 43587
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 43600
+-1000
+Bad TDC on primary block after elastic cut on event: 43711
+-1000
+-63.601
+Bad TDC on primary block after elastic cut on event: 43995
+-1000
+Bad TDC on primary block after elastic cut on event: 44367
+-1000
+-71.95
+Bad TDC on primary block after elastic cut on event: 44614
+-1000
+Bad TDC on primary block after elastic cut on event: 44620
+-1000
+Bad TDC on primary block after elastic cut on event: 44782
+-1000
+Bad TDC on primary block after elastic cut on event: 44812
+-1000
+Bad TDC on primary block after elastic cut on event: 44853
+-1000
+-60.808
+-69.2563
+Bad TDC on primary block after elastic cut on event: 44869
+-1000
+Bad TDC on primary block after elastic cut on event: 44870
+-1000
+Bad TDC on primary block after elastic cut on event: 45382
+7172.98
+Bad TDC on primary block after elastic cut on event: 45549
+-1000
+Bad TDC on primary block after elastic cut on event: 45654
+-1000
+-70.4024
+-57.726
+Bad TDC on primary block after elastic cut on event: 46346
+-1000
+-66.9957
+Bad TDC on primary block after elastic cut on event: 46444
+-1000
+Bad TDC on primary block after elastic cut on event: 46839
+-1000
+-71.7419
+-71.4963
+Bad TDC on primary block after elastic cut on event: 46988
+Bad TDC on primary block after elastic cut on event: 47401
+7198.54
+7199.08
+7200.39
+Bad TDC on primary block after elastic cut on event: 47857
+-1000
+Bad TDC on primary block after elastic cut on event: 47925
+Bad TDC on primary block after elastic cut on event: 47991
+-1000
+-67.1664
+Bad TDC on primary block after elastic cut on event: 48323
+Bad TDC on primary block after elastic cut on event: 48425
+-1000
+-75.3528
+-74.5712
+Bad TDC on primary block after elastic cut on event: 48837
+-1000
+Bad TDC on primary block after elastic cut on event: 48892
+-1000
+Bad TDC on primary block after elastic cut on event: 48939
+-1000
+Bad TDC on primary block after elastic cut on event: 49598
+-1000
+Bad TDC on primary block after elastic cut on event: 49869
+7143.31
+Bad TDC on primary block after elastic cut on event: 50583
+-1000
+Bad TDC on primary block after elastic cut on event: 50668
+-1000
+Bad TDC on primary block after elastic cut on event: 50762
+-1000
+Bad TDC on primary block after elastic cut on event: 50883
+-1000
+Bad TDC on primary block after elastic cut on event: 51208
+Bad TDC on primary block after elastic cut on event: 51533
+-1000
+Bad TDC on primary block after elastic cut on event: 51813
+-1000
+Bad TDC on primary block after elastic cut on event: 51974
+-1000
+Bad TDC on primary block after elastic cut on event: 51985
+-1000
+Bad TDC on primary block after elastic cut on event: 51987
+-1000
+Bad TDC on primary block after elastic cut on event: 52528
+Bad TDC on primary block after elastic cut on event: 52608
+-1000
+Bad TDC on primary block after elastic cut on event: 52843
+-1000
+Bad TDC on primary block after elastic cut on event: 52962
+-1000
+-70.4024
+Bad TDC on primary block after elastic cut on event: 53213
+-1000
+Bad TDC on primary block after elastic cut on event: 53329
+-1000
+Bad TDC on primary block after elastic cut on event: 53351
+-1000
+Bad TDC on primary block after elastic cut on event: 53629
+-1000
+Bad TDC on primary block after elastic cut on event: 53838
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 53953
+-1000
+Bad TDC on primary block after elastic cut on event: 53962
+7201.53
+7202.06
+7200.66
+7204.9
+Bad TDC on primary block after elastic cut on event: 53981
+7199.74
+7201.19
+Bad TDC on primary block after elastic cut on event: 54246
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 54286
+-1000
+-73.07
+Bad TDC on primary block after elastic cut on event: 54296
+Bad TDC on primary block after elastic cut on event: 54358
+-1000
+Bad TDC on primary block after elastic cut on event: 54988
+-1000
+Bad TDC on primary block after elastic cut on event: 55028
+7166.48
+Bad TDC on primary block after elastic cut on event: 55034
+-1000
+-72.1317
+Bad TDC on primary block after elastic cut on event: 55041
+-1000
+Bad TDC on primary block after elastic cut on event: 55262
+-1000
+Bad TDC on primary block after elastic cut on event: 55503
+-1000
+Bad TDC on primary block after elastic cut on event: 56129
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 56539
+-1000
+-73.2371
+-4.54978
+-1000
+Bad TDC on primary block after elastic cut on event: 57429
+-1000
+-74.7834
+-74.1095
+-1000
+Bad TDC on primary block after elastic cut on event: 58064
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 59112
+-1000
+Bad TDC on primary block after elastic cut on event: 59131
+7201.33
+7203.22
+-1000
+Bad TDC on primary block after elastic cut on event: 59613
+-1000
+Bad TDC on primary block after elastic cut on event: 59703
+-1000
+-75.9763
+Bad TDC on primary block after elastic cut on event: 60185
+-1000
+Bad TDC on primary block after elastic cut on event: 60268
+7205.9
+-69.5649
+Bad TDC on primary block after elastic cut on event: 60926
+-1000
+Bad TDC on primary block after elastic cut on event: 61099
+-1000
+-72.1189
+Bad TDC on primary block after elastic cut on event: 61142
+-1000
+Bad TDC on primary block after elastic cut on event: 61292
+-1000
+Bad TDC on primary block after elastic cut on event: 61565
+-1000
+Bad TDC on primary block after elastic cut on event: 62394
+-1000
+Bad TDC on primary block after elastic cut on event: 62488
+-1000
+Bad TDC on primary block after elastic cut on event: 62566
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 62776
+7203.72
+Bad TDC on primary block after elastic cut on event: 63101
+-1000
+Bad TDC on primary block after elastic cut on event: 63154
+-1000
+Bad TDC on primary block after elastic cut on event: 63601
+-1000
+Bad TDC on primary block after elastic cut on event: 64156
+-1000
+-70.6611
+Bad TDC on primary block after elastic cut on event: 64451
+-1000
+Bad TDC on primary block after elastic cut on event: 64689
+-1000
+-71.6691
+Bad TDC on primary block after elastic cut on event: 64777
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 65077
+-1000
+Bad TDC on primary block after elastic cut on event: 65374
+-1000
+Bad TDC on primary block after elastic cut on event: 65523
+-1000
+Bad TDC on primary block after elastic cut on event: 65738
+-1000
+Bad TDC on primary block after elastic cut on event: 66229
+-1000
+Bad TDC on primary block after elastic cut on event: 67010
+-1000
+Bad TDC on primary block after elastic cut on event: 67048
+-1000
+Bad TDC on primary block after elastic cut on event: 67207
+7201.71
+7205.79
+7205.48
+7204.96
+Bad TDC on primary block after elastic cut on event: 67581
+-1000
+-72.8619
+-70.942
+-66.3467
+Bad TDC on primary block after elastic cut on event: 67961
+-1000
+Bad TDC on primary block after elastic cut on event: 67984
+Bad TDC on primary block after elastic cut on event: 68025
+-1000
+Bad TDC on primary block after elastic cut on event: 68104
+-1000
+Bad TDC on primary block after elastic cut on event: 68399
+-1000
+Bad TDC on primary block after elastic cut on event: 68526
+-1000
+Bad TDC on primary block after elastic cut on event: 68802
+Bad TDC on primary block after elastic cut on event: 68838
+-1000
+Bad TDC on primary block after elastic cut on event: 69213
+-1000
+-68.2948
+-1000
+Bad TDC on primary block after elastic cut on event: 69353
+-1000
+Bad TDC on primary block after elastic cut on event: 69924
+-1000
+Bad TDC on primary block after elastic cut on event: 70044
+Bad TDC on primary block after elastic cut on event: 70083
+-1000
+Bad TDC on primary block after elastic cut on event: 70287
+-1000
+Bad TDC on primary block after elastic cut on event: 70730
+-1000
+-72.846
+Bad TDC on primary block after elastic cut on event: 70908
+-1000
+Bad TDC on primary block after elastic cut on event: 71021
+-1000
+Bad TDC on primary block after elastic cut on event: 71034
+-1000
+Bad TDC on primary block after elastic cut on event: 71293
+-1000
+Bad TDC on primary block after elastic cut on event: 71403
+-1000
+Bad TDC on primary block after elastic cut on event: 71447
+-1000
+Bad TDC on primary block after elastic cut on event: 72176
+-1000
+Bad TDC on primary block after elastic cut on event: 72229
+7202.22
+7202.61
+7205.84
+Bad TDC on primary block after elastic cut on event: 72714
+-1000
+Bad TDC on primary block after elastic cut on event: 73014
+-1000
+Bad TDC on primary block after elastic cut on event: 73133
+Bad TDC on primary block after elastic cut on event: 73595
+-1000
+Bad TDC on primary block after elastic cut on event: 74135
+-1000
+Bad TDC on primary block after elastic cut on event: 74430
+-1000
+Bad TDC on primary block after elastic cut on event: 74623
+-1000
+Bad TDC on primary block after elastic cut on event: 74870
+-1000
+-77.3811
+-78.2163
+Bad TDC on primary block after elastic cut on event: 75726
+-1000
+Bad TDC on primary block after elastic cut on event: 75835
+-1000
+Bad TDC on primary block after elastic cut on event: 76036
+-1000
+Bad TDC on primary block after elastic cut on event: 77048
+-1000
+Bad TDC on primary block after elastic cut on event: 77433
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 78485
+-1000
+Bad TDC on primary block after elastic cut on event: 78829
+Bad TDC on primary block after elastic cut on event: 78930
+-1000
+Bad TDC on primary block after elastic cut on event: 79531
+-1000
+Bad TDC on primary block after elastic cut on event: 79704
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 79865
+-1000
+Bad TDC on primary block after elastic cut on event: 80356
+-1000
+Bad TDC on primary block after elastic cut on event: 80629
+7153.39
+Bad TDC on primary block after elastic cut on event: 80835
+-1000
+Bad TDC on primary block after elastic cut on event: 80846
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 81068
+-1000
+Bad TDC on primary block after elastic cut on event: 81514
+-1000
+Bad TDC on primary block after elastic cut on event: 81835
+-1000
+Bad TDC on primary block after elastic cut on event: 81894
+-1000
+Bad TDC on primary block after elastic cut on event: 82009
+Bad TDC on primary block after elastic cut on event: 82101
+7191.02
+Bad TDC on primary block after elastic cut on event: 82535
+Bad TDC on primary block after elastic cut on event: 82625
+-1000
+-29.9308
+Bad TDC on primary block after elastic cut on event: 83618
+-1000
+Bad TDC on primary block after elastic cut on event: 83861
+-1000
+Bad TDC on primary block after elastic cut on event: 83874
+-1000
+Bad TDC on primary block after elastic cut on event: 84097
+-1000
+Bad TDC on primary block after elastic cut on event: 84988
+-1000
+Bad TDC on primary block after elastic cut on event: 85238
+-1000
+Bad TDC on primary block after elastic cut on event: 85246
+-1000
+Bad TDC on primary block after elastic cut on event: 85268
+-1000
+Bad TDC on primary block after elastic cut on event: 85337
+-1000
+-71.6166
+Bad TDC on primary block after elastic cut on event: 85755
+-1000
+Bad TDC on primary block after elastic cut on event: 86417
+-1000
+Bad TDC on primary block after elastic cut on event: 87276
+-1000
+Bad TDC on primary block after elastic cut on event: 87502
+-1000
+Bad TDC on primary block after elastic cut on event: 88257
+-1000
+Bad TDC on primary block after elastic cut on event: 88340
+-1000
+Bad TDC on primary block after elastic cut on event: 88440
+-1000
+-99.7335
+Bad TDC on primary block after elastic cut on event: 88847
+-1000
+Bad TDC on primary block after elastic cut on event: 88907
+-1000
+Bad TDC on primary block after elastic cut on event: 89095
+7205.16
+7206.39
+Bad TDC on primary block after elastic cut on event: 89200
+-1000
+Bad TDC on primary block after elastic cut on event: 89213
+-1000
+-61.982
+Bad TDC on primary block after elastic cut on event: 89388
+7203.4
+7207.87
+7210.22
+Bad TDC on primary block after elastic cut on event: 89877
+-1000
+Bad TDC on primary block after elastic cut on event: 90041
+-1000
+Bad TDC on primary block after elastic cut on event: 90777
+-1000
+-83.284
+-85.7997
+Bad TDC on primary block after elastic cut on event: 91104
+-1000
+Bad TDC on primary block after elastic cut on event: 91471
+-1000
+Bad TDC on primary block after elastic cut on event: 91612
+7199.1
+7198.92
+7200.52
+Bad TDC on primary block after elastic cut on event: 91769
+-1000
+-74.2027
+Bad TDC on primary block after elastic cut on event: 92080
+-1000
+Bad TDC on primary block after elastic cut on event: 92434
+-1000
+Bad TDC on primary block after elastic cut on event: 92584
+-1000
+Bad TDC on primary block after elastic cut on event: 92928
+-1000
+Bad TDC on primary block after elastic cut on event: 93163
+-1000
+Bad TDC on primary block after elastic cut on event: 93698
+-1000
+Bad TDC on primary block after elastic cut on event: 94007
+-1000
+Bad TDC on primary block after elastic cut on event: 94274
+-1000
+Bad TDC on primary block after elastic cut on event: 94436
+-1000
+Bad TDC on primary block after elastic cut on event: 94537
+-1000
+Bad TDC on primary block after elastic cut on event: 94587
+-1000
+Bad TDC on primary block after elastic cut on event: 94826
+-1000
+Bad TDC on primary block after elastic cut on event: 94831
+-1000
+Bad TDC on primary block after elastic cut on event: 94938
+7207.76
+7206.78
+Bad TDC on primary block after elastic cut on event: 95671
+-1000
+Bad TDC on primary block after elastic cut on event: 96405
+-1000
+Bad TDC on primary block after elastic cut on event: 96461
+-1000
+Bad TDC on primary block after elastic cut on event: 96646
+-1000
+Bad TDC on primary block after elastic cut on event: 97598
+-1000
+Bad TDC on primary block after elastic cut on event: 97632
+-1000
+Bad TDC on primary block after elastic cut on event: 98165
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 98958
+-1000
+Bad TDC on primary block after elastic cut on event: 98981
+-1000
+Bad TDC on primary block after elastic cut on event: 99440
+-1000
+Bad TDC on primary block after elastic cut on event: 99716
+-1000
+Bad TDC on primary block after elastic cut on event: 100103
+7209.37
+7210.79
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 100225
+-1000
+Bad TDC on primary block after elastic cut on event: 100233
+-1000
+Bad TDC on primary block after elastic cut on event: 100460
+7201.3
+7206.35
+Bad TDC on primary block after elastic cut on event: 101040
+-1000
+-73.089
+Bad TDC on primary block after elastic cut on event: 101620
+-1000
+Bad TDC on primary block after elastic cut on event: 101690
+7205.53
+Bad TDC on primary block after elastic cut on event: 101929
+-1000
+Bad TDC on primary block after elastic cut on event: 102043
+-1000
+Bad TDC on primary block after elastic cut on event: 103124
+-1000
+Bad TDC on primary block after elastic cut on event: 103137
+-1000
+Bad TDC on primary block after elastic cut on event: 103995
+7204.8
+-1000
+Bad TDC on primary block after elastic cut on event: 104454
+-1000
+Bad TDC on primary block after elastic cut on event: 104586
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 105055
+-1000
+Bad TDC on primary block after elastic cut on event: 105146
+-1000
+Bad TDC on primary block after elastic cut on event: 105367
+-1000
+Bad TDC on primary block after elastic cut on event: 105410
+-1000
+Bad TDC on primary block after elastic cut on event: 105688
+Bad TDC on primary block after elastic cut on event: 105882
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 106008
+7233.69
+Bad TDC on primary block after elastic cut on event: 106828
+-1000
+Bad TDC on primary block after elastic cut on event: 107274
+-1000
+Bad TDC on primary block after elastic cut on event: 107530
+-1000
+Bad TDC on primary block after elastic cut on event: 107871
+-1000
+Bad TDC on primary block after elastic cut on event: 108046
+-1000
+21.0217
+Bad TDC on primary block after elastic cut on event: 108563
+-1000
+Bad TDC on primary block after elastic cut on event: 108609
+-1000
+Bad TDC on primary block after elastic cut on event: 108827
+-1000
+Bad TDC on primary block after elastic cut on event: 109118
+-1000
+Bad TDC on primary block after elastic cut on event: 109127
+Bad TDC on primary block after elastic cut on event: 109221
+-1000
+Bad TDC on primary block after elastic cut on event: 109703
+7200.7
+7199.99
+-1000
+Bad TDC on primary block after elastic cut on event: 109705
+-1000
+-74.7398
+Bad TDC on primary block after elastic cut on event: 110177
+7160.2
+7164.98
+Bad TDC on primary block after elastic cut on event: 110362
+-1000
+-68.9964
+Bad TDC on primary block after elastic cut on event: 110530
+7202.72
+7207.77
+7211.64
+Bad TDC on primary block after elastic cut on event: 110954
+-1000
+Bad TDC on primary block after elastic cut on event: 111539
+7209.5
+Bad TDC on primary block after elastic cut on event: 112067
+7205.53
+7210.35
+Bad TDC on primary block after elastic cut on event: 112172
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 112417
+Bad TDC on primary block after elastic cut on event: 113080
+7200.8
+-73.7994
+7201.74
+-68.9618
+-1000
+Bad TDC on primary block after elastic cut on event: 113256
+-1000
+Bad TDC on primary block after elastic cut on event: 113380
+-1000
+Bad TDC on primary block after elastic cut on event: 113454
+-1000
+Bad TDC on primary block after elastic cut on event: 113721
+7206.17
+7205.4
+Bad TDC on primary block after elastic cut on event: 113971
+7201.78
+-72.0375
+Bad TDC on primary block after elastic cut on event: 114002
+-1000
+Bad TDC on primary block after elastic cut on event: 114008
+-1000
+Bad TDC on primary block after elastic cut on event: 114116
+-1000
+Bad TDC on primary block after elastic cut on event: 115492
+-1000
+Bad TDC on primary block after elastic cut on event: 115568
+-1000
+Bad TDC on primary block after elastic cut on event: 116033
+-1000
+Bad TDC on primary block after elastic cut on event: 116664
+-1000
+-77.2862
+Bad TDC on primary block after elastic cut on event: 117047
+Bad TDC on primary block after elastic cut on event: 117108
+7200.59
+Bad TDC on primary block after elastic cut on event: 117318
+-1000
+Bad TDC on primary block after elastic cut on event: 117878
+7199.29
+Bad TDC on primary block after elastic cut on event: 118112
+7202.05
+Bad TDC on primary block after elastic cut on event: 118153
+-1000
+Bad TDC on primary block after elastic cut on event: 119151
+-1000
+Bad TDC on primary block after elastic cut on event: 119611
+-1000
+Bad TDC on primary block after elastic cut on event: 119958
+-1000
+Bad TDC on primary block after elastic cut on event: 120051
+-1000
+Bad TDC on primary block after elastic cut on event: 120717
+-1000
+-69.2051
+Bad TDC on primary block after elastic cut on event: 121270
+-1000
+Bad TDC on primary block after elastic cut on event: 121568
+-1000
+Bad TDC on primary block after elastic cut on event: 121611
+-1000
+-72.734
+Bad TDC on primary block after elastic cut on event: 122231
+-1000
+Bad TDC on primary block after elastic cut on event: 122642
+-1000
+Bad TDC on primary block after elastic cut on event: 122760
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 122930
+-1000
+Bad TDC on primary block after elastic cut on event: 123145
+-1000
+Bad TDC on primary block after elastic cut on event: 123250
+Bad TDC on primary block after elastic cut on event: 123716
+-1000
+Bad TDC on primary block after elastic cut on event: 123877
+-1000
+Bad TDC on primary block after elastic cut on event: 124799
+-1000
+Bad TDC on primary block after elastic cut on event: 124876
+-1000
+-75.7794
+-74.4211
+-1000
+Bad TDC on primary block after elastic cut on event: 125299
+-1000
+-74.3604
+-71.6489
+Bad TDC on primary block after elastic cut on event: 125482
+-1000
+Bad TDC on primary block after elastic cut on event: 125725
+-1000
+Bad TDC on primary block after elastic cut on event: 125850
+-1000
+Bad TDC on primary block after elastic cut on event: 126705
+-1000
+Bad TDC on primary block after elastic cut on event: 127385
+-1000
+Bad TDC on primary block after elastic cut on event: 127447
+-1000
+Bad TDC on primary block after elastic cut on event: 127802
+-1000
+Bad TDC on primary block after elastic cut on event: 128073
+-1000
+-160.589
+Bad TDC on primary block after elastic cut on event: 128167
+-1000
+Bad TDC on primary block after elastic cut on event: 128489
+-1000
+Bad TDC on primary block after elastic cut on event: 128909
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 129251
+-1000
+Bad TDC on primary block after elastic cut on event: 129664
+-1000
+Bad TDC on primary block after elastic cut on event: 129725
+7198.42
+Bad TDC on primary block after elastic cut on event: 129758
+-1000
+Bad TDC on primary block after elastic cut on event: 129997
+-1000
+7200.22
+-1000
+Bad TDC on primary block after elastic cut on event: 130602
+-1000
+Bad TDC on primary block after elastic cut on event: 131052
+-1000
+Bad TDC on primary block after elastic cut on event: 131069
+-1000
+Bad TDC on primary block after elastic cut on event: 131140
+-1000
+-109.147
+Bad TDC on primary block after elastic cut on event: 131427
+7165.49
+-1000
+Bad TDC on primary block after elastic cut on event: 131670
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 132315
+-1000
+Bad TDC on primary block after elastic cut on event: 132393
+-1000
+Bad TDC on primary block after elastic cut on event: 132651
+Bad TDC on primary block after elastic cut on event: 132787
+-1000
+Bad TDC on primary block after elastic cut on event: 133078
+-1000
+Bad TDC on primary block after elastic cut on event: 133153
+-1000
+Bad TDC on primary block after elastic cut on event: 133791
+7264.01
+7207.63
+7206.24
+Bad TDC on primary block after elastic cut on event: 133825
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 134282
+7190.78
+Bad TDC on primary block after elastic cut on event: 134467
+-1000
+Bad TDC on primary block after elastic cut on event: 134553
+-1000
+Bad TDC on primary block after elastic cut on event: 134855
+-1000
+Bad TDC on primary block after elastic cut on event: 134950
+Bad TDC on primary block after elastic cut on event: 135179
+-1000
+Bad TDC on primary block after elastic cut on event: 135629
+-1000
+-74.8069
+-73.972
+Bad TDC on primary block after elastic cut on event: 135818
+Bad TDC on primary block after elastic cut on event: 135982
+-1000
+-76.3339
+Bad TDC on primary block after elastic cut on event: 136237
+-1000
+Bad TDC on primary block after elastic cut on event: 137425
+-1000
+Bad TDC on primary block after elastic cut on event: 137538
+7207.15
+7213.27
+Bad TDC on primary block after elastic cut on event: 137812
+-1000
+Bad TDC on primary block after elastic cut on event: 137912
+7189.07
+7193
+-1000
+Bad TDC on primary block after elastic cut on event: 137941
+-1000
+Bad TDC on primary block after elastic cut on event: 138057
+-1000
+Bad TDC on primary block after elastic cut on event: 138098
+-1000
+Bad TDC on primary block after elastic cut on event: 138134
+7201.79
+Bad TDC on primary block after elastic cut on event: 138153
+-1000
+Bad TDC on primary block after elastic cut on event: 138243
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 138275
+-1000
+Bad TDC on primary block after elastic cut on event: 138666
+-1000
+Bad TDC on primary block after elastic cut on event: 138849
+Bad TDC on primary block after elastic cut on event: 139097
+Bad TDC on primary block after elastic cut on event: 139351
+-1000
+-24.664
+Bad TDC on primary block after elastic cut on event: 139729
+-1000
+Bad TDC on primary block after elastic cut on event: 140130
+-1000
+-73.7529
+Bad TDC on primary block after elastic cut on event: 140472
+-1000
+Bad TDC on primary block after elastic cut on event: 140515
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 140680
+-1000
+Bad TDC on primary block after elastic cut on event: 141094
+-1000
+Bad TDC on primary block after elastic cut on event: 141155
+Bad TDC on primary block after elastic cut on event: 141941
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 142268
+-1000
+Bad TDC on primary block after elastic cut on event: 142301
+-1000
+Bad TDC on primary block after elastic cut on event: 143083
+-1000
+Bad TDC on primary block after elastic cut on event: 143180
+-1000
+Bad TDC on primary block after elastic cut on event: 143544
+-1000
+Bad TDC on primary block after elastic cut on event: 143599
+7205.17
+7207.13
+-1000
+Bad TDC on primary block after elastic cut on event: 143715
+-1000
+Bad TDC on primary block after elastic cut on event: 143878
+-1000
+Bad TDC on primary block after elastic cut on event: 143953
+-1000
+Bad TDC on primary block after elastic cut on event: 144296
+-1000
+Bad TDC on primary block after elastic cut on event: 144479
+-1000
+Bad TDC on primary block after elastic cut on event: 144789
+-1000
+Bad TDC on primary block after elastic cut on event: 145331
+-1000
+Bad TDC on primary block after elastic cut on event: 145604
+-1000
+Bad TDC on primary block after elastic cut on event: 145929
+-1000
+Bad TDC on primary block after elastic cut on event: 146019
+Bad TDC on primary block after elastic cut on event: 146065
+-1000
+Bad TDC on primary block after elastic cut on event: 146068
+Bad TDC on primary block after elastic cut on event: 146749
+-1000
+-33.0803
+-1000
+Bad TDC on primary block after elastic cut on event: 146888
+-1000
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 147958
+-1000
+Bad TDC on primary block after elastic cut on event: 148118
+-1000
+Bad TDC on primary block after elastic cut on event: 148134
+-1000
+Bad TDC on primary block after elastic cut on event: 149097
+-1000
+-66.7411
+-102.094
+Bad TDC on primary block after elastic cut on event: 149151
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 149815
+-1000
+Bad TDC on primary block after elastic cut on event: 149966
+-1000
+Bad TDC on primary block after elastic cut on event: 150014
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 150905
+7181.57
+Bad TDC on primary block after elastic cut on event: 151182
+-1000
+Bad TDC on primary block after elastic cut on event: 151805
+-1000
+Bad TDC on primary block after elastic cut on event: 151847
+7198.64
+7199.54
+Bad TDC on primary block after elastic cut on event: 151884
+-1000
+-12.4915
+-4.25096
+Bad TDC on primary block after elastic cut on event: 152143
+-1000
+Bad TDC on primary block after elastic cut on event: 152220
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 152325
+Bad TDC on primary block after elastic cut on event: 152414
+7200.64
+7203.39
+Bad TDC on primary block after elastic cut on event: 152618
+-1000
+Bad TDC on primary block after elastic cut on event: 154040
+-1000
+Bad TDC on primary block after elastic cut on event: 154635
+-1000
+Bad TDC on primary block after elastic cut on event: 154684
+7207.23
+Bad TDC on primary block after elastic cut on event: 154698
+-1000
+Bad TDC on primary block after elastic cut on event: 155031
+-1000
+Bad TDC on primary block after elastic cut on event: 155037
+-1000
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 155050
+-1000
+Bad TDC on primary block after elastic cut on event: 155127
+-1000
+Bad TDC on primary block after elastic cut on event: 155165
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 155732
+-1000
+-65.566
+Bad TDC on primary block after elastic cut on event: 155980
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 156149
+-1000
+Bad TDC on primary block after elastic cut on event: 157111
+-1000
+Bad TDC on primary block after elastic cut on event: 157878
+-1000
+Bad TDC on primary block after elastic cut on event: 158140
+-1000
+Bad TDC on primary block after elastic cut on event: 158195
+-1000
+Bad TDC on primary block after elastic cut on event: 158282
+-1000
+Bad TDC on primary block after elastic cut on event: 158306
+-1000
+Bad TDC on primary block after elastic cut on event: 158366
+-1000
+-66.0762
+-72.2455
+-1000
+Bad TDC on primary block after elastic cut on event: 158954
+-1000
+Bad TDC on primary block after elastic cut on event: 159233
+-1000
+Bad TDC on primary block after elastic cut on event: 160037
+-1000
+Bad TDC on primary block after elastic cut on event: 160147
+Bad TDC on primary block after elastic cut on event: 160421
+-1000
+Bad TDC on primary block after elastic cut on event: 161346
+-1000
+-73.6624
+-94.5317
+Bad TDC on primary block after elastic cut on event: 162088
+-1000
+Bad TDC on primary block after elastic cut on event: 162654
+7203.19
+7201.91
+7204.31
+7202.81
+Bad TDC on primary block after elastic cut on event: 162992
+7204.99
+-66.9887
+Bad TDC on primary block after elastic cut on event: 163073
+7203.79
+7210.26
+7205.2
+-1000
+Bad TDC on primary block after elastic cut on event: 163213
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 163296
+7208.05
+7207.69
+-1000
+Bad TDC on primary block after elastic cut on event: 163653
+7210.28
+Bad TDC on primary block after elastic cut on event: 164073
+-1000
+Bad TDC on primary block after elastic cut on event: 164547
+-1000
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 167034
+-1000
+Bad TDC on primary block after elastic cut on event: 167713
+-1000
+Bad TDC on primary block after elastic cut on event: 167804
+-1000
+Bad TDC on primary block after elastic cut on event: 168016
+-1000
+Bad TDC on primary block after elastic cut on event: 168071
+-1000
+Bad TDC on primary block after elastic cut on event: 168120
+-1000
+-72.6639
+-71.1633
+Bad TDC on primary block after elastic cut on event: 168802
+Bad TDC on primary block after elastic cut on event: 168927
+7206.97
+7207.4
+7213.29
+7214.05
+Bad TDC on primary block after elastic cut on event: 169475
+-1000
+Bad TDC on primary block after elastic cut on event: 169802
+-1000
+Bad TDC on primary block after elastic cut on event: 170031
+-1000
+Bad TDC on primary block after elastic cut on event: 170043
+-1000
+Bad TDC on primary block after elastic cut on event: 170778
+-1000
+Bad TDC on primary block after elastic cut on event: 170805
+-1000
+Bad TDC on primary block after elastic cut on event: 171034
+-1000
+Bad TDC on primary block after elastic cut on event: 171063
+-1000
+Bad TDC on primary block after elastic cut on event: 171399
+-1000
+Bad TDC on primary block after elastic cut on event: 171829
+Bad TDC on primary block after elastic cut on event: 172017
+-1000
+Bad TDC on primary block after elastic cut on event: 172125
+-1000
+Bad TDC on primary block after elastic cut on event: 172241
+Bad TDC on primary block after elastic cut on event: 172394
+7136.87
+Bad TDC on primary block after elastic cut on event: 172529
+-1000
+Bad TDC on primary block after elastic cut on event: 172770
+-1000
+Bad TDC on primary block after elastic cut on event: 173371
+-1000
+Bad TDC on primary block after elastic cut on event: 173389
+-1000
+Bad TDC on primary block after elastic cut on event: 173744
+-1000
+Bad TDC on primary block after elastic cut on event: 173755
+-1000
+-72.3411
+-67.47
+Bad TDC on primary block after elastic cut on event: 173995
+7202.95
+7203.53
+Bad TDC on primary block after elastic cut on event: 174937
+Bad TDC on primary block after elastic cut on event: 175925
+-1000
+Bad TDC on primary block after elastic cut on event: 176315
+-1000
+Bad TDC on primary block after elastic cut on event: 176629
+-1000
+Bad TDC on primary block after elastic cut on event: 177288
+-1000
+-76.706
+-1000
+Bad TDC on primary block after elastic cut on event: 177516
+-1000
+Bad TDC on primary block after elastic cut on event: 179072
+-1000
+-1000
+Bad TDC on primary block after elastic cut on event: 179258
+-1000
+Bad TDC on primary block after elastic cut on event: 179319
+-1000
+Bad TDC on primary block after elastic cut on event: 179563
+-1000
+Bad TDC on primary block after elastic cut on event: 179756
+-1000
+Bad TDC on primary block after elastic cut on event: 179776
+Bad TDC on primary block after elastic cut on event: 179874
+-1000
+Bad TDC on primary block after elastic cut on event: 180034
+-1000
+-77.451
+-1000
+Bad TDC on primary block after elastic cut on event: 180151
+-1000
