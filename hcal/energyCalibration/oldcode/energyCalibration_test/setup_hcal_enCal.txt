@@ -1,0 +1,88 @@
+#$ROOTFILES/gmn_replayed_11199_stream0_seg0_0.root
+#LH2 full field
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11263*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11265*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11267*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11268*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11252*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11251*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11250*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11249*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11248*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11247*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11246*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11242*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11244*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11245*
+#LH2 quarter field
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11301*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11302*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11303*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11304*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11305*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11306*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11307*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11308*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11309*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11310*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11311*
+#LH2 inverted quarter field
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11276*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11277*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11279*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11280*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11281*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11282*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11283*
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11284*
+#LH2 Zero Field 
+/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11332*
+#LD2
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11251*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11199*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11252*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11246*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11216*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11251*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11249*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11248*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11204*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11207*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11208*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11212*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11215*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11214*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11218*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11226*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11228*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11219*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11253*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11252*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11251*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11250*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11249*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11248*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11246*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11245*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11244*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11242*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11255*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11256*
+#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11257*
+#$OUT_DIR/hcal_11199_50000.root
+endlist
+sbs.hcal.nclus>0
+sbs.hcal.a_time>0
+endcut
+E_e 1.92
+minEventPerCell 20
+maxEventPerCell 4000
+highDelta 0.1
+HCal_d 14.5
+HCal_th 35
+inConstPath /adaqfs/home/a-onl/sbs/HCal_replay/hcal/setFiles/unity.txt
+ratioPath /adaqfs/home/a-onl/sbs/HCal_replay/hcal/setFiles/unity.txt
+HVfilePath /adaqfs/home/a-onl/sbs/HCal_replay/hcal/setFiles/HV_run11199.txt
+alphasFilePath /adaqfs/home/a-onl/sbs/HCal_replay/hcal/setFiles/alphas.txt
+HVoutPath /adaqfs/home/a-onl/sbs/HCal_replay/outfiles/ECal_HV11199.txt
+constPath /adaqfs/home/a-onl/sbs/HCal_replay/outfiles/newRatio.txt

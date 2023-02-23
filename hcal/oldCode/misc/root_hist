@@ -1,0 +1,478 @@
+TFile *_file0 = TFile::Open("hcalElasticDisplay_10_18_2021.root")
+new TBrowser
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+TFile *_file0 = TFile::Open("hcalElasticDisplay_10_18_2021.root")
+new TBrowser
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+TFile *_file0 = TFile::Open("hcalElasticDisplay_10_18_2021.root")
+new TBrowser
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_eCal_p.C("setup_hcal_eCal_p.txt")
+.q
+TFile *_file0 = TFile::Open("hcalECalResults.root")
+new TBrowser
+.q
+.x hcal_elasDisplay.C(setup_hcal_elasDisplay.txt)
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+TFile *_file0 = TFile::Open("hcalElasticDisplay_10_19_2021.root")
+new TBrowser
+.q
+.x hcal_eCal_p.C("setup_hcal_eCal_p.txt")
+.q
+TFile *_file0 = TFile::Open("hcalElasticDisplay_10_19_2021.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("hcalECalResults.root")
+new TBrowser
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+TFile *_file0 = TFile::Open("hcalElasticDisplay_10_19_2021.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("hcalElasticDisplay_10_19_2021.root")
+new TBrowser
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+TFile *_file0 = TFile::Open("hcalElasticDisplay_10_19_2021.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("hcalElasticDisplay_10_19_2021.root")
+new TBrowser
+new TBrowser
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+TFile *_file0 = TFile::Open("eCalOut.root")
+new TBrowser
+.q
+.q
+.x hcal_elasDisplay.C("setup_elasDisplay.txt")
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+TFile *_file0 = TFile::Open("hcalElasticDisplay_10_19_2021.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("hcalElasticDisplay_10_19_2021.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("eCalOut.root")
+new TBrowser
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.q
+TFile *_file0 = TFile::Open("eCalOut.root")
+new TBrowser
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+TFile *_file0 = TFile::Open("eCalOut.root")
+new TBrowser
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+TFile *_file0 = TFile::Open("eCalOutTEST.root")
+new TBrowser
+.q
+.x hcal_elasDisplay.C
+.q
+.q
+TFile *_file0 = TFile::Open("eCalOutTEST.root")
+new TBrowser
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+TFile *_file0 = TFile::Open("eCalOutTEST.root")
+new TBrowser
+.1
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+TFile *_file0 = TFile::Open("eCalOutTEST.root")
+new TBrowser
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+TFile *_file0 = TFile::Open("eCalOutTEST.root")
+new TBrowser
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+TFile *_file0 = TFile::Open("eCalOutTEST.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("eCalOut_1stPass101921.root")
+new TBrowser
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+TFile *_file0 = TFile::Open("eCalOut.root")
+new TBrowser
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.q
+TFile *_file0 = TFile::Open("eCalOut.root")
+new TBrowser
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+TFile *_file0 = TFile::Open("eCalOut.root")
+new TBrowser
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+TFile *_file0 = TFile::Open("eCalOut.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("eCalOut.root")
+new TBrowser
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.q
+TFile *_file0 = TFile::Open("eCalOut.root")
+new TBrowser
+.q
+.x hcal_enCal.C("setup_TEST.txt")
+.q
+.x hcal_enCal.C("setup_TEST.txt")
+.q
+.x hcal_enCal.C("setup_TEST.txt")
+.q
+TFile *_file0 = TFile::Open("eCalOut.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("eCalOut.root")
+.q
+.x hcal_enCal.C("setup_TEST.txt")
+.q
+.x hcal_enCal.C("setup_TEST.txt")
+.q
+.x hcal_enCal.C("setup_TEST.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.x hcal_enCal.C("setup_TEST.txt")
+.q
+.x hcal_enCal.C("setup_TEST.txt")
+.q
+.x hcal_enCal.C("setup_TEST.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_hcal_enCal.txt")
+.q
+.x hcal_enCal.C("setup_TEST.txt")
+.q
+TFile *_file0 = TFile::Open("eCalOut.root")
+new TBrowser
+.q
+.x hcal_enCal.C("setup_TEST.txt")
+.q
+TFile *_file0 = TFile::Open("HCalExperteCalOut.root")
+new TBrowser
+.q
+.q
+.x hcal_enCal.C("setup_TEST.txt")
+.q
+.x hcal_enCal.C("setup_TEST.txt")
+.q
+TFile *_file0 = TFile::Open("eCalOut.root")
+new TBrowser
+.q
+.x hcal_enCal.C("setup_TEST.txt")
+TFile *_file0 = TFile::Open("eCalOut.root")
+new Tbrowser
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("eCalOut_1.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("eCalOut.root")
+new TBrowser
+.q
+.x hcal_enCal.C("setup_TEST.txt")
+.q
+.x hcal_enCal.C("setup_TEST.txt")
+.q
+.q
+TFile *_file0 = TFile::Open("eCalOut.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("eCalOut.root")
+.q
+.x hcal_enCal.C("setup_TEST.txt")
+.q
+.q
+TFile *_file0 = TFile::Open("eCalOut.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("eCalOut.root")
+new TBrowser
+new TBrowser
+.q
+.x hcal_enCal.C("setup_TEST.txt")
+.q
+TFile *_file0 = TFile::Open("eCalOut.root")
+new TBrowser
+.q
+.x hcal_enCal.C("setup_TEST.txt")
+.q
+TFile *_file0 = TFile::Open("eCalOut.root")
+new TBrowser
+.q
+.x setup_hcal_elasDisplay.txt
+.q
+.x hcal_elasDisplay.C("setup_hcal_elasDisplay.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("Setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("Setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+TFile *_file0 = TFile::Open("eCalOut.root")
+new TBrowser
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+exit
+exit
+.q
+.x elasWaveform.C(11311)
+.q
+.x elasWaveform.C(11311)
+.q
+.x elasWaveform.C(11311)
+.q
+.x elasWaveform.C(11311)
+.q
+.q
+.L HCal_Calibration.C+
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+TFile *_file0 = TFile::Open("eCalOut_102221.root")
+new TBrowser
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+.x HCal_Calibration.C("setup_HCal_Calibration.txt")
+.q
+TFile *_file0 = TFile::Open("eCalOut.root")
+new TBrowser
+constants->Draw("AP")
+.q
+.x HCal_BBCal_Time_Diff.C(12058)
+.q
+.x HCal_BBCal_Time_Diff.C+(setup_HCal_BBCal_Time_Diff.txt,12058)
+.q
+.x HCal_BBCal_Time_Diff.C+(setup_HCal_BBCal_Time_Diff.txt,12058)
+.q
+.x HCal_BBCal_Time_Diff.C+(setup_HCal_BBCal_Time_Diff.txt,12058)
+.q
+.x HCal_BBCal_Time_Diff.C+(setup_HCal_BBCal_Time_Diff.txt,12058)
+.q
+.x HCal_BBCal_Time_Diff.C+(setup_HCal_BBCal_Time_Diff.txt,12058)
+.q
+.x HCal_BBCal_Time_Diff.C+(setup_HCal_BBCal_Time_Diff.txt,12058)
+.q
+.x HCal_BBCal_Time_Diff.C+(setup_HCal_BBCal_Time_Diff.txt,12058)
+.x HCal_BBCal_Time_Diff.C+("setup_HCal_BBCal_Time_Diff.txt",12058)
+.q
+.x HCal_BBCal_Time_Diff.C+("setup_HCal_BBCal_Time_Diff.txt",12058)

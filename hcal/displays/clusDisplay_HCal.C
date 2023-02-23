@@ -301,12 +301,14 @@ void displayEvent(Int_t entry = -1)
     Int_t clsOffset = zoomCenter - hcalt::cblkid[0];
     Int_t cblkrow_prim = (int)((hcalt::cblkid[0]-1)/kNcols);
     Int_t cblkcol_prim = ((int)hcalt::cblkid[0]-1)%kNcols;
+    
 
     cout << "Number of blocks in primary cluster: " << hcalt::nblk << endl;
     for( int b = 0; b < nblk; b++ ){
       Int_t r = (int)((hcalt::cblkid[b]-1)/kNcols);
       Int_t c = ((int)hcalt::cblkid[b]-1)%kNcols;
-      cout << "                ..at r:" << r << " c:" << c << " with ADCamp_p=" << peak[r][c]*1000 << "(mV) E=" << hcalt::ceblk[b]*1000 << "(MeV)" << endl;
+      Int_t idx = (int)(hcalt::cblkid[b]-1);
+      cout << "                ..at r:" << r << " c:" << c << " with ADCamp_p=" << peak[r][c]*1000 << "(mV) E=" << hcalt::ceblk[b]*1000 << "(MeV) TDC=" << hcalt::tdc[idx] << "(ns) TDCclusblk=" << hcalt::cblktdc[b] << endl;
     }
     // Check the cluster and set array values
     for( int el = 0; el < kNrows*kNcols; el++ ){
@@ -515,7 +517,8 @@ Int_t clusDisplay_HCal(Int_t run = 1198, Int_t event = -1){
   if(!T) { 
     T = new TChain("T");
     //T->Add(TString::Format("%s/e1209019_%d*.root",getenv("DATA_DIR"),run));
-    T->Add(TString::Format("/volatile/halla/sbs/seeds/rootfiles/hcal_general_%d*",run));
+    //T->Add(TString::Format("/volatile/halla/sbs/seeds/rootfiles/hcal_general_%d*",run));
+    T->Add(TString::Format("/volatile/halla/sbs/seeds/rootfiles/hcal_gmn_fullreplay_%d*",run));
     T->SetBranchStatus("*",0);
     T->SetBranchStatus("sbs.hcal.*",1);
     T->SetBranchAddress("sbs.hcal.nsamps",hcalt::nsamps);
@@ -537,11 +540,11 @@ Int_t clusDisplay_HCal(Int_t run = 1198, Int_t event = -1){
     T->SetBranchAddress("sbs.hcal.y",hcalt::y);
 
     // Reference TDC branches
-    T->SetBranchAddress("sbs.hcal.Ref.tdc",hcalt::tdc);
-    T->SetBranchAddress("sbs.hcal.Ref.tdc",hcalt::tdc);
-    T->SetBranchAddress("sbs.hcal.Ref.tdc",hcalt::tdc);
-    T->SetBranchAddress("sbs.hcal.Ref.tdcelemID",hcalt::tdc);
-    T->SetBranchAddress("sbs.hcal.Ref.tdc_mult",hcalt::tdc);
+    //T->SetBranchAddress("sbs.hcal.Ref.tdc",hcalt::tdc);
+    //T->SetBranchAddress("sbs.hcal.Ref.tdc",hcalt::tdc);
+    //T->SetBranchAddress("sbs.hcal.Ref.tdc",hcalt::tdc);
+    //T->SetBranchAddress("sbs.hcal.Ref.tdcelemID",hcalt::tdc);
+    //T->SetBranchAddress("sbs.hcal.Ref.tdc_mult",hcalt::tdc);
 
 
     // Add track branches
@@ -566,6 +569,7 @@ Int_t clusDisplay_HCal(Int_t run = 1198, Int_t event = -1){
     T->SetBranchAddress("sbs.hcal.clus.y",hcalt::cy);
     T->SetBranchAddress("sbs.hcal.clus_blk.x",hcalt::cblkx);
     T->SetBranchAddress("sbs.hcal.clus_blk.y",hcalt::cblky);
+    T->SetBranchAddress("sbs.hcal.clus_blk.tdctime",hcalt::cblktdc);
     //T->SetBranchAddress("sbs.hcal.tdctimeblk",hcalt::);
     //T->SetBranchAddress("sbs.hcal.atimeblk",hcalt::);
 

@@ -69,7 +69,7 @@ void hcaltdc_eff_chainC( Int_t opt=0 ){
 
   // Declare general physics parameters over all kinematics
   Int_t kine[nkine] = {4,7,11,14,8,9}; // GMn nominal kinematic
-  Double_t E_e[nkine] = {3.7278,7.906,9.91,5.965,4.013,6.373}; // Energy of beam (incoming electrons from accelerator)
+  Double_t E_e[nkine] = {3.7278,7.9072,9.8594,5.9649,5.9648,4.0148}; // Energy of beam (incoming electrons from accelerator)
   Double_t BB_d[nkine] = {1.7988,1.84896,1.55146,1.84787,1.97473,1.550}; // Distance to bigbite spectrometer from target chamber (m)
   Double_t BB_th[nkine] = {36.,40.,42.,46.5,26.5,49.}; // Angle BB spectrometer makes with exit beamline
   Double_t HCal_d[nkine] = {11.,14.,14.5,14.,11.,11.}; // Distance to HCal from scattering chamber for comm1
@@ -151,7 +151,7 @@ void hcaltdc_eff_chainC( Int_t opt=0 ){
   ninfile[5][1] = 13683;
   ninfile[5][2] = 13696;
 
-  TTreeFormula *GlobalCut[nkine];
+  //TTreeFormula *GlobalCut[nkine];
   TEventList *elist[nkine];
   Long64_t Nevents[nkine];
   Long64_t NTevents[nkine];

@@ -115,6 +115,7 @@ void tcal_s( const char *configfilename="stcal_s.cfg", const char *outputfilenam
     if( !currentline.BeginsWith("#") ){
       if(!currentline) cout << "WARNING: No file exists at " << currentline << "." << endl;
       C->Add(currentline);
+      cout << "Loaded file at: " << currentline << endl;
     }    
   }
   TCut globalcut = "";
@@ -394,6 +395,8 @@ void tcal_s( const char *configfilename="stcal_s.cfg", const char *outputfilenam
       }
       cout << endl;
     }
+  }else{
+    cout << "Fresh=1 selected. No fit parameters passed and timewalk corrected histograms should be ignored." << endl;
   }
 
   cout << endl << endl << "Fit parameters loaded." << endl;
@@ -470,7 +473,7 @@ void tcal_s( const char *configfilename="stcal_s.cfg", const char *outputfilenam
   C->SetBranchStatus( "bb.hodotdc.clus.tmean", 1 );
   C->SetBranchStatus( "bb.hodotdc.nclus", 1 );
   C->SetBranchStatus( "fEvtHdr.fRun", 1 );
-  C->SetBranchStatus( "fEvtHdr.fEvtTime", 1 );
+  //C->SetBranchStatus( "fEvtHdr.fEvtTime", 1 );
   C->SetBranchStatus( "fEvtHdr.fEvtNum", 1 );
   C->SetBranchStatus( "fEvtHdr.fTrigBits", 1 );
   C->SetBranchStatus( "e.kine.W2", 1 );
@@ -510,7 +513,7 @@ void tcal_s( const char *configfilename="stcal_s.cfg", const char *outputfilenam
   C->SetBranchAddress( "bb.hodotdc.clus.tmean", &HODOtmean );
   C->SetBranchAddress( "bb.hodotdc.nclus", &HODOnclus );
   C->SetBranchAddress( "fEvtHdr.fRun", &runI );
-  C->SetBranchAddress( "fEvtHdr.fEvtTime", &runT );
+  //C->SetBranchAddress( "fEvtHdr.fEvtTime", &runT );
   C->SetBranchAddress( "fEvtHdr.fEvtNum", &runN );
   C->SetBranchAddress( "fEvtHdr.fTrigBits", &TBits );
   C->SetBranchAddress( "e.kine.W2", &kineW2 );
@@ -523,7 +526,8 @@ void tcal_s( const char *configfilename="stcal_s.cfg", const char *outputfilenam
   
   // Declare outfile
   //TFile *fout = new TFile( outputfilename, "RECREATE" );
-  TFile *fout = new TFile( Form( "tcalOUT_%s.root",date.c_str() ), "RECREATE" );
+  //TFile *fout = new TFile( Form( "tcalOUT_%s.root",date.c_str() ), "RECREATE" );
+  TFile *fout = new TFile( "tcalOUT.root", "RECREATE" );
 
   // Initialize vectors and arrays
   Double_t TDCoffsets[kNcell] = {0.0};
@@ -551,6 +555,7 @@ void tcal_s( const char *configfilename="stcal_s.cfg", const char *outputfilenam
   // Physics and trigger histograms
   //TH1D *el_ev = new TH1D( "el_ev",";Event", 50000, 0, 50000);
   TH1D *hDiff = new TH1D( "hDiff","HCal time - BBCal time (ns)", 1300, -500, 800 );
+  TH1D *hTDCsig = new TH1D( "hTDCsig","HCal time - Hodo time Sigma all Channels", 100, 0, 10 );
   TH1D *hW = new TH1D( "W", "W; GeV", 250, 0.3, 6 );
   TH1D *hNBlk = new TH1D( "hNBlk", "Number of Blocks in Primary Cluster; Number", 25, 0, 25 );
   TH1D *hNClus = new TH1D( "hNClus", "Number of Clusters; Number", 25, 0, 25 );
@@ -579,16 +584,21 @@ void tcal_s( const char *configfilename="stcal_s.cfg", const char *outputfilenam
   TH1D *he[kNcell];
   TH1D *hatime[kNcell];
   TH2D *htdcVe[kNcell];
-  
+
+  //Histo Limits
+  Double_t llim = -120.;
+  Double_t ulim = -10.;
+  Double_t tbin = ulim-llim;
+
   for( Int_t i=0; i<kNcell; i++ ){
-    htdc[i] = new TH1D(Form("htdc_bl%d",i),";TDC_{HCAL} (ns)",250,-200,50);
-    htdcDiff[i] = new TH1D(Form("htdcDiff_bl%d",i),";TDC_{HCAL}-TDC_{HODO} (ns)",250,-200,50);
+    htdc[i] = new TH1D(Form("htdc_bl%d",i),";TDC_{HCAL} (ns)",tbin,llim,ulim);
+    htdcDiff[i] = new TH1D(Form("htdcDiff_bl%d",i),";TDC_{HCAL}-TDC_{HODO} (ns)",tbin,llim,ulim);
     hcorr[i] = new TH1D(Form("hcorr_bl%d",i),"TDC Timewalk Correction; ns",200,0,20);
-    htdc_corr[i] = new TH1D(Form("htdc_corr_bl%d",i),";TDC_{HCAL} (ns)",250,-200,50);
-    htdcDiff_corr[i] = new TH1D(Form("htdcDiff_corr_bl%d",i),";TDC_{HCAL}-TDC_{HODO} (ns)",250,-200,50);
+    htdc_corr[i] = new TH1D(Form("htdc_corr_bl%d",i),";TDC_{HCAL} (ns)",tbin,llim,ulim);
+    htdcDiff_corr[i] = new TH1D(Form("htdcDiff_corr_bl%d",i),";TDC_{HCAL}-TDC_{HODO} (ns)",tbin,llim,ulim);
     he[i] = new TH1D(Form("he_bl%d",i),"E; GeV",1000,0,100);
     hatime[i] = new TH1D(Form("hatime_bl%d",i),";ADCt_{HCAL} (ns)",180,0,180);
-    htdcVe[i] = new TH2D(Form("htdcVe_bl%d",i),Form(";E_{bl%d} (GeV);TDC_{HCAL} (ns)",i),1000,0.0,500,250,-200,50);
+    htdcVe[i] = new TH2D(Form("htdcVe_bl%d",i),Form(";E_{bl%d} (GeV);TDC_{HCAL} (ns)",i),1000,0.0,500,tbin,llim,ulim);
   }
 
   cout << "Variables and histograms defined." << endl;
@@ -655,7 +665,7 @@ void tcal_s( const char *configfilename="stcal_s.cfg", const char *outputfilenam
 	if(TDCT_id[ihit]==0) hcal_time=TDCT_tdc[ihit];
       }
       Double_t diff = hcal_time - bbcal_time; 
-      Double_t RFmod = std::fmod(RF_time,4); //RF Signature measures the bunch crossing of beam electrons at 4ns intervals
+      Double_t RFmod = std::fmod(RF_time,2); //RF Signature measures the bunch crossing of beam electrons at 4ns intervals
       hTBBt->Fill( bbcal_time );
       hTRF->Fill( RF_time );
       hTRF->Fill( RFmod );
@@ -724,7 +734,7 @@ void tcal_s( const char *configfilename="stcal_s.cfg", const char *outputfilenam
       if( HCALe>0.02 && HCALblktdc[0]<-400 && HODOnclus<10 ) TDCmiss++;
 	
       //Tight cut: W elastic peak, BBCal/HCal timing coincidence, and expected position of scattered nucleon in HCal
-      bool tightelastic = fabs( W-W_mean )<W_sig && fabs( diff+t_trig )<30 && (fabs(xDiff-dx0)<dx_sig || fabs(yDiff-dy0)<dy_sig); 
+      //bool tightelastic = fabs( W-W_mean )<W_sig && fabs( diff+t_trig )<30 && (fabs(xDiff-dx0)<dx_sig || fabs(yDiff-dy0)<dy_sig); 
 
       //Loose cut: W elastic peak, BBCal/HCal timing coincidence
       //bool elastic = fabs( W-W_mean )<W_sig && fabs( diff-t_trig )<30;
@@ -794,6 +804,9 @@ void tcal_s( const char *configfilename="stcal_s.cfg", const char *outputfilenam
   Double_t TDCerr[kNcell];
   Double_t ADCterr[kNcell];
 
+  Double_t fitG_llim = -120.;
+  Double_t fitG_ulim = -10.;
+
   for(Int_t i=0; i<kNcell; i++){
 
     X[i] = i;
@@ -818,10 +831,12 @@ void tcal_s( const char *configfilename="stcal_s.cfg", const char *outputfilenam
       fitG->SetParameter(2,3.5);
     }else{
       //fitG->SetParameters(30,-75,2.4);
-      fitG->SetParameter(1,-75);
+      //fitG->SetParameter(1,-75);
+      fitG->SetParameter(1,-45);
       fitG->SetParameter(2,2.4);
     }
-    fitG->SetParLimits(1,-130,-50);
+    //fitG->SetParLimits(1,-130,-50);
+    fitG->SetParLimits(1,fitG_llim,fitG_ulim);
     fitG->SetParLimits(2,0,20);
     fitTW->SetParameters(20,0.2,-80);
     fitTW->SetParLimits(0,0,30);
@@ -843,13 +858,15 @@ void tcal_s( const char *configfilename="stcal_s.cfg", const char *outputfilenam
 
     if( htdcDiff_corr[i]->GetEntries()>tFitMin ){
       if( i==242 ){
-	htdcDiff_corr[i]->Fit("fitG","Q","",-130,-100);
+	htdcDiff_corr[i]->Fit("fitG","Q","",fitG_llim,fitG_ulim);
       }else{
-	htdcDiff_corr[i]->Fit("fitG","Q","",-100,-50);
+	htdcDiff_corr[i]->Fit("fitG","Q","",fitG_llim,fitG_ulim);
       }
-      TDCoffsets[i] = fitG->GetParameter(1)+75; //Target is -75ns
+      TDCoffsets[i] = fitG->GetParameter(1)+45; //Target is -45ns
       TDCsig[i] = fitG->GetParameter(2);
       htdcDiff_corr[i]->SetTitle(Form("Amp:%f Mean:%f Sig:%f",fitG->GetParameter(0),fitG->GetParameter(1),fitG->GetParameter(2)));
+
+      hTDCsig->Fill(fitG->GetParameter(2));
 
       TDCdeviations[i] = TDCoffsets[i]-oldTDCoffsets[i]*TDCCalib;
 

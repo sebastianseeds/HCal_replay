@@ -1,0 +1,10 @@
+TFile *_file0 = TFile::Open("trig_diff_12058.root")
+.q
+TFile *_file0 = TFile::Open("trig_diff_12058.root")
+new TBrowser
+.q
+TFile *_file0 = TFile::Open("trig_diff_12058.root")
+new TBrowser
+TFile *_file0 = TFile::Open("trig_diff_12058.root")
+TBrowser b
+.q

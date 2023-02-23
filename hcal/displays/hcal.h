@@ -51,6 +51,7 @@ namespace hcalt {
   Double_t cblky[MAX_HCAL_MODULES+1000] = {0};
   Double_t cblke[MAX_HCAL_MODULES+1000] = {0};
   Double_t cblkatime[MAX_HCAL_MODULES+1000] = {0};
+  Double_t cblktdc[MAX_HCAL_MODULES+1000] = {0};
   Double_t catime[MAX_HCAL_MODULES+1000] = {0};
   //Trigger generic detector vars
   Double_t Tsamps[MAX_TRIGGER_MODULES*MAX_FADC_SAMPLES+1000];
