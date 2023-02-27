@@ -7,6 +7,7 @@
 #include <TChain.h>
 #include <TSystem.h>
 #include <TStopwatch.h>
+#include <unistd.h>
 #include "TChain.h"
 #include "TTree.h"
 #include "TFile.h"
@@ -35,7 +36,7 @@ const Int_t xN = 48; //2*kNrows, total number of dispersive bins detection uni
 const Int_t yN = 24; //2*kNcols, total number of transverse bins detection uni
 //Double_t hcalheight = 0.365; //m The height of the center of HCAL above beam
 const Double_t hcalheight = -0.2897;
-const Double_t sampFrac = 0.0795; //HCal sampling frac (0.06588 GeV/0.8286 GeV) = 0.0795 = 7.95% -> (MC E_dep per proton) / (fit to data KE_p)
+const Double_t sampFrac = 0.0795; //HCal sampling frac (0.06588 GeV/0.8286 GeV) = 0.0795 = 7.95% -> (MC E_dep per proton) / (fit to data KE_p) - may need updated by kinematic
 //Target constants
 const Double_t dEdx_tgt=0.00574; //According to NIST ESTAR, the collisional stopping power of hydrogen is about 5.74 MeV*cm2/g at 2 GeV energy
 const Double_t dEdx_Al = 0.0021; //According to NIST ESTAR, the collisional stopping power of Aluminum is about 2.1 MeV*cm2/g between 1-4 GeV
@@ -52,7 +53,9 @@ const Double_t celldiameter = 1.6*2.54; //cm, right now this is a guess
 const Double_t Ztgt = 1.0;
 const Double_t Atgt = 1.0;
 const Double_t Mmol_tgt = 1.008; //g/mol
+const UInt_t second = 1000000; 
 const Int_t nkine = 6; // Total number of kinematic points
+const Int_t maxfset = 5;
 const Int_t nfset_lh2[6] = {3,1,2,2,4,1}; //Number of LH2 magnetic field settings in order SBS{4,7,11,14,8,9}
 const Int_t nfset_ld2[6] = {3,1,2,1,4,1}; //Number of LD2 magnetic field settings in order SBS{4,7,11,14,8,9}
 const Int_t fset_lh2[6][4] = {{0,30,50,-1},
@@ -87,19 +90,16 @@ string getDate(){
   return date;
 }
 
-Double_t Gfit(Double_t *x, Double_t *par){
-  Double_t amp = par[0];
-  Double_t offset = par[1];
-  Double_t sigma = par[2];
-  return amp*exp(-0.5*pow((x[0]-offset)/sigma,2.));
-}
+//Keep this around just in case it's needed later
+// Double_t Gfit(Double_t *x, Double_t *par){
+//   Double_t amp = par[0];
+//   Double_t offset = par[1];
+//   Double_t sigma = par[2];
+//   return amp*exp(-0.5*pow((x[0]-offset)/sigma,2.));
+// }
 
-//Passing kine=0 loads the test file
-void ecal( Int_t kine=-1, Int_t iter=1 ){
-  
-  // if( kine==4 || kine==7 ){
-  //   cout << "Warning: This script intended for use on kinematics post-pass0." << endl;
-  // }
+//Main. Calibration one kinematic at a time. Loads all configs for both lh2 and ld2.
+void ecal( Int_t kine=-1, Int_t iter=0 ){
 
   // Define a clock to check macro processing time
   TStopwatch *st = new TStopwatch();
@@ -107,7 +107,7 @@ void ecal( Int_t kine=-1, Int_t iter=1 ){
   
   // Get the date
   string date = getDate();
-  
+
   // Declare Chain for many root files
   // First obtain index for nfset constants
   Int_t kIdx;
@@ -117,6 +117,138 @@ void ecal( Int_t kine=-1, Int_t iter=1 ){
   if( kine == 14 ) kIdx=3;
   if( kine == 8 ) kIdx=4;
   if( kine == 9 ) kIdx=5;
+
+  //Declare bool indicating iteration
+  bool qreplay = false;
+  if( iter==1 ) qreplay = true;
+
+  //Get gain parameters from database for pass0 where sbs.hcal.again not on tree
+  Double_t gOldConst_pass0[kNcell] = {0.};
+  Double_t gConst_iter1[kNcell] = {0.}; 
+  //Set up with all coefficients 1 have no effect on iter == 0
+  for( Int_t c=0; c<kNcell; c++){
+    gConst_iter1[c] = 1.;
+  }
+
+  bool pass0 = false;
+  if( qreplay ){
+    string inConstPath = Form("coefficients/coeff_sbs%d.txt",kine);
+
+    cout << "Loading new gain coefficents for quasi-replay from: " << inConstPath << ".." << endl;
+    ifstream inConstFile( inConstPath );
+    if( !inConstFile ){
+      cerr << endl << "ERROR: No input constant file present -> path to coeff_sbs<kine>.txt expected." << endl;
+      return 0;
+    }
+
+    Int_t n1=0;
+    Double_t d1=0;
+    string line;
+    bool skip_line = true;
+    //bool skip_one_line = true;
+
+    while( getline( inConstFile, line ) ){
+      
+      if( n1==( kNcell ) ) break;
+      
+      TString Tline = (TString)line;
+      
+      //if( Tline.BeginsWith("sbs.hcal.adc.gain") && skip_line==true ) skip_line = false;
+      if( Tline.BeginsWith("sbs.hcal.adc.gain") && skip_line==true ){	
+	skip_line = false;
+	continue;
+      }
+
+
+      // if( skip_line==false && skip_one_line==true ){
+      // 	skip_one_line = false;
+      // 	continue;
+      // }
+      
+      //if( skip_line==false && skip_one_line==false ){
+      if( skip_line==false ){
+	istringstream iss( line );
+	while( iss >> d1 ){
+	  gConst_iter1[n1] = d1;
+	  n1++;
+	}
+      }
+    }
+    
+    cout << endl << endl << "ADC gain params from iteration 0 calibration: " << endl;
+    
+    for( Int_t r=0; r<kNrows; r++){
+      for( Int_t c=0; c<kNcols; c++){
+	Int_t i = r*kNcols+c;
+	cout << gConst_iter1[i] << " ";
+      }
+      cout << endl;
+    }
+
+    usleep( 3*second ); //Give some time for review of step
+
+  } 
+
+  if( kine==4 || kine==7 ){ //end if iteration 1 (quasi-replay)
+
+    pass0=true;
+    
+    // Reading ADC gain parameters from database 
+    string inConstPath = "/u/home/sbs-gmn/pass0/SBS_REPLAY/SBS-replay/DB/db_sbs.hcal.dat";
+    
+    cout << "Loading previous gain coefficients from file for pass0 kinematics: " << inConstPath << ".." << endl;
+    ifstream inConstFile( inConstPath );
+    if( !inConstFile ){
+      cerr << endl << "ERROR: No input constant file present -> path to db_sbs.hcal.dat expected." << endl;
+      return 0;
+    }
+    
+    Int_t n1=0;
+    Double_t d1=0;
+    string line;
+    bool skip_line = true;
+    bool skip_one_line = true;
+    bool skip_first_instance = true;
+    
+    while( getline( inConstFile, line ) ){
+      
+      if( n1==( kNcell ) ) break;
+      
+      TString Tline = (TString)line;
+      
+      if( Tline.BeginsWith("sbs.hcal.adc.gain") && skip_first_instance==true ){
+	skip_first_instance = false;
+	continue;
+      }
+      
+      if( Tline.BeginsWith("sbs.hcal.adc.gain") && skip_line==true && skip_first_instance==false ) skip_line = false;
+      
+      if( skip_line==false && skip_one_line==true ){
+	skip_one_line = false;
+	continue;
+      }
+      
+      if( skip_line==false && skip_one_line==false ){
+	istringstream iss( line );
+	while( iss >> d1 ){
+	  gOldConst_pass0[n1] = d1;
+	  n1++;
+	}
+      }
+    }
+    
+    cout << endl << endl << "Old ADC gain params from pass0 db file: " << endl;
+    
+    for( Int_t r=0; r<kNrows; r++){
+      for( Int_t c=0; c<kNcols; c++){
+	Int_t i = r*kNcols+c;
+	cout << gOldConst_pass0[i] << " ";
+      }
+      cout << endl;
+    }
+    
+    cout << endl << endl;
+  }//end if pass0
 
   //Set up multiple chains and elists for hydrogen and deuterium
   TChain *Ch[nfset_lh2[kIdx]];
@@ -156,19 +288,31 @@ void ecal( Int_t kine=-1, Int_t iter=1 ){
   Double_t ekineW2_d[nfset_ld2[kIdx]];
 
   // Declare file name paths
+  string constPath;
+  string errPath;
+  if( qreplay ){
+    constPath = Form("coefficients/coeff_sbs%d_qreplay.txt",kine);
+    errPath = Form("reporting/calReport_sbs%d_qreplay.txt",kine);
+  }else{
+    constPath = Form("coefficients/coeff_sbs%d.txt",kine);
+    errPath = Form("reporting/calReport_sbs%d.txt",kine);
+  }
+
   string configfilename_h[nfset_lh2[kIdx]];
   for( Int_t h=0; h<nfset_lh2[kIdx]; h++){
-    if(fset_lh2[h]==-1) cout << "Error. configfilename array out of bounds." << endl;
-    configfilename_h[h] = Form("/w/halla-scshelf2102/sbs/seeds/HCal_replay/hcal/energyCalibration/secal_lh2_sbs%d_f%d.cfg",kine,fset_lh2[h]);
+    Int_t field = fset_lh2[kIdx][h];
+    if(field==-1) cout << "Error. configfilename array out of bounds." << endl;
+    configfilename_h[h] = Form("../config/GMn/SBS%d/secal_lh2_sbs%d_f%d.cfg",kine,kine,fset_lh2[kIdx][h]);
   }
   string configfilename_d[nfset_ld2[kIdx]];
-  for( Int_t d=0; d<nfset_ld2[kIdx]; h++){
-    if(fset_ld2[d]==-1) cout << "Error. configfilename array out of bounds." << endl;
-    configfilename_d[d] = Form("/w/halla-scshelf2102/sbs/seeds/HCal_replay/hcal/energyCalibration/secal_ld2_sbs%d_f%d.cfg",kine,fset_ld2[d]);
+  for( Int_t d=0; d<nfset_ld2[kIdx]; d++){
+    Int_t field = fset_ld2[kIdx][d];
+    if(field==-1) cout << "Error. configfilename array out of bounds." << endl;
+    configfilename_d[d] = Form("../config/GMn/SBS%d/secal_ld2_sbs%d_f%d.cfg",kine,kine,fset_ld2[kIdx][d]);
   }
 
   // Declare general physics/fit parameters
-  Int_t minEventPerCell = 500; // Minimum number of scattered p in cell required to calibrate
+  Int_t minEventPerCell = 30; // Minimum number of scattered p in cell required to calibrate
   Int_t maxEventPerCell = 4000; // Maximum number of scattered p events to contribute
   Double_t HCal_divx = 0.15875; // Transverse width in x and y per cell
   Double_t HCal_divy = 0.15494;
@@ -177,43 +321,42 @@ void ecal( Int_t kine=-1, Int_t iter=1 ){
   Double_t HCal_Yi = -0.92964; // Distance from beam center to opposite-beam side of HCal in m from MC database
   Double_t HCal_Yf = 0.92964;
   Double_t highDelta = 0.1; // Minimum M(i,j)/b(i) factor allowed 
-  Double_t oldGain[kNcell] = {0.0};
-  Double_t oldRatio[kNcell] = {0.0};
-  Double_t maxDiff = 50.;
 
   // Declare general physics parameters to be modified by input config file - LH2
-  Double_t E_e_h[nfset_lh2[kIdx]] = {0.}.; // Energy of beam (incoming electrons from accelerator)
-  Double_t HCal_d_h[nfset_lh2[kIdx]] = {0.}.; // Distance to HCal from scattering chamber for comm1
-  Double_t HCal_th_h[nfset_lh2[kIdx]] = {0.}.; // Angle that the center of HCal is at
-  Double_t BB_th_h[nfset_lh2[kIdx]] = {0.}.; // Angle that the center of BBCal is at
-  Double_t W2_mean_h[nfset_lh2[kIdx]] = {0.}.; // Mean of W at current kinematic
-  Double_t W2_sig_h[nfset_lh2[kIdx]] = {0.}.; // Width of W at current kinematic
-  Double_t dx0_n_h[nfset_lh2[kIdx]] = {0.}.; // Position of neutron spot, x-x_expected
-  Double_t dx0_p_h[nfset_lh2[kIdx]] = {0.}.; // Position of proton spot, x-x_expected
-  Double_t dy0_h[nfset_lh2[kIdx]] = {0.}.; // Position of hadron spot, y-y_expected
-  Double_t dx_sig_n_h[nfset_lh2[kIdx]] = {0.}.; // Max spread of neutron spot, x-x_expected
-  Double_t dx_sig_p_h[nfset_lh2[kIdx]] = {0.}.; // Max spread of proton spot, x-x_expected
-  Double_t dy_sig_h[nfset_lh2[kIdx]] = {0.}.; // Max spread of hadron spot, y-y_expected
-  Double_t atime0_h[nfset_lh2[kIdx]] = {0.}.; // Expected location in ADC time of signal
-  Double_t atime_sig_h[nfset_lh2[kIdx]] = {0.}.; // 1 sig of atime distribution
-  Int_t useAlshield_h[nfset_lh2[kIdx]] = {0.};
+  //Double_t E_e_h[nfset_lh2[kIdx]] = {0.}; // Energy of beam (incoming electrons from accelerator)  
+  Double_t E_e_h[maxfset] = {-1.}; // Energy of beam (incoming electrons from accelerator)
+  Double_t HCal_d_h[maxfset] = {-1.}; // Distance to HCal from scattering chamber for comm1
+  Double_t HCal_th_h[maxfset] = {-1.}; // Angle that the center of HCal is at
+  Double_t BB_th_h[maxfset] = {-1.}; // Angle that the center of BBCal is at
+  Double_t W2_mean_h[maxfset] = {-1.}; // Mean of W at current kinematic
+  Double_t W2_sig_h[maxfset] = {-1.}; // Width of W at current kinematic
+  Double_t dx0_n_h[maxfset] = {-1.}; // Position of neutron spot, x-x_expected
+  Double_t dx0_p_h[maxfset] = {-1.}; // Position of proton spot, x-x_expected
+  Double_t dy0_h[maxfset] = {-1.}; // Position of hadron spot, y-y_expected
+  Double_t dx_sig_n_h[maxfset] = {-1.}; // Max spread of neutron spot, x-x_expected
+  Double_t dx_sig_p_h[maxfset] = {-1.}; // Max spread of proton spot, x-x_expected
+  Double_t dy_sig_h[maxfset] = {-1.}; // Max spread of hadron spot, y-y_expected
+  Double_t atime0_h[maxfset] = {-1.}; // Expected location in ADC time of signal
+  Double_t atime_sig_h[maxfset] = {-1.}; // 1 sig of atime distribution
+  Int_t useAlshield_h[maxfset] = {0};
 
   // Declare general physics parameters to be modified by input config file - LD2
-  Double_t E_e_d[nfset_ld2[kIdx]] = {0.}.; // Energy of beam (incoming electrons from accelerator)
-  Double_t HCal_d_d[nfset_ld2[kIdx]] = {0.}.; // Distance to HCal from scattering chamber for comm1
-  Double_t HCal_th_d[nfset_ld2[kIdx]] = {0.}.; // Angle that the center of HCal is at
-  Double_t BB_th_d[nfset_ld2[kIdx]] = {0.}.; // Angle that the center of BBCal is at
-  Double_t W2_mean_d[nfset_ld2[kIdx]] = {0.}.; // Mean of W at current kinematic
-  Double_t W2_sig_d[nfset_ld2[kIdx]] = {0.}.; // Width of W at current kinematic
-  Double_t dx0_n_d[nfset_ld2[kIdx]] = {0.}.; // Position of neutron spot, x-x_expected
-  Double_t dx0_p_d[nfset_ld2[kIdx]] = {0.}.; // Position of proton spot, x-x_expected
-  Double_t dy0_d[nfset_ld2[kIdx]] = {0.}.; // Position of hadron spot, y-y_expected
-  Double_t dx_sig_n_d[nfset_ld2[kIdx]] = {0.}.; // Max spread of neutron spot, x-x_expected
-  Double_t dx_sig_p_d[nfset_ld2[kIdx]] = {0.}.; // Max spread of proton spot, x-x_expected
-  Double_t dy_sig_d[nfset_ld2[kIdx]] = {0.}.; // Max spread of hadron spot, y-y_expected
-  Double_t atime0_d[nfset_ld2[kIdx]] = {0.}.; // Expected location in ADC time of signal
-  Double_t atime_sig_d[nfset_ld2[kIdx]] = {0.}.; // 1 sig of atime distribution
-  Int_t useAlshield_d[nfset_ld2[kIdx]] = {0.};
+  //Double_t E_e_d[nfset_ld2[kIdx]] = {0.}; // Energy of beam (incoming electrons from accelerator)
+  Double_t E_e_d[maxfset] = {-1.}; // Energy of beam (incoming electrons from accelerator)
+  Double_t HCal_d_d[maxfset] = {-1.}; // Distance to HCal from scattering chamber for comm1
+  Double_t HCal_th_d[maxfset] = {-1.}; // Angle that the center of HCal is at
+  Double_t BB_th_d[maxfset] = {-1.}; // Angle that the center of BBCal is at
+  Double_t W2_mean_d[maxfset] = {-1.}; // Mean of W at current kinematic
+  Double_t W2_sig_d[maxfset] = {-1.}; // Width of W at current kinematic
+  Double_t dx0_n_d[maxfset] = {-1.}; // Position of neutron spot, x-x_expected
+  Double_t dx0_p_d[maxfset] = {-1.}; // Position of proton spot, x-x_expected
+  Double_t dy0_d[maxfset] = {-1.}; // Position of hadron spot, y-y_expected
+  Double_t dx_sig_n_d[maxfset] = {-1.}; // Max spread of neutron spot, x-x_expected
+  Double_t dx_sig_p_d[maxfset] = {-1.}; // Max spread of proton spot, x-x_expected
+  Double_t dy_sig_d[maxfset] = {-1.}; // Max spread of hadron spot, y-y_expected
+  Double_t atime0_d[maxfset] = {-1.}; // Expected location in ADC time of signal
+  Double_t atime_sig_d[maxfset] = {-1.}; // 1 sig of atime distribution
+  Int_t useAlshield_d[maxfset] = {0};
 
   Int_t elasYield = 0; // Keep track of total elastics analyzed
   Int_t badtimeblkclus = 0; // Keep track of multi-blk clusters with out of time blks
@@ -225,13 +368,14 @@ void ecal( Int_t kine=-1, Int_t iter=1 ){
   Double_t HCal_Ymin = HCal_Yi-HCal_divy/2;
   Double_t HCal_Ymax = HCal_Yf+HCal_divy/2;
 
-  // Reading all relevant config files for lh2
+  // Reading all relevant config files for lh2 and setting up chain
   for( Int_t f=0; f<nfset_lh2[kIdx]; f++ ){
     Ch[f] = new TChain("T");
 
     ifstream configfile(configfilename_h[f]);
     TString currentline;
     while( currentline.ReadLine( configfile ) && !currentline.BeginsWith("endlist") ){
+
       if( !currentline.BeginsWith("#") ){
 	Ch[f]->Add(currentline);
 	cout << "Loading file: " << currentline << ".." << endl;
@@ -251,85 +395,85 @@ void ecal( Int_t kine=-1, Int_t iter=1 ){
 	if( skey == "E_e" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  E_e_h[f] = sval.Atof();
-	  cout << "Loading beam energy: " << E_e << endl;
+	  cout << "Loading beam energy: " << E_e_h[f] << endl;
 	}
 	if( skey == "HCal_d" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  HCal_d_h[f] = sval.Atof();
-	  cout << "Loading HCal distance: " << HCal_d << endl;
+	  cout << "Loading HCal distance: " << HCal_d_h[f] << endl;
 	}
 	if( skey == "HCal_th" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  HCal_th_h[f] = sval.Atof() * TMath::DegToRad();	
-	  cout << "Loading HCal angle: " << HCal_th << endl;
+	  cout << "Loading HCal angle: " << HCal_th_h[f] << endl;
 	}
 	if( skey == "BB_th" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  BB_th_h[f] = sval.Atof() * TMath::DegToRad();	
-	  cout << "Loading BBCal angle: " << BB_th << endl;
+	  cout << "Loading BBCal angle: " << BB_th_h[f] << endl;
 	}
 	if( skey == "W2_mean" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  W2_mean_h[f] = sval.Atof();
-	  cout << "Loading W2 mean cut: " << W2_mean << endl;
+	  cout << "Loading W2 mean cut: " << W2_mean_h[f] << endl;
 	}
 	if( skey == "W2_sig" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  W2_sig_h[f] = sval.Atof();
-	  cout << "Loading W2 sigma cut: " << W2_sig << endl;
+	  cout << "Loading W2 sigma cut: " << W2_sig_h[f] << endl;
 	}
 	if( skey == "dx0_n" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dx0_n_h[f] = sval.Atof();
-	  cout << "Loading x position of neutron spot: " << dx0_n << endl;
+	  cout << "Loading x position of neutron spot: " << dx0_n_h[f] << endl;
 	}
 	if( skey == "dx0_p" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dx0_p_h[f] = sval.Atof();
-	  cout << "Loading y position of proton spot: " << dx0_p << endl;
+	  cout << "Loading y position of proton spot: " << dx0_p_h[f] << endl;
 	}
 	if( skey == "dy0" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dy0_h[f] = sval.Atof();
-	  cout << "Loading y position of both hadron spots: " << dy0 << endl;
+	  cout << "Loading y position of both hadron spots: " << dy0_h[f] << endl;
 	}
 	if( skey == "dx_sig_n" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dx_sig_n_h[f] = sval.Atof();
-	  cout << "Loading x sigma of neutron spot: " << dx_sig_n << endl;
+	  cout << "Loading x sigma of neutron spot: " << dx_sig_n_h[f] << endl;
 	}
 	if( skey == "dx_sig_p" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dx_sig_p_h[f] = sval.Atof();
-	  cout << "Loading x sigma of proton spot: " << dx_sig_p << endl;
+	  cout << "Loading x sigma of proton spot: " << dx_sig_p_h[f] << endl;
 	}
 	if( skey == "dy_sig" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dy_sig_h[f] = sval.Atof();
-	  cout << "Loading y sigma of both hadron spots: " << dy_sig << endl;
+	  cout << "Loading y sigma of both hadron spots: " << dy_sig_h[f] << endl;
 	}
 	if( skey == "atime0" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  atime0_h[f] = sval.Atof();
-	  cout << "Loading ADC time mean: " << atime0 << endl;
+	  cout << "Loading ADC time mean: " << atime0_h[f] << endl;
 	}
 	if( skey == "atime_sig" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  atime_sig_h[f] = sval.Atof();
-	  cout << "Loading ADC time sigma: " << atime_sig << endl;
+	  cout << "Loading ADC time sigma: " << atime_sig_h[f] << endl;
 	}
 	if( skey == "useAlshield" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  useAlshield_h[f] = sval.Atoi();
-	  cout << "Loading Aluminum absorber option: " << useAlshield << endl;
+	  cout << "Loading Aluminum absorber option: " << useAlshield_h[f] << endl;
 	}
       }
       delete tokens;
     }
 
     NTevents_h[f] = Ch[f]->GetEntries();
-    elist_h[f] = new TEventList(Form("elist_lh2_sbs%d_f%d",kine,fset_lh2[f]),Form("Elastic Event List, LH2, SBS%d, Mag%d",kine,fset_lh2[f]));
-    Ch[f]->Draw(Form(">>elist_lh2_sbs%d_f%d",kine,fset_lh2[f]),globalcut_h[f]);
+    elist_h[f] = new TEventList(Form("elist_lh2_sbs%d_f%d",kine,fset_lh2[kIdx][f]),Form("Elastic Event List, LH2, SBS%d, Mag%d",kine,fset_lh2[kIdx][f]));
+    Ch[f]->Draw(Form(">>elist_lh2_sbs%d_f%d",kine,fset_lh2[kIdx][f]),globalcut_h[f]);
     Nevents_h[f] = elist_h[f]->GetN();
 
     Ch[f]->SetBranchStatus( "*", 0 );
@@ -412,85 +556,85 @@ void ecal( Int_t kine=-1, Int_t iter=1 ){
 	if( skey == "E_e" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  E_e_d[f] = sval.Atof();
-	  cout << "Loading beam energy: " << E_e << endl;
+	  cout << "Loading beam energy: " << E_e_d[f] << endl;
 	}
 	if( skey == "HCal_d" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  HCal_d_d[f] = sval.Atof();
-	  cout << "Loading HCal distance: " << HCal_d << endl;
+	  cout << "Loading HCal distance: " << HCal_d_d[f] << endl;
 	}
 	if( skey == "HCal_th" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  HCal_th_d[f] = sval.Atof() * TMath::DegToRad();	
-	  cout << "Loading HCal angle: " << HCal_th << endl;
+	  cout << "Loading HCal angle: " << HCal_th_d[f] << endl;
 	}
 	if( skey == "BB_th" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  BB_th_d[f] = sval.Atof() * TMath::DegToRad();	
-	  cout << "Loading BBCal angle: " << BB_th << endl;
+	  cout << "Loading BBCal angle: " << BB_th_d[f] << endl;
 	}
 	if( skey == "W2_mean" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  W2_mean_d[f] = sval.Atof();
-	  cout << "Loading W2 mean cut: " << W2_mean << endl;
+	  cout << "Loading W2 mean cut: " << W2_mean_d[f] << endl;
 	}
 	if( skey == "W2_sig" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  W2_sig_d[f] = sval.Atof();
-	  cout << "Loading W2 sigma cut: " << W2_sig << endl;
+	  cout << "Loading W2 sigma cut: " << W2_sig_d[f] << endl;
 	}
 	if( skey == "dx0_n" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dx0_n_d[f] = sval.Atof();
-	  cout << "Loading x position of neutron spot: " << dx0_n << endl;
+	  cout << "Loading x position of neutron spot: " << dx0_n_d[f] << endl;
 	}
 	if( skey == "dx0_p" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dx0_p_d[f] = sval.Atof();
-	  cout << "Loading y position of proton spot: " << dx0_p << endl;
+	  cout << "Loading y position of proton spot: " << dx0_p_d[f] << endl;
 	}
 	if( skey == "dy0" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dy0_d[f] = sval.Atof();
-	  cout << "Loading y position of both hadron spots: " << dy0 << endl;
+	  cout << "Loading y position of both hadron spots: " << dy0_d[f] << endl;
 	}
 	if( skey == "dx_sig_n" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dx_sig_n_d[f] = sval.Atof();
-	  cout << "Loading x sigma of neutron spot: " << dx_sig_n << endl;
+	  cout << "Loading x sigma of neutron spot: " << dx_sig_n_d[f] << endl;
 	}
 	if( skey == "dx_sig_p" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dx_sig_p_d[f] = sval.Atof();
-	  cout << "Loading x sigma of proton spot: " << dx_sig_p << endl;
+	  cout << "Loading x sigma of proton spot: " << dx_sig_p_d[f] << endl;
 	}
 	if( skey == "dy_sig" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dy_sig_d[f] = sval.Atof();
-	  cout << "Loading y sigma of both hadron spots: " << dy_sig << endl;
+	  cout << "Loading y sigma of both hadron spots: " << dy_sig_d[f] << endl;
 	}
 	if( skey == "atime0" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  atime0_d[f] = sval.Atof();
-	  cout << "Loading ADC time mean: " << atime0 << endl;
+	  cout << "Loading ADC time mean: " << atime0_d[f] << endl;
 	}
 	if( skey == "atime_sig" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  atime_sig_d[f] = sval.Atof();
-	  cout << "Loading ADC time sigma: " << atime_sig << endl;
+	  cout << "Loading ADC time sigma: " << atime_sig_d[f] << endl;
 	}
 	if( skey == "useAlshield" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  useAlshield_d[f] = sval.Atoi();
-	  cout << "Loading Aluminum absorber option: " << useAlshield << endl;
+	  cout << "Loading Aluminum absorber option: " << useAlshield_d[f] << endl;
 	}
       }
       delete tokens;
     }
 
     NTevents_d[f] = Cd[f]->GetEntries();
-    elist_d[f] = new TEventList(Form("elist_ld2_sbs%d_f%d",kine,fset_ld2[f]),Form("Elastic Event List, LD2, SBS%d, Mag%d",kine,fset_ld2[f]));
-    Cd[f]->Draw(Form(">>elist_ld2_sbs%d_f%d",kine,fset_ld2[f]),globalcut_d[f]);
+    elist_d[f] = new TEventList(Form("elist_ld2_sbs%d_f%d",kine,fset_ld2[kIdx][f]),Form("Elastic Event List, LD2, SBS%d, Mag%d",kine,fset_ld2[kIdx][f]));
+    Cd[f]->Draw(Form(">>elist_ld2_sbs%d_f%d",kine,fset_ld2[kIdx][f]),globalcut_d[f]);
     Nevents_d[f] = elist_d[f]->GetN();
 
     Cd[f]->SetBranchStatus( "*", 0 );
@@ -546,71 +690,39 @@ void ecal( Int_t kine=-1, Int_t iter=1 ){
 
   }//end config file for over ld2 field settings
 
-  cout << endl << endl << "Setup parameters loaded." << endl;
+  cout << endl << endl << "Setup parameters loaded and chains linked." << endl;
 
   // Create stopwatch to track processing time
   TStopwatch *sw = new TStopwatch();
   sw->Start();
   
   // Declare outfile
-  TFile *fout = new TFile( Form("eCalEOut_sbs%d_test.root", kine ), "RECREATE" );
-  
+  TFile *fout;
+  if( qreplay ){
+    fout = new TFile( Form("reporting/eCalEOut_sbs%d_qreplay.root", kine ), "RECREATE" );
+  }else{
+    fout = new TFile( Form("reporting/eCalEOut_sbs%d.root", kine ), "RECREATE" );
+  }
+
   // Initialize vectors and arrays
   Double_t GCoeff[kNcell] = {0.0};
   Double_t GCoeff_oneblock[kNcell] = {0.0};
   Double_t GCoeff_divide[kNcell] = {0.0};
   Double_t gOldConst[kNcell] = {0.0};
 
-  // Initialize histograms
-  // TH1D *hatime = new TH1D( "hatime", "Cluster adc time, primary block; ns", 220, -50, 170);
-  // TH1D *hatime_cut = new TH1D( "hatime_cut", "Cluster adc time, primary block, W2 cut; ns", 220, -50, 170);
-  // TH1D *hpC = new TH1D( "hpC", "Cluster element pC", 2000,0,2000);
-  // TH2D *hpC_vs_ID = new TH2D( "hpC_vs_ID", "Cluster element pC vs Channel", 300,-10,290,2000,0,2000);
-  // TH2D *hpC_vs_ID_oneblock = new TH2D( "hpC_vs_ID_oneblock", "Cluster element pC vs Channel Single Block Clusters", 288,0,288,2000,0,2000);
-  // TH2D *hCoeffvID_oneblock = new TH2D( "hCoeffvID_oneblock", "Energy Expected / Integrated ADC; channel; GeV/pC", 288,0,288,100,0,0.03);
-  // TH1D *hDeltaE = new TH1D( "hDeltaE","1.0-Eclus/p_rec", 100, -1.5, 1.5 );
-  // TH1D *hHCALe = new TH1D( "hHCALe","HCal Cluster E", 400, 0., 1. );
-  // TH1D *hHCALe_cut = new TH1D( "hHCALe_cut","HCal Cluster E, W2 cut", 400, 0., 1. );
-  // TH1D *hSampFrac = new TH1D( "hSampFrac","W2 Cut HCal Cluster E / Expected KE", 400, 0., 1. );
-  // TH1D *hDiff = new TH1D( "hDiff","HCal time - BBCal time (ns)", 1300, -500, 800 );
-  // TH1D *hEDiffChan = new TH1D( "hEDiffChan","EDiff Events Per Channel", 288, 0, 288 );
-  // TH1D *hClusE_calc = new TH1D( "hClusE_calc","Best Cluster Energy Calculated from HCal Vars", 100, 0.0, 2.0);
-  // TH2D *hClusBlk_ClusE = new TH2D( "hClusBlk_ClusE","Cluster Size vs Recon Cluster E", 8, 0, 8, 100, 2.0, 3.0 );
-
-  // TH1D *hmclusblkE = new TH1D( "hmclusblkE","HCal multi-blk cluster blk E", 400, 0., 1. );
-  // TH1D *hsclusblkE = new TH1D( "hsclusblkE","HCal single-blk cluster blk E", 400, 0., 1. );
-
-  // TH2D *hPAngleCorr = new TH2D( "hPAngCorr","Track p vs Track ang", 100, 30, 60, 100, 0.4, 1.2 );
-  // TH2D *hPAngleCorr_2 = new TH2D( "hPAngCorr_2","Track p vs Track ang v2", 100, 30, 60, 100, 0.4, 1.2 );
-  // TH2D *hClusE_vs_X = new TH2D("hClusE_vs_X",";X-pos (m);E_dep (GeV)",500,-3,2,100,0.0,1.0);  
-  // TH2D *hClusE_vs_Y = new TH2D("hClusE_vs_Y",";Y-pos (m);E_dep (GeV)",200,-1,1,100,0.0,1.0);    
-  // TH1D *hpp = new TH1D( "hpp", "Elastic Proton Momentum", 600, 0, 6 );
-  // TH1D *hdx = new TH1D( "hdx","; x_{HCAL} - x_{exp} (m)", 250, -dxlim_l,dxlim_u);
-  // TH1D *hdy = new TH1D("hdy","; y_{HCAL} - y_{exp} (m);", 250, -1.25,1.25);
-  // TH2D *hdxdy = new TH2D("hdxdy",";y_{HCAL}-y_{expect} (m); x_{HCAL}-x_{expect} (m)", 250, -1.25, 1.25, 250, -dxlim_l, dxlim_u );
-  // TH1D *hW2_calc = new TH1D( "W2_calc", "W2 Calculated; GeV", 250, 0.3, 1.5 );
-  // TH1D *hW2_tree = new TH1D( "W2_tree", "W2 From Tree; GeV", 250, 0.3, 1.5 );
-  // TH1D *hNBlk = new TH1D( "hNBlk", "Number of Blocks in Primary Cluster", 25, 0, 25 );
-  // TH1D *hNBlk_cut = new TH1D( "hNBlk_cut", "Number of Blocks in Primary Cluster W2 Cut", 25, 0, 25 );
-  // TH1D *hQ2 = new TH1D( "Q2", "Q2; GeV", 250, 0.5, 3.0 );
-  // TH1D *hE_ep = new TH1D( "hE_ep","Scattered Electron Energy; GeV", 500, 0.0, E_e*1.5 ); 
-  // TH1D *hE_pp = new TH1D( "hE_pp", "Scattered Proton Energy; GeV", 500, 0.0, E_e*1.5 );
-  // TH1D *hKE_p = new TH1D( "hKE_p", "Scattered Proton Kinetic Energy; GeV", 500, 0.0, E_e*1.5 );
-  // TH2D *hADC = new TH2D( "hADC", "HCal Int_ADC Spectra: W2 Cut", 288, 0, 288, 100., 0., 1. );
-  // TH2D *coefficients = new TH2D( "coefficients",";Channel ;GeV/mV", 288,0,288,250,0,0.025 );
-  // TH2D *coefficients_1b = new TH2D( "coefficients_1b",";Channel ;GeV/mV", 288,0,288,250,0,0.025 );
-  // TH2D *hEDiff_vs_X = new TH2D( "hEDiff_vs_X",";X-pos (m);(E_exp-E_dep)/E_exp (GeV)",xN,HCal_Xi,HCal_Xf,100,-3,3 ); 
-  // TH2D *hEDiff_vs_Y = new TH2D( "hEDiff_vs_Y",";Y-pos (m);(E_exp-E_dep)/E_exp (GeV)",yN,HCal_Yi,HCal_Yf,100,-3,3 );
-  // TH2D *hEDiff_vs_block = new TH2D( "hEDiff_vs_block",";Block (cell);(E_exp-E_dep)/E_exp (GeV)",288,0,288,100,-3,3 );
-  // TH2D *hSampFrac_vs_X = new TH2D( "hSampFrac_vs_X","Sampling Fraction ;X (m) ;HCal_E / Exp_KE", xN, HCal_Xi, HCal_Xf, uni_N, 0., 1. );
-  // TH2D *hSampFrac_vs_Y = new TH2D( "hSampFrac_vs_Y","Sampling Fraction ;Y (m) ;HCal_E / Exp_KE", yN, HCal_Yi, HCal_Yf, uni_N, 0., 1. );
-  // TH1D *hE_pp_cut = new TH1D( "hE_pp_cut", "Deposited Elastic Proton Energy; GeV", 500, 0.0, E_e*1.5 );
-
-  // Set long Int_t to keep track of total entries
-  //Long64_t Nevents = elist->GetN();
-
-  cout << endl << "All parameters loaded." << endl << endl;
-  cout << "Opened up tree with nentries: " << Nevents << ".." << endl << endl;
+  //No histograms needed. Will have to replay data with new database params, then use diagnostic script to assess
+  Int_t lh2Events = 0;
+  for( Int_t f=0; f<nfset_lh2[kIdx]; f++ ){
+    lh2Events+=Nevents_h[f];
+  }
+  Int_t ld2Events = 0;
+  for( Int_t f=0; f<nfset_ld2[kIdx]; f++ ){
+    ld2Events+=Nevents_d[f];
+  }
+  
+  cout << "Opened many trees with " << lh2Events << " LH2 events passing global cuts." << endl;
+  cout << "Opened many trees with " << ld2Events << " LD2 events passing global cuts." << endl << endl;
+  cout << "Total available events to calibrate = " << lh2Events + ld2Events << "." << endl << endl;
 
   //Declare matrices for chi-square min calibration scheme and keep track of calibrated events
   TMatrixD Ma(kNcell,kNcell);
@@ -619,6 +731,7 @@ void ecal( Int_t kine=-1, Int_t iter=1 ){
   TVectorD ba(kNcell);
   TVectorD ba_oneblock(kNcell);
   TVectorD ba_err(kNcell);
+  Int_t TNEV = 0;
   Int_t NEV[kNcell] = {0};
   Int_t NEV_oneblock[kNcell] = {0};
   Double_t err[kNcell] = {0.};
@@ -626,20 +739,31 @@ void ecal( Int_t kine=-1, Int_t iter=1 ){
   Double_t err_oneblock[kNcell] = {0.};
   Double_t err_ev_oneblock[kNcell] = {0.};
   
-  //Declare energy loss parameters for beam going through the target
-  Double_t pBeam = E_e/(1.+E_e/M_p*(1.-cos(BB_th)));
-  Double_t Eloss_outgoing = celldiameter/2.0/sin(BB_th) * rho_tgt * dEdx_tgt; //Mean energy loss of the beam prior to the scattering, approximately 1 MeV, could correct further with raster position (likely negligable)
-  //if( useAlshield != 0 ) Eloss_outgoing += Alshieldthick * rho_Al * dEdx_Al;
+  //Declare diagnostic histograms (as sparse as possible)
+  TH2D *hdx_mag_h = new TH2D( "hdx_mag_h", "Delta X vs Field Setting (LH2); field (percent); x_{HCAL} - x_{exp} (m)", maxfset, 0, 1, 250, -4, 3 );
+  TH2D *hdy_mag_h = new TH2D( "hdy_mag_h", "Delta Y vs Field Setting (LH2); field (percent); y_{HCAL} - y_{exp} (m)", maxfset, 0, 1, 250, -1.25, 1.25 );
+  TH2D *hdx_mag_d = new TH2D( "hdx_mag_d", "Delta X vs Field Setting (LD2); field (percent); x_{HCAL} - x_{exp} (m)", maxfset, 0, 1, 250, -4, 3 );
+  TH2D *hdy_mag_d = new TH2D( "hdy_mag_d", "Delta Y vs Field Setting (LD2); field (percent); y_{HCAL} - y_{exp} (m)", maxfset, 0, 1, 250, -1.25, 1.25 );
+  TH1D *hHCALe = new TH1D( "hHCALe","HCal Cluster E", 400, 0., 1. );
+  TH1D *hSampFrac = new TH1D( "hSampFrac","W2 Cut HCal Cluster E / Expected KE", 400, 0., 1. );
+  TH1D *hblkid = new TH1D( "hblkid","HCal Block ID", 400, -50, 350 );
 
   //Loop over events
   cout << "Main loop over all data commencing.." << endl;
+  if(pass0) gROOT->ProcessLine( "gErrorIgnoreLevel = 6001" ); //Suppress error output to avoid undetectable sbs.hcal.clus_blk.again for pass0
 
   //Loop over all hydrogen data
-  for( Int_t f=0, f<nfset_lh2[kIdx]; f++ ){
+  for( Int_t f=0; f<nfset_lh2[kIdx]; f++ ){
+    
+    Int_t hfieldset = fset_lh2[kIdx][f];
 
+    //Declare energy loss parameters for beam going through the target
+    Double_t pBeam = E_e_h[f]/(1.+E_e_h[f]/M_p*(1.-cos(BB_th_h[f])));
+    Double_t Eloss_outgoing = celldiameter/2.0/sin(BB_th_h[f]) * rho_tgt * dEdx_tgt; //Mean energy loss of the beam prior to the scattering, approximately 1 MeV, could correct further with raster position (likely negligable)
+    
     for( Long64_t nevent = 1; nevent <Nevents_h[f]; nevent++){
 
-      if ( nevent%10000==0 ) cout << "LH2 kinematic: " << kine << ", entry: " << nevent << "/" << Nevents[f] << " \r";
+      if ( nevent%10000==0 ) cout << "LH2 kinematic " << kine << " at field " << hfieldset << "% , entry: " << nevent << "/" << Nevents_h[f] << ". Total events gathered for calibration: " << TNEV << " \r";
       cout.flush();
       
       Ch[f]->GetEntry( elist_h[f]->GetEntry( nevent ) ); 
@@ -728,34 +852,69 @@ void ecal( Int_t kine=-1, Int_t iter=1 ){
       
       //////////////////////////////////////////////////////////////////
       //Cut on dx and dy.
-      if( abs(dy-dy0_h[f])<5*dy_sig_h[f] ) continue;
-      if( abs(dx-dx0_h[f])<5*dx_sig_h[f] ) continue;
+      if( abs(dy-dy0_h[f])>3*dy_sig_h[f] ) continue;
+      if( abs(dx-dx0_p_h[f])>3*dx_sig_p_h[f] && abs(dx-dx0_n_h[f])>3*dx_sig_p_h[f] ) continue; //Cut on both n and p spots for each event, cannot know which apriori
       //////////////////////////////////////////////////////////////////
 
-      // Get energies with simplest scheme from clusters only
-      bool badclus = false;
+      //Write out diagnostic histograms
       Double_t clusE = 0.0;
+      hdx_mag_h->Fill( hfieldset, dx );
+      hdy_mag_h->Fill( hfieldset, dy );
+      for( Int_t blk = 0; blk<(int)nblk_h[f]; blk++ ){
+      	Int_t blkid = int(cblkid_h[f][blk])-1; //-1 necessary since sbs.hcal.clus_blk.id ranges from 1 to 288 (different than just about everything else)
+
+	if( qreplay ){
+	  if( pass0 ) clusE += cblke_h[f][blk]/gOldConst_pass0[blkid]*gConst_iter1[blkid];
+	  if( !pass0 ) clusE += cblke_h[f][blk]/cblkagain_h[f][blk]*gConst_iter1[blkid];
+	}else{
+	  if( pass0 ) clusE += cblke_h[f][blk];
+	  if( !pass0 ) clusE += cblke_h[f][blk];
+	}
+      }
+
+      hHCALe->Fill( clusE );
+      hSampFrac->Fill( clusE/KE_p );
+
+      //////////////////////////////////////////////////////////////////
+      //Continue if iter == 1 (second quasi-replay pass for diagnostics)
+      if( qreplay ) continue;
+      //////////////////////////////////////////////////////////////////
+
+      // Get pC from primary clusters only
+      bool badclus = false;
+      clusE = 0.0;
       Double_t cluspC = 0.0;
       for( Int_t blk = 0; blk<(int)nblk_h[f]; blk++ ){
-	Int_t blkid = int(cblkid_h[f][blk])-1; //-1 necessary since sbs.hcal.clus_blk.id ranges from 1 to 288 (different than just about everything else)
-	
+	Int_t blkid = int(cblkid_h[f][blk])-1;
+	hblkid->Fill(blkid);
+
 	//Populate list of old gain coefficients in case dof is bad
 	if( gOldConst[blkid]==0.0 ) gOldConst[blkid]=cblkagain_h[f][blk];
 	
+	
 	//Diagnostic cut for now
-	if( abs(cblkatime_h[f][blk]-cblkatime_h[f][0])>3*atime_sig ) {
+	if( abs(cblkatime_h[f][blk]-cblkatime_h[f][0])>3*atime_sig_h[f] ) {
 	  badclus = true;
 	  continue; //Cut blocks that are out of time
 	}
 	
 	clusE += cblke_h[f][blk];
-	cluspC += cblke_h[f][blk]/cblkagain_h[f][blk]; 
-	A[blkid] += cblke_h[f][blk]/cblkagain_h[f][blk];
-	
-	if(nblk_h[f]==1) {
-	  A_oneblock[blkid] += cblke_h[f][blk]/cblkagain_h[f][blk];
+
+	// Get pC with old gain coefficients where pass0 extracted from db_sbs.hcal.dat
+	if( pass0 ){
+	  cluspC += cblke_h[f][blk]/gOldConst_pass0[blkid]; 
+	  A[blkid] += cblke_h[f][blk]/gOldConst_pass0[blkid];	
+	  if(nblk_h[f]==1) {
+	    A_oneblock[blkid] += cblke_h[f][blk]/gOldConst_pass0[blkid];
+	  }
+	}else{
+	  cluspC += cblke_h[f][blk]/cblkagain_h[f][blk]; 
+	  A[blkid] += cblke_h[f][blk]/cblkagain_h[f][blk];	
+	  if(nblk_h[f]==1) {
+	    A_oneblock[blkid] += cblke_h[f][blk]/cblkagain_h[f][blk];
+	  }
 	}
-	
+
 	err_ev[blkid] += pow( ((1.+cluspC)/cluspC+(0.05*KE_p)/KE_p) , 2 ); //Getting ready for std. dev of mean
 
 	// Simple estimation of the coefficients assuming 100% energy deposition in one block. Will check against the more sophisticated version with chi^2 reduction.
@@ -765,7 +924,12 @@ void ecal( Int_t kine=-1, Int_t iter=1 ){
 	  NEV_oneblock[blkid]++;
 	}
 	NEV[blkid]++;
+	TNEV++;
+      }
 
+      if(clusE<0.025){
+	cout << "Warning: Cluster block cut on atime killed cluster." << endl;
+	continue;
       }
 
       if( badclus ) badtimeblkclus++;
@@ -778,6 +942,8 @@ void ecal( Int_t kine=-1, Int_t iter=1 ){
       for(Int_t icol = 0; icol<kNcell; icol++){
 	ba(icol)+= A[icol];
 
+	if(nblk_h[f]==1) ba_oneblock(icol)+=A_oneblock[icol];
+
 	for(Int_t irow = 0; irow<kNcell; irow++){
 	  Ma(icol,irow) += A[icol]*A[irow]/E_exp;
 	  if(nblk_h[f]==1){	    
@@ -789,26 +955,46 @@ void ecal( Int_t kine=-1, Int_t iter=1 ){
     } //loop over events
   } //loop for lh2
 
+  Int_t cell = 0;
+
+  cout << endl << "Number of events available for calibration from hydrogen alone: " << endl << endl;
+
+  for( Int_t r = 0; r<kNrows; r++){
+    for( Int_t c = 0; c<kNcols; c++){
+      cout << NEV[cell] << "  ";
+      cell++;
+    }
+    cout << endl;
+  }
+  
+  cout << endl;
+
+  usleep( 3*second ); //Give some time for review of step
+
   //Loop over all deuterium data
-  for( Int_t f=0, f<nfset_ld2[kIdx]; f++ ){
+  for( Int_t f=0; f<nfset_ld2[kIdx]; f++ ){
+
+    Int_t dfieldset = fset_ld2[kIdx][f];
+
+    //Declare energy loss parameters for beam going through the target
+    Double_t pBeam = E_e_d[f]/(1.+E_e_d[f]/M_p*(1.-cos(BB_th_d[f])));
+    Double_t Eloss_outgoing = celldiameter/2.0/sin(BB_th_d[f]) * rho_tgt * dEdx_tgt; //Mean energy loss of the beam prior to the scattering, approximately 1 MeV, could correct further with raster position (likely negligable)
 
     for( Long64_t nevent = 1; nevent <Nevents_d[f]; nevent++){
 
-      if ( nevent%10000==0 ) cout << "LH2 kinematic: " << kine << ", entry: " << nevent << "/" << Nevents[f] << " \r";
+      if ( nevent%10000==0 ) cout << "LD2 kinematic " << kine << " at field " << dfieldset << "%, entry: " << nevent << "/" << Nevents_d[f] << ". Total events gathered for calibration: " << TNEV << " \r";
       cout.flush();
       
-      Ch[f]->GetEntry( elist_d[f]->GetEntry( nevent ) ); 
-
+      Cd[f]->GetEntry( elist_d[f]->GetEntry( nevent ) ); 
 
       //////////////////////////////////////////////////////////////////////
       //Make cuts that don't rely on projections first to improve efficiency
       if( crow_d[f]==0 || 
-	  crow_d[f]==23 || 
-	  ccol_d[f]==0 || 
-	  ccol_d[f]==11 ) continue; //All events with primary cluster element on edge blocks cut
+      	  crow_d[f]==23 || 
+      	  ccol_d[f]==0 || 
+      	  ccol_d[f]==11 ) continue; //All events with primary cluster element on edge blocks cut
       if( abs(cblkatime_d[f][0]-atime0_d[f])>3*atime_sig_d[f] ) continue; //All events where adctime outside of reasonable window cut
       //////////////////////////////////////////////////////////////////////
-
 
       Double_t A[kNcell] = {0.0}; // Array to keep track of ADC values per cell. Outscope on each ev
       Double_t A_oneblock[kNcell] = {0.0}; // Array to keep track of ADC values per cell for one block clusters only. Outscope on each ev
@@ -883,34 +1069,70 @@ void ecal( Int_t kine=-1, Int_t iter=1 ){
       
       //////////////////////////////////////////////////////////////////
       //Cut on dx and dy.
-      if( abs(dy-dy0_d[f])<5*dy_sig_d[f] ) continue;
-      if( abs(dx-dx0_d[f])<5*dx_sig_d[f] ) continue;
+      if( abs(dy-dy0_d[f])<3*dy_sig_d[f] ) continue;
+      if( abs(dx-dx0_p_d[f])>3*dx_sig_p_d[f] && abs(dx-dx0_n_d[f])>3*dx_sig_p_d[f] ) continue; //Cut on both n and p spots for each event, cannot know which apriori      
+      //////////////////////////////////////////////////////////////////
+
+      //Write out diagnostic histograms
+      Double_t clusE = 0.0;
+      hdx_mag_d->Fill( dfieldset, dx );
+      hdy_mag_d->Fill( dfieldset, dy );
+      for( Int_t blk = 0; blk<(int)nblk_d[f]; blk++ ){
+      	Int_t blkid = int(cblkid_d[f][blk])-1; //-1 necessary since sbs.hcal.clus_blk.id ranges from 1 to 288 (different than just about everything else)
+
+	if( qreplay ){
+	  if( pass0 ) clusE += cblke_d[f][blk]/gOldConst_pass0[blkid]*gConst_iter1[blkid];
+	  if( !pass0 ) clusE += cblke_d[f][blk]/cblkagain_d[f][blk]*gConst_iter1[blkid];
+	}else{
+	  if( pass0 ) clusE += cblke_d[f][blk];
+	  if( !pass0 ) clusE += cblke_d[f][blk];
+	}
+      }
+
+      hHCALe->Fill( clusE );
+      hSampFrac->Fill( clusE/KE_p );
+
+      //////////////////////////////////////////////////////////////////
+      //Continue if iter == 1 (second quasi-replay pass for diagnostics)
+      if( qreplay ) continue;
       //////////////////////////////////////////////////////////////////
 
       // Get energies with simplest scheme from clusters only
       bool badclus = false;
-      Double_t clusE = 0.0;
+      clusE = 0.0;
       Double_t cluspC = 0.0;
+      
+      //cout << nblk_d[f] << endl;
+
       for( Int_t blk = 0; blk<(int)nblk_d[f]; blk++ ){
 	Int_t blkid = int(cblkid_d[f][blk])-1; //-1 necessary since sbs.hcal.clus_blk.id ranges from 1 to 288 (different than just about everything else)
 	
 	//Populate list of old gain coefficients in case dof is bad
 	if( gOldConst[blkid]==0.0 ) gOldConst[blkid]=cblkagain_d[f][blk];
-	
+
 	//Diagnostic cut for now
-	if( abs(cblkatime_d[f][blk]-cblkatime_d[f][0])>3*atime_sig ) {
+	if( abs(cblkatime_d[f][blk]-cblkatime_d[f][0])>3*atime_sig_d[f] ) {
 	  badclus = true;
 	  continue; //Cut blocks that are out of time
 	}
 	
 	clusE += cblke_d[f][blk];
-	cluspC += cblke_d[f][blk]/cblkagain_d[f][blk]; 
-	A[blkid] += cblke_d[f][blk]/cblkagain_d[f][blk];
-	
-	if(nblk_d[f]==1) {
-	  A_oneblock[blkid] += cblke_d[f][blk]/cblkagain_d[f][blk];
+
+	// Get pC with old gain coefficients where pass0 extracted from db_sbs.hcal.dat
+	if( pass0 ){
+	  cluspC += cblke_d[f][blk]/gOldConst_pass0[blkid]; 
+	  A[blkid] += cblke_d[f][blk]/gOldConst_pass0[blkid];	
+	  if(nblk_d[f]==1) {
+	    A_oneblock[blkid] += cblke_d[f][blk]/gOldConst_pass0[blkid];
+	  }
+	}else{
+	  cluspC += cblke_d[f][blk]/cblkagain_d[f][blk]; 
+	  A[blkid] += cblke_d[f][blk]/cblkagain_d[f][blk];	
+	  if(nblk_d[f]==1) {
+	    A_oneblock[blkid] += cblke_d[f][blk]/cblkagain_d[f][blk];
+	  }
 	}
-	
+
 	err_ev[blkid] += pow( ((1.+cluspC)/cluspC+(0.05*KE_p)/KE_p) , 2 ); //Getting ready for std. dev of mean
 
 	// Simple estimation of the coefficients assuming 100% energy deposition in one block. Will check against the more sophisticated version with chi^2 reduction.
@@ -920,7 +1142,12 @@ void ecal( Int_t kine=-1, Int_t iter=1 ){
 	  NEV_oneblock[blkid]++;
 	}
 	NEV[blkid]++;
+	TNEV++;
+      }
 
+      if(clusE<0.025){
+	cout << "Warning: Cluster block cut on atime killed cluster." << endl;
+	continue;
       }
 
       if( badclus ) badtimeblkclus++;
@@ -933,6 +1160,8 @@ void ecal( Int_t kine=-1, Int_t iter=1 ){
       for(Int_t icol = 0; icol<kNcell; icol++){
 	ba(icol)+= A[icol];
 
+	if(nblk_d[f]==1) ba_oneblock(icol)+=A_oneblock[icol];
+
 	for(Int_t irow = 0; irow<kNcell; irow++){
 	  Ma(icol,irow) += A[icol]*A[irow]/E_exp;
 	  if(nblk_d[f]==1){	    
@@ -944,7 +1173,13 @@ void ecal( Int_t kine=-1, Int_t iter=1 ){
     } //loop over events
   } //loop for ld2
 
-cout << endl << "Checking data, inverting matrix, and solving for coefficients.." << endl << endl;
+  cout << endl << "Checking data, inverting matrix, and solving for coefficients.." << endl << endl;
+
+  //Declare report outfile
+  ofstream report;
+
+  report.open( errPath );
+  report << "#Error and performance report from SBS-" << kine << " obtained " << date.c_str() << endl << endl;
 
   //Reject the bad cells and normalize the oneblock check
   Int_t badcell[kNcell];
@@ -953,11 +1188,16 @@ cout << endl << "Checking data, inverting matrix, and solving for coefficients..
   Double_t y[kNcell] = {0.0}; // For easy TGraphErrors build
   
   for(Int_t i=0; i<kNcell; i++){
+    if( qreplay ){
+      report << "Skipping matrix element checks for iteration 1 (quasi-replay).." << endl;
+      break;
+    }
+
     badcell[i] = 0;
     y[i] = i;
     
     //Do not change ADC gain coeff if insufficient events or energy dep in cell
-    if( NEV[i] < minEventPerCell || Ma(i,i) < 0.1*ba(i) ){ 
+    if( NEV[i] < minEventPerCell || Ma(i,i) < highDelta*ba(i) ){ 
 
       cellBad = 1;
 
@@ -974,15 +1214,15 @@ cout << endl << "Checking data, inverting matrix, and solving for coefficients..
 	}
       }
       badcell[i] = 1;
-      cout << "cell" << i << " bad" << endl;
-      cout << "Number of events in bad cell =" << NEV[i] << endl;
-      cout << "Matrix element/vector element ratio =" << elemRatio << endl;
+      report << "Cell " << i << " bad" << endl;
+      report << "Number of events in bad cell =" << NEV[i] << endl;
+      report << "Matrix element/vector element ratio =" << elemRatio << endl;
     } 
 
     badcell_oneblock[i] = 0;
 
     //Do not change ADC gain coeff if insufficient events or energy dep in cell, oneblock
-    if( NEV[i] < minEventPerCell || Ma_oneblock(i,i) < 0.1*ba_oneblock(i) ){ 
+    if( NEV_oneblock[i] < minEventPerCell || Ma_oneblock(i,i) < highDelta*ba_oneblock(i) ){ 
 
       cellBad = 1;
 
@@ -999,10 +1239,10 @@ cout << endl << "Checking data, inverting matrix, and solving for coefficients..
 	}
       }
       badcell_oneblock[i] = 1;
-      cout << "oneblock analysis" << endl;
-      cout << "cell" << i << " bad" << endl;
-      cout << "Number of events in bad cell =" << NEV[i] << endl;
-      cout << "Matrix element/vector element ratio =" << elemRatio << endl;
+      report << "oneblock analysis" << endl;
+      report << "cell" << i << " bad" << endl;
+      report << "Number of events in bad cell =" << NEV_oneblock[i] << endl;
+      report << "Matrix element/vector element ratio =" << elemRatio << endl;
     }   
 
     //Calculate error per block (element of A)
@@ -1010,114 +1250,133 @@ cout << endl << "Checking data, inverting matrix, and solving for coefficients..
     err_oneblock[i] = sqrt(err_ev_oneblock[i]/NEV_oneblock[i]);
   }
 
+  report.close();
+
   if( cellBad==0 ) cout << "No bad cells detected!" << endl << endl;
 
-  //Invert the matrix, solve for ratios
-  TMatrixD M_inv = Ma.Invert();
-  TMatrixD M_inv_oneblock = Ma_oneblock.Invert();
-  TVectorD Coeff = M_inv*ba; // Stays unmodified for reference
-  TVectorD Coeff_oneblock = M_inv_oneblock*ba_oneblock; // Stays unmodified for reference
+  //If iteration == 0, invert the matrix, solve for ratios
+  if( !qreplay ){
+    TMatrixD M_inv = Ma.Invert();
+    TMatrixD M_inv_oneblock = Ma_oneblock.Invert();
+    TVectorD Coeff = M_inv*ba; // Stays unmodified for reference
+    TVectorD Coeff_oneblock = M_inv_oneblock*ba_oneblock; // Stays unmodified for reference
 
-  for(Int_t i=0; i<kNcell; i++){
-    if(badcell_oneblock[i]==0){
-      GCoeff_oneblock[i]=Coeff_oneblock[i];
-    }else{
-      GCoeff_oneblock[i]=gOldConst[i];
+    for(Int_t i=0; i<kNcell; i++){
+      if( pass0 ){
+	if( gOldConst[i]==0.0 ) gOldConst[i]=gOldConst_pass0[i];
+      }
+
+      if(badcell_oneblock[i]==0){
+	GCoeff_oneblock[i]=Coeff_oneblock[i];
+      }else{
+	GCoeff_oneblock[i]=gOldConst[i];
+      }
+
+      if(badcell[i]==0){
+	GCoeff[i]=Coeff[i];
+	GCoeff_divide[i]=GCoeff[i]/GCoeff_oneblock[i];
+      }else{
+	GCoeff[i]=gOldConst[i]; // If the cell is bad, use the old coefficient
+	GCoeff_divide[i]=-1.0;
+      }
     }
 
-    if(badcell[i]==0){
-      GCoeff[i]=Coeff[i];
-      GCoeff_divide[i]=GCoeff[i]/GCoeff_oneblock[i];
+    Double_t yErr[kNcell] = {0.0};
 
-    }else{
-      GCoeff[i]=gOldConst[i]; // If the cell is bad, use the old coefficient
-      GCoeff_divide[i]=-1.0;
+    TGraphErrors *ccgraph = new TGraphErrors( kNcell, y, GCoeff, yErr, err ); 
+    ccgraph->GetXaxis()->SetLimits(0.0,288.0);  
+    ccgraph->GetYaxis()->SetLimits(0.0,0.25);
+    ccgraph->SetTitle("Calibration Coefficients");
+    ccgraph->GetXaxis()->SetTitle("Channel");
+    ccgraph->GetYaxis()->SetTitle("Unitless");
+    ccgraph->SetMarkerStyle(20); // idx 20 Circles, idx 21 Boxes
+    ccgraph->Write("constants");
+
+    TGraphErrors *ccgraph_oneBlock = new TGraphErrors( kNcell, y, GCoeff_oneblock, yErr, err_oneblock ); 
+    ccgraph_oneBlock->GetXaxis()->SetLimits(0.0,288.0);  
+    ccgraph_oneBlock->GetYaxis()->SetLimits(0.0,0.25);
+    ccgraph_oneBlock->SetTitle("Calibration Coefficients One Block");
+    ccgraph_oneBlock->GetXaxis()->SetTitle("Channel");
+    ccgraph_oneBlock->GetYaxis()->SetTitle("Unitless");
+    ccgraph_oneBlock->SetMarkerStyle(21);
+    ccgraph_oneBlock->Write("constants_oneblock");
+
+    TGraphErrors *ccgraph_divide = new TGraphErrors( kNcell, y, GCoeff_divide, yErr, yErr ); 
+    ccgraph_divide->GetXaxis()->SetLimits(0.0,288.0);  
+    ccgraph_divide->SetTitle("Calibration Coefficients / OneBlock Coeff");
+    ccgraph_divide->GetXaxis()->SetTitle("Channel");
+    ccgraph_divide->GetYaxis()->SetTitle("Unitless");
+    ccgraph_divide->SetMarkerStyle(21);
+    ccgraph_divide->Write("constants_divide");
+
+    //Declare coeff outfile
+    ofstream GainCoeff;
+
+    GainCoeff.open( constPath );
+
+    //Console/txt outs
+    Int_t cell = 0;
+
+    GainCoeff << "#HCal gain coefficients from SBS-" << kine << " obtained " << date.c_str() << endl;
+    GainCoeff << "sbs.hcal.adc.gain =" << endl;
+
+    cout << "Gain Coefficients" << endl;
+    for( Int_t r=0; r<kNrows; r++ ){
+      for( Int_t c=0; c<kNcols; c++ ){
+	GainCoeff << GCoeff[cell] << "  ";
+	cout << GCoeff[cell] << "  ";
+	cell++;
+      }
+      GainCoeff << endl;
+      cout << endl;
     }
-  }
 
-  Double_t yErr[kNcell] = {0.0};
+    cell = 0;
 
-  TGraphErrors *ccgraph = new TGraphErrors( kNcell, y, GCoeff, yErr, err ); 
-  ccgraph->GetXaxis()->SetLimits(0.0,288.0);  
-  ccgraph->GetYaxis()->SetLimits(0.0,0.25);
-  ccgraph->SetTitle("Calibration Coefficients");
-  ccgraph->GetXaxis()->SetTitle("Channel");
-  ccgraph->GetYaxis()->SetTitle("Unitless");
-  ccgraph->SetMarkerStyle(20); // idx 20 Circles, idx 21 Boxes
-  ccgraph->Write("constants");
+    cout << endl << "One Block Std:" << endl;
+    GainCoeff << endl << "#One Block Std = " << endl;
 
-  TGraphErrors *ccgraph_oneBlock = new TGraphErrors( kNcell, y, GCoeff_oneblock, yErr, err_oneblock ); 
-  ccgraph_oneBlock->GetXaxis()->SetLimits(0.0,288.0);  
-  ccgraph_oneBlock->GetYaxis()->SetLimits(0.0,0.25);
-  ccgraph_oneBlock->SetTitle("Calibration Coefficients One Block");
-  ccgraph_oneBlock->GetXaxis()->SetTitle("Channel");
-  ccgraph_oneBlock->GetYaxis()->SetTitle("Unitless");
-  ccgraph_oneBlock->SetMarkerStyle(21);
-  ccgraph_oneBlock->Write("constants_oneblock");
+    for( Int_t r = 0; r<kNrows; r++){
+      for( Int_t c = 0; c<kNcols; c++){
+	GainCoeff << GCoeff_oneblock[cell] << "  ";
+	cout << GCoeff_oneblock[cell] << "  ";
+	cell++;
+      }
+      GainCoeff << endl;
+      cout << endl;
+    }
 
-  TGraphErrors *ccgraph_divide = new TGraphErrors( kNcell, y, GCoeff_divide, yErr, yErr ); 
-  ccgraph_divide->GetXaxis()->SetLimits(0.0,288.0);  
-  ccgraph_divide->SetTitle("Calibration Coefficients / OneBlock Coeff");
-  ccgraph_divide->GetXaxis()->SetTitle("Channel");
-  ccgraph_divide->GetYaxis()->SetTitle("Unitless");
-  ccgraph_divide->SetMarkerStyle(21);
-  ccgraph_divide->Write("constants_divide");
+    cell = 0;
+
+    cout << endl << "Total Number of events available for calibration: " << endl << endl;
+    GainCoeff << endl << "#Number of events available for calibration = " << endl;
+
+    for( Int_t r = 0; r<kNrows; r++){
+      for( Int_t c = 0; c<kNcols; c++){
+	GainCoeff << NEV[cell] << "  ";
+	cout << NEV[cell] << "  ";
+	cell++;
+      }
+      GainCoeff << endl;
+      cout << endl;
+    }
+
+    GainCoeff.close();
+  } //end if iter==0
 
   fout->Write();
 
-  //Console/txt outs
-  Int_t cell = 0;
-
-  cout << endl << "Number of events available for calibration: " << endl << endl;
-
-  for( Int_t r = 0; r<kNrows; r++){
-    for( Int_t c = 0; c<kNcols; c++){
-      cout << NEV[cell] << "  ";
-      cell++;
-    }
-    cout << endl;
-  }
-  cell = 0;
-
-  cout << endl << "One Block Std:" << endl;
-
-  for( Int_t r = 0; r<kNrows; r++){
-    for( Int_t c = 0; c<kNcols; c++){
-      cout << GCoeff_oneblock[cell] << "  ";
-      cell++;
-    }
-    cout << endl;
-  }
-
   cout << endl << endl;
 
-  //Declare outfiles
-  ofstream GainCoeff;
+  //cout << endl << endl << "Total blocks out of time with primary block / Multi-block clusters: " << badtimeblkclus << "/" << multblkclus << endl;
 
-  GainCoeff.open( constPath );
-  GainCoeff << "#HCal gain coefficients from SBS-" << kine << " obtained " << date.c_str() << endl;
-  GainCoeff << "#HCal_gainCoeff = " << endl;
-
-  cell = 0;
-  cout << "Gain Coefficients" << endl;
-  for( Int_t r=0; r<kNrows; r++ ){
-    for( Int_t c=0; c<kNcols; c++ ){
-      GainCoeff << GCoeff[cell] << "  ";
-      cout << GCoeff[cell] << "  ";
-      cell++;
-    }
-    GainCoeff << endl;
-    cout << endl;
-  }
-
-  GainCoeff.close();
-
-  cout << endl << endl << "Total blocks out of time with primary block / Multi-block clusters: " << badtimeblkclus << "/" << multblkclus << endl;
-
-  cout << endl << endl << "Elastic yield for analyzed runs: " << elasYield << ". Total events analyzed: " << Nevents << "." << endl << endl;
+  cout << endl << endl << "Elastic yield for analyzed runs: " << elasYield << ". Total events analyzed: " << lh2Events + ld2Events << "." << endl << endl;
   
-
-  cout << "Calibration complete and constants written to file." << endl;
+  if( qreplay ){
+    cout << "Diagnostic iteration complete. Histograms written to file." << endl;
+  }else{
+    cout << "Calibration complete. Constants and histograms written to file." << endl;
+  }
 
   st->Stop();
 
@@ -1125,56 +1384,3 @@ cout << endl << "Checking data, inverting matrix, and solving for coefficients..
   cout << "CPU time elapsed = " << st->CpuTime() << " s = " << st->CpuTime()/60.0 << " min. Real time = " << st->RealTime() << " s = " << st->RealTime()/60.0 << " min." << endl;
 
 }
-
-//Sample setup file, comment with #
-////////////////////////////////////////////////////////
-//setup_HCal_Calibration.txt
-////////////////////////////////////////////////////////
-//#LH2 full field
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11263*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11265*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11267*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11268*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11252*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11251*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11250*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11249*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11248*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11247*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11246*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11242*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11244*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11245*
-//#LH2 quarter field
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11301*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11302*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11303*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11304*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11305*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11306*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11307*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11308*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11309*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11310*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11311*
-//#LH2 inverted quarter field
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11276*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11277*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11279*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11280*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11281*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11282*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11283*
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11284*
-//#LH2 Zero Field 
-//#/adaqfs/home/a-onl/sbs/Rootfiles/gmn_replayed_11332*
-//endlist
-//endcut
-//E_e 1.92
-//HCal_d 14.5
-//HCal_th 35.0
-//opticsCorr 1.05
-//W_mean 0.93
-//W_sig 0.1
-//ScaleFac 1.0
-/////////////////////////////////////////////////////////
