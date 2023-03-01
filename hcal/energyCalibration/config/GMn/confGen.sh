@@ -1,13 +1,13 @@
 #!/bin/sh
 
-# SSeeds - 2.23.23 - produce run lists by pass/kinematic/target/field
+# SSeeds - 2.27.23 - produce configuration files by pass/kinematic/target/field for both ecal.C and tcal.C
 
 ## Usage
 # Simple script takes data from mss and places it into the cache 
-#./runSort.sh <pass> <kinematic>
+#./confGen.sh <pass> <kinematic>
 
-echo 'This script produces .txt files with all replayed runs from a given pass/kinematic by target and field strength in GMn.'
-echo 'Which pass would you like to sort?'
+echo 'This script produces .cfg files for calibration scripts.'
+echo 'Which pass would you like to work with?'
 read pass
 echo 'Which kinematic?'
 read kine
@@ -27,7 +27,7 @@ fi
 
 #Declare general cut parameters over all kinematics
 #Order (by idx) here: kine = (4 7 11 14 8 9)
-globalcut=('bb.tr.n==1&&bb.ps.e>0.2&&abs(bb.tr.vz[0])<0.08&&bb.gem.track.nhits>3&&abs(bb.etot_over_p-0.92)<0.2&&sbs.hcal.e>0.10&&bb.ps.e+bb.sh.e>1.7' 'bb.tr.n>0&&abs(bb.tr.vz[0])<0.08&&bb.gem.track.nhits>2&&bb.tr.p[0]>2.0&&sbs.hcal.e>0.10&&bb.ps.e>0.2' 'bb.tr.n>0&&abs(bb.tr.vz[0])<0.08&&bb.gem.track.nhits>2&&bb.tr.p[0]>2.0&&sbs.hcal.e>0.10&&bb.ps.e>0.2' 'bb.tr.n>0&&abs(bb.tr.vz[0])<0.08&&bb.gem.track.nhits>2&&bb.tr.p[0]>1.6&&sbs.hcal.e>0.10&&bb.ps.e>0.2' 'bb.tr.n==1&&bb.ps.e>0.2&&abs(bb.tr.vz[0])<0.08&&bb.gem.track.nhits>3&&sbs.hcal.e>0.10&&abs(bb.tr.tg_th[0])<0.15&&abs(bb.tr.tg_ph[0])<0.3' 'bb.tr.n==1&&bb.ps.e>0.2&&abs(bb.tr.vz[0])<0.08&&bb.gem.track.nhits>3&&sbs.hcal.e>0.10&&abs(bb.tr.tg_th[0])<0.15&&abs(bb.tr.tg_ph[0])<0.3')
+globalcut=('bb.tr.n==1&&bb.ps.e>0.2&&abs(bb.tr.vz[0])<0.08&&bb.gem.track.nhits>3&&abs(bb.etot_over_p-0.92)<0.2&&sbs.hcal.e>0.01&&bb.ps.e+bb.sh.e>1.7' 'bb.tr.n>0&&abs(bb.tr.vz[0])<0.08&&bb.gem.track.nhits>2&&bb.tr.p[0]>2.0&&sbs.hcal.e>0.01&&bb.ps.e>0.2' 'bb.tr.n>0&&abs(bb.tr.vz[0])<0.08&&bb.gem.track.nhits>2&&bb.tr.p[0]>2.0&&sbs.hcal.e>0.01&&bb.ps.e>0.2' 'bb.tr.n>0&&abs(bb.tr.vz[0])<0.08&&bb.gem.track.nhits>2&&bb.tr.p[0]>1.6&&sbs.hcal.e>0.01&&bb.ps.e>0.2' 'bb.tr.n==1&&bb.ps.e>0.2&&abs(bb.tr.vz[0])<0.08&&bb.gem.track.nhits>3&&sbs.hcal.e>0.01&&abs(bb.tr.tg_th[0])<0.15&&abs(bb.tr.tg_ph[0])<0.3' 'bb.tr.n==1&&bb.ps.e>0.2&&abs(bb.tr.vz[0])<0.08&&bb.gem.track.nhits>3&&sbs.hcal.e>0.01&&abs(bb.tr.tg_th[0])<0.15&&abs(bb.tr.tg_ph[0])<0.3')
 E_e=(3.7278 7.9072 9.8594 5.9649 5.9648 4.0148)
 HCal_d=(11. 14. 14.5 14. 11. 11.)
 HCal_th=(31.9 16.1 13.3 17.3 29.4 22.)

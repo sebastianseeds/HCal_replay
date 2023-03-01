@@ -38,6 +38,7 @@ const Double_t PI = TMath::Pi();
 const Double_t M_e = 0.0051;
 const Double_t M_p = 0.938272;
 const Double_t M_n = 0.939565;
+const Double_t sampFrac = 0.0795;
 
 const Double_t hcalheight = -0.2897;
 const Double_t HCal_divy = 0.15494; // Horizontal length of all HCAL blocks in m from MC database
@@ -68,12 +69,14 @@ void ecal_diagnostic( Int_t kine=-1, const char *tar = "", Int_t field=-1, Int_t
   cout << "Selected Kinematic " << kine << "." << endl;
 
   // Declare file name paths
-  TString configfilename = Form( "config/GMn/SBS%d/secal_%s_sbs%d_f%d.cfg", kine, tar, kine, field );
+  TString configfilename;
   TString outputfilename;
   if( iter==0 ){
+    configfilename = Form( "config/GMn/SBS%d/secal_%s_sbs%d_f%d.cfg", kine, tar, kine, field );
     outputfilename = Form( "diagnostics/SBS%d/ecal_diag_%s_sbs%d_f%d.root", kine, tar, kine, field );
   }else{
-    outputfilename = Form( "diagnostics/ecal_calReview_sbs%d.root", kine );
+    configfilename = Form( "config/GMn/SBS%d/calReview_%s_sbs%d_f%d.cfg", kine, tar, kine, field );
+    outputfilename = Form( "diagnostics/SBS%d/ecal_calReview_sbs%d.root", kine, kine );
   }
 
   Double_t E_e = -1000.; // Energy of beam (incoming electrons from accelerator)
@@ -269,6 +272,7 @@ void ecal_diagnostic( Int_t kine=-1, const char *tar = "", Int_t field=-1, Int_t
   TH1D *hW2 = new TH1D( "hW2", " ;GeV2  ", 200,0,5 );
   TH1D *hQ2 = new TH1D( "hQ2", " ;GeV2  ", 200,0,15 );
   TH1D *hHCALe = new TH1D( "hHCALe","HCal Cluster E", 400, 0., 1. );
+  TH1D *hhadke = new TH1D( "hhadke","Hadron KE", 400, 0., 10. );
   TH1D *hSampFrac = new TH1D( "hSampFrac","W2 Cut HCal Cluster E / Expected KE", 400, 0., 1. );
   TH2D *hSampFrac_vs_X = new TH2D( "hSampFrac_vs_X","Sampling Fraction ;X (m) ;HCal_E / Exp_KE", xN, HCal_Xi, HCal_Xf, uni_N, 0., 1. );
   TH2D *hSampFrac_vs_Y = new TH2D( "hSampFrac_vs_Y","Sampling Fraction ;Y (m) ;HCal_E / Exp_KE", yN, HCal_Yi, HCal_Yf, uni_N, 0., 1. );
@@ -341,10 +345,13 @@ void ecal_diagnostic( Int_t kine=-1, const char *tar = "", Int_t field=-1, Int_t
     hSampFrac_vs_Y->Fill( HCALy, SFrac );
     hatime->Fill( cblkatime[0] );
     hHCALe->Fill( HCALe );
+    hhadke->Fill( HCALe/sampFrac );
 
   }
 
   //cout << "mark = " << mark;
+
+  cout << endl;
 
   fout->Write();
   fout->Close();

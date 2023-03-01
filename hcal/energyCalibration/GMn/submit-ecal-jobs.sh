@@ -6,7 +6,7 @@
 #./submit-ecal-jobs.sh <kinematic> <iteration>
 
 kine=$1
-iter=$4
+iter=$2
 
 cp $SBS/run_replay_here/.rootrc $SWIF_JOB_WORK_DIR
 

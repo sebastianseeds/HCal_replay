@@ -27,6 +27,7 @@
 #include "TF1.h"
 
 //Detector constants
+const Int_t ifac = 3; // Inclusion factor, number of sigma to keep around cut peaks
 const Int_t kNcell = 288; // Total number of HCal modules
 const Int_t kNrows = 24; // Total number of HCal rows
 const Int_t kNcols = 12; // Total number of HCal columns
@@ -36,7 +37,7 @@ const Int_t xN = 48; //2*kNrows, total number of dispersive bins detection uni
 const Int_t yN = 24; //2*kNcols, total number of transverse bins detection uni
 //Double_t hcalheight = 0.365; //m The height of the center of HCAL above beam
 const Double_t hcalheight = -0.2897;
-const Double_t sampFrac = 0.0795; //HCal sampling frac (0.06588 GeV/0.8286 GeV) = 0.0795 = 7.95% -> (MC E_dep per proton) / (fit to data KE_p) - may need updated by kinematic
+const Double_t sampFrac[6] = {0.0797,0.0812,0.0812,0.0824,0.0811,0.0817}; //HCal sampling fractions from MC by kinematic. Position dependence confirmed to be negligible. 
 //Target constants
 const Double_t dEdx_tgt=0.00574; //According to NIST ESTAR, the collisional stopping power of hydrogen is about 5.74 MeV*cm2/g at 2 GeV energy
 const Double_t dEdx_Al = 0.0021; //According to NIST ESTAR, the collisional stopping power of Aluminum is about 2.1 MeV*cm2/g between 1-4 GeV
@@ -119,8 +120,10 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
   if( kine == 9 ) kIdx=5;
 
   //Declare bool indicating iteration
-  bool qreplay = false;
-  if( iter==1 ) qreplay = true;
+  //bool qreplay = false;
+  //if( iter==1 ) qreplay = true;
+
+  bool qreplay = iter==1;
 
   //Get gain parameters from database for pass0 where sbs.hcal.again not on tree
   Double_t gOldConst_pass0[kNcell] = {0.};
@@ -188,6 +191,8 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
     usleep( 3*second ); //Give some time for review of step
 
   } 
+
+  cout << endl;
 
   if( kine==4 || kine==7 ){ //end if iteration 1 (quasi-replay)
 
@@ -699,7 +704,7 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
   // Declare outfile
   TFile *fout;
   if( qreplay ){
-    fout = new TFile( Form("reporting/eCalEOut_sbs%d_qreplay.root", kine ), "RECREATE" );
+    fout = new TFile( Form("reporting/qreplay_sbs%d.root", kine ), "RECREATE" );
   }else{
     fout = new TFile( Form("reporting/eCalEOut_sbs%d.root", kine ), "RECREATE" );
   }
@@ -731,7 +736,8 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
   TVectorD ba(kNcell);
   TVectorD ba_oneblock(kNcell);
   TVectorD ba_err(kNcell);
-  Int_t TNEV = 0;
+  Int_t TNEV_h = 0;
+  Int_t TNEV_d = 0;
   Int_t NEV[kNcell] = {0};
   Int_t NEV_oneblock[kNcell] = {0};
   Double_t err[kNcell] = {0.};
@@ -740,11 +746,12 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
   Double_t err_ev_oneblock[kNcell] = {0.};
   
   //Declare diagnostic histograms (as sparse as possible)
-  TH2D *hdx_mag_h = new TH2D( "hdx_mag_h", "Delta X vs Field Setting (LH2); field (percent); x_{HCAL} - x_{exp} (m)", maxfset, 0, 1, 250, -4, 3 );
-  TH2D *hdy_mag_h = new TH2D( "hdy_mag_h", "Delta Y vs Field Setting (LH2); field (percent); y_{HCAL} - y_{exp} (m)", maxfset, 0, 1, 250, -1.25, 1.25 );
-  TH2D *hdx_mag_d = new TH2D( "hdx_mag_d", "Delta X vs Field Setting (LD2); field (percent); x_{HCAL} - x_{exp} (m)", maxfset, 0, 1, 250, -4, 3 );
-  TH2D *hdy_mag_d = new TH2D( "hdy_mag_d", "Delta Y vs Field Setting (LD2); field (percent); y_{HCAL} - y_{exp} (m)", maxfset, 0, 1, 250, -1.25, 1.25 );
+  TH2D *hdx_mag_h = new TH2D( "hdx_mag_h", "Delta X vs Field Setting (LH2); field (percent); x_{HCAL} - x_{exp} (m)", 21, 0, 105, 250, -4, 3 );
+  TH2D *hdy_mag_h = new TH2D( "hdy_mag_h", "Delta Y vs Field Setting (LH2); field (percent); y_{HCAL} - y_{exp} (m)", 21, 0, 105, 250, -1.25, 1.25 );
+  TH2D *hdx_mag_d = new TH2D( "hdx_mag_d", "Delta X vs Field Setting (LD2); field (percent); x_{HCAL} - x_{exp} (m)", 21, 0, 105, 250, -4, 3 );
+  TH2D *hdy_mag_d = new TH2D( "hdy_mag_d", "Delta Y vs Field Setting (LD2); field (percent); y_{HCAL} - y_{exp} (m)", 21, 0, 105, 250, -1.25, 1.25 );
   TH1D *hHCALe = new TH1D( "hHCALe","HCal Cluster E", 400, 0., 1. );
+  TH1D *hHCALblke = new TH1D( "hHCALblke","HCal Cluster Seed E", 400, 0., 1. );
   TH1D *hSampFrac = new TH1D( "hSampFrac","W2 Cut HCal Cluster E / Expected KE", 400, 0., 1. );
   TH1D *hblkid = new TH1D( "hblkid","HCal Block ID", 400, -50, 350 );
 
@@ -763,7 +770,7 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
     
     for( Long64_t nevent = 1; nevent <Nevents_h[f]; nevent++){
 
-      if ( nevent%10000==0 ) cout << "LH2 kinematic " << kine << " at field " << hfieldset << "% , entry: " << nevent << "/" << Nevents_h[f] << ". Total events gathered for calibration: " << TNEV << " \r";
+      if ( nevent%10000==0 ) cout << "LH2 kinematic " << kine << " at field " << hfieldset << "% , entry: " << nevent << "/" << Nevents_h[f] << ". Total events gathered for calibration: " << TNEV_h << " \r";
       cout.flush();
       
       Ch[f]->GetEntry( elist_h[f]->GetEntry( nevent ) ); 
@@ -775,7 +782,7 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
 	  crow_h[f]==23 || 
 	  ccol_h[f]==0 || 
 	  ccol_h[f]==11 ) continue; //All events with primary cluster element on edge blocks cut
-      if( abs(cblkatime_h[f][0]-atime0_h[f])>3*atime_sig_h[f] ) continue; //All events where adctime outside of reasonable window cut
+      if( abs(cblkatime_h[f][0]-atime0_h[f])>ifac*atime_sig_h[f] ) continue; //All events where adctime outside of reasonable window cut
       //////////////////////////////////////////////////////////////////////
 
 
@@ -845,34 +852,47 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
 
       //Calculate/declare new variables for analysis
       Double_t SFrac = HCALe_h[f]/KE_p;
-      Double_t E_exp = KE_p*sampFrac;
+      Double_t E_exp = KE_p*sampFrac[kIdx];
+      cout << KE_p << endl;
       Int_t rec_row = ( HCALx_h[f] - HCal_Xmin )/HCal_divx;
       Int_t rec_col = ( HCALy_h[f] - HCal_Ymin )/HCal_divy;
       Int_t rec_cell = rec_row*kNcols + rec_col;
+
+      hdx_mag_h->Fill( hfieldset, dx );
+      hdy_mag_h->Fill( hfieldset, dy );
       
       //////////////////////////////////////////////////////////////////
       //Cut on dx and dy.
-      if( abs(dy-dy0_h[f])>3*dy_sig_h[f] ) continue;
-      if( abs(dx-dx0_p_h[f])>3*dx_sig_p_h[f] && abs(dx-dx0_n_h[f])>3*dx_sig_p_h[f] ) continue; //Cut on both n and p spots for each event, cannot know which apriori
+      bool pass_y = abs(dy-dy0_h[f])<ifac*dy_sig_h[f];
+      if( !pass_y ) continue;
+      bool pass_p = abs(dx-dx0_p_h[f])<ifac*dx_sig_p_h[f];
+      bool pass_n = abs(dx-dx0_n_h[f])<ifac*dx_sig_n_h[f]; //Redundant for LH2
+      if( !pass_p && !pass_n ) continue; //Cut on both n and p spots for each event, cannot know which apriori
       //////////////////////////////////////////////////////////////////
 
       //Write out diagnostic histograms
       Double_t clusE = 0.0;
-      hdx_mag_h->Fill( hfieldset, dx );
-      hdy_mag_h->Fill( hfieldset, dy );
+      Double_t clusblkE = 0.0;
       for( Int_t blk = 0; blk<(int)nblk_h[f]; blk++ ){
       	Int_t blkid = int(cblkid_h[f][blk])-1; //-1 necessary since sbs.hcal.clus_blk.id ranges from 1 to 288 (different than just about everything else)
 
 	if( qreplay ){
-	  if( pass0 ) clusE += cblke_h[f][blk]/gOldConst_pass0[blkid]*gConst_iter1[blkid];
-	  if( !pass0 ) clusE += cblke_h[f][blk]/cblkagain_h[f][blk]*gConst_iter1[blkid];
+	  if( pass0 ){
+	    clusE += cblke_h[f][blk]/gOldConst_pass0[blkid]*gConst_iter1[blkid];
+	    if( blk==0 ) clusblkE += cblke_h[f][blk]/gOldConst_pass0[blkid]*gConst_iter1[blkid];
+	  }
+	  if( !pass0 ){
+	    clusE += cblke_h[f][blk]/cblkagain_h[f][blk]*gConst_iter1[blkid];
+	    if( blk==0 ) clusblkE += cblke_h[f][blk]/cblkagain_h[f][blk]*gConst_iter1[blkid];
+	  }
 	}else{
-	  if( pass0 ) clusE += cblke_h[f][blk];
-	  if( !pass0 ) clusE += cblke_h[f][blk];
+	  clusE += cblke_h[f][blk];
+	  if( blk==0 ) clusblkE += cblke_h[f][blk];
 	}
       }
 
       hHCALe->Fill( clusE );
+      hHCALblke->Fill( clusblkE );
       hSampFrac->Fill( clusE/KE_p );
 
       //////////////////////////////////////////////////////////////////
@@ -885,15 +905,15 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
       clusE = 0.0;
       Double_t cluspC = 0.0;
       for( Int_t blk = 0; blk<(int)nblk_h[f]; blk++ ){
-	Int_t blkid = int(cblkid_h[f][blk])-1;
-	hblkid->Fill(blkid);
+	Int_t blkid = int(cblkid_h[f][blk])-1; //-1 necessary since sbs.hcal.clus_blk.id ranges from 1 to 288 (different than just about everything else)
+	hblkid->Fill( blkid );
 
 	//Populate list of old gain coefficients in case dof is bad
 	if( gOldConst[blkid]==0.0 ) gOldConst[blkid]=cblkagain_h[f][blk];
 	
 	
 	//Diagnostic cut for now
-	if( abs(cblkatime_h[f][blk]-cblkatime_h[f][0])>3*atime_sig_h[f] ) {
+	if( abs(cblkatime_h[f][blk]-cblkatime_h[f][0])>ifac*atime_sig_h[f] ) {
 	  badclus = true;
 	  continue; //Cut blocks that are out of time
 	}
@@ -924,7 +944,7 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
 	  NEV_oneblock[blkid]++;
 	}
 	NEV[blkid]++;
-	TNEV++;
+	TNEV_h++;
       }
 
       if(clusE<0.025){
@@ -955,21 +975,23 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
     } //loop over events
   } //loop for lh2
 
-  Int_t cell = 0;
+  if( !qreplay ){
+    Int_t cell = 0;
 
-  cout << endl << "Number of events available for calibration from hydrogen alone: " << endl << endl;
+    cout << endl << "Number of events available for calibration from hydrogen alone: " << endl << endl;
 
-  for( Int_t r = 0; r<kNrows; r++){
-    for( Int_t c = 0; c<kNcols; c++){
-      cout << NEV[cell] << "  ";
-      cell++;
+    for( Int_t r = 0; r<kNrows; r++){
+      for( Int_t c = 0; c<kNcols; c++){
+	cout << NEV[cell] << "  ";
+	cell++;
+      }
+      cout << endl;
     }
-    cout << endl;
-  }
   
-  cout << endl;
+    cout << endl;
 
-  usleep( 3*second ); //Give some time for review of step
+    usleep( 3*second ); //Give some time for review of step
+  }
 
   //Loop over all deuterium data
   for( Int_t f=0; f<nfset_ld2[kIdx]; f++ ){
@@ -982,7 +1004,7 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
 
     for( Long64_t nevent = 1; nevent <Nevents_d[f]; nevent++){
 
-      if ( nevent%10000==0 ) cout << "LD2 kinematic " << kine << " at field " << dfieldset << "%, entry: " << nevent << "/" << Nevents_d[f] << ". Total events gathered for calibration: " << TNEV << " \r";
+      if ( nevent%10000==0 ) cout << "LD2 kinematic " << kine << " at field " << dfieldset << "%, entry: " << nevent << "/" << Nevents_d[f] << ". Total events gathered for calibration: " << TNEV_d << " \r";
       cout.flush();
       
       Cd[f]->GetEntry( elist_d[f]->GetEntry( nevent ) ); 
@@ -1062,34 +1084,46 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
 
       //Calculate/declare new variables for analysis
       Double_t SFrac = HCALe_d[f]/KE_p;
-      Double_t E_exp = KE_p*sampFrac;
+      Double_t E_exp = KE_p*sampFrac[kIdx];
       Int_t rec_row = ( HCALx_d[f] - HCal_Xmin )/HCal_divx;
       Int_t rec_col = ( HCALy_d[f] - HCal_Ymin )/HCal_divy;
       Int_t rec_cell = rec_row*kNcols + rec_col;
       
+      hdx_mag_d->Fill( dfieldset, dx );
+      hdy_mag_d->Fill( dfieldset, dy );
+
       //////////////////////////////////////////////////////////////////
       //Cut on dx and dy.
-      if( abs(dy-dy0_d[f])<3*dy_sig_d[f] ) continue;
-      if( abs(dx-dx0_p_d[f])>3*dx_sig_p_d[f] && abs(dx-dx0_n_d[f])>3*dx_sig_p_d[f] ) continue; //Cut on both n and p spots for each event, cannot know which apriori      
+      bool pass_y = abs(dy-dy0_d[f])<ifac*dy_sig_d[f];
+      if( !pass_y ) continue;
+      bool pass_p = abs(dx-dx0_p_d[f])<ifac*dx_sig_p_d[f];
+      bool pass_n = abs(dx-dx0_n_d[f])<ifac*dx_sig_n_d[f];
+      if( !pass_p && !pass_n ) continue; //Cut on both n and p spots for each event, cannot know which apriori      
       //////////////////////////////////////////////////////////////////
 
       //Write out diagnostic histograms
       Double_t clusE = 0.0;
-      hdx_mag_d->Fill( dfieldset, dx );
-      hdy_mag_d->Fill( dfieldset, dy );
+      Double_t clusblkE = 0.0;
       for( Int_t blk = 0; blk<(int)nblk_d[f]; blk++ ){
       	Int_t blkid = int(cblkid_d[f][blk])-1; //-1 necessary since sbs.hcal.clus_blk.id ranges from 1 to 288 (different than just about everything else)
 
 	if( qreplay ){
-	  if( pass0 ) clusE += cblke_d[f][blk]/gOldConst_pass0[blkid]*gConst_iter1[blkid];
-	  if( !pass0 ) clusE += cblke_d[f][blk]/cblkagain_d[f][blk]*gConst_iter1[blkid];
+	  if( pass0 ){
+	    clusE += cblke_d[f][blk]/gOldConst_pass0[blkid]*gConst_iter1[blkid];
+	    if( blk==0 ) clusblkE += cblke_d[f][blk]/gOldConst_pass0[blkid]*gConst_iter1[blkid];
+	  }
+	  if( !pass0 ){
+	    clusE += cblke_d[f][blk]/cblkagain_d[f][blk]*gConst_iter1[blkid];
+	    if( blk==0 ) clusblkE += cblke_d[f][blk]/cblkagain_d[f][blk]*gConst_iter1[blkid];
+	  }
 	}else{
-	  if( pass0 ) clusE += cblke_d[f][blk];
-	  if( !pass0 ) clusE += cblke_d[f][blk];
+	  clusE += cblke_d[f][blk];
+	  if( blk==0 ) clusblkE += cblke_d[f][blk];
 	}
       }
 
       hHCALe->Fill( clusE );
+      hHCALblke->Fill( clusblkE );
       hSampFrac->Fill( clusE/KE_p );
 
       //////////////////////////////////////////////////////////////////
@@ -1097,21 +1131,19 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
       if( qreplay ) continue;
       //////////////////////////////////////////////////////////////////
 
-      // Get energies with simplest scheme from clusters only
+      // Get pC from primary clusters only
       bool badclus = false;
       clusE = 0.0;
       Double_t cluspC = 0.0;
-      
-      //cout << nblk_d[f] << endl;
-
       for( Int_t blk = 0; blk<(int)nblk_d[f]; blk++ ){
 	Int_t blkid = int(cblkid_d[f][blk])-1; //-1 necessary since sbs.hcal.clus_blk.id ranges from 1 to 288 (different than just about everything else)
-	
+	hblkid->Fill( blkid );
+
 	//Populate list of old gain coefficients in case dof is bad
 	if( gOldConst[blkid]==0.0 ) gOldConst[blkid]=cblkagain_d[f][blk];
 
 	//Diagnostic cut for now
-	if( abs(cblkatime_d[f][blk]-cblkatime_d[f][0])>3*atime_sig_d[f] ) {
+	if( abs(cblkatime_d[f][blk]-cblkatime_d[f][0])>ifac*atime_sig_d[f] ) {
 	  badclus = true;
 	  continue; //Cut blocks that are out of time
 	}
@@ -1142,7 +1174,7 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
 	  NEV_oneblock[blkid]++;
 	}
 	NEV[blkid]++;
-	TNEV++;
+	TNEV_d++;
       }
 
       if(clusE<0.025){
@@ -1173,7 +1205,7 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
     } //loop over events
   } //loop for ld2
 
-  cout << endl << "Checking data, inverting matrix, and solving for coefficients.." << endl << endl;
+  if( !qreplay ) cout << endl << "Checking data, inverting matrix, and solving for coefficients.." << endl << endl;
 
   //Declare report outfile
   ofstream report;
@@ -1252,7 +1284,7 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
 
   report.close();
 
-  if( cellBad==0 ) cout << "No bad cells detected!" << endl << endl;
+  if( cellBad==0 && !qreplay ) cout << "No bad cells detected!" << endl << endl;
 
   //If iteration == 0, invert the matrix, solve for ratios
   if( !qreplay ){
@@ -1370,7 +1402,7 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
 
   //cout << endl << endl << "Total blocks out of time with primary block / Multi-block clusters: " << badtimeblkclus << "/" << multblkclus << endl;
 
-  cout << endl << endl << "Elastic yield for analyzed runs: " << elasYield << ". Total events analyzed: " << lh2Events + ld2Events << "." << endl << endl;
+  cout << endl << endl << "Elastic yield for analyzed runs: " << elasYield << ". Total event bins available for calibration = LH2 + LD2: " << TNEV_h << " + " << TNEV_d << " = " << TNEV_h + TNEV_d << ". Total number of events analyzed: " << lh2Events + ld2Events << "." << endl << endl;
   
   if( qreplay ){
     cout << "Diagnostic iteration complete. Histograms written to file." << endl;

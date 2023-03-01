@@ -1,0 +1,1322 @@
+#Error and performance report from SBS-14 obtained 2_27_2023
+
+Cell 0 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell0 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 1 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell1 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 2 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell2 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 3 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell3 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 4 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell4 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 5 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell5 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 6 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell6 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 7 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell7 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 8 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell8 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 9 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell9 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 10 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell10 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 11 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell11 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 12 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell12 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 13 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =86.4381
+oneblock analysis
+cell13 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 14 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =11.0082
+oneblock analysis
+cell14 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 15 bad
+Number of events in bad cell =9
+Matrix element/vector element ratio =57.9565
+oneblock analysis
+cell15 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 16 bad
+Number of events in bad cell =6
+Matrix element/vector element ratio =12.9219
+oneblock analysis
+cell16 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 17 bad
+Number of events in bad cell =7
+Matrix element/vector element ratio =31.5762
+oneblock analysis
+cell17 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 18 bad
+Number of events in bad cell =4
+Matrix element/vector element ratio =123.839
+oneblock analysis
+cell18 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 19 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =71.9354
+oneblock analysis
+cell19 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 20 bad
+Number of events in bad cell =5
+Matrix element/vector element ratio =119.58
+oneblock analysis
+cell20 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 21 bad
+Number of events in bad cell =5
+Matrix element/vector element ratio =151.495
+oneblock analysis
+cell21 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 22 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =47.7612
+oneblock analysis
+cell22 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 23 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell23 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 24 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =56.778
+oneblock analysis
+cell24 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 25 bad
+Number of events in bad cell =7
+Matrix element/vector element ratio =242.686
+oneblock analysis
+cell25 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 26 bad
+Number of events in bad cell =14
+Matrix element/vector element ratio =295.852
+oneblock analysis
+cell26 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell27 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell28 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell29 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 30 bad
+Number of events in bad cell =29
+Matrix element/vector element ratio =287.39
+oneblock analysis
+cell30 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell31 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =763.543
+oneblock analysis
+cell32 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell33 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =187.918
+Cell 34 bad
+Number of events in bad cell =18
+Matrix element/vector element ratio =597.359
+oneblock analysis
+cell34 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 35 bad
+Number of events in bad cell =3
+Matrix element/vector element ratio =41.1239
+oneblock analysis
+cell35 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 36 bad
+Number of events in bad cell =3
+Matrix element/vector element ratio =38.4223
+oneblock analysis
+cell36 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 37 bad
+Number of events in bad cell =25
+Matrix element/vector element ratio =321.054
+oneblock analysis
+cell37 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell38 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =361.631
+oneblock analysis
+cell39 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell40 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell41 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =244.384
+oneblock analysis
+cell42 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell43 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell44 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell45 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =220.336
+oneblock analysis
+cell46 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 47 bad
+Number of events in bad cell =9
+Matrix element/vector element ratio =106.009
+oneblock analysis
+cell47 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 48 bad
+Number of events in bad cell =8
+Matrix element/vector element ratio =65.4065
+oneblock analysis
+cell48 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell49 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell50 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =241.029
+oneblock analysis
+cell51 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =243.971
+oneblock analysis
+cell52 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell53 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell54 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =277.152
+oneblock analysis
+cell55 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell56 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =184.345
+oneblock analysis
+cell57 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell58 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =305.495
+Cell 59 bad
+Number of events in bad cell =13
+Matrix element/vector element ratio =77.6041
+oneblock analysis
+cell59 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 60 bad
+Number of events in bad cell =11
+Matrix element/vector element ratio =40.7985
+oneblock analysis
+cell60 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell61 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =243.936
+oneblock analysis
+cell62 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell63 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =365.527
+oneblock analysis
+cell64 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =547.155
+oneblock analysis
+cell65 bad
+Number of events in bad cell =6
+Matrix element/vector element ratio =312.899
+oneblock analysis
+cell66 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell67 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell68 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =402.463
+oneblock analysis
+cell69 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell70 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 71 bad
+Number of events in bad cell =27
+Matrix element/vector element ratio =48.8252
+oneblock analysis
+cell71 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 72 bad
+Number of events in bad cell =12
+Matrix element/vector element ratio =56.5406
+oneblock analysis
+cell72 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell73 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell74 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =2235.96
+oneblock analysis
+cell75 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =829.081
+oneblock analysis
+cell76 bad
+Number of events in bad cell =7
+Matrix element/vector element ratio =531.426
+oneblock analysis
+cell77 bad
+Number of events in bad cell =3
+Matrix element/vector element ratio =520.164
+oneblock analysis
+cell78 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =265.625
+oneblock analysis
+cell79 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell80 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell81 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell82 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell83 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 84 bad
+Number of events in bad cell =25
+Matrix element/vector element ratio =63.4533
+oneblock analysis
+cell84 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell85 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =347.943
+oneblock analysis
+cell86 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell87 bad
+Number of events in bad cell =5
+Matrix element/vector element ratio =272.948
+oneblock analysis
+cell88 bad
+Number of events in bad cell =12
+Matrix element/vector element ratio =352.75
+oneblock analysis
+cell89 bad
+Number of events in bad cell =5
+Matrix element/vector element ratio =408.238
+oneblock analysis
+cell90 bad
+Number of events in bad cell =6
+Matrix element/vector element ratio =488.37
+oneblock analysis
+cell91 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =218.902
+oneblock analysis
+cell92 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =358.333
+oneblock analysis
+cell93 bad
+Number of events in bad cell =3
+Matrix element/vector element ratio =374.754
+oneblock analysis
+cell94 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 95 bad
+Number of events in bad cell =17
+Matrix element/vector element ratio =76.3249
+oneblock analysis
+cell95 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell96 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell97 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell98 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell99 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =399.412
+oneblock analysis
+cell100 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =938.111
+oneblock analysis
+cell101 bad
+Number of events in bad cell =13
+Matrix element/vector element ratio =332.677
+oneblock analysis
+cell102 bad
+Number of events in bad cell =3
+Matrix element/vector element ratio =380.44
+oneblock analysis
+cell103 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =293.544
+oneblock analysis
+cell104 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =351.36
+oneblock analysis
+cell105 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =200.657
+oneblock analysis
+cell106 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 107 bad
+Number of events in bad cell =25
+Matrix element/vector element ratio =45.6697
+oneblock analysis
+cell107 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell108 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell109 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =411.088
+oneblock analysis
+cell110 bad
+Number of events in bad cell =3
+Matrix element/vector element ratio =303.436
+oneblock analysis
+cell111 bad
+Number of events in bad cell =7
+Matrix element/vector element ratio =458.786
+oneblock analysis
+cell112 bad
+Number of events in bad cell =11
+Matrix element/vector element ratio =385.148
+oneblock analysis
+cell113 bad
+Number of events in bad cell =8
+Matrix element/vector element ratio =454.113
+oneblock analysis
+cell114 bad
+Number of events in bad cell =11
+Matrix element/vector element ratio =257.785
+oneblock analysis
+cell115 bad
+Number of events in bad cell =4
+Matrix element/vector element ratio =275.641
+oneblock analysis
+cell116 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =275.342
+oneblock analysis
+cell117 bad
+Number of events in bad cell =3
+Matrix element/vector element ratio =301.72
+oneblock analysis
+cell118 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 119 bad
+Number of events in bad cell =22
+Matrix element/vector element ratio =39.9986
+oneblock analysis
+cell119 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell120 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell121 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell122 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =377.577
+oneblock analysis
+cell123 bad
+Number of events in bad cell =5
+Matrix element/vector element ratio =425.638
+oneblock analysis
+cell124 bad
+Number of events in bad cell =5
+Matrix element/vector element ratio =315.927
+oneblock analysis
+cell125 bad
+Number of events in bad cell =7
+Matrix element/vector element ratio =364.618
+oneblock analysis
+cell126 bad
+Number of events in bad cell =6
+Matrix element/vector element ratio =268.414
+oneblock analysis
+cell127 bad
+Number of events in bad cell =4
+Matrix element/vector element ratio =247.912
+oneblock analysis
+cell128 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =211.772
+oneblock analysis
+cell129 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =157.85
+oneblock analysis
+cell130 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =643.547
+Cell 131 bad
+Number of events in bad cell =29
+Matrix element/vector element ratio =73.9511
+oneblock analysis
+cell131 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell132 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell133 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =208.283
+oneblock analysis
+cell134 bad
+Number of events in bad cell =7
+Matrix element/vector element ratio =375.036
+oneblock analysis
+cell135 bad
+Number of events in bad cell =6
+Matrix element/vector element ratio =300.292
+oneblock analysis
+cell136 bad
+Number of events in bad cell =10
+Matrix element/vector element ratio =384.727
+oneblock analysis
+cell137 bad
+Number of events in bad cell =9
+Matrix element/vector element ratio =346.981
+oneblock analysis
+cell138 bad
+Number of events in bad cell =12
+Matrix element/vector element ratio =463.707
+oneblock analysis
+cell139 bad
+Number of events in bad cell =5
+Matrix element/vector element ratio =222.603
+oneblock analysis
+cell140 bad
+Number of events in bad cell =3
+Matrix element/vector element ratio =299.34
+oneblock analysis
+cell141 bad
+Number of events in bad cell =4
+Matrix element/vector element ratio =241.171
+oneblock analysis
+cell142 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =184.59
+Cell 143 bad
+Number of events in bad cell =26
+Matrix element/vector element ratio =39.9274
+oneblock analysis
+cell143 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 144 bad
+Number of events in bad cell =19
+Matrix element/vector element ratio =450.258
+oneblock analysis
+cell144 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell145 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell146 bad
+Number of events in bad cell =4
+Matrix element/vector element ratio =1004.86
+oneblock analysis
+cell147 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =812.04
+oneblock analysis
+cell148 bad
+Number of events in bad cell =8
+Matrix element/vector element ratio =1013.07
+oneblock analysis
+cell149 bad
+Number of events in bad cell =8
+Matrix element/vector element ratio =498.659
+oneblock analysis
+cell150 bad
+Number of events in bad cell =11
+Matrix element/vector element ratio =713.552
+oneblock analysis
+cell151 bad
+Number of events in bad cell =4
+Matrix element/vector element ratio =291.415
+oneblock analysis
+cell152 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =229.15
+oneblock analysis
+cell153 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =578.805
+oneblock analysis
+cell154 bad
+Number of events in bad cell =3
+Matrix element/vector element ratio =274.193
+oneblock analysis
+cell155 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell156 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell157 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell158 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =326.304
+oneblock analysis
+cell159 bad
+Number of events in bad cell =13
+Matrix element/vector element ratio =461.281
+oneblock analysis
+cell160 bad
+Number of events in bad cell =23
+Matrix element/vector element ratio =801.538
+oneblock analysis
+cell161 bad
+Number of events in bad cell =18
+Matrix element/vector element ratio =526.374
+oneblock analysis
+cell162 bad
+Number of events in bad cell =14
+Matrix element/vector element ratio =572.655
+oneblock analysis
+cell163 bad
+Number of events in bad cell =10
+Matrix element/vector element ratio =297.056
+oneblock analysis
+cell164 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =1226.59
+oneblock analysis
+cell165 bad
+Number of events in bad cell =5
+Matrix element/vector element ratio =413.72
+oneblock analysis
+cell166 bad
+Number of events in bad cell =3
+Matrix element/vector element ratio =265.305
+oneblock analysis
+cell167 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell168 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell169 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =302.268
+oneblock analysis
+cell170 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =274.106
+oneblock analysis
+cell171 bad
+Number of events in bad cell =3
+Matrix element/vector element ratio =288.651
+oneblock analysis
+cell172 bad
+Number of events in bad cell =17
+Matrix element/vector element ratio =381.729
+oneblock analysis
+cell173 bad
+Number of events in bad cell =14
+Matrix element/vector element ratio =347.283
+oneblock analysis
+cell174 bad
+Number of events in bad cell =5
+Matrix element/vector element ratio =323.353
+oneblock analysis
+cell175 bad
+Number of events in bad cell =3
+Matrix element/vector element ratio =277.535
+oneblock analysis
+cell176 bad
+Number of events in bad cell =5
+Matrix element/vector element ratio =340.356
+oneblock analysis
+cell177 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =2463.33
+oneblock analysis
+cell178 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell179 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell180 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell181 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =405.105
+oneblock analysis
+cell182 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =212.214
+oneblock analysis
+cell183 bad
+Number of events in bad cell =5
+Matrix element/vector element ratio =502.003
+oneblock analysis
+cell184 bad
+Number of events in bad cell =8
+Matrix element/vector element ratio =849.637
+oneblock analysis
+cell185 bad
+Number of events in bad cell =18
+Matrix element/vector element ratio =436.35
+oneblock analysis
+cell186 bad
+Number of events in bad cell =14
+Matrix element/vector element ratio =447.206
+oneblock analysis
+cell187 bad
+Number of events in bad cell =8
+Matrix element/vector element ratio =346.321
+oneblock analysis
+cell188 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =364.875
+oneblock analysis
+cell189 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =164.826
+oneblock analysis
+cell190 bad
+Number of events in bad cell =4
+Matrix element/vector element ratio =245.116
+oneblock analysis
+cell191 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell192 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell193 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell194 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =238.311
+oneblock analysis
+cell195 bad
+Number of events in bad cell =4
+Matrix element/vector element ratio =391.976
+oneblock analysis
+cell196 bad
+Number of events in bad cell =8
+Matrix element/vector element ratio =720.467
+oneblock analysis
+cell197 bad
+Number of events in bad cell =15
+Matrix element/vector element ratio =607.891
+oneblock analysis
+cell198 bad
+Number of events in bad cell =13
+Matrix element/vector element ratio =400.748
+oneblock analysis
+cell199 bad
+Number of events in bad cell =6
+Matrix element/vector element ratio =818.021
+oneblock analysis
+cell200 bad
+Number of events in bad cell =4
+Matrix element/vector element ratio =406.264
+oneblock analysis
+cell201 bad
+Number of events in bad cell =3
+Matrix element/vector element ratio =265.519
+oneblock analysis
+cell202 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =224.701
+oneblock analysis
+cell203 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell204 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell205 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell206 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =420.397
+oneblock analysis
+cell207 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =610.94
+oneblock analysis
+cell208 bad
+Number of events in bad cell =5
+Matrix element/vector element ratio =401.637
+oneblock analysis
+cell209 bad
+Number of events in bad cell =11
+Matrix element/vector element ratio =456.517
+oneblock analysis
+cell210 bad
+Number of events in bad cell =14
+Matrix element/vector element ratio =299.85
+oneblock analysis
+cell211 bad
+Number of events in bad cell =5
+Matrix element/vector element ratio =273.321
+oneblock analysis
+cell212 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =329.137
+oneblock analysis
+cell213 bad
+Number of events in bad cell =3
+Matrix element/vector element ratio =351.711
+oneblock analysis
+cell214 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =260.682
+oneblock analysis
+cell215 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell216 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell217 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell218 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell219 bad
+Number of events in bad cell =3
+Matrix element/vector element ratio =388.778
+oneblock analysis
+cell220 bad
+Number of events in bad cell =5
+Matrix element/vector element ratio =248.88
+oneblock analysis
+cell221 bad
+Number of events in bad cell =4
+Matrix element/vector element ratio =540.41
+oneblock analysis
+cell222 bad
+Number of events in bad cell =8
+Matrix element/vector element ratio =584.772
+oneblock analysis
+cell223 bad
+Number of events in bad cell =4
+Matrix element/vector element ratio =487.127
+oneblock analysis
+cell224 bad
+Number of events in bad cell =3
+Matrix element/vector element ratio =462.874
+oneblock analysis
+cell225 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =255.789
+oneblock analysis
+cell226 bad
+Number of events in bad cell =3
+Matrix element/vector element ratio =193.522
+oneblock analysis
+cell227 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 228 bad
+Number of events in bad cell =25
+Matrix element/vector element ratio =60.2694
+oneblock analysis
+cell228 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell229 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell230 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =297.743
+oneblock analysis
+cell231 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell232 bad
+Number of events in bad cell =4
+Matrix element/vector element ratio =323.434
+oneblock analysis
+cell233 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =352.247
+oneblock analysis
+cell234 bad
+Number of events in bad cell =5
+Matrix element/vector element ratio =354.57
+oneblock analysis
+cell235 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =415.715
+oneblock analysis
+cell236 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell237 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =556.946
+oneblock analysis
+cell238 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =229.836
+Cell 239 bad
+Number of events in bad cell =20
+Matrix element/vector element ratio =52.1757
+oneblock analysis
+cell239 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 240 bad
+Number of events in bad cell =18
+Matrix element/vector element ratio =48.5177
+oneblock analysis
+cell240 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell241 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =198.335
+oneblock analysis
+cell242 bad
+Number of events in bad cell =3
+Matrix element/vector element ratio =4788.23
+oneblock analysis
+cell243 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =912.847
+oneblock analysis
+cell244 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell245 bad
+Number of events in bad cell =4
+Matrix element/vector element ratio =617.472
+oneblock analysis
+cell246 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =1042.86
+oneblock analysis
+cell247 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =367.151
+oneblock analysis
+cell248 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell249 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell250 bad
+Number of events in bad cell =4
+Matrix element/vector element ratio =301.932
+Cell 251 bad
+Number of events in bad cell =27
+Matrix element/vector element ratio =67.8385
+oneblock analysis
+cell251 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 252 bad
+Number of events in bad cell =20
+Matrix element/vector element ratio =77.8868
+oneblock analysis
+cell252 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell253 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell254 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =196.528
+oneblock analysis
+cell255 bad
+Number of events in bad cell =3
+Matrix element/vector element ratio =271.556
+oneblock analysis
+cell256 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =231.425
+oneblock analysis
+cell257 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =338.609
+oneblock analysis
+cell258 bad
+Number of events in bad cell =4
+Matrix element/vector element ratio =371.338
+oneblock analysis
+cell259 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =311.098
+oneblock analysis
+cell260 bad
+Number of events in bad cell =3
+Matrix element/vector element ratio =218.314
+oneblock analysis
+cell261 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell262 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =296.774
+Cell 263 bad
+Number of events in bad cell =25
+Matrix element/vector element ratio =69.2631
+oneblock analysis
+cell263 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 264 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell264 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell265 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =141.51
+oneblock analysis
+cell266 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =486.983
+oneblock analysis
+cell267 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =297.202
+oneblock analysis
+cell268 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell269 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =480.251
+oneblock analysis
+cell270 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell271 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =245.323
+oneblock analysis
+cell272 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell273 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =316.392
+oneblock analysis
+cell274 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =281.797
+Cell 275 bad
+Number of events in bad cell =18
+Matrix element/vector element ratio =54.6512
+oneblock analysis
+cell275 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 276 bad
+Number of events in bad cell =5
+Matrix element/vector element ratio =44.4836
+oneblock analysis
+cell276 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 277 bad
+Number of events in bad cell =28
+Matrix element/vector element ratio =57.2045
+oneblock analysis
+cell277 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell278 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell279 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell280 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell281 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell282 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell283 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell284 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell285 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+oneblock analysis
+cell286 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+Cell 287 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =37.9261
+oneblock analysis
+cell287 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
