@@ -1,0 +1,11 @@
+block sbs.tr.*
+
+# so we can check constraints
+variable sbs.x_fcp
+variable sbs.y_fcp
+variable sbs.z_fcp
+variable sbs.x_bcp
+variable sbs.y_bcp
+variable sbs.z_bcp
+
+

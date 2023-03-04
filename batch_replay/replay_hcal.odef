@@ -1,0 +1,66 @@
+#HCAL output definition file Current 10.21.22
+
+variable sbs.hcal.e
+variable sbs.hcal.eblk
+variable sbs.hcal.againblk
+variable sbs.hcal.rowblk
+variable sbs.hcal.colblk
+variable sbs.hcal.x
+variable sbs.hcal.y
+variable sbs.hcal.nblk
+variable sbs.hcal.idblk
+variable sbs.hcal.atimeblk
+variable sbs.hcal.tdctimeblk
+variable sbs.hcal.index
+block sbs.hcal.clus.*
+variable sbs.hcal.nclus
+block sbs.hcal.clus_blk.*
+variable sbs.hcal.ngoodADChits
+variable sbs.trig.adcelemID
+variable sbs.trig.a_time
+variable sbs.trig.a_p
+variable sbs.trig.a_amp_p
+
+############
+#Histograms#
+############ 
+
+#Page 1: HCal Timing Check
+#(macro) HCal Timing Check
+
+#Page 2: ADC Signal Plots
+th2d hped_vs_elem_hcal 'Pedestal vs element ID : HCAL; channel; mV' sbs.hcal.adcelemID[I] sbs.hcal.ped[I] 288 0.5 288.5 400 0 2000 sbs.hcal.a_time[I]>0
+th2d hAmp_vs_elem_ID 'Amplitude vs Module (saturation check): HCAL; channel; mV' sbs.hcal.adcelemID[I] sbs.hcal.a_amp_p[I] 288 0.5 288.5 9000 0 9002
+th2d hAmp_vs_int 'ADC amp vs int : HCAL; pC; mV' sbs.hcal.a_p[I] sbs.hcal.a_amp_p[I] 100 0 10 200 0 40 sbs.hcal.a_time[I]>0
+th2d hADCamp_vs_elem_hcal 'ADC amplitude vs module ZOOM : HCAL; channel; mV' sbs.hcal.adcelemID[I] sbs.hcal.a_amp_p[I] 288 0.5 288.5 1000 0 1000 sbs.hcal.a_time[I]>0 
+
+#Page 3: TDC vs Module
+th1d hTDC_HCAL 'TDC over all channels : HCAL; ns' sbs.hcal.tdc 250 -150 100 sbs.hcal.e>0.01
+th2d hTDC_vs_clus_ID 'TDC vs Module : HCAL; channel; ns' sbs.hcal.tdcelemID[I] sbs.hcal.tdc[I] 288 0.5 288.5 250 -150 100 sbs.hcal.e>0.01
+
+#Page 3: HCal Trigger ADC Time
+#(macro) HCal Trigger ADC Time
+
+#Page 4: HCal Trigger ADC Time (Individual Sums)
+th2d hADCt_hcalT_r 'HCal Trigger Sum r-{1-10} ADC Time; ns' sbs.trig.adcelemID[I] sbs.trig.a_time[I] 10 0.5 10.5 200 0 200
+
+#Page 6: HCal Trigger ADC Amplitude (Individual Sums)
+th2d hADCamp_hcalT_r 'HCal Trigger Sum r-{1-10} ADC Amplitude; mV' sbs.trig.adcelemID[I] sbs.trig.a_amp_p[I] 10 0.5 10.5 500 0 500
+
+#Page 7: Cluster Plots
+th1d hNClus_vs_elem_hcal 'Number of clusters per event : HCAL; N' sbs.hcal.nclus 20 0 20  #Multiplicity
+th1d hNBlk_per_cluster 'Number of blocks per cluster : HCAL; N' sbs.hcal.nblk 15 0 15 
+th2d hE_vs_mult_clus 'Primary Cluster E vs Multiplicity; nclus; MeV' sbs.hcal.e sbs.hcal.nclus 60 0 1.5 12 0 12
+th2d hClusE_vs_elem_hcal 'Primary Cluster Energy vs element ID : HCAL; channel; GeV' sbs.hcal.clus_blk.id[I] sbs.hcal.clus_blk.e[I] 288 0.5 288.5 100 0 0.5 sbs.hcal.clus_blk.atime[I]>0
+
+#Page 8: Cluster Heatmap
+th2d hClus_pos_hcal 'Position of best cluster : HCal; Y(m); X(m)' sbs.hcal.colblk sbs.hcal.rowblk 12 0 12 24 0 24 sbs.hcal.nclus>0
+
+#Page 9: HCal ADC Time
+#(macro) ADC Time No LED
+
+#Page 10: Trigger TDC Times
+#(macro) Coincidence/BBCal Difference
+#(macro) Coincidence/Trigger Difference
+#(macro) HCal/BBCal Difference
+#(macro) RF Time

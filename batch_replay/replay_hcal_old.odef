@@ -1,0 +1,46 @@
+#HCAL output definition file for expert analysis
+#10.9.21 SSeeds
+
+#HCal Branches to root file
+block sbs.hcal.a*
+block sbs.hcal.ped
+block sbs.hcal.t*
+block sbs.hcal.ped
+#block sbs.hcal.*samps*
+block sbs.hcal.ledbit
+block sbs.hcal.ledcount
+block sbs.hcal.*Ref*
+block sbs.*trig*
+block sbs.*clus*
+#block sbs.hcal.*
+#block sbs.*
+
+############
+#Histograms#
+############ 
+
+#ADC Histograms
+th2f hADCtime_vs_elem_hcal 'ADC time vs element ID : HCAL' sbs.hcal.adcelemID[I] sbs.hcal.a_time[I] 288 1 288 250 -50 200 sbs.hcal.a_time[I]>0 
+th2f hADCint_vs_elem_hcal 'ADC integral vs element ID : HCAL' sbs.hcal.adcelemID[I] sbs.hcal.a_p[I] 288 1 288 300 0 300 sbs.hcal.a_time[I]>0 
+th2f hADCintE_vs_elem_hcal 'ADC Energy vs element ID : HCAL' sbs.hcal.adcelemID[I] sbs.hcal.a_c[I] 288 1 288 100 0 1 sbs.hcal.a_time[I]>0 
+th2f hADCamp_vs_elem_hcal 'ADC amplitude vs element ID : HCAL' sbs.hcal.adcelemID[I] sbs.hcal.a_amp_p[I] 288 1 288 300 0 300 sbs.hcal.a_time[I]>0 
+
+#TDC Histograms
+th2f hTDC_vs_elem_hcal 'TDC vs element ID : HCAL' sbs.hcal.adcelemID[I] sbs.hcal.tdc[I] 288 1 288 300 0 300 sbs.hcal.a_time[I]>0 
+
+#Cluster Histograms
+th1f hNClus_vs_elem_hcal 'Number of clusters per event : HCAL' sbs.hcal.nclus 35 0 35 #Multiplicity
+th1f hclusID_vs_elem_hcal 'Cluster ID over all events : HCAL' sbs.hcal.idblk 288 1 288 #Position, zero element is primary block in cluster
+th1f hClusADC_vs_elem_hcal 'Cluster ADC : HCAL' sbs.hcal.e 100 0 1 
+th1f hClusE_vs_elem_hcal 'Cluster Energy : HCAL' sbs.hcal.e_c 100 0 1
+
+#Trigger Histograms
+th2f htrigTime_vs_elem_hcal 'Trigger ADC time : HCAL' sbs.trig.adcelemID sbs.trig.a_time[I] 16 0 16 200 -50 150 
+
+#Misc. histograms
+th1f hnev_vs_elem_hcal 'Number events vs element ID : HCAL' sbs.hcal.adcelemID 288 1 288 sbs.hcal.a_time[I]>0
+th2f hped_vs_elem_hcal 'Pedestal vs element ID : HCAL' sbs.hcal.adcelemID[I] sbs.hcal.ped[I] 288 1 288 200 0 200 sbs.hcal.a_time[I]>0 
+
+#Test histograms
+#th1f hADCint 'ADC integral' sbs.hcal.a_p[50] 60 0 30 sbs.hcal.a_time[50]>0
+#th3f hADC_heatmap 'ADC integral heatmap' sbs.hcal.adcrow[I] sbs.hcal.adccol[I] sbs.hcal.a_p[I] 12 0 12 24 0 24 100 0 100 sbs.hcal.a_time[I]>0

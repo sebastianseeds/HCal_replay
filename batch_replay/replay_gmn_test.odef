@@ -1,0 +1,29 @@
+## output variable definition for analysis of all detectors replay_gmn.C
+
+#include "replay_BBGEM.odef"
+#include "replay_BBCal.odef"
+#include "replay_grinch.odef"
+#include "replay_hcal.odef"
+#include "replay_hodo.odef"
+#include "replay_bb.odef"
+
+variable e.kine.Q2
+variable e.kine.W2
+variable e.kine.x_bj
+variable e.kine.omega
+
+## eg 
+# variable 10 4 1  TSbcmu1  BCM x1 counts
+# variable 10 4 2  TSbcmu1r  BCM x1 rate
+# variable 10 5 1  TSbcmu3  BCM u3 counts
+# variable 10 5 2  TSbcmu3r  BCM u3 rate
+
+begin epics
+   HALLA_p
+   hac_bcm_average
+#   IPM1H04A.XPOS
+#   IPM1H04A.YPOS
+#   IPM1H04B.XPOS
+#   IPM1H04B.YPOS
+#   IBC1H04CRCUR2  
+end epics

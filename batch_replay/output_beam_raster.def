@@ -1,0 +1,235 @@
+# BELOW IS FOR FADC FADC FADC --THREE TIMES FOR SOMETHING IMPORTANT
+
+begin epics
+      hac_bcm_average
+      IPM1H04A.XPOS
+      IPM1H04A.YPOS
+      IPM1H04E.XPOS
+      IPM1H04E.YPOS    
+      IBC1H04CRCUR2  
+end epics
+
+CUT cutrx Lrb.Raster2.rawcur.y>2000 
+CUT cutry Lrb.Raster2.rawcur.x>2000
+CUT cutrxy Lrb.Raster2.rawcur.y>2000
+#:AND:Lrb.Raster2.rawcur.y<98000:AND:Lrb.Raster2.rawcur.x>2000:AND:Lrb.Raster2.rawcur.x<98000
+
+CUT cutrx1 Lrb.Raster2.rawcur.x>0000:AND:Lrb.Raster2.rawcur.x<4000
+CUT cutrx2 Lrb.Raster2.rawcur.x>4000:AND:Lrb.Raster2.rawcur.x<8000
+CUT cutrx3 Lrb.Raster2.rawcur.x>8000:AND:Lrb.Raster2.rawcur.x<12000
+CUT cutrx4 Lrb.Raster2.rawcur.x>12000:AND:Lrb.Raster2.rawcur.x<16000
+CUT cutrx5 Lrb.Raster2.rawcur.x>16000:AND:Lrb.Raster2.rawcur.x<20000
+CUT cutrx6 Lrb.Raster2.rawcur.x>20000:AND:Lrb.Raster2.rawcur.x<24000
+CUT cutrx7 Lrb.Raster2.rawcur.x>24000:AND:Lrb.Raster2.rawcur.x<28000
+CUT cutrx8 Lrb.Raster2.rawcur.x>28000:AND:Lrb.Raster2.rawcur.x<32000
+CUT cutrx9 Lrb.Raster2.rawcur.x>32000:AND:Lrb.Raster2.rawcur.x<36000
+CUT cutrx10 Lrb.Raster2.rawcur.x>36000:AND:Lrb.Raster2.rawcur.x<40000
+CUT cutrx11 Lrb.Raster2.rawcur.x>40000:AND:Lrb.Raster2.rawcur.x<44000
+CUT cutrx12 Lrb.Raster2.rawcur.x>44000:AND:Lrb.Raster2.rawcur.x<48000
+CUT cutrx13 Lrb.Raster2.rawcur.x>48000:AND:Lrb.Raster2.rawcur.x<52000
+CUT cutrx14 Lrb.Raster2.rawcur.x>52000:AND:Lrb.Raster2.rawcur.x<58000
+CUT cutrx15 Lrb.Raster2.rawcur.x>56000:AND:Lrb.Raster2.rawcur.x<60000
+CUT cutrx16 Lrb.Raster2.rawcur.x>60000:AND:Lrb.Raster2.rawcur.x<64000
+CUT cutrx17 Lrb.Raster2.rawcur.x>64000:AND:Lrb.Raster2.rawcur.x<68000
+CUT cutrx18 Lrb.Raster2.rawcur.x>68000:AND:Lrb.Raster2.rawcur.x<72000
+CUT cutrx19 Lrb.Raster2.rawcur.x>72000:AND:Lrb.Raster2.rawcur.x<76000
+CUT cutrx20 Lrb.Raster2.rawcur.x>76000:AND:Lrb.Raster2.rawcur.x<80000
+CUT cutrx21 Lrb.Raster2.rawcur.x>80000:AND:Lrb.Raster2.rawcur.x<84000
+CUT cutrx22 Lrb.Raster2.rawcur.x>84000:AND:Lrb.Raster2.rawcur.x<88000
+CUT cutrx23 Lrb.Raster2.rawcur.x>88000:AND:Lrb.Raster2.rawcur.x<92000
+CUT cutrx24 Lrb.Raster2.rawcur.x>92000:AND:Lrb.Raster2.rawcur.x<94000
+CUT cutrx25 Lrb.Raster2.rawcur.x>96000:AND:Lrb.Raster2.rawcur.x<100000
+
+CUT cutry1 Lrb.Raster2.rawcur.y>0000:AND:Lrb.Raster2.rawcur.y<4000
+CUT cutry2 Lrb.Raster2.rawcur.y>4000:AND:Lrb.Raster2.rawcur.y<8000
+CUT cutry3 Lrb.Raster2.rawcur.y>8000:AND:Lrb.Raster2.rawcur.y<12000
+CUT cutry4 Lrb.Raster2.rawcur.y>12000:AND:Lrb.Raster2.rawcur.y<16000
+CUT cutry5 Lrb.Raster2.rawcur.y>16000:AND:Lrb.Raster2.rawcur.y<20000
+CUT cutry6 Lrb.Raster2.rawcur.y>20000:AND:Lrb.Raster2.rawcur.y<24000
+CUT cutry7 Lrb.Raster2.rawcur.y>24000:AND:Lrb.Raster2.rawcur.y<28000
+CUT cutry8 Lrb.Raster2.rawcur.y>28000:AND:Lrb.Raster2.rawcur.y<32000
+CUT cutry9 Lrb.Raster2.rawcur.y>32000:AND:Lrb.Raster2.rawcur.y<36000
+CUT cutry10 Lrb.Raster2.rawcur.y>36000:AND:Lrb.Raster2.rawcur.y<40000
+CUT cutry11 Lrb.Raster2.rawcur.y>40000:AND:Lrb.Raster2.rawcur.y<44000
+CUT cutry12 Lrb.Raster2.rawcur.y>44000:AND:Lrb.Raster2.rawcur.y<48000
+CUT cutry13 Lrb.Raster2.rawcur.y>48000:AND:Lrb.Raster2.rawcur.y<52000
+CUT cutry14 Lrb.Raster2.rawcur.y>52000:AND:Lrb.Raster2.rawcur.y<58000
+CUT cutry15 Lrb.Raster2.rawcur.y>56000:AND:Lrb.Raster2.rawcur.y<60000
+CUT cutry16 Lrb.Raster2.rawcur.y>60000:AND:Lrb.Raster2.rawcur.y<64000
+CUT cutry17 Lrb.Raster2.rawcur.y>64000:AND:Lrb.Raster2.rawcur.y<68000
+CUT cutry18 Lrb.Raster2.rawcur.y>68000:AND:Lrb.Raster2.rawcur.y<72000
+CUT cutry19 Lrb.Raster2.rawcur.y>72000:AND:Lrb.Raster2.rawcur.y<76000
+CUT cutry20 Lrb.Raster2.rawcur.y>76000:AND:Lrb.Raster2.rawcur.y<80000
+CUT cutry21 Lrb.Raster2.rawcur.y>80000:AND:Lrb.Raster2.rawcur.y<84000
+CUT cutry22 Lrb.Raster2.rawcur.y>84000:AND:Lrb.Raster2.rawcur.y<88000
+CUT cutry23 Lrb.Raster2.rawcur.y>88000:AND:Lrb.Raster2.rawcur.y<92000
+CUT cutry24 Lrb.Raster2.rawcur.y>92000:AND:Lrb.Raster2.rawcur.y<94000
+CUT cutry25 Lrb.Raster2.rawcur.y>96000:AND:Lrb.Raster2.rawcur.y<100000
+
+FORMULA frbax 1000.*Lrb.BPMA.x
+FORMULA frbay 1000.*Lrb.BPMA.y
+FORMULA frbbx 1000.*Lrb.BPMB.x
+FORMULA frbby 1000.*Lrb.BPMB.y
+FORMULA frbx 1000.*Lrb.y
+FORMULA frby 1000.*Lrb.x
+FORMULA frawcurx1 1.0*Lrb.Raster.rawcur.x
+FORMULA frawcury1 1.0*Lrb.Raster.rawcur.y
+FORMULA frawcurx2 1.0*Lrb.Raster2.rawcur.y
+FORMULA frawcury2 1.0*Lrb.Raster2.rawcur.x
+FORMULA fbpmaws Lrb.BPMA.rawcur.1+Lrb.BPMA.rawcur.2+Lrb.BPMA.rawcur.3+Lrb.BPMA.rawcur.4
+FORMULA fbpmbws Lrb.BPMB.rawcur.1+Lrb.BPMB.rawcur.2+Lrb.BPMB.rawcur.3+Lrb.BPMB.rawcur.4
+
+TH1F fbpma_x 'BPMA x [mm]' frbax 4000 -5. 5.
+TH1F fbpma_y 'BPMA y [mm]' frbay 4000 -5. 5.
+
+TH1F fbpmb_x 'BPMB x [mm]' frbbx 4000 -5. 5.
+TH1F fbpmb_y 'BPMB y [mm]' frbby 4000 -5. 5.
+
+TH1F fbeam_x 'x at target [mm]' frbx 4000  -15. 15. cutrx
+TH1F fbeam_y 'y at target [mm]' frby 4000  -15. 15. cutry
+
+TH1F fbeam_x_slice_1  'y at target [mm]' frawcurx2 1000 0.0 100000.0 cutrx1
+TH1F fbeam_x_slice_2  'y at target [mm]' frawcurx2 1000 0.0 100000.0 cutrx2
+TH1F fbeam_x_slice_3  'y at target [mm]' frawcurx2 1000 0.0 100000.0 cutrx3
+TH1F fbeam_x_slice_4  'y at target [mm]' frawcurx2 1000 0.0 100000.0 cutrx4
+TH1F fbeam_x_slice_5  'y at target [mm]' frawcurx2 1000 0.0 100000.0 cutrx5
+TH1F fbeam_x_slice_6  'y at target [mm]' frawcurx2 1000 0.0 100000.0 cutrx6
+TH1F fbeam_x_slice_7  'y at target [mm]' frawcurx2 1000 0.0 100000.0 cutrx7
+TH1F fbeam_x_slice_8  'y at target [mm]' frawcurx2 1000 0.0 100000.0 cutrx8
+TH1F fbeam_x_slice_9  'y at target [mm]' frawcurx2 1000 0.0 100000.0 cutrx9
+TH1F fbeam_x_slice_10 'y at target [mm]' frawcurx2 1000 0.0 100000.0 cutrx10
+TH1F fbeam_x_slice_11 'y at target [mm]' frawcurx2 1000 0.0 100000.0 cutrx11
+TH1F fbeam_x_slice_12 'y at target [mm]' frawcurx2 1000 0.0 100000.0 cutrx12
+TH1F fbeam_x_slice_13 'y at target [mm]' frawcurx2 1000 0.0 100000.0 cutrx13
+TH1F fbeam_x_slice_14 'y at target [mm]' frawcurx2 1000 0.0 100000.0 cutrx14
+TH1F fbeam_x_slice_15 'y at target [mm]' frawcurx2 1000 0.0 100000.0 cutrx15
+TH1F fbeam_x_slice_16 'y at target [mm]' frawcurx2 1000 0.0 100000.0 cutrx16
+TH1F fbeam_x_slice_17 'y at target [mm]' frawcurx2 1000 0.0 100000.0 cutrx17
+TH1F fbeam_x_slice_18 'y at target [mm]' frawcurx2 1000 0.0 100000.0 cutrx18
+TH1F fbeam_x_slice_19 'y at target [mm]' frawcurx2 1000 0.0 100000.0 cutrx19
+TH1F fbeam_x_slice_20 'y at target [mm]' frawcurx2 1000 0.0 100000.0 cutrx20
+TH1F fbeam_x_slice_21 'y at target [mm]' frawcurx2 1000 0.0 100000.0 cutrx21
+TH1F fbeam_x_slice_22 'y at target [mm]' frawcurx2 1000 0.0 100000.0 cutrx22
+TH1F fbeam_x_slice_23 'y at target [mm]' frawcurx2 1000 0.0 100000.0 cutrx23
+TH1F fbeam_x_slice_24 'y at target [mm]' frawcurx2 1000 0.0 100000.0 cutrx24
+TH1F fbeam_x_slice_25 'y at target [mm]' frawcurx2 1000 0.0 100000.0 cutrx25
+TH1F fbeam_y_slice_1  'x at target [mm]' frawcury2 1000 0.0 100000.0 cutry1
+TH1F fbeam_y_slice_2  'x at target [mm]' frawcury2 1000 0.0 100000.0 cutry2
+TH1F fbeam_y_slice_3  'x at target [mm]' frawcury2 1000 0.0 100000.0 cutry3
+TH1F fbeam_y_slice_4  'x at target [mm]' frawcury2 1000 0.0 100000.0 cutry4
+TH1F fbeam_y_slice_5  'x at target [mm]' frawcury2 1000 0.0 100000.0 cutry5
+TH1F fbeam_y_slice_6  'x at target [mm]' frawcury2 1000 0.0 100000.0 cutry6
+TH1F fbeam_y_slice_7  'x at target [mm]' frawcury2 1000 0.0 100000.0 cutry7
+TH1F fbeam_y_slice_8  'x at target [mm]' frawcury2 1000 0.0 100000.0 cutry8
+TH1F fbeam_y_slice_9  'x at target [mm]' frawcury2 1000 0.0 100000.0 cutry9
+TH1F fbeam_y_slice_10 'x at target [mm]' frawcury2 1000 0.0 100000.0 cutry10
+TH1F fbeam_y_slice_11 'x at target [mm]' frawcury2 1000 0.0 100000.0 cutry11
+TH1F fbeam_y_slice_12 'x at target [mm]' frawcury2 1000 0.0 100000.0 cutry12
+TH1F fbeam_y_slice_13 'x at target [mm]' frawcury2 1000 0.0 100000.0 cutry13
+TH1F fbeam_y_slice_14 'x at target [mm]' frawcury2 1000 0.0 100000.0 cutry14
+TH1F fbeam_y_slice_15 'x at target [mm]' frawcury2 1000 0.0 100000.0 cutry15
+TH1F fbeam_y_slice_16 'x at target [mm]' frawcury2 1000 0.0 100000.0 cutry16
+TH1F fbeam_y_slice_17 'x at target [mm]' frawcury2 1000 0.0 100000.0 cutry17
+TH1F fbeam_y_slice_18 'x at target [mm]' frawcury2 1000 0.0 100000.0 cutry18
+TH1F fbeam_y_slice_19 'x at target [mm]' frawcury2 1000 0.0 100000.0 cutry19
+TH1F fbeam_y_slice_20 'x at target [mm]' frawcury2 1000 0.0 100000.0 cutry20
+TH1F fbeam_y_slice_21 'x at target [mm]' frawcury2 1000 0.0 100000.0 cutry21
+TH1F fbeam_y_slice_22 'x at target [mm]' frawcury2 1000 0.0 100000.0 cutry22
+TH1F fbeam_y_slice_23 'x at target [mm]' frawcury2 1000 0.0 100000.0 cutry23
+TH1F fbeam_y_slice_24 'x at target [mm]' frawcury2 1000 0.0 100000.0 cutry24
+TH1F fbeam_y_slice_25 'x at target [mm]' frawcury2 1000 0.0 100000.0 cutry25
+
+TH2F fbpma_xy 'BPMA y vs x'  frbax frbay 2000 -5. 5. 2000 -5. 5.
+TH2F fbpmb_xy 'BPMB y vs x'  frbbx frbby 2000 -5. 5. 2000 -5. 5.
+TH2F fbeam_xy 'beam at target y vs x'  frbx frby 500 -15. 15.  500 -25. 15. cutrxy
+
+# TH2F frastxy1 'Fast Raster 1 X vs Y (current)' Lrb.Raster.rawcur.y Lrb.Raster.rawcur.x     500 30000 50000 500 30000 50000 
+TH2F frastxy1 'Fast Raster 1 X vs Y (current)' Lrb.Raster.rawcur.y Lrb.Raster.rawcur.x     500 0 120000 500 0 120000 
+TH2F frastxy2 'Fast Raster 2 X vs Y (current)' Lrb.Raster2.rawcur.y Lrb.Raster2.rawcur.x   500 0 120000 500 0 120000 cutrxy
+TH2F frastx1x2 'Fast Raster 1 X vs 2 X (current)' Lrb.Raster2.rawcur.x Lrb.Raster.rawcur.x 500 0 120000 500 0 120000 
+TH2F frasty1y2 'Fast Raster 1 Y vs 2 Y (current)' Lrb.Raster2.rawcur.y Lrb.Raster.rawcur.y 500 0 120000 500 0 120000
+TH2F frastx1y2 'Fast Raster 1 X vs 2 Y (current)' Lrb.Raster.rawcur.y Lrb.Raster2.rawcur.x 500 0 120000 500 0 120000  
+TH2F frastx2y1 'Fast Raster 2 X vs 1 Y (current)' Lrb.Raster2.rawcur.y Lrb.Raster.rawcur.x 400 0 120000 500 0 120000 
+
+# TH1F fbpmaraw1 'BPMA Antenna X+' Lrb.BPMA.rawcur.1 15000 -100000000 1000000000
+# TH1F fbpmaraw2 'BPMA Antenna X-' Lrb.BPMA.rawcur.2 15000 -120 120
+# TH1F fbpmaraw3 'BPMA Antenna Y+' Lrb.BPMA.rawcur.3 15000 0 120000
+# TH1F fbpmaraw4 'BPMA Antenna Y-' Lrb.BPMA.rawcur.4 15000 0 120000
+# TH1F fbpmbraw1 'BPMB Antenna X+' Lrb.BPMB.rawcur.1 15000 0 120000
+# TH1F fbpmbraw2 'BPMB Antenna X-' Lrb.BPMB.rawcur.2 15000 0 120000
+# TH1F fbpmbraw3 'BPMB Antenna Y+' Lrb.BPMB.rawcur.3 15000 0 120000
+# TH1F fbpmbraw4 'BPMB Antenna Y-' Lrb.BPMB.rawcur.4 15000 0 120000
+TH1F fbpmaraw1 'BPMA Antenna X+' Lrb.BPMA.rawcur.1 15000 -120000 120000
+TH1F fbpmaraw2 'BPMA Antenna X-' Lrb.BPMA.rawcur.2 15000 -120000 120000
+TH1F fbpmaraw3 'BPMA Antenna Y+' Lrb.BPMA.rawcur.3 15000 -120000 120000
+TH1F fbpmaraw4 'BPMA Antenna Y-' Lrb.BPMA.rawcur.4 15000 -120000 120000
+TH1F fbpmbraw1 'BPMB Antenna X+' Lrb.BPMB.rawcur.1 15000 -120000 120000
+TH1F fbpmbraw2 'BPMB Antenna X-' Lrb.BPMB.rawcur.2 15000 -120000 120000
+TH1F fbpmbraw3 'BPMB Antenna Y+' Lrb.BPMB.rawcur.3 15000 -120000 120000
+TH1F fbpmbraw4 'BPMB Antenna Y-' Lrb.BPMB.rawcur.4 15000 -120000 120000
+
+TH1F fbpmaraws 'BPMA Raw Sum' fbpmaws 5000 260000 300000
+TH1F fbpmbraws 'BPMA Raw Sum' fbpmbws 5000 260000 300000
+
+#Note that rawcur1.y refers to the current for the magnetic field in the y-direction (but electron deflection in x-direction!!!)
+# TH1F fURastX 'Upstream Raster X' Lrb.Raster.rawcur.y 5000 30000 50000
+# TH1F fURastY 'Upstream Raster Y' Lrb.Raster.rawcur.x 5000 30000 50000
+# TH1F fDRastX 'Downstream Raster X' Lrb.Raster2.rawcur.y 5000 1000 100000 cutry
+# TH1F fDRastY 'Downstream Raster Y' Lrb.Raster2.rawcur.x 5000 1000 100000 cutrx
+
+TH1F fURastX 'Upstream Raster X' Lrb.Raster.rawcur.y 5000 0 150000
+TH1F fURastY 'Upstream Raster Y' Lrb.Raster.rawcur.x 5000 0 150000
+TH1F fDRastX 'Downstream Raster X' Lrb.Raster2.rawcur.y 5000 0 150000 cutry
+TH1F fDRastY 'Downstream Raster Y' Lrb.Raster2.rawcur.x 5000 0 150000 cutrx
+
+TH2F furastraw_bpma_x 'Up Fast Raster Current vs BPMA X' Lrb.Raster.rawcur.y frbax 500 60000 70000 200 -5. 5.
+TH2F furastraw_bpma_y 'Up Fast Raster Current vs BPMA Y' Lrb.Raster.rawcur.x frbay 500 60000 70000 200 -5. 5.
+TH2F furastraw_bpmb_x 'Up Fast Raster Current vs BPMB X' Lrb.Raster.rawcur.y frbbx 500 60000 70000 200 -5. 5.
+TH2F furastraw_bpmb_y 'Up Fast Raster Current vs BPMB Y' Lrb.Raster.rawcur.x frbby 500 60000 70000 200 -5. 5.
+
+TH2F furastraw_y_bpma_x 'Up Fast Raster Current Y vs BPMA X' Lrb.Raster.rawcur.x frbax 500 60000 70000 200 -5. 5.
+TH2F furastraw_x_bpma_y 'Up Fast Raster Current X vs BPMA Y' Lrb.Raster.rawcur.y frbay 500 65000 70000 200 -5. 5.
+TH2F furastraw_y_bpmb_x 'Up Fast Raster Current Y vs BPMB X' Lrb.Raster.rawcur.x frbbx 500 60000 70000 200 -5. 5.
+TH2F furastraw_x_bpmb_y 'Up Fast Raster Current X vs BPMB Y' Lrb.Raster.rawcur.y frbby 500 60000 70000 200 -5. 5.
+
+TH2F fdrastraw_bpma_x 'Down Fast Raster Current vs BPMA X' Lrb.Raster2.rawcur.y frbax 500 60000 70000 200 -5. 5.
+TH2F fdrastraw_bpma_y 'Down Fast Raster Current vs BPMA Y' Lrb.Raster2.rawcur.x frbay 500 60000 70000 200 -5. 5.
+TH2F fdrastraw_bpmb_x 'Down Fast Raster Current vs BPMB X' Lrb.Raster2.rawcur.y frbbx 500 60000 70000 200 -5. 5.
+TH2F fdrastraw_bpmb_y 'Down Fast Raster Current vs BPMB Y' Lrb.Raster2.rawcur.x frbby 500 60000 70000 200 -5. 5.
+
+TH2F fdrastraw_y_bpma_x 'Down Fast Raster Current Y vs BPMA X' Lrb.Raster2.rawcur.x frbax 500 60000 70000 200 -5. 5.
+TH2F fdrastraw_x_bpma_y 'Down Fast Raster Current X vs BPMA Y' Lrb.Raster2.rawcur.y frbay 500 60000 70000 200 -5. 5.
+TH2F fdrastraw_y_bpmb_x 'Down Fast Raster Current Y vs BPMB X' Lrb.Raster2.rawcur.x frbbx 500 60000 70000 200 -5. 5.
+TH2F fdrastraw_x_bpmb_y 'Down Fast Raster Current X vs BPMB Y' Lrb.Raster2.rawcur.y frbby 500 60000 70000 200 -5. 5.
+
+
+#Project to the target and the collimator 
+#Distance between BPMs = 5.14633, distance from A to collimator = 7.27894, distance from BPMA to target = 6.37394
+# FORMULA colx 1000.*(Lrb.BPMB.x-Lrb.BPMA.x)/5.14633*7.27894+1000.*Lrb.BPMA.x
+# FORMULA coly 1000.*(Lrb.BPMB.y-Lrb.BPMA.y)/5.14633*7.27894+1000.*Lrb.BPMA.y
+# FORMULA targx 1000.*(Lrb.BPMB.x-Lrb.BPMA.x)/5.14633*6.37394+1000.*Lrb.BPMA.x
+# FORMULA targy 1000.*(Lrb.BPMB.y-Lrb.BPMA.y)/5.14533*6.37394+1000.*Lrb.BPMA.y
+# As of 10-08-21 
+FORMULA targx 1000.*(Lrb.BPMB.x-Lrb.BPMA.x)/4.083*5.969+1000.*Lrb.BPMA.x
+FORMULA targy 1000.*(Lrb.BPMB.y-Lrb.BPMA.y)/4.083*5.969+1000.*Lrb.BPMA.y
+
+# TH1F col_x 'x at collimator [mm]' colx 4000 -5. 5.
+# TH1F col_y 'y at collimator [mm]' coly 4000 -5. 5.
+TH1F targ_x 'x at target [mm]' targx 4000 -5. 5.
+TH1F targ_y 'y at target [mm]' targy 4000 -5. 5.
+
+# TH2F col_xy 'Postion at collimator [mm]' colx coly 4000 -5. 5. 4000 -5. 5.
+TH2F targ_xy 'Postion at target [mm]' targx targy 4000 -5. 5. 4000 -5. 5.
+
+
+FORMULA hel         scalhel.hel
+FORMULA tsettle     scalhel.lhrs.fadc.tsettle>60000
+FORMULA fadc_hel    scalhel.lhrs.fadc.hel
+FORMULA fadc_patsync    scalhel.lhrs.fadc.pat
+FORMULA fadc_tsettle    scalhel.lhrs.fadc.tsettle
+FORMULA errcode     scalhel.errcode
+FORMULA mps_number  scalhel.evtcount
+FORMULA qrt_number  scalhel.patcount
+FORMULA patphase    scalhel.patphase
+FORMULA seed        scalhel.seed
+

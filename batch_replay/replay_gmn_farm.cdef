@@ -1,0 +1,33 @@
+## example cut file for gmn replay.
+# #include "replay_BBGEM.cdef"
+# #include "replay_BBCal.cdef"
+# #include "replay_grinch.cdef"
+# #include "replay_hcal.cdef"
+# #include "replay_hodo.cdef"
+
+# cut file for "standard" GMN replay
+
+Block: RawDecode 
+RawDecode_master 1
+
+Block: Decode 
+Decode_master 1
+
+# Require a cluster in HCAL and BBCAL total energy sum over threshold before attempting tracking:
+Block: CoarseReconstruct
+GoodBBCALsum  bb.ts.over_threshold==1
+GoodHCAL sbs.hcal.nclus>0
+GoodCoin GoodBBCALsum&&GoodHCAL
+#CoarseReconstruct_master GoodCoin
+CoarseReconstruct_master 1
+
+# Additionally we require a good track to write output
+Block: Physics
+GoodPreShower bb.ps.ngoodADChits>0
+GoodShower    bb.sh.ngoodADChits>0
+GoodBBCAL     GoodPreShower||GoodShower
+CutPreShower  bb.ps.e>0.15
+GoodTrack BB.gold.index>-1
+GoodElectron  GoodTrack&&CutPreShower
+#Physics_master GoodBBCAL
+Physics_master GoodTrack

@@ -564,15 +564,21 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
     twP0path = Form("parameters/twP0_sbs%d_qreplay.txt",kine);
     twP1path = Form("parameters/twP1_sbs%d_qreplay.txt",kine);
     twP2path = Form("parameters/twP2_sbs%d_qreplay.txt",kine);
-    errPath = Form("reporting/calReport_sbs%d_qreplay.txt",kine);
+    errPath = Form("reporting/tcalReport_sbs%d_qreplay.txt",kine);
   }else{
-    tdcconstPath = Form("coefficients/tdcoffsets_sbs%d.txt",kine);
-    adctconstPath = Form("coefficients/adctoffsets_sbs%d.txt",kine);
+    tdcconstPath = Form("parameters/tdcoffsets_sbs%d.txt",kine);
+    adctconstPath = Form("parameters/adctoffsets_sbs%d.txt",kine);
     twP0path = Form("parameters/twP0_sbs%d.txt",kine);
     twP1path = Form("parameters/twP1_sbs%d.txt",kine);
     twP2path = Form("parameters/twP2_sbs%d.txt",kine);
-    errPath = Form("reporting/calReport_sbs%d.txt",kine);
+    errPath = Form("reporting/tcalReport_sbs%d.txt",kine);
   }
+
+  //Declare report outfile
+  ofstream report;
+
+  report.open( errPath );
+  report << "#Error and performance report from SBS-" << kine << " obtained " << date.c_str() << endl << endl;
 
   string configfilename_h[nfset_lh2[kIdx]];
   for( Int_t h=0; h<nfset_lh2[kIdx]; h++){
@@ -988,6 +994,8 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
     fout = new TFile( Form("reporting/timing/tCalOut_sbs%d.root", kine ), "RECREATE" );
   }
 
+  
+
   // Initialize vectors and arrays
   Double_t TDCoffsets[kNcell] = {0.0};
   Double_t TDCdeviations[kNcell] = {0.0};
@@ -1011,6 +1019,10 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
   cout << "Opened many trees with " << lh2Events << " LH2 events passing global cuts." << endl;
   cout << "Opened many trees with " << ld2Events << " LD2 events passing global cuts." << endl << endl;
   cout << "Total available events to calibrate = " << lh2Events + ld2Events << "." << endl << endl;
+
+  report << "Opened many trees with " << lh2Events << " LH2 events passing global cuts." << endl;
+  report << "Opened many trees with " << ld2Events << " LD2 events passing global cuts." << endl << endl;
+  report << "Total available events to calibrate = " << lh2Events + ld2Events << "." << endl << endl;
 
   //Declare matrices for chi-square min calibration scheme and keep track of calibrated events
   Int_t TNEV_h = 0;
@@ -1049,7 +1061,8 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
   }
 
   //Loop over events
-  cout << "Main loop over all data commencing.." << endl;
+  cout << "Main loop over hydrogen data commencing.." << endl;
+  report << "Main loop over hydrogen data commencing.." << endl;
   if(pass0) gROOT->ProcessLine( "gErrorIgnoreLevel = 6001" ); //Suppress error output to avoid undetectable sbs.hcal.clus_blk.again for pass0
 
   //Loop over all hydrogen data
@@ -1065,6 +1078,8 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 
       if ( nevent%10000==0 ) cout << "LH2 kinematic " << kine << " at field " << hfieldset << "% , entry: " << nevent << "/" << Nevents_h[f] << ". Total events gathered for calibration: " << TNEV_h << " \r";
       cout.flush();
+
+      if ( nevent%100000==0 ) report << "LH2 kinematic " << kine << " at field " << hfieldset << "% , entry: " << nevent << "/" << Nevents_h[f] << ". Total events gathered for calibration: " << TNEV_h << endl;
       
       Ch[f]->GetEntry( elist_h[f]->GetEntry( nevent ) ); 
 
@@ -1206,20 +1221,27 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
   if( !qreplay ){
     Int_t cell = 0;
 
-    cout << endl << "Number of events available for calibration from hydrogen alone: " << endl << endl;
+    cout << endl << "Number of events available for calibration from hydrogen alone: " << endl;
+    report << endl << "Number of events available for calibration from hydrogen alone: " << endl;
 
     for( Int_t r = 0; r<kNrows; r++){
       for( Int_t c = 0; c<kNcols; c++){
 	cout << NEV[cell] << "  ";
+	report << NEV[cell] << "  ";
 	cell++;
       }
       cout << endl;
+      report << endl;
     }
   
     cout << endl;
+    report << endl;
 
     usleep( 3*second ); //Give some time for review of step
   }
+
+  cout << "Looping over deuterium data.." << endl;
+  report << "Looping over deuterium data.." << endl;
 
   //Loop over all deuterium data
   for( Int_t f=0; f<nfset_ld2[kIdx]; f++ ){
@@ -1235,6 +1257,8 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
       if ( nevent%10000==0 ) cout << "LD2 kinematic " << kine << " at field " << dfieldset << "%, entry: " << nevent << "/" << Nevents_d[f] << ". Total events gathered for calibration: " << TNEV_d << " \r";
       cout.flush();
       
+      if ( nevent%100000==0 ) report << "LD2 kinematic " << kine << " at field " << dfieldset << "%, entry: " << nevent << "/" << Nevents_d[f] << ". Total events gathered for calibration: " << TNEV_d << endl;
+
       Cd[f]->GetEntry( elist_d[f]->GetEntry( nevent ) ); 
 
       Double_t A[kNcell] = {0.0}; // Array to keep track of ADC values per cell. Outscope on each ev
@@ -1371,7 +1395,8 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
     } //loop over deuterium events
   } //loop for ld2
 
-  cout << endl << "Fitting TDC/ADCt distributions";
+  cout << endl << "Fitting TDC/ADCt distributions" << endl;
+  report << endl << "Fitting TDC/ADCt distributions" << endl;
 
   //No error on cell location
   Double_t cellerr[kNcell] = {0.};
@@ -1379,12 +1404,14 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
   //Make arrays for tdc tgraphs
   Double_t tcell[kNcell] = {0.};
   Double_t tcval[kNcell] = {0.};
+  Double_t tcvalw[kNcell] = {0.};
   Double_t tcerr[kNcell] = {0.};
   TH1D *tcellslice[kNcell];
 
   //Make arrays for adc tgraphs
   Double_t acell[kNcell] = {0.};
   Double_t acval[kNcell] = {0.};
+  Double_t acvalw[kNcell] = {0.};
   Double_t acerr[kNcell] = {0.};
   TH1D *acellslice[kNcell];
 
@@ -1395,9 +1422,6 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
   Int_t acval_Ng = 0;
 
   for(Int_t c=0; c<kNcell; c++){
-    //Int_t r = (c)/kNcols;
-    //Int_t c = (c)%kNcols;
-
     //Fit the TDC vs E plots
     TF1 *fitTW = new TF1( "fitTW", TW_fit, 0, 300, 3 );
     fitTW->SetParameters(20,0.2,-80);
@@ -1418,8 +1442,10 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
     Double_t tfith = 0.;
     tcell[c] = c;
     tcellslice[c] = htDiff_ID->ProjectionY(Form("tcellslice_%d",c+1),c+1,c+1);
+    tcval[c] = oldTDCoffsets[c]; //will overwrite if fit is good.
+    tcvalw[c] = 0.;
     if( tcellslice[c]->GetEntries()<tFitMin || qreplay ) continue;
-    if( tcellslice[c]->GetMean()<-100 ){
+    if( tcellslice[c]->GetMean()<-85 ){ //TODO: NOT robust for many kinematics
       tfitl = -130.;
       tfith = -100.;
     }else{
@@ -1428,10 +1454,14 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
     }
     tcellslice[c]->Fit("gaus","Q","",tfitl,tfith);  //Will need tuned initially
     f1=tcellslice[c]->GetFunction("gaus");
-    tcval[c] = f1->GetParameter(1)+45; //+45: TDC target is -45ns?
+    tcval[c] = f1->GetParameter(1); //+45: TDC target is -45ns?
+    tcvalw[c] = f1->GetParameter(1); //+45: TDC target is -45ns?
     tcval_avg += tcval[c];
     tcval_Ng++;
     tcerr[c] = f1->GetParameter(2);
+    bool inpeak = tcval[c]>tfitl&&tcval[c]<tfith;
+    if(!inpeak) tcval[c]=oldTDCoffsets[c]; //reset to default if fit is bad.
+    if(!inpeak) tcvalw[c]=0.;
   }    
 
   for(Int_t c=0; c<kNcell; c++){
@@ -1442,19 +1472,24 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
     Double_t afith = 75.;
     acell[c] = c;
     acellslice[c] = haDiff_ID->ProjectionY(Form("acellslice_%d",c+1),c+1,c+1);
+    acval[c] = oldADCtoffsets[c]; //will overwrite if fit is good.
+    acvalw[c] = 0.; //will overwrite if fit is good.
     if( acellslice[c]->GetEntries()<tFitMin || qreplay ) continue;
     acellslice[c]->Fit("gaus","Q","",afitl,afith);  //Will need tuned initially
     f2=acellslice[c]->GetFunction("gaus");
     acval[c] = f2->GetParameter(1);
+    acvalw[c] = f2->GetParameter(1);
     acval_avg += acval[c];
     acval_Ng++;
     acerr[c] = f2->GetParameter(2);
-    
+    bool inpeak = acval[c]>afitl&&acval[c]<afith;
+    if(!inpeak) acval[c]=oldADCtoffsets[c]; //reset to default if fit is bad.
+    if(!inpeak) acvalw[c]=0.; //reset to default if fit is bad.
   }
   tcval_avg /= tcval_Ng;
   acval_avg /= acval_Ng;
 
-  TGraphErrors *gtdc_c = new TGraphErrors( kNcell, tcell, tcval, cellerr, tcerr );
+  TGraphErrors *gtdc_c = new TGraphErrors( kNcell, tcell, tcvalw, cellerr, cellerr );
   gtdc_c->GetXaxis()->SetLimits(-10,290);  
   gtdc_c->GetYaxis()->SetLimits(tllim,tulim);
   gtdc_c->SetTitle("TDC_{hcal}-TDCmean_{hodo} vs Cell");
@@ -1465,7 +1500,7 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
   gtdc_c->Write("gtdc_c");
 
 
-  TGraphErrors *gadct_c = new TGraphErrors( kNcell, acell, acval, cellerr, acerr );
+  TGraphErrors *gadct_c = new TGraphErrors( kNcell, acell, acvalw, cellerr, cellerr );
   gadct_c->GetXaxis()->SetLimits(-10,290);  
   gadct_c->GetYaxis()->SetLimits(allim,aulim);
   gadct_c->SetTitle("ADCt_{hcal}-TDCmean_{hodo} vs Cell");
@@ -1488,145 +1523,103 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
     P0.open( twP0path );
     P0 << "#HCal cosmic fit parameters obtained " << date.c_str() << endl;
     P0 << "#Exponential fit for i PMTs -> y = P0_i*exp(-P1_i*x)+P2_i, P0_i = " << endl;
+    report << "#HCal cosmic fit parameters obtained " << date.c_str() << endl;
+    report << "#Exponential fit for i PMTs -> y = P0_i*exp(-P1_i*x)+P2_i, P0_i = " << endl;
 
     for( Int_t i=0; i<kNcell; i++ ){   
       P0 << TvseP0[i] << endl;
+      report << TvseP0[i] << endl;
     }
 
     P0.close();
+    report << endl << endl;
 
     //Write second parameter
     P1.open( twP1path );
     P1 << "#HCal cosmic fit parameters obtained " << date.c_str() << endl;
     P1 << "#Exponential fit for i PMTs -> y = P0_i*exp(-P1_i*x)+P2_i, P1_i = " << endl;
+    report << "#HCal cosmic fit parameters obtained " << date.c_str() << endl;
+    report << "#Exponential fit for i PMTs -> y = P0_i*exp(-P1_i*x)+P2_i, P1_i = " << endl;
 
     for( Int_t i=0; i<kNcell; i++ ){   
       P1 << TvseP1[i] << endl;
+      report << TvseP1[i] << endl;
     }
 
     P1.close();
+    report << endl << endl;
 
     //Write third parameter
     P2.open( twP2path );
     P2 << "#HCal cosmic fit parameters obtained " << date.c_str() << endl;
     P2 << "#Exponential fit for i PMTs -> y = P0_i*exp(-P1_i*x)+P2_i, P2_i = " << endl;
+    report << "#HCal cosmic fit parameters obtained " << date.c_str() << endl;
+    report << "#Exponential fit for i PMTs -> y = P0_i*exp(-P1_i*x)+P2_i, P2_i = " << endl;
 
     for( Int_t i=0; i<kNcell; i++ ){   
       P2 << TvseP2[i] << endl;
+      report << TvseP2[i] << endl;
     }
 
     P2.close();
+    report << endl << endl;
 
     //Write TDC offsets
     tdcoff.open( tdcconstPath );
     tdcoff << "#HCal TDC offsets obtained " << date.c_str() << endl;
     tdcoff << "#Offsets obtained from fits over TDC distributions = " << endl;
+    report << "#HCal TDC offsets obtained " << date.c_str() << endl;
+    report << "#Offsets obtained from fits over TDC distributions = " << endl;
   
-    for( Int_t i=0; i<kNcell; i++ ){
+    for( Int_t i=0; i<kNcell; i++ ){ //check this!!
+      //bool firstpeak = tcval[i]
       if( oldTDCoffsets[i]>0 && tcval[i]==0 ){
 	tdcoff << tcval_avg << endl;
+	report << tcval_avg << " with adjustment due to oldoffset>0: " << oldTDCoffsets[i]>0 << " or tcval==0: " << tcval[i]==0 << endl;
       }else{
-	tdcoff << tcval[i]/TDCCalib + oldTDCoffsets[i] << endl;
+	tdcoff << tcval[i]/TDCCalib + oldTDCoffsets[i] + 75/TDCCalib << endl;  //Targeting -75ns w/TDCs
+	report << tcval[i]/TDCCalib + oldTDCoffsets[i] + 75/TDCCalib << endl;  //Targeting -75ns w/TDCs
       }
     }  
 
     tdcoff.close();
 
+    report << endl << endl;
 
     //Write ADCt offsets
     adctoff.open( adctconstPath );
     adctoff << "#HCal ADCT offsets obtained " << date.c_str() << endl;
     adctoff << "#Offsets obtained from fits over ADCT distributions = " << endl;
+    report << "#HCal ADCT offsets obtained " << date.c_str() << endl;
+    report << "#Offsets obtained from fits over ADCT distributions = " << endl;
   
     for( Int_t i=0; i<kNcell; i++ ){   
       adctoff << acval[i] + oldADCtoffsets[i] << endl;
+      report << acval[i] + oldADCtoffsets[i] << endl;
     }
   
     adctoff.close();
   }
 
-  //Declare report outfile
-  ofstream report;
-
-  report.open( errPath );
-  report << "#Error and performance report from SBS-" << kine << " obtained " << date.c_str() << endl << endl;
-
-  report.close();
-
   fout->Write();
 
-  cout << endl << endl;
-
   cout << endl << endl << "Elastic yield for analyzed runs: " << elasYield << ". Total event bins available for calibration = LH2 + LD2: " << TNEV_h << " + " << TNEV_d << " = " << TNEV_h + TNEV_d << ". Total number of events analyzed: " << lh2Events + ld2Events << "." << endl << endl;
+  report << endl << endl << "Elastic yield for analyzed runs: " << elasYield << ". Total event bins available for calibration = LH2 + LD2: " << TNEV_h << " + " << TNEV_d << " = " << TNEV_h + TNEV_d << ". Total number of events analyzed: " << lh2Events + ld2Events << "." << endl << endl;
   
   if( qreplay ){
     cout << "Diagnostic iteration complete. Histograms written to file." << endl;
+    report << "Diagnostic iteration complete. Histograms written to file." << endl << endl;
   }else{
     cout << "Timing analysis complete. Constants and histograms written to file." << endl;
+    report << "Timing analysis complete. Constants and histograms written to file." << endl << endl;
   }
 
   st->Stop();
 
   // Send time efficiency report to console
   cout << "CPU time elapsed = " << st->CpuTime() << " s = " << st->CpuTime()/60.0 << " min. Real time = " << st->RealTime() << " s = " << st->RealTime()/60.0 << " min." << endl;
+  report << "CPU time elapsed = " << st->CpuTime() << " s = " << st->CpuTime()/60.0 << " min. Real time = " << st->RealTime() << " s = " << st->RealTime()/60.0 << " min." << endl;
+
+  report.close();
 
 }
-
- /*
-  //Construct graphs for uniformity check
-  Double_t posErr[xN] = {0.};
-  TF1 *f1;
-  //For X (dispersive)
-  Double_t X[xN];
-  Double_t Xval[xN];
-  Double_t Xerr[xN];
-  TH1D *Xslice[xN];
-  for( int x=0; x<xN; x++ ){
-    X[x] = HCal_Xi + x*HCal_div;
-    Xslice[x] = timep_vs_x->ProjectionY(Form("Xslice_%d",x+1),x+1,x+1);
-    Xslice[x]->Fit("gaus","Q","",0.01,20);
-    f1=Xslice[x]->GetFunction("gaus");
-    if(Xslice[x]->GetEntries()>1){
-      Xval[x] = f1->GetParameter(1);
-      Xerr[x] = f1->GetParameter(2);
-    }else{
-      Xval[x] = -1;
-      Xerr[x] = 0;
-    }
-  }
-  TGraphErrors *cTOF_X = new TGraphErrors( xN, X, Xval, posErr, Xerr );
-  cTOF_X->GetXaxis()->SetLimits(HCal_Xi-0.05,HCal_Xf+0.05);  
-  cTOF_X->GetYaxis()->SetLimits(0.0,1.0);
-  cTOF_X->SetTitle("Time of Flight Proton - Dispersive X");
-  cTOF_X->GetXaxis()->SetTitle("X (m)");
-  cTOF_X->GetYaxis()->SetTitle("E_{HCAL}/KE_{exp}");
-  cTOF_X->SetMarkerStyle(20); // idx 20 Circles, idx 21 Boxes
-  cTOF_X->Write("cTOF_X");
-
-  //For Y (transverse)
-  Double_t Y[yN];
-  Double_t Yval[yN];
-  Double_t Yerr[yN];
-  TH1D *Yslice[yN];
-  for( int x=0; x<yN; x++ ){
-    Y[x] = HCal_Yi + x*HCal_div;
-    Yslice[x] = timep_vs_y->ProjectionY(Form("Yslice_%d",x+1),x+1,x+1);
-    Yslice[x]->Fit("gaus","Q","",0.01,20.);
-    f1=Yslice[x]->GetFunction("gaus");
-    if(Yslice[x]->GetEntries()>1){
-      Yval[x] = f1->GetParameter(1);
-      Yerr[x] = f1->GetParameter(2);
-    }else{
-      Yval[x] = -1;
-      Yerr[x] = 0;
-    }
-  }
-  TGraphErrors *cTOF_Y = new TGraphErrors( yN, Y, Yval, posErr, Yerr );
-  cTOF_Y->GetXaxis()->SetLimits(HCal_Yi-0.05,HCal_Yf+0.05);  
-  cTOF_Y->GetYaxis()->SetLimits(0.0,1.0);
-  cTOF_Y->SetTitle("Time of Flight Proton - Transverse Y");
-  cTOF_Y->GetXaxis()->SetTitle("Y (m)");
-  cTOF_Y->GetYaxis()->SetTitle("E_{HCAL}/KE_{exp}");
-  cTOF_Y->SetMarkerStyle(20); // idx 20 Circles, idx 21 Boxes
-  cTOF_Y->Write("cTOF_Y");
-  */

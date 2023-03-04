@@ -1,0 +1,16 @@
+## output variable definition for analysis of all detectors replay_gmn_mc.C
+
+#include "replay_BBGEM.odef"
+#include "replay_BBCal.odef"
+#include "replay_grinch_mc.odef"
+#include "replay_hcal.odef"
+#include "replay_hodo_mc.odef"
+#include "replay_bb.odef"
+
+block MC.mc_*
+variable MC.nbbtracks
+block MC.bbtrack*
+variable MC.nbbgemhits
+block MC.bbgemhit*
+variable MC.bbps_esum
+variable MC.bbsh_esum

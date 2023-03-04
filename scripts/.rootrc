@@ -2,7 +2,7 @@
 Rint.Logon        /work/halla/sbs/SBS_OFFLINE/install/etc/rootlogon.C
 
 Unix.*.Root.DynamicPath:   .:lib64:$(ROOTSYS)/lib
-Unix.*.Root.MacroPath:     .:/work/halla/sbs/SBS_REPLAY/SBS-replay/replay:/work/halla/sbs/SBS_REPLAY/SBS-replay/scripts:/work/halla/sbs/SBS_REPLAY/SBS-replay/onlineGUIconfig:$(ROOTSYS)/macros
+Unix.*.Root.MacroPath:     .:/w/halla-scshelf2102/sbs/seeds/HCal_replay/scripts:/w/halla-scshelf2102/sbs/seeds/HCal_replay/replay:/w/halla-scshelf2102/sbs/seeds/HCal_replay/hcal/energyCalibration/GMn:/w/halla-scshelf2102/sbs/seeds/HCal_replay/hcal/timingCalibration:/work/halla/sbs/SBS_REPLAY/SBS-replay/replay:/work/halla/sbs/SBS_REPLAY/SBS-replay/scripts:/work/halla/sbs/SBS_REPLAY/SBS-replay/onlineGUIconfig:$(ROOTSYS)/macros
 
 ACLiC.IncludePaths:       -Iinclude
 

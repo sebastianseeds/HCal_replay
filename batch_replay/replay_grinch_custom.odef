@@ -1,0 +1,14 @@
+# Sample outout definition file
+block bb.grinch_tdc.*
+block bb.grinch_adc.*
+
+# test adding histograms directly per Bradley's script:
+
+#TH1D GRINCH_ntdc ' ; Nhit ; Counts' Ndata.bb.grinch_tdc.tdc 512 -0.5 511.5 #it just sounds like the analyzer won't take it...
+TH2D GRINCH_tdc_LE_vs_pmt ' ; PMT ; TDC leading edge (ns)' bb.grinch_tdc.tdcelemID bb.grinch_tdc.tdc 512 -0.5 511.5 1000 0 1000
+TH2D GRINCH_tdc_TE_vs_pmt ' ; PMT ; TDC trailing edge (ns)' bb.grinch_tdc.tdcelemID bb.grinch_tdc.tdc_te 512 -0.5 511.5 1000 0 1000
+TH2D GRINCH_mult_vs_pmt ' ; PMT ; PMT hit multiplicity' bb.grinch_tdc.tdcelemID bb.grinch_tdc.tdc_mult 512 -0.5 511.5 21 -0.5 20.5
+TH2D GRINCH_tdc_ToT_vs_pmt ' ; PMT ; Time over threshold (ns)' bb.grinch_tdc.tdcelemID bb.grinch_tdc.tdc_tot 512 -0.5 511.5 50, 0 50
+TH2D GRINCH_adc_chan_vs_num ' ; ADC num. ; ADC channel' bb.grinch_adc.adcelemID bb.grinch_adc.a_amp_p 64 -0.5 63.5 4001 -0.5 4000.5
+
+

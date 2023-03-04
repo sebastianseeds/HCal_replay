@@ -1,0 +1,50 @@
+#block BB.gold.*
+#block e.kine.*
+#block bb.tr.*
+
+#variable bb.eps_over_etot
+#variable bb.etot_over_p
+
+#variable bb.x_fcp
+#variable bb.y_fcp
+#variable bb.x_bcp
+#variable bb.y_bcp
+
+
+th1d htr_x 'all tracks ; x_fp (m)' bb.tr.x 200 -1.0 1.0 
+th1d htr_y 'all tracks ; y_fp (m)' bb.tr.y 80 -0.2 0.2
+th1d htr_dx 'all tracks ; fp dx/dz' bb.tr.th 100 -0.5 0.5 
+th1d htr_dy 'all tracks ; fp dy/dz' bb.tr.ph 100 -0.2 0.2 
+
+th1d htr_tg_x 'all tracks; x_tg (m)' bb.tr.tg_x 200 -0.2 0.2 
+th1d htr_tg_y 'all tracks; y_tg (m)' bb.tr.tg_y 200 -0.2 0.2
+th1d htr_tg_dx 'all tracks; target dx/dz' bb.tr.tg_th 200 -0.5 0.5 
+th1d htr_tg_dy 'all tracks; target dy/dz' bb.tr.tg_ph 200 -0.2 0.2
+
+th1d htr_p 'track momentum, all tracks ; p (GeV)' bb.tr.p 250 0.0 5.0 
+th1d htr_v 'track vertex, all tracks ; vertex z (m)' bb.tr.vz 500 -0.25 0.25 
+
+th1d hgtr_x 'golden track; x_fp (m)' bb.tr.x 200 -1.0 1.0 
+th1d hgtr_y 'golden track; y_fp (m)' bb.tr.y 80 -0.2 0.2
+th1d hgtr_dx 'golden track; fp dx/dz' bb.tr.th 100 -0.5 0.5 
+th1d hgtr_dy 'golden track, fp dy/dz' bb.tr.ph 100 -0.2 0.2 
+
+th1d hgtr_tg_x 'golden track; x_tg (m)' bb.tr.tg_x 200 -0.2 0.2 
+th1d hgtr_tg_y 'golden track; y_tg (m)' bb.tr.tg_y 200 -0.2 0.2
+th1d hgtr_tg_dx 'golden track; target dx/dz' bb.tr.tg_th 200 -0.5 0.5 
+th1d hgtr_tg_dy 'golden track; target dy/dz' bb.tr.tg_ph 200 -0.2 0.2
+
+th1d hgtr_p 'track momentum, golden track; p (GeV)' bb.tr.p 100 0.0 5.0 
+th1d hgtr_v 'track vertex, golden track; vertex z (m)' bb.tr.vz 500 -0.25 0.25 
+
+th1d heps_over_etot 'EPS/Etot ; E_{PS}/E_{tot}' bb.eps_over_etot 200 0.0 1.0
+th1d hetot_over_p 'Etot/P; E/p' bb.etot_over_p 200 0.0 2.0 
+th1d hepreshower ';Preshower energy (GeV)' bb.ps.e 200 0.0 1.0 GoodTrack
+th2d heoverP_vs_PS 'E/p vs. preshower; E_{PS} ; E/p' bb.ps.e bb.etot_over_p 200 0.0 1.0 200 0.0 2.0 
+
+th1d hEoverP_electron 'Electrons only; E/p' bb.etot_over_p 200 0.0 2.0 GoodElectron
+
+th1d hq2 'electron Q2; Q^{2} (GeV^{2})' e.kine.Q2 200 1.0 16.0 
+th1d hw2 'electron W2; W^{2} (GeV^{2})' e.kine.W2 200 0.0 12.0
+th1d hnu 'electron nu; e^{-} Energy loss (GeV)' e.kine.nu 100 0.0 8.0
+th1d heps 'electron eps; epsilon' e.kine.epsilon 100 0.0 1.0

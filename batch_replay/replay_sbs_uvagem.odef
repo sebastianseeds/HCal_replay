@@ -1,0 +1,1094 @@
+#tree variables: 
+block sbs.uvagem.track.*
+block sbs.uvagem.hit.*
+variable sbs.uvagem.nlayershit
+variable sbs.uvagem.nlayershitu
+variable sbs.uvagem.nlayershitv
+variable sbs.uvagem.nlayershituv
+variable sbs.uvagem.nstripsu_layer
+variable sbs.uvagem.nstripsv_layer
+variable sbs.uvagem.nclustu_layer
+variable sbs.uvagem.nclustv_layer
+variable sbs.uvagem.n2Dhit_layer
+#block sbs.uvagem.*.time.T0_by_APV
+#block sbs.uvagem.*.time.Tref_coarse
+#block sbs.uvagem.*.time.Tcoarse_by_APV
+#block sbs.uvagem.*.time.Tfine_by_APV
+#block sbs.uvagem.*.time.EventCount_by_APV
+#block sbs.uvagem.*.time.T_ns_by_APV
+
+#Cuts: 
+cut singletrack sbs.uvagem.track.ntrack==1
+cut anytrack sbs.uvagem.track.ntrack>0
+
+# Histogram definitions: 
+# layers fired, strip and cluster multiplicities
+th1d hsbs_uvagem_Nlayers_hit ';Number of layers with fired strips (u/x OR v/y);' sbs.uvagem.nlayershit 6 -0.5 5.5
+th1d hsbs_uvagem_Nlayers_hitu ';Number of layers with fired U/X strips;' sbs.uvagem.nlayershitu 6 -0.5 5.5
+th1d hsbs_uvagem_Nlayers_hitv ';Number of layers with fired V/Y strips;' sbs.uvagem.nlayershitv 6 -0.5 5.5
+th1d hsbs_uvagem_Nlayers_hituv ';Number of layers with 2D hits;' sbs.uvagem.nlayershituv 6 -0.5 5.5
+
+th2d hsbs_uvagem_NstripsU_layer ';layer;Number of U/X strips fired' [I] sbs.uvagem.nstripsu_layer[I] 5 -0.5 4.5 101 -0.5 100.5
+th2d hsbs_uvagem_NstripsV_layer ';layer;Number of V/Y strips fired' [I] sbs.uvagem.nstripsv_layer[I] 5 -0.5 4.5 101 -0.5 100.5
+th2d hsbs_uvagem_NclustU_layer ';layer;Number of U/X clusters' [I] sbs.uvagem.nclustu_layer[I] 5 -0.5 4.5 51 -0.5 50.5
+th2d hsbs_uvagem_NclustV_layer ';layer;Number of V/Y clusters' [I] sbs.uvagem.nclustv_layer[I] 5 -0.5 4.5 51 -0.5 50.5
+th2d hsbs_uvagem_Nclust2D_layer ';layer;Number of 2D hits' [I] sbs.uvagem.n2Dhit_layer[I] 5 -0.5 4.5 51 -0.5 50.5
+
+th1d hsbs_uvagem_clustwidthU 'U/X clusters on tracks; cluster size in strips' sbs.uvagem.hit.nstripu 10 0.5 10.5 singletrack
+th1d hsbs_uvagem_clustwidthV 'V/Y clusters on tracks; cluster size in strips' sbs.uvagem.hit.nstripv 10 0.5 10.5 singletrack
+th2d hsbs_uvagem_clustwidthVvsU '2D hits on tracks; U/X cluster size ; V/Y cluster size' sbs.uvagem.hit.nstripu sbs.uvagem.hit.nstripv 10 0.5 10.5 10 0.5 10.5 singletrack
+th2d hsbs_uvagem_clustwidthU_vs_module ';module;U/X cluster size' sbs.uvagem.hit.module sbs.uvagem.hit.nstripu 20 -0.5 19.5 10 0.5 10.5 singletrack
+th2d hsbs_uvagem_clustwidthV_vs_module ';module;V/Y cluster size' sbs.uvagem.hit.module sbs.uvagem.hit.nstripv 20 -0.5 19.5 10 0.5 10.5 singletrack
+th1d hsbs_uvagem_clust_Utime ';U/X cluster time (ns);' sbs.uvagem.hit.Utime 150 0 150 singletrack
+th1d hsbs_uvagem_clust_Vtime ';V/Y cluster time (ns);' sbs.uvagem.hit.Vtime 150 0 150 singletrack
+th2d hsbs_uvagem_clust_UVtime ';U/X cluster time (ns); V/Y cluster time (ns)' sbs.uvagem.hit.Utime sbs.uvagem.hit.Vtime 150 0 150 150 0 150 singletrack
+th1d hsbs_uvagem_clust_deltat ';t_{U/X} - t_{V/Y} (ns);' sbs.uvagem.hit.deltat 200 -50 50 singletrack
+th2d hsbs_uvagem_clust_deltat_vs_tavg ';t_{avg} (ns); t_{diff} (ns)' sbs.uvagem.hit.Tavg sbs.uvagem.hit.deltat 150 0 150 200 -50 50 singletrack
+th1d hsbs_uvagem_iSampMaxU ';Peak time sample, U/X strips;' sbs.uvagem.hit.isampmaxUclust 6 -0.5 5.5
+th1d hsbs_uvagem_iSampMaxV ';Peak time sample, V/Y strips;' sbs.uvagem.hit.isampmaxVclust 6 -0.5 5.5
+th1d hsbs_uvagem_CorrCoeff_clust ';Corr. Coeff., cluster sums;' sbs.uvagem.hit.ccor_clust 202 -1.01 1.01 singletrack
+th1d hsbs_uvagem_CorrCoeff_maxstrip ';Corr. Coeff., max strips;' sbs.uvagem.hit.ccor_strip 202 -1.01 1.01 singletrack
+th1d hsbs_uvagem_ADCasym ';(ADCU-ADCV)/(ADCU+ADCV)' sbs.uvagem.hit.ADCasym 202 -1.01 1.01 singletrack
+
+th1d hsbs_uvagem_ADCavg 'hits on tracks ;(ADCU+ADCV)/2;' sbs.uvagem.hit.ADCavg 1500 0 30000 singletrack
+th2d hsbs_uvagem_ADCasym_vs_ADCavg ';ADC avg;ADC asym.' sbs.uvagem.hit.ADCavg sbs.uvagem.hit.ADCasym 250 0 25000 250 -1.01 1.01
+th1d hsbs_uvagem_ADCU_clust ';ADC cluster sum (U/X strips);' sbs.uvagem.hit.ADCU 1500 0 30000 singletrack
+th1d hsbs_uvagem_ADCV_clust ';ADC cluster sum (V/Y strips);' sbs.uvagem.hit.ADCV 1500 0 30000 singletrack
+th2d hsbs_uvagem_ADCVvsU_clust ';ADC cluster sum (U/X); ADC cluster sum (V/Y)' sbs.uvagem.hit.ADCU sbs.uvagem.hit.ADCV 200 0 30000 200 0 30000 singletrack
+th2d hsbs_uvagem_ADCavg_vs_module ';module; Cluster ADC avg' sbs.uvagem.hit.module sbs.uvagem.hit.ADCavg 20 -0.5 19.5 250 0 25000
+th1d hsbs_uvagem_ADCU_maxstrip ';Max strip ADC sum (U/X strips);' sbs.uvagem.hit.ADCmaxstripU 1500 0 15000 singletrack
+th1d hsbs_uvagem_ADCV_maxstrip ';Max strip ADC sum (V/Y strips);' sbs.uvagem.hit.ADCmaxstripV 1500 0 15000 singletrack
+th2d hsbs_uvagem_ADCVvsU_maxstrip ';Max strip ADC sum (U/X); Max strip ADC sum (V/Y)' sbs.uvagem.hit.ADCmaxstripU sbs.uvagem.hit.ADCmaxstripV 200 0 12000 200 0 12000 singletrack
+th1d hsbs_uvagem_ADCU_maxsample ';U/X max strip max sample;' sbs.uvagem.hit.ADCmaxsampU 500 0 4000 singletrack
+th1d hsbs_uvagem_ADCV_maxsample ';V/Y max strip max sample;' sbs.uvagem.hit.ADCmaxsampV 500 0 4000 singletrack
+th2d hsbs_uvagem_ADCVvsU_maxsample ';Max strip max sample (U/X);Max strip max sample (V/Y)' sbs.uvagem.hit.ADCmaxsampU sbs.uvagem.hit.ADCmaxsampV 200 0 4000 200 0 4000 singletrack
+th1d hsbs_uvagem_ADCU_maxclustsample ';Max cluster-summed U/X sample;' sbs.uvagem.hit.ADCmaxsampUclust 500 0 8000 singletrack
+th1d hsbs_uvagem_ADCV_maxclustsample ';Max cluster-summed V/Y sample;' sbs.uvagem.hit.ADCmaxsampVclust 500 0 8000 singletrack
+th2d hsbs_uvagem_ADCVvsU_maxclustsample ';Max cluster-summed sample (U/X);Max cluster-summed sample (V/Y)' sbs.uvagem.hit.ADCmaxsampUclust sbs.uvagem.hit.ADCmaxsampVclust 200 0 8000 200 0 8000 singletrack
+
+th1d hsbs_uvagem_Ntracks ';Number of tracks found;' sbs.uvagem.track.ntrack 11 -0.5 10.5
+th1d hsbs_uvagem_TrackNhits ';Number of hits on first/best track;' sbs.uvagem.track.nhits[I] 6 -0.5 5.5 singletrack
+th1d hsbs_uvagem_TrackX ';Best track X(z=0), m;' sbs.uvagem.track.x[I] 200 -0.325 0.325 singletrack
+th1d hsbs_uvagem_TrackY ';Best track Y(z=0), m;' sbs.uvagem.track.y[I] 200 -1.1 1.1 singletrack
+th1d hsbs_uvagem_TrackXp ';Best track dx/dz;' sbs.uvagem.track.xp[I] 200 -0.6 0.6 singletrack
+th1d hsbs_uvagem_TrackYp ';Best track dy/dz;' sbs.uvagem.track.yp[I] 200 -1.2 1.2 singletrack
+th2d hsbs_uvagem_TrackXY 'Best track; y(m); x(m)' sbs.uvagem.track.y[I] sbs.uvagem.track.x[I] 150 -1.1 1.1 150 -0.325 0.325 singletrack
+th2d hsbs_uvagem_TrackXpYp 'Best track ;dy/dz;dx/dz' sbs.uvagem.track.yp[I] sbs.uvagem.track.xp[I] 150 -1.2 1.2 150 -0.6 0.6 singletrack
+th1d hsbs_uvagem_TrackChi2NDF ';Best track chi2/ndf;' sbs.uvagem.track.chi2ndf[I] 200 0 200 singletrack
+
+th1d hsbs_uvagem_residu_allhits 'All hits; Track u/x incl. residuals (m);' sbs.uvagem.hit.residu 500 -0.0025 0.0025 singletrack
+th1d hsbs_uvagem_residv_allhits 'All hits; Track v/y incl. residuals (m);' sbs.uvagem.hit.residv 500 -0.0025 0.0025 singletrack
+th1d hsbs_uvagem_eresidu_allhits 'All hits; Track u/x excl. residuals (m);' sbs.uvagem.hit.eresidu 500 -0.0025 0.0025 singletrack
+th1d hsbs_uvagem_eresidv_allhits 'All hits; Track v/y excl. residuals (m);' sbs.uvagem.hit.eresidv 500 -0.0025 0.0025 singletrack
+th2d hsbs_uvagem_residu_vs_layer ';layer; Track u/x incl. residuals (m)' sbs.uvagem.hit.layer sbs.uvagem.hit.residu 5 -0.5 4.5 250 -0.0025 0.0025 singletrack
+th2d hsbs_uvagem_residv_vs_layer ';layer; Track v/y incl. residuals (m)' sbs.uvagem.hit.layer sbs.uvagem.hit.residv 5 -0.5 4.5 250 -0.0025 0.0025 singletrack
+th2d hsbs_uvagem_residu_vs_module ';module; Track u/x incl. residuals (m)' sbs.uvagem.hit.module sbs.uvagem.hit.residu 20 -0.5 19.5 250 -0.0025 0.0025 singletrack
+th2d hsbs_uvagem_residv_vs_module ';module; Track v/y incl. residuals (m)' sbs.uvagem.hit.module sbs.uvagem.hit.residv 20 -0.5 19.5 250 -0.0025 0.0025 singletrack
+th2d hsbs_uvagem_eresidu_vs_layer ';layer; Track u/x excl. residuals (m)' sbs.uvagem.hit.layer sbs.uvagem.hit.eresidu 5 -0.5 4.5 250 -0.0025 0.0025 singletrack
+th2d hsbs_uvagem_eresidv_vs_layer ';layer; Track v/y excl. residuals (m)' sbs.uvagem.hit.layer sbs.uvagem.hit.eresidv 5 -0.5 4.5 250 -0.0025 0.0025 singletrack
+th2d hsbs_uvagem_eresidu_vs_module ';module; Track u/x excl. residuals (m)' sbs.uvagem.hit.module sbs.uvagem.hit.eresidu 20 -0.5 19.5 250 -0.0025 0.0025 singletrack
+th2d hsbs_uvagem_eresidv_vs_module ';module; Track v/y excl. residuals (m)' sbs.uvagem.hit.module sbs.uvagem.hit.eresidv 20 -0.5 19.5 250 -0.0025 0.0025 singletrack
+th2d hsbs_uvagem_hit_xglobal_vs_layer ';layer; Hit x global (m)' sbs.uvagem.hit.layer sbs.uvagem.hit.xglobal 5 -0.5 4.5 250 -0.325 0.325
+th2d hsbs_uvagem_hit_yglobal_vs_layer ';layer; Hit y global (m)' sbs.uvagem.hit.layer sbs.uvagem.hit.yglobal 5 -0.5 4.5 250 -1.1 1.1
+
+# Module-specific histograms: 
+# Module 0 strip histograms, all strips: 
+th1d hsbs_uvagem_m0_nstripstot_good 'sbs.uvagem.m0; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m0.strip.nstripsfired 101 -0.5 100.5 sbs.uvagem.m0.ontrack
+th1d hsbs_uvagem_m0_nclustU_good 'sbs.uvagem.m0; num. U clusters;' sbs.uvagem.m0.clust.nclustu 51 -0.5 50.5 sbs.uvagem.m0.ontrack
+th1d hsbs_uvagem_m0_nclustV_good 'sbs.uvagem.m0; num. V clusters; ' sbs.uvagem.m0.clust.nclustv 51 -0.5 50.5 sbs.uvagem.m0.ontrack
+th1d hsbs_uvagem_m0_nstripstot_all 'sbs.uvagem.m0; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m0.strip.nstripsfired 101 -0.5 100.5
+th1d hsbs_uvagem_m0_nclustU_all 'sbs.uvagem.m0; num. U clusters;' sbs.uvagem.m0.clust.nclustu 51 -0.5 50.5
+th1d hsbs_uvagem_m0_nclustV_all 'sbs.uvagem.m0; num. V clusters;' sbs.uvagem.m0.clust.nclustv 51 -0.5 50.5
+th1d hsbs_uvagem_m0_stripU_all 'sbs.uvagem.m0; U/X strip index; ' sbs.uvagem.m0.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m0.strip.IsU[I]
+th1d hsbs_uvagem_m0_stripV_all 'sbs.uvagem.m0; V/Y strip index; ' sbs.uvagem.m0.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m0.strip.IsV[I]
+th1d hsbs_uvagem_m0_ADCsumU_all 'sbs.uvagem.m0; Strip ADC sum, U/X strips;' sbs.uvagem.m0.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m0.strip.IsU[I]
+th1d hsbs_uvagem_m0_ADCsumV_all 'sbs.uvagem.m0; Strip ADC sum, V/Y strips;' sbs.uvagem.m0.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m0.strip.IsV[I]
+th1d hsbs_uvagem_m0_ADCmaxU_all 'sbs.uvagem.m0; Strip ADC max, U/X strips;' sbs.uvagem.m0.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m0.strip.IsU[I]
+th1d hsbs_uvagem_m0_ADCmaxV_all 'sbs.uvagem.m0; Strip ADC max, V/Y strips; ' sbs.uvagem.m0.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m0.strip.IsV[I]
+th1d hsbs_uvagem_m0_TimeU_all 'sbs.uvagem.m0; Strip Time, U/X strips;' sbs.uvagem.m0.strip.Tmean[I] 150 0 150 sbs.uvagem.m0.strip.IsU[I]
+th1d hsbs_uvagem_m0_TimeV_all 'sbs.uvagem.m0; Strip Time, V/Y strips;' sbs.uvagem.m0.strip.Tmean[I] 150 0 150 sbs.uvagem.m0.strip.IsV[I]
+th1d hsbs_uvagem_m0_iSampMaxU_all 'sbs.uvagem.m0; Peak time sample, U/X strips;' sbs.uvagem.m0.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m0.strip.IsU[I]
+th1d hsbs_uvagem_m0_iSampMaxV_all 'sbs.uvagem.m0; Peak time sample, V/Y strips;' sbs.uvagem.m0.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m0.strip.IsV[I]
+th2d hsbs_uvagem_m0_ADCsum_vs_Ustrip_all 'sbs.uvagem.m0; U strip ADC sum vs strip;' sbs.uvagem.m0.strip.istrip[I] sbs.uvagem.m0.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m0.strip.IsU[I]
+th2d hsbs_uvagem_m0_ADCsum_vs_Vstrip_all 'sbs.uvagem.m0; V strip ADC sum vs strip;' sbs.uvagem.m0.strip.istrip[I] sbs.uvagem.m0.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m0.strip.IsV[I]
+th2d hsbs_uvagem_m0_ADCmax_vs_Ustrip_all 'sbs.uvagem.m0; U strip ADC max vs strip;' sbs.uvagem.m0.strip.istrip[I] sbs.uvagem.m0.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m0.strip.IsU[I]
+th2d hsbs_uvagem_m0_ADCmax_vs_Vstrip_all 'sbs.uvagem.m0; V strip ADC max vs strip;' sbs.uvagem.m0.strip.istrip[I] sbs.uvagem.m0.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m0.strip.IsV[I]
+
+# Module 0 strip histograms, strips on tracks: 
+th1d hsbs_uvagem_m0_stripU_good 'sbs.uvagem.m0 (strips on tracks); U/X strip index;' sbs.uvagem.m0.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m0.strip.ontrackU[I]
+th1d hsbs_uvagem_m0_stripV_good 'sbs.uvagem.m0 (strips on tracks); V/Y strip index;' sbs.uvagem.m0.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m0.strip.ontrackV[I]
+th1d hsbs_uvagem_m0_ADCsumU_good 'sbs.uvagem.m0; Strip ADC sum, U/X strips;' sbs.uvagem.m0.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m0.strip.ontrackU[I]
+th1d hsbs_uvagem_m0_ADCsumV_good 'sbs.uvagem.m0; Strip ADC sum, V/Y strips;' sbs.uvagem.m0.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m0.strip.ontrackV[I]
+th1d hsbs_uvagem_m0_ADCmaxU_good 'sbs.uvagem.m0; Strip ADC max, U/X strips;' sbs.uvagem.m0.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m0.strip.ontrackU[I]
+th1d hsbs_uvagem_m0_ADCmaxV_good 'sbs.uvagem.m0; Strip ADC max, V/Y strips;' sbs.uvagem.m0.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m0.strip.ontrackV[I]
+th1d hsbs_uvagem_m0_TimeU_good 'sbs.uvagem.m0; Strip Time, U/X strips;' sbs.uvagem.m0.strip.Tmean[I] 150 0 150 sbs.uvagem.m0.strip.ontrackU[I]
+th1d hsbs_uvagem_m0_TimeV_good 'sbs.uvagem.m0; Strip Time, V/Y strips;' sbs.uvagem.m0.strip.Tmean[I] 150 0 150 sbs.uvagem.m0.strip.ontrackV[I]
+th1d hsbs_uvagem_m0_iSampMaxU_good 'sbs.uvagem.m0; Peak time sample, U/X strips;' sbs.uvagem.m0.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m0.strip.ontrackU[I]
+th1d hsbs_uvagem_m0_iSampMaxV_good 'sbs.uvagem.m0; Peak time sample, V/Y strips;' sbs.uvagem.m0.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m0.strip.ontrackV[I]
+th2d hsbs_uvagem_m0_ADCsum_vs_Ustrip_good 'sbs.uvagem.m0; U strip ADC sum vs strip;' sbs.uvagem.m0.strip.istrip[I] sbs.uvagem.m0.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m0.strip.ontrackU[I]
+th2d hsbs_uvagem_m0_ADCsum_vs_Vstrip_good 'sbs.uvagem.m0; V strip ADC sum vs strip;' sbs.uvagem.m0.strip.istrip[I] sbs.uvagem.m0.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m0.strip.ontrackV[I]
+th2d hsbs_uvagem_m0_ADCmax_vs_Ustrip_good 'sbs.uvagem.m0; U strip ADC max vs strip;' sbs.uvagem.m0.strip.istrip[I] sbs.uvagem.m0.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m0.strip.ontrackU[I]
+th2d hsbs_uvagem_m0_ADCmax_vs_Vstrip_good 'sbs.uvagem.m0; V strip ADC max vs strip;' sbs.uvagem.m0.strip.istrip[I] sbs.uvagem.m0.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m0.strip.ontrackV[I]
+
+# Module 0 hit maps 
+#th1d hsbs_uvagem_m0_hit_xlocal 'Hit local X position (m), Module 0' sbs.uvagem.m0.hit.hitx[I] 250 -0.3072 0.3072 sbs.uvagem.m0.hit.ontrack[I]
+#th1d hsbs_uvagem_m0_hit_ylocal 'Hit local Y position (m), Module 0' sbs.uvagem.m0.hit.hity[I] 250 -0.256 0.256 sbs.uvagem.m0.hit.ontrack[I]
+#th2d hsbs_uvagem_m0_hit_xylocal 'Hit local X vs Y (m), Module 0' sbs.uvagem.m0.hit.hity[I] sbs.uvagem.m0.hit.hitx[I] 200 -0.256 0.256 200 -0.3072 0.3072 sbs.uvagem.m0.hit.ontrack[I]
+
+th1d hsbs_uvagem_m0_ADCmax_good_CM 'sbs.uvagem.m0; Strip ADC max; ' sbs.uvagem.m0.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m0.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m0_ADCsum_good_CM 'sbs.uvagem.m0; Strip ADC sum; ' sbs.uvagem.m0.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m0.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m0_iSampMax_good_CM 'sbs.uvagem.m0; Strip max time sample;' sbs.uvagem.m0.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m0.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m0_StripTime_good_CM 'sbs.uvagem.m0; Strip Mean Time (ns);' sbs.uvagem.m0.strip.Tmean[I] 150 0 150 sbs.uvagem.m0.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m0_StripTsigma_good_CM 'sbs.uvagem.m0; Strip RMS Time (ns);' sbs.uvagem.m0.strip.Tsigma[I] 150 0 150 sbs.uvagem.m0.strip.CM_GOOD[I]
+
+
+# Module 1 strip histograms, all strips: 
+th1d hsbs_uvagem_m1_nstripstot_good 'sbs.uvagem.m1; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m1.strip.nstripsfired 101 -0.5 100.5 sbs.uvagem.m1.ontrack
+th1d hsbs_uvagem_m1_nclustU_good 'sbs.uvagem.m1; num. U clusters;' sbs.uvagem.m1.clust.nclustu 51 -0.5 50.5 sbs.uvagem.m1.ontrack
+th1d hsbs_uvagem_m1_nclustV_good 'sbs.uvagem.m1; num. V clusters; ' sbs.uvagem.m1.clust.nclustv 51 -0.5 50.5 sbs.uvagem.m1.ontrack
+th1d hsbs_uvagem_m1_nstripstot_all 'sbs.uvagem.m1; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m1.strip.nstripsfired 101 -0.5 100.5
+th1d hsbs_uvagem_m1_nclustU_all 'sbs.uvagem.m1; num. U clusters;' sbs.uvagem.m1.clust.nclustu 51 -0.5 50.5
+th1d hsbs_uvagem_m1_nclustV_all 'sbs.uvagem.m1; num. V clusters;' sbs.uvagem.m1.clust.nclustv 51 -0.5 50.5
+th1d hsbs_uvagem_m1_stripU_all 'sbs.uvagem.m1; U/X strip index; ' sbs.uvagem.m1.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m1.strip.IsU[I]
+th1d hsbs_uvagem_m1_stripV_all 'sbs.uvagem.m1; V/Y strip index; ' sbs.uvagem.m1.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m1.strip.IsV[I]
+th1d hsbs_uvagem_m1_ADCsumU_all 'sbs.uvagem.m1; Strip ADC sum, U/X strips;' sbs.uvagem.m1.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m1.strip.IsU[I]
+th1d hsbs_uvagem_m1_ADCsumV_all 'sbs.uvagem.m1; Strip ADC sum, V/Y strips;' sbs.uvagem.m1.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m1.strip.IsV[I]
+th1d hsbs_uvagem_m1_ADCmaxU_all 'sbs.uvagem.m1; Strip ADC max, U/X strips;' sbs.uvagem.m1.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m1.strip.IsU[I]
+th1d hsbs_uvagem_m1_ADCmaxV_all 'sbs.uvagem.m1; Strip ADC max, V/Y strips; ' sbs.uvagem.m1.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m1.strip.IsV[I]
+th1d hsbs_uvagem_m1_TimeU_all 'sbs.uvagem.m1; Strip Time, U/X strips;' sbs.uvagem.m1.strip.Tmean[I] 150 0 150 sbs.uvagem.m1.strip.IsU[I]
+th1d hsbs_uvagem_m1_TimeV_all 'sbs.uvagem.m1; Strip Time, V/Y strips;' sbs.uvagem.m1.strip.Tmean[I] 150 0 150 sbs.uvagem.m1.strip.IsV[I]
+th1d hsbs_uvagem_m1_iSampMaxU_all 'sbs.uvagem.m1; Peak time sample, U/X strips;' sbs.uvagem.m1.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m1.strip.IsU[I]
+th1d hsbs_uvagem_m1_iSampMaxV_all 'sbs.uvagem.m1; Peak time sample, V/Y strips;' sbs.uvagem.m1.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m1.strip.IsV[I]
+th2d hsbs_uvagem_m1_ADCsum_vs_Ustrip_all 'sbs.uvagem.m1; U strip ADC sum vs strip;' sbs.uvagem.m1.strip.istrip[I] sbs.uvagem.m1.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m1.strip.IsU[I]
+th2d hsbs_uvagem_m1_ADCsum_vs_Vstrip_all 'sbs.uvagem.m1; V strip ADC sum vs strip;' sbs.uvagem.m1.strip.istrip[I] sbs.uvagem.m1.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m1.strip.IsV[I]
+th2d hsbs_uvagem_m1_ADCmax_vs_Ustrip_all 'sbs.uvagem.m1; U strip ADC max vs strip;' sbs.uvagem.m1.strip.istrip[I] sbs.uvagem.m1.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m1.strip.IsU[I]
+th2d hsbs_uvagem_m1_ADCmax_vs_Vstrip_all 'sbs.uvagem.m1; V strip ADC max vs strip;' sbs.uvagem.m1.strip.istrip[I] sbs.uvagem.m1.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m1.strip.IsV[I]
+
+# Module 1 strip histograms, strips on tracks: 
+th1d hsbs_uvagem_m1_stripU_good 'sbs.uvagem.m1 (strips on tracks); U/X strip index;' sbs.uvagem.m1.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m1.strip.ontrackU[I]
+th1d hsbs_uvagem_m1_stripV_good 'sbs.uvagem.m1 (strips on tracks); V/Y strip index;' sbs.uvagem.m1.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m1.strip.ontrackV[I]
+th1d hsbs_uvagem_m1_ADCsumU_good 'sbs.uvagem.m1; Strip ADC sum, U/X strips;' sbs.uvagem.m1.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m1.strip.ontrackU[I]
+th1d hsbs_uvagem_m1_ADCsumV_good 'sbs.uvagem.m1; Strip ADC sum, V/Y strips;' sbs.uvagem.m1.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m1.strip.ontrackV[I]
+th1d hsbs_uvagem_m1_ADCmaxU_good 'sbs.uvagem.m1; Strip ADC max, U/X strips;' sbs.uvagem.m1.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m1.strip.ontrackU[I]
+th1d hsbs_uvagem_m1_ADCmaxV_good 'sbs.uvagem.m1; Strip ADC max, V/Y strips;' sbs.uvagem.m1.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m1.strip.ontrackV[I]
+th1d hsbs_uvagem_m1_TimeU_good 'sbs.uvagem.m1; Strip Time, U/X strips;' sbs.uvagem.m1.strip.Tmean[I] 150 0 150 sbs.uvagem.m1.strip.ontrackU[I]
+th1d hsbs_uvagem_m1_TimeV_good 'sbs.uvagem.m1; Strip Time, V/Y strips;' sbs.uvagem.m1.strip.Tmean[I] 150 0 150 sbs.uvagem.m1.strip.ontrackV[I]
+th1d hsbs_uvagem_m1_iSampMaxU_good 'sbs.uvagem.m1; Peak time sample, U/X strips;' sbs.uvagem.m1.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m1.strip.ontrackU[I]
+th1d hsbs_uvagem_m1_iSampMaxV_good 'sbs.uvagem.m1; Peak time sample, V/Y strips;' sbs.uvagem.m1.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m1.strip.ontrackV[I]
+th2d hsbs_uvagem_m1_ADCsum_vs_Ustrip_good 'sbs.uvagem.m1; U strip ADC sum vs strip;' sbs.uvagem.m1.strip.istrip[I] sbs.uvagem.m1.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m1.strip.ontrackU[I]
+th2d hsbs_uvagem_m1_ADCsum_vs_Vstrip_good 'sbs.uvagem.m1; V strip ADC sum vs strip;' sbs.uvagem.m1.strip.istrip[I] sbs.uvagem.m1.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m1.strip.ontrackV[I]
+th2d hsbs_uvagem_m1_ADCmax_vs_Ustrip_good 'sbs.uvagem.m1; U strip ADC max vs strip;' sbs.uvagem.m1.strip.istrip[I] sbs.uvagem.m1.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m1.strip.ontrackU[I]
+th2d hsbs_uvagem_m1_ADCmax_vs_Vstrip_good 'sbs.uvagem.m1; V strip ADC max vs strip;' sbs.uvagem.m1.strip.istrip[I] sbs.uvagem.m1.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m1.strip.ontrackV[I]
+
+# Module 1 hit maps 
+#th1d hsbs_uvagem_m1_hit_xlocal 'Hit local X position (m), Module 1' sbs.uvagem.m1.hit.hitx[I] 250 -0.3072 0.3072 sbs.uvagem.m1.hit.ontrack[I]
+#th1d hsbs_uvagem_m1_hit_ylocal 'Hit local Y position (m), Module 1' sbs.uvagem.m1.hit.hity[I] 250 -0.256 0.256 sbs.uvagem.m1.hit.ontrack[I]
+#th2d hsbs_uvagem_m1_hit_xylocal 'Hit local X vs Y (m), Module 1' sbs.uvagem.m1.hit.hity[I] sbs.uvagem.m1.hit.hitx[I] 200 -0.256 0.256 200 -0.3072 0.3072 sbs.uvagem.m1.hit.ontrack[I]
+
+th1d hsbs_uvagem_m1_ADCmax_good_CM 'sbs.uvagem.m1; Strip ADC max; ' sbs.uvagem.m1.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m1.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m1_ADCsum_good_CM 'sbs.uvagem.m1; Strip ADC sum; ' sbs.uvagem.m1.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m1.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m1_iSampMax_good_CM 'sbs.uvagem.m1; Strip max time sample;' sbs.uvagem.m1.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m1.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m1_StripTime_good_CM 'sbs.uvagem.m1; Strip Mean Time (ns);' sbs.uvagem.m1.strip.Tmean[I] 150 0 150 sbs.uvagem.m1.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m1_StripTsigma_good_CM 'sbs.uvagem.m1; Strip RMS Time (ns);' sbs.uvagem.m1.strip.Tsigma[I] 150 0 150 sbs.uvagem.m1.strip.CM_GOOD[I]
+
+
+# Module 2 strip histograms, all strips: 
+th1d hsbs_uvagem_m2_nstripstot_good 'sbs.uvagem.m2; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m2.strip.nstripsfired 101 -0.5 100.5 sbs.uvagem.m2.ontrack
+th1d hsbs_uvagem_m2_nclustU_good 'sbs.uvagem.m2; num. U clusters;' sbs.uvagem.m2.clust.nclustu 51 -0.5 50.5 sbs.uvagem.m2.ontrack
+th1d hsbs_uvagem_m2_nclustV_good 'sbs.uvagem.m2; num. V clusters; ' sbs.uvagem.m2.clust.nclustv 51 -0.5 50.5 sbs.uvagem.m2.ontrack
+th1d hsbs_uvagem_m2_nstripstot_all 'sbs.uvagem.m2; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m2.strip.nstripsfired 101 -0.5 100.5
+th1d hsbs_uvagem_m2_nclustU_all 'sbs.uvagem.m2; num. U clusters;' sbs.uvagem.m2.clust.nclustu 51 -0.5 50.5
+th1d hsbs_uvagem_m2_nclustV_all 'sbs.uvagem.m2; num. V clusters;' sbs.uvagem.m2.clust.nclustv 51 -0.5 50.5
+th1d hsbs_uvagem_m2_stripU_all 'sbs.uvagem.m2; U/X strip index; ' sbs.uvagem.m2.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m2.strip.IsU[I]
+th1d hsbs_uvagem_m2_stripV_all 'sbs.uvagem.m2; V/Y strip index; ' sbs.uvagem.m2.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m2.strip.IsV[I]
+th1d hsbs_uvagem_m2_ADCsumU_all 'sbs.uvagem.m2; Strip ADC sum, U/X strips;' sbs.uvagem.m2.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m2.strip.IsU[I]
+th1d hsbs_uvagem_m2_ADCsumV_all 'sbs.uvagem.m2; Strip ADC sum, V/Y strips;' sbs.uvagem.m2.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m2.strip.IsV[I]
+th1d hsbs_uvagem_m2_ADCmaxU_all 'sbs.uvagem.m2; Strip ADC max, U/X strips;' sbs.uvagem.m2.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m2.strip.IsU[I]
+th1d hsbs_uvagem_m2_ADCmaxV_all 'sbs.uvagem.m2; Strip ADC max, V/Y strips; ' sbs.uvagem.m2.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m2.strip.IsV[I]
+th1d hsbs_uvagem_m2_TimeU_all 'sbs.uvagem.m2; Strip Time, U/X strips;' sbs.uvagem.m2.strip.Tmean[I] 150 0 150 sbs.uvagem.m2.strip.IsU[I]
+th1d hsbs_uvagem_m2_TimeV_all 'sbs.uvagem.m2; Strip Time, V/Y strips;' sbs.uvagem.m2.strip.Tmean[I] 150 0 150 sbs.uvagem.m2.strip.IsV[I]
+th1d hsbs_uvagem_m2_iSampMaxU_all 'sbs.uvagem.m2; Peak time sample, U/X strips;' sbs.uvagem.m2.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m2.strip.IsU[I]
+th1d hsbs_uvagem_m2_iSampMaxV_all 'sbs.uvagem.m2; Peak time sample, V/Y strips;' sbs.uvagem.m2.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m2.strip.IsV[I]
+th2d hsbs_uvagem_m2_ADCsum_vs_Ustrip_all 'sbs.uvagem.m2; U strip ADC sum vs strip;' sbs.uvagem.m2.strip.istrip[I] sbs.uvagem.m2.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m2.strip.IsU[I]
+th2d hsbs_uvagem_m2_ADCsum_vs_Vstrip_all 'sbs.uvagem.m2; V strip ADC sum vs strip;' sbs.uvagem.m2.strip.istrip[I] sbs.uvagem.m2.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m2.strip.IsV[I]
+th2d hsbs_uvagem_m2_ADCmax_vs_Ustrip_all 'sbs.uvagem.m2; U strip ADC max vs strip;' sbs.uvagem.m2.strip.istrip[I] sbs.uvagem.m2.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m2.strip.IsU[I]
+th2d hsbs_uvagem_m2_ADCmax_vs_Vstrip_all 'sbs.uvagem.m2; V strip ADC max vs strip;' sbs.uvagem.m2.strip.istrip[I] sbs.uvagem.m2.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m2.strip.IsV[I]
+
+# Module 2 strip histograms, strips on tracks: 
+th1d hsbs_uvagem_m2_stripU_good 'sbs.uvagem.m2 (strips on tracks); U/X strip index;' sbs.uvagem.m2.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m2.strip.ontrackU[I]
+th1d hsbs_uvagem_m2_stripV_good 'sbs.uvagem.m2 (strips on tracks); V/Y strip index;' sbs.uvagem.m2.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m2.strip.ontrackV[I]
+th1d hsbs_uvagem_m2_ADCsumU_good 'sbs.uvagem.m2; Strip ADC sum, U/X strips;' sbs.uvagem.m2.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m2.strip.ontrackU[I]
+th1d hsbs_uvagem_m2_ADCsumV_good 'sbs.uvagem.m2; Strip ADC sum, V/Y strips;' sbs.uvagem.m2.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m2.strip.ontrackV[I]
+th1d hsbs_uvagem_m2_ADCmaxU_good 'sbs.uvagem.m2; Strip ADC max, U/X strips;' sbs.uvagem.m2.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m2.strip.ontrackU[I]
+th1d hsbs_uvagem_m2_ADCmaxV_good 'sbs.uvagem.m2; Strip ADC max, V/Y strips;' sbs.uvagem.m2.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m2.strip.ontrackV[I]
+th1d hsbs_uvagem_m2_TimeU_good 'sbs.uvagem.m2; Strip Time, U/X strips;' sbs.uvagem.m2.strip.Tmean[I] 150 0 150 sbs.uvagem.m2.strip.ontrackU[I]
+th1d hsbs_uvagem_m2_TimeV_good 'sbs.uvagem.m2; Strip Time, V/Y strips;' sbs.uvagem.m2.strip.Tmean[I] 150 0 150 sbs.uvagem.m2.strip.ontrackV[I]
+th1d hsbs_uvagem_m2_iSampMaxU_good 'sbs.uvagem.m2; Peak time sample, U/X strips;' sbs.uvagem.m2.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m2.strip.ontrackU[I]
+th1d hsbs_uvagem_m2_iSampMaxV_good 'sbs.uvagem.m2; Peak time sample, V/Y strips;' sbs.uvagem.m2.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m2.strip.ontrackV[I]
+th2d hsbs_uvagem_m2_ADCsum_vs_Ustrip_good 'sbs.uvagem.m2; U strip ADC sum vs strip;' sbs.uvagem.m2.strip.istrip[I] sbs.uvagem.m2.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m2.strip.ontrackU[I]
+th2d hsbs_uvagem_m2_ADCsum_vs_Vstrip_good 'sbs.uvagem.m2; V strip ADC sum vs strip;' sbs.uvagem.m2.strip.istrip[I] sbs.uvagem.m2.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m2.strip.ontrackV[I]
+th2d hsbs_uvagem_m2_ADCmax_vs_Ustrip_good 'sbs.uvagem.m2; U strip ADC max vs strip;' sbs.uvagem.m2.strip.istrip[I] sbs.uvagem.m2.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m2.strip.ontrackU[I]
+th2d hsbs_uvagem_m2_ADCmax_vs_Vstrip_good 'sbs.uvagem.m2; V strip ADC max vs strip;' sbs.uvagem.m2.strip.istrip[I] sbs.uvagem.m2.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m2.strip.ontrackV[I]
+
+# Module 2 hit maps 
+#th1d hsbs_uvagem_m2_hit_xlocal 'Hit local X position (m), Module 2' sbs.uvagem.m2.hit.hitx[I] 250 -0.3072 0.3072 sbs.uvagem.m2.hit.ontrack[I]
+#th1d hsbs_uvagem_m2_hit_ylocal 'Hit local Y position (m), Module 2' sbs.uvagem.m2.hit.hity[I] 250 -0.256 0.256 sbs.uvagem.m2.hit.ontrack[I]
+#th2d hsbs_uvagem_m2_hit_xylocal 'Hit local X vs Y (m), Module 2' sbs.uvagem.m2.hit.hity[I] sbs.uvagem.m2.hit.hitx[I] 200 -0.256 0.256 200 -0.3072 0.3072 sbs.uvagem.m2.hit.ontrack[I]
+
+th1d hsbs_uvagem_m2_ADCmax_good_CM 'sbs.uvagem.m2; Strip ADC max; ' sbs.uvagem.m2.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m2.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m2_ADCsum_good_CM 'sbs.uvagem.m2; Strip ADC sum; ' sbs.uvagem.m2.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m2.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m2_iSampMax_good_CM 'sbs.uvagem.m2; Strip max time sample;' sbs.uvagem.m2.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m2.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m2_StripTime_good_CM 'sbs.uvagem.m2; Strip Mean Time (ns);' sbs.uvagem.m2.strip.Tmean[I] 150 0 150 sbs.uvagem.m2.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m2_StripTsigma_good_CM 'sbs.uvagem.m2; Strip RMS Time (ns);' sbs.uvagem.m2.strip.Tsigma[I] 150 0 150 sbs.uvagem.m2.strip.CM_GOOD[I]
+
+
+# Module 3 strip histograms, all strips: 
+th1d hsbs_uvagem_m3_nstripstot_good 'sbs.uvagem.m3; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m3.strip.nstripsfired 101 -0.5 100.5 sbs.uvagem.m3.ontrack
+th1d hsbs_uvagem_m3_nclustU_good 'sbs.uvagem.m3; num. U clusters;' sbs.uvagem.m3.clust.nclustu 51 -0.5 50.5 sbs.uvagem.m3.ontrack
+th1d hsbs_uvagem_m3_nclustV_good 'sbs.uvagem.m3; num. V clusters; ' sbs.uvagem.m3.clust.nclustv 51 -0.5 50.5 sbs.uvagem.m3.ontrack
+th1d hsbs_uvagem_m3_nstripstot_all 'sbs.uvagem.m3; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m3.strip.nstripsfired 101 -0.5 100.5
+th1d hsbs_uvagem_m3_nclustU_all 'sbs.uvagem.m3; num. U clusters;' sbs.uvagem.m3.clust.nclustu 51 -0.5 50.5
+th1d hsbs_uvagem_m3_nclustV_all 'sbs.uvagem.m3; num. V clusters;' sbs.uvagem.m3.clust.nclustv 51 -0.5 50.5
+th1d hsbs_uvagem_m3_stripU_all 'sbs.uvagem.m3; U/X strip index; ' sbs.uvagem.m3.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m3.strip.IsU[I]
+th1d hsbs_uvagem_m3_stripV_all 'sbs.uvagem.m3; V/Y strip index; ' sbs.uvagem.m3.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m3.strip.IsV[I]
+th1d hsbs_uvagem_m3_ADCsumU_all 'sbs.uvagem.m3; Strip ADC sum, U/X strips;' sbs.uvagem.m3.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m3.strip.IsU[I]
+th1d hsbs_uvagem_m3_ADCsumV_all 'sbs.uvagem.m3; Strip ADC sum, V/Y strips;' sbs.uvagem.m3.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m3.strip.IsV[I]
+th1d hsbs_uvagem_m3_ADCmaxU_all 'sbs.uvagem.m3; Strip ADC max, U/X strips;' sbs.uvagem.m3.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m3.strip.IsU[I]
+th1d hsbs_uvagem_m3_ADCmaxV_all 'sbs.uvagem.m3; Strip ADC max, V/Y strips; ' sbs.uvagem.m3.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m3.strip.IsV[I]
+th1d hsbs_uvagem_m3_TimeU_all 'sbs.uvagem.m3; Strip Time, U/X strips;' sbs.uvagem.m3.strip.Tmean[I] 150 0 150 sbs.uvagem.m3.strip.IsU[I]
+th1d hsbs_uvagem_m3_TimeV_all 'sbs.uvagem.m3; Strip Time, V/Y strips;' sbs.uvagem.m3.strip.Tmean[I] 150 0 150 sbs.uvagem.m3.strip.IsV[I]
+th1d hsbs_uvagem_m3_iSampMaxU_all 'sbs.uvagem.m3; Peak time sample, U/X strips;' sbs.uvagem.m3.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m3.strip.IsU[I]
+th1d hsbs_uvagem_m3_iSampMaxV_all 'sbs.uvagem.m3; Peak time sample, V/Y strips;' sbs.uvagem.m3.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m3.strip.IsV[I]
+th2d hsbs_uvagem_m3_ADCsum_vs_Ustrip_all 'sbs.uvagem.m3; U strip ADC sum vs strip;' sbs.uvagem.m3.strip.istrip[I] sbs.uvagem.m3.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m3.strip.IsU[I]
+th2d hsbs_uvagem_m3_ADCsum_vs_Vstrip_all 'sbs.uvagem.m3; V strip ADC sum vs strip;' sbs.uvagem.m3.strip.istrip[I] sbs.uvagem.m3.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m3.strip.IsV[I]
+th2d hsbs_uvagem_m3_ADCmax_vs_Ustrip_all 'sbs.uvagem.m3; U strip ADC max vs strip;' sbs.uvagem.m3.strip.istrip[I] sbs.uvagem.m3.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m3.strip.IsU[I]
+th2d hsbs_uvagem_m3_ADCmax_vs_Vstrip_all 'sbs.uvagem.m3; V strip ADC max vs strip;' sbs.uvagem.m3.strip.istrip[I] sbs.uvagem.m3.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m3.strip.IsV[I]
+
+# Module 3 strip histograms, strips on tracks: 
+th1d hsbs_uvagem_m3_stripU_good 'sbs.uvagem.m3 (strips on tracks); U/X strip index;' sbs.uvagem.m3.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m3.strip.ontrackU[I]
+th1d hsbs_uvagem_m3_stripV_good 'sbs.uvagem.m3 (strips on tracks); V/Y strip index;' sbs.uvagem.m3.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m3.strip.ontrackV[I]
+th1d hsbs_uvagem_m3_ADCsumU_good 'sbs.uvagem.m3; Strip ADC sum, U/X strips;' sbs.uvagem.m3.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m3.strip.ontrackU[I]
+th1d hsbs_uvagem_m3_ADCsumV_good 'sbs.uvagem.m3; Strip ADC sum, V/Y strips;' sbs.uvagem.m3.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m3.strip.ontrackV[I]
+th1d hsbs_uvagem_m3_ADCmaxU_good 'sbs.uvagem.m3; Strip ADC max, U/X strips;' sbs.uvagem.m3.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m3.strip.ontrackU[I]
+th1d hsbs_uvagem_m3_ADCmaxV_good 'sbs.uvagem.m3; Strip ADC max, V/Y strips;' sbs.uvagem.m3.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m3.strip.ontrackV[I]
+th1d hsbs_uvagem_m3_TimeU_good 'sbs.uvagem.m3; Strip Time, U/X strips;' sbs.uvagem.m3.strip.Tmean[I] 150 0 150 sbs.uvagem.m3.strip.ontrackU[I]
+th1d hsbs_uvagem_m3_TimeV_good 'sbs.uvagem.m3; Strip Time, V/Y strips;' sbs.uvagem.m3.strip.Tmean[I] 150 0 150 sbs.uvagem.m3.strip.ontrackV[I]
+th1d hsbs_uvagem_m3_iSampMaxU_good 'sbs.uvagem.m3; Peak time sample, U/X strips;' sbs.uvagem.m3.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m3.strip.ontrackU[I]
+th1d hsbs_uvagem_m3_iSampMaxV_good 'sbs.uvagem.m3; Peak time sample, V/Y strips;' sbs.uvagem.m3.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m3.strip.ontrackV[I]
+th2d hsbs_uvagem_m3_ADCsum_vs_Ustrip_good 'sbs.uvagem.m3; U strip ADC sum vs strip;' sbs.uvagem.m3.strip.istrip[I] sbs.uvagem.m3.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m3.strip.ontrackU[I]
+th2d hsbs_uvagem_m3_ADCsum_vs_Vstrip_good 'sbs.uvagem.m3; V strip ADC sum vs strip;' sbs.uvagem.m3.strip.istrip[I] sbs.uvagem.m3.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m3.strip.ontrackV[I]
+th2d hsbs_uvagem_m3_ADCmax_vs_Ustrip_good 'sbs.uvagem.m3; U strip ADC max vs strip;' sbs.uvagem.m3.strip.istrip[I] sbs.uvagem.m3.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m3.strip.ontrackU[I]
+th2d hsbs_uvagem_m3_ADCmax_vs_Vstrip_good 'sbs.uvagem.m3; V strip ADC max vs strip;' sbs.uvagem.m3.strip.istrip[I] sbs.uvagem.m3.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m3.strip.ontrackV[I]
+
+# Module 3 hit maps 
+#th1d hsbs_uvagem_m3_hit_xlocal 'Hit local X position (m), Module 3' sbs.uvagem.m3.hit.hitx[I] 250 -0.3072 0.3072 sbs.uvagem.m3.hit.ontrack[I]
+#th1d hsbs_uvagem_m3_hit_ylocal 'Hit local Y position (m), Module 3' sbs.uvagem.m3.hit.hity[I] 250 -0.256 0.256 sbs.uvagem.m3.hit.ontrack[I]
+#th2d hsbs_uvagem_m3_hit_xylocal 'Hit local X vs Y (m), Module 3' sbs.uvagem.m3.hit.hity[I] sbs.uvagem.m3.hit.hitx[I] 200 -0.256 0.256 200 -0.3072 0.3072 sbs.uvagem.m3.hit.ontrack[I]
+
+th1d hsbs_uvagem_m3_ADCmax_good_CM 'sbs.uvagem.m3; Strip ADC max; ' sbs.uvagem.m3.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m3.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m3_ADCsum_good_CM 'sbs.uvagem.m3; Strip ADC sum; ' sbs.uvagem.m3.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m3.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m3_iSampMax_good_CM 'sbs.uvagem.m3; Strip max time sample;' sbs.uvagem.m3.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m3.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m3_StripTime_good_CM 'sbs.uvagem.m3; Strip Mean Time (ns);' sbs.uvagem.m3.strip.Tmean[I] 150 0 150 sbs.uvagem.m3.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m3_StripTsigma_good_CM 'sbs.uvagem.m3; Strip RMS Time (ns);' sbs.uvagem.m3.strip.Tsigma[I] 150 0 150 sbs.uvagem.m3.strip.CM_GOOD[I]
+
+
+# Module 4 strip histograms, all strips: 
+th1d hsbs_uvagem_m4_nstripstot_good 'sbs.uvagem.m4; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m4.strip.nstripsfired 101 -0.5 100.5 sbs.uvagem.m4.ontrack
+th1d hsbs_uvagem_m4_nclustU_good 'sbs.uvagem.m4; num. U clusters;' sbs.uvagem.m4.clust.nclustu 51 -0.5 50.5 sbs.uvagem.m4.ontrack
+th1d hsbs_uvagem_m4_nclustV_good 'sbs.uvagem.m4; num. V clusters; ' sbs.uvagem.m4.clust.nclustv 51 -0.5 50.5 sbs.uvagem.m4.ontrack
+th1d hsbs_uvagem_m4_nstripstot_all 'sbs.uvagem.m4; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m4.strip.nstripsfired 101 -0.5 100.5
+th1d hsbs_uvagem_m4_nclustU_all 'sbs.uvagem.m4; num. U clusters;' sbs.uvagem.m4.clust.nclustu 51 -0.5 50.5
+th1d hsbs_uvagem_m4_nclustV_all 'sbs.uvagem.m4; num. V clusters;' sbs.uvagem.m4.clust.nclustv 51 -0.5 50.5
+th1d hsbs_uvagem_m4_stripU_all 'sbs.uvagem.m4; U/X strip index; ' sbs.uvagem.m4.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m4.strip.IsU[I]
+th1d hsbs_uvagem_m4_stripV_all 'sbs.uvagem.m4; V/Y strip index; ' sbs.uvagem.m4.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m4.strip.IsV[I]
+th1d hsbs_uvagem_m4_ADCsumU_all 'sbs.uvagem.m4; Strip ADC sum, U/X strips;' sbs.uvagem.m4.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m4.strip.IsU[I]
+th1d hsbs_uvagem_m4_ADCsumV_all 'sbs.uvagem.m4; Strip ADC sum, V/Y strips;' sbs.uvagem.m4.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m4.strip.IsV[I]
+th1d hsbs_uvagem_m4_ADCmaxU_all 'sbs.uvagem.m4; Strip ADC max, U/X strips;' sbs.uvagem.m4.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m4.strip.IsU[I]
+th1d hsbs_uvagem_m4_ADCmaxV_all 'sbs.uvagem.m4; Strip ADC max, V/Y strips; ' sbs.uvagem.m4.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m4.strip.IsV[I]
+th1d hsbs_uvagem_m4_TimeU_all 'sbs.uvagem.m4; Strip Time, U/X strips;' sbs.uvagem.m4.strip.Tmean[I] 150 0 150 sbs.uvagem.m4.strip.IsU[I]
+th1d hsbs_uvagem_m4_TimeV_all 'sbs.uvagem.m4; Strip Time, V/Y strips;' sbs.uvagem.m4.strip.Tmean[I] 150 0 150 sbs.uvagem.m4.strip.IsV[I]
+th1d hsbs_uvagem_m4_iSampMaxU_all 'sbs.uvagem.m4; Peak time sample, U/X strips;' sbs.uvagem.m4.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m4.strip.IsU[I]
+th1d hsbs_uvagem_m4_iSampMaxV_all 'sbs.uvagem.m4; Peak time sample, V/Y strips;' sbs.uvagem.m4.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m4.strip.IsV[I]
+th2d hsbs_uvagem_m4_ADCsum_vs_Ustrip_all 'sbs.uvagem.m4; U strip ADC sum vs strip;' sbs.uvagem.m4.strip.istrip[I] sbs.uvagem.m4.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m4.strip.IsU[I]
+th2d hsbs_uvagem_m4_ADCsum_vs_Vstrip_all 'sbs.uvagem.m4; V strip ADC sum vs strip;' sbs.uvagem.m4.strip.istrip[I] sbs.uvagem.m4.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m4.strip.IsV[I]
+th2d hsbs_uvagem_m4_ADCmax_vs_Ustrip_all 'sbs.uvagem.m4; U strip ADC max vs strip;' sbs.uvagem.m4.strip.istrip[I] sbs.uvagem.m4.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m4.strip.IsU[I]
+th2d hsbs_uvagem_m4_ADCmax_vs_Vstrip_all 'sbs.uvagem.m4; V strip ADC max vs strip;' sbs.uvagem.m4.strip.istrip[I] sbs.uvagem.m4.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m4.strip.IsV[I]
+
+# Module 4 strip histograms, strips on tracks: 
+th1d hsbs_uvagem_m4_stripU_good 'sbs.uvagem.m4 (strips on tracks); U/X strip index;' sbs.uvagem.m4.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m4.strip.ontrackU[I]
+th1d hsbs_uvagem_m4_stripV_good 'sbs.uvagem.m4 (strips on tracks); V/Y strip index;' sbs.uvagem.m4.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m4.strip.ontrackV[I]
+th1d hsbs_uvagem_m4_ADCsumU_good 'sbs.uvagem.m4; Strip ADC sum, U/X strips;' sbs.uvagem.m4.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m4.strip.ontrackU[I]
+th1d hsbs_uvagem_m4_ADCsumV_good 'sbs.uvagem.m4; Strip ADC sum, V/Y strips;' sbs.uvagem.m4.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m4.strip.ontrackV[I]
+th1d hsbs_uvagem_m4_ADCmaxU_good 'sbs.uvagem.m4; Strip ADC max, U/X strips;' sbs.uvagem.m4.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m4.strip.ontrackU[I]
+th1d hsbs_uvagem_m4_ADCmaxV_good 'sbs.uvagem.m4; Strip ADC max, V/Y strips;' sbs.uvagem.m4.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m4.strip.ontrackV[I]
+th1d hsbs_uvagem_m4_TimeU_good 'sbs.uvagem.m4; Strip Time, U/X strips;' sbs.uvagem.m4.strip.Tmean[I] 150 0 150 sbs.uvagem.m4.strip.ontrackU[I]
+th1d hsbs_uvagem_m4_TimeV_good 'sbs.uvagem.m4; Strip Time, V/Y strips;' sbs.uvagem.m4.strip.Tmean[I] 150 0 150 sbs.uvagem.m4.strip.ontrackV[I]
+th1d hsbs_uvagem_m4_iSampMaxU_good 'sbs.uvagem.m4; Peak time sample, U/X strips;' sbs.uvagem.m4.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m4.strip.ontrackU[I]
+th1d hsbs_uvagem_m4_iSampMaxV_good 'sbs.uvagem.m4; Peak time sample, V/Y strips;' sbs.uvagem.m4.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m4.strip.ontrackV[I]
+th2d hsbs_uvagem_m4_ADCsum_vs_Ustrip_good 'sbs.uvagem.m4; U strip ADC sum vs strip;' sbs.uvagem.m4.strip.istrip[I] sbs.uvagem.m4.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m4.strip.ontrackU[I]
+th2d hsbs_uvagem_m4_ADCsum_vs_Vstrip_good 'sbs.uvagem.m4; V strip ADC sum vs strip;' sbs.uvagem.m4.strip.istrip[I] sbs.uvagem.m4.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m4.strip.ontrackV[I]
+th2d hsbs_uvagem_m4_ADCmax_vs_Ustrip_good 'sbs.uvagem.m4; U strip ADC max vs strip;' sbs.uvagem.m4.strip.istrip[I] sbs.uvagem.m4.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m4.strip.ontrackU[I]
+th2d hsbs_uvagem_m4_ADCmax_vs_Vstrip_good 'sbs.uvagem.m4; V strip ADC max vs strip;' sbs.uvagem.m4.strip.istrip[I] sbs.uvagem.m4.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m4.strip.ontrackV[I]
+
+# Module 4 hit maps 
+#th1d hsbs_uvagem_m4_hit_xlocal 'Hit local X position (m), Module 4' sbs.uvagem.m4.hit.hitx[I] 250 -0.3072 0.3072 sbs.uvagem.m4.hit.ontrack[I]
+#th1d hsbs_uvagem_m4_hit_ylocal 'Hit local Y position (m), Module 4' sbs.uvagem.m4.hit.hity[I] 250 -0.256 0.256 sbs.uvagem.m4.hit.ontrack[I]
+#th2d hsbs_uvagem_m4_hit_xylocal 'Hit local X vs Y (m), Module 4' sbs.uvagem.m4.hit.hity[I] sbs.uvagem.m4.hit.hitx[I] 200 -0.256 0.256 200 -0.3072 0.3072 sbs.uvagem.m4.hit.ontrack[I]
+
+th1d hsbs_uvagem_m4_ADCmax_good_CM 'sbs.uvagem.m4; Strip ADC max; ' sbs.uvagem.m4.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m4.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m4_ADCsum_good_CM 'sbs.uvagem.m4; Strip ADC sum; ' sbs.uvagem.m4.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m4.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m4_iSampMax_good_CM 'sbs.uvagem.m4; Strip max time sample;' sbs.uvagem.m4.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m4.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m4_StripTime_good_CM 'sbs.uvagem.m4; Strip Mean Time (ns);' sbs.uvagem.m4.strip.Tmean[I] 150 0 150 sbs.uvagem.m4.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m4_StripTsigma_good_CM 'sbs.uvagem.m4; Strip RMS Time (ns);' sbs.uvagem.m4.strip.Tsigma[I] 150 0 150 sbs.uvagem.m4.strip.CM_GOOD[I]
+
+
+# Module 5 strip histograms, all strips: 
+th1d hsbs_uvagem_m5_nstripstot_good 'sbs.uvagem.m5; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m5.strip.nstripsfired 101 -0.5 100.5 sbs.uvagem.m5.ontrack
+th1d hsbs_uvagem_m5_nclustU_good 'sbs.uvagem.m5; num. U clusters;' sbs.uvagem.m5.clust.nclustu 51 -0.5 50.5 sbs.uvagem.m5.ontrack
+th1d hsbs_uvagem_m5_nclustV_good 'sbs.uvagem.m5; num. V clusters; ' sbs.uvagem.m5.clust.nclustv 51 -0.5 50.5 sbs.uvagem.m5.ontrack
+th1d hsbs_uvagem_m5_nstripstot_all 'sbs.uvagem.m5; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m5.strip.nstripsfired 101 -0.5 100.5
+th1d hsbs_uvagem_m5_nclustU_all 'sbs.uvagem.m5; num. U clusters;' sbs.uvagem.m5.clust.nclustu 51 -0.5 50.5
+th1d hsbs_uvagem_m5_nclustV_all 'sbs.uvagem.m5; num. V clusters;' sbs.uvagem.m5.clust.nclustv 51 -0.5 50.5
+th1d hsbs_uvagem_m5_stripU_all 'sbs.uvagem.m5; U/X strip index; ' sbs.uvagem.m5.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m5.strip.IsU[I]
+th1d hsbs_uvagem_m5_stripV_all 'sbs.uvagem.m5; V/Y strip index; ' sbs.uvagem.m5.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m5.strip.IsV[I]
+th1d hsbs_uvagem_m5_ADCsumU_all 'sbs.uvagem.m5; Strip ADC sum, U/X strips;' sbs.uvagem.m5.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m5.strip.IsU[I]
+th1d hsbs_uvagem_m5_ADCsumV_all 'sbs.uvagem.m5; Strip ADC sum, V/Y strips;' sbs.uvagem.m5.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m5.strip.IsV[I]
+th1d hsbs_uvagem_m5_ADCmaxU_all 'sbs.uvagem.m5; Strip ADC max, U/X strips;' sbs.uvagem.m5.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m5.strip.IsU[I]
+th1d hsbs_uvagem_m5_ADCmaxV_all 'sbs.uvagem.m5; Strip ADC max, V/Y strips; ' sbs.uvagem.m5.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m5.strip.IsV[I]
+th1d hsbs_uvagem_m5_TimeU_all 'sbs.uvagem.m5; Strip Time, U/X strips;' sbs.uvagem.m5.strip.Tmean[I] 150 0 150 sbs.uvagem.m5.strip.IsU[I]
+th1d hsbs_uvagem_m5_TimeV_all 'sbs.uvagem.m5; Strip Time, V/Y strips;' sbs.uvagem.m5.strip.Tmean[I] 150 0 150 sbs.uvagem.m5.strip.IsV[I]
+th1d hsbs_uvagem_m5_iSampMaxU_all 'sbs.uvagem.m5; Peak time sample, U/X strips;' sbs.uvagem.m5.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m5.strip.IsU[I]
+th1d hsbs_uvagem_m5_iSampMaxV_all 'sbs.uvagem.m5; Peak time sample, V/Y strips;' sbs.uvagem.m5.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m5.strip.IsV[I]
+th2d hsbs_uvagem_m5_ADCsum_vs_Ustrip_all 'sbs.uvagem.m5; U strip ADC sum vs strip;' sbs.uvagem.m5.strip.istrip[I] sbs.uvagem.m5.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m5.strip.IsU[I]
+th2d hsbs_uvagem_m5_ADCsum_vs_Vstrip_all 'sbs.uvagem.m5; V strip ADC sum vs strip;' sbs.uvagem.m5.strip.istrip[I] sbs.uvagem.m5.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m5.strip.IsV[I]
+th2d hsbs_uvagem_m5_ADCmax_vs_Ustrip_all 'sbs.uvagem.m5; U strip ADC max vs strip;' sbs.uvagem.m5.strip.istrip[I] sbs.uvagem.m5.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m5.strip.IsU[I]
+th2d hsbs_uvagem_m5_ADCmax_vs_Vstrip_all 'sbs.uvagem.m5; V strip ADC max vs strip;' sbs.uvagem.m5.strip.istrip[I] sbs.uvagem.m5.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m5.strip.IsV[I]
+
+# Module 5 strip histograms, strips on tracks: 
+th1d hsbs_uvagem_m5_stripU_good 'sbs.uvagem.m5 (strips on tracks); U/X strip index;' sbs.uvagem.m5.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m5.strip.ontrackU[I]
+th1d hsbs_uvagem_m5_stripV_good 'sbs.uvagem.m5 (strips on tracks); V/Y strip index;' sbs.uvagem.m5.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m5.strip.ontrackV[I]
+th1d hsbs_uvagem_m5_ADCsumU_good 'sbs.uvagem.m5; Strip ADC sum, U/X strips;' sbs.uvagem.m5.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m5.strip.ontrackU[I]
+th1d hsbs_uvagem_m5_ADCsumV_good 'sbs.uvagem.m5; Strip ADC sum, V/Y strips;' sbs.uvagem.m5.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m5.strip.ontrackV[I]
+th1d hsbs_uvagem_m5_ADCmaxU_good 'sbs.uvagem.m5; Strip ADC max, U/X strips;' sbs.uvagem.m5.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m5.strip.ontrackU[I]
+th1d hsbs_uvagem_m5_ADCmaxV_good 'sbs.uvagem.m5; Strip ADC max, V/Y strips;' sbs.uvagem.m5.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m5.strip.ontrackV[I]
+th1d hsbs_uvagem_m5_TimeU_good 'sbs.uvagem.m5; Strip Time, U/X strips;' sbs.uvagem.m5.strip.Tmean[I] 150 0 150 sbs.uvagem.m5.strip.ontrackU[I]
+th1d hsbs_uvagem_m5_TimeV_good 'sbs.uvagem.m5; Strip Time, V/Y strips;' sbs.uvagem.m5.strip.Tmean[I] 150 0 150 sbs.uvagem.m5.strip.ontrackV[I]
+th1d hsbs_uvagem_m5_iSampMaxU_good 'sbs.uvagem.m5; Peak time sample, U/X strips;' sbs.uvagem.m5.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m5.strip.ontrackU[I]
+th1d hsbs_uvagem_m5_iSampMaxV_good 'sbs.uvagem.m5; Peak time sample, V/Y strips;' sbs.uvagem.m5.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m5.strip.ontrackV[I]
+th2d hsbs_uvagem_m5_ADCsum_vs_Ustrip_good 'sbs.uvagem.m5; U strip ADC sum vs strip;' sbs.uvagem.m5.strip.istrip[I] sbs.uvagem.m5.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m5.strip.ontrackU[I]
+th2d hsbs_uvagem_m5_ADCsum_vs_Vstrip_good 'sbs.uvagem.m5; V strip ADC sum vs strip;' sbs.uvagem.m5.strip.istrip[I] sbs.uvagem.m5.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m5.strip.ontrackV[I]
+th2d hsbs_uvagem_m5_ADCmax_vs_Ustrip_good 'sbs.uvagem.m5; U strip ADC max vs strip;' sbs.uvagem.m5.strip.istrip[I] sbs.uvagem.m5.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m5.strip.ontrackU[I]
+th2d hsbs_uvagem_m5_ADCmax_vs_Vstrip_good 'sbs.uvagem.m5; V strip ADC max vs strip;' sbs.uvagem.m5.strip.istrip[I] sbs.uvagem.m5.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m5.strip.ontrackV[I]
+
+# Module 5 hit maps 
+#th1d hsbs_uvagem_m5_hit_xlocal 'Hit local X position (m), Module 5' sbs.uvagem.m5.hit.hitx[I] 250 -0.3072 0.3072 sbs.uvagem.m5.hit.ontrack[I]
+#th1d hsbs_uvagem_m5_hit_ylocal 'Hit local Y position (m), Module 5' sbs.uvagem.m5.hit.hity[I] 250 -0.256 0.256 sbs.uvagem.m5.hit.ontrack[I]
+#th2d hsbs_uvagem_m5_hit_xylocal 'Hit local X vs Y (m), Module 5' sbs.uvagem.m5.hit.hity[I] sbs.uvagem.m5.hit.hitx[I] 200 -0.256 0.256 200 -0.3072 0.3072 sbs.uvagem.m5.hit.ontrack[I]
+
+th1d hsbs_uvagem_m5_ADCmax_good_CM 'sbs.uvagem.m5; Strip ADC max; ' sbs.uvagem.m5.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m5.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m5_ADCsum_good_CM 'sbs.uvagem.m5; Strip ADC sum; ' sbs.uvagem.m5.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m5.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m5_iSampMax_good_CM 'sbs.uvagem.m5; Strip max time sample;' sbs.uvagem.m5.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m5.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m5_StripTime_good_CM 'sbs.uvagem.m5; Strip Mean Time (ns);' sbs.uvagem.m5.strip.Tmean[I] 150 0 150 sbs.uvagem.m5.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m5_StripTsigma_good_CM 'sbs.uvagem.m5; Strip RMS Time (ns);' sbs.uvagem.m5.strip.Tsigma[I] 150 0 150 sbs.uvagem.m5.strip.CM_GOOD[I]
+
+
+# Module 6 strip histograms, all strips: 
+th1d hsbs_uvagem_m6_nstripstot_good 'sbs.uvagem.m6; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m6.strip.nstripsfired 101 -0.5 100.5 sbs.uvagem.m6.ontrack
+th1d hsbs_uvagem_m6_nclustU_good 'sbs.uvagem.m6; num. U clusters;' sbs.uvagem.m6.clust.nclustu 51 -0.5 50.5 sbs.uvagem.m6.ontrack
+th1d hsbs_uvagem_m6_nclustV_good 'sbs.uvagem.m6; num. V clusters; ' sbs.uvagem.m6.clust.nclustv 51 -0.5 50.5 sbs.uvagem.m6.ontrack
+th1d hsbs_uvagem_m6_nstripstot_all 'sbs.uvagem.m6; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m6.strip.nstripsfired 101 -0.5 100.5
+th1d hsbs_uvagem_m6_nclustU_all 'sbs.uvagem.m6; num. U clusters;' sbs.uvagem.m6.clust.nclustu 51 -0.5 50.5
+th1d hsbs_uvagem_m6_nclustV_all 'sbs.uvagem.m6; num. V clusters;' sbs.uvagem.m6.clust.nclustv 51 -0.5 50.5
+th1d hsbs_uvagem_m6_stripU_all 'sbs.uvagem.m6; U/X strip index; ' sbs.uvagem.m6.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m6.strip.IsU[I]
+th1d hsbs_uvagem_m6_stripV_all 'sbs.uvagem.m6; V/Y strip index; ' sbs.uvagem.m6.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m6.strip.IsV[I]
+th1d hsbs_uvagem_m6_ADCsumU_all 'sbs.uvagem.m6; Strip ADC sum, U/X strips;' sbs.uvagem.m6.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m6.strip.IsU[I]
+th1d hsbs_uvagem_m6_ADCsumV_all 'sbs.uvagem.m6; Strip ADC sum, V/Y strips;' sbs.uvagem.m6.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m6.strip.IsV[I]
+th1d hsbs_uvagem_m6_ADCmaxU_all 'sbs.uvagem.m6; Strip ADC max, U/X strips;' sbs.uvagem.m6.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m6.strip.IsU[I]
+th1d hsbs_uvagem_m6_ADCmaxV_all 'sbs.uvagem.m6; Strip ADC max, V/Y strips; ' sbs.uvagem.m6.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m6.strip.IsV[I]
+th1d hsbs_uvagem_m6_TimeU_all 'sbs.uvagem.m6; Strip Time, U/X strips;' sbs.uvagem.m6.strip.Tmean[I] 150 0 150 sbs.uvagem.m6.strip.IsU[I]
+th1d hsbs_uvagem_m6_TimeV_all 'sbs.uvagem.m6; Strip Time, V/Y strips;' sbs.uvagem.m6.strip.Tmean[I] 150 0 150 sbs.uvagem.m6.strip.IsV[I]
+th1d hsbs_uvagem_m6_iSampMaxU_all 'sbs.uvagem.m6; Peak time sample, U/X strips;' sbs.uvagem.m6.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m6.strip.IsU[I]
+th1d hsbs_uvagem_m6_iSampMaxV_all 'sbs.uvagem.m6; Peak time sample, V/Y strips;' sbs.uvagem.m6.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m6.strip.IsV[I]
+th2d hsbs_uvagem_m6_ADCsum_vs_Ustrip_all 'sbs.uvagem.m6; U strip ADC sum vs strip;' sbs.uvagem.m6.strip.istrip[I] sbs.uvagem.m6.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m6.strip.IsU[I]
+th2d hsbs_uvagem_m6_ADCsum_vs_Vstrip_all 'sbs.uvagem.m6; V strip ADC sum vs strip;' sbs.uvagem.m6.strip.istrip[I] sbs.uvagem.m6.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m6.strip.IsV[I]
+th2d hsbs_uvagem_m6_ADCmax_vs_Ustrip_all 'sbs.uvagem.m6; U strip ADC max vs strip;' sbs.uvagem.m6.strip.istrip[I] sbs.uvagem.m6.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m6.strip.IsU[I]
+th2d hsbs_uvagem_m6_ADCmax_vs_Vstrip_all 'sbs.uvagem.m6; V strip ADC max vs strip;' sbs.uvagem.m6.strip.istrip[I] sbs.uvagem.m6.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m6.strip.IsV[I]
+
+# Module 6 strip histograms, strips on tracks: 
+th1d hsbs_uvagem_m6_stripU_good 'sbs.uvagem.m6 (strips on tracks); U/X strip index;' sbs.uvagem.m6.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m6.strip.ontrackU[I]
+th1d hsbs_uvagem_m6_stripV_good 'sbs.uvagem.m6 (strips on tracks); V/Y strip index;' sbs.uvagem.m6.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m6.strip.ontrackV[I]
+th1d hsbs_uvagem_m6_ADCsumU_good 'sbs.uvagem.m6; Strip ADC sum, U/X strips;' sbs.uvagem.m6.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m6.strip.ontrackU[I]
+th1d hsbs_uvagem_m6_ADCsumV_good 'sbs.uvagem.m6; Strip ADC sum, V/Y strips;' sbs.uvagem.m6.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m6.strip.ontrackV[I]
+th1d hsbs_uvagem_m6_ADCmaxU_good 'sbs.uvagem.m6; Strip ADC max, U/X strips;' sbs.uvagem.m6.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m6.strip.ontrackU[I]
+th1d hsbs_uvagem_m6_ADCmaxV_good 'sbs.uvagem.m6; Strip ADC max, V/Y strips;' sbs.uvagem.m6.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m6.strip.ontrackV[I]
+th1d hsbs_uvagem_m6_TimeU_good 'sbs.uvagem.m6; Strip Time, U/X strips;' sbs.uvagem.m6.strip.Tmean[I] 150 0 150 sbs.uvagem.m6.strip.ontrackU[I]
+th1d hsbs_uvagem_m6_TimeV_good 'sbs.uvagem.m6; Strip Time, V/Y strips;' sbs.uvagem.m6.strip.Tmean[I] 150 0 150 sbs.uvagem.m6.strip.ontrackV[I]
+th1d hsbs_uvagem_m6_iSampMaxU_good 'sbs.uvagem.m6; Peak time sample, U/X strips;' sbs.uvagem.m6.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m6.strip.ontrackU[I]
+th1d hsbs_uvagem_m6_iSampMaxV_good 'sbs.uvagem.m6; Peak time sample, V/Y strips;' sbs.uvagem.m6.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m6.strip.ontrackV[I]
+th2d hsbs_uvagem_m6_ADCsum_vs_Ustrip_good 'sbs.uvagem.m6; U strip ADC sum vs strip;' sbs.uvagem.m6.strip.istrip[I] sbs.uvagem.m6.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m6.strip.ontrackU[I]
+th2d hsbs_uvagem_m6_ADCsum_vs_Vstrip_good 'sbs.uvagem.m6; V strip ADC sum vs strip;' sbs.uvagem.m6.strip.istrip[I] sbs.uvagem.m6.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m6.strip.ontrackV[I]
+th2d hsbs_uvagem_m6_ADCmax_vs_Ustrip_good 'sbs.uvagem.m6; U strip ADC max vs strip;' sbs.uvagem.m6.strip.istrip[I] sbs.uvagem.m6.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m6.strip.ontrackU[I]
+th2d hsbs_uvagem_m6_ADCmax_vs_Vstrip_good 'sbs.uvagem.m6; V strip ADC max vs strip;' sbs.uvagem.m6.strip.istrip[I] sbs.uvagem.m6.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m6.strip.ontrackV[I]
+
+# Module 6 hit maps 
+#th1d hsbs_uvagem_m6_hit_xlocal 'Hit local X position (m), Module 6' sbs.uvagem.m6.hit.hitx[I] 250 -0.3072 0.3072 sbs.uvagem.m6.hit.ontrack[I]
+#th1d hsbs_uvagem_m6_hit_ylocal 'Hit local Y position (m), Module 6' sbs.uvagem.m6.hit.hity[I] 250 -0.256 0.256 sbs.uvagem.m6.hit.ontrack[I]
+#th2d hsbs_uvagem_m6_hit_xylocal 'Hit local X vs Y (m), Module 6' sbs.uvagem.m6.hit.hity[I] sbs.uvagem.m6.hit.hitx[I] 200 -0.256 0.256 200 -0.3072 0.3072 sbs.uvagem.m6.hit.ontrack[I]
+
+th1d hsbs_uvagem_m6_ADCmax_good_CM 'sbs.uvagem.m6; Strip ADC max; ' sbs.uvagem.m6.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m6.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m6_ADCsum_good_CM 'sbs.uvagem.m6; Strip ADC sum; ' sbs.uvagem.m6.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m6.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m6_iSampMax_good_CM 'sbs.uvagem.m6; Strip max time sample;' sbs.uvagem.m6.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m6.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m6_StripTime_good_CM 'sbs.uvagem.m6; Strip Mean Time (ns);' sbs.uvagem.m6.strip.Tmean[I] 150 0 150 sbs.uvagem.m6.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m6_StripTsigma_good_CM 'sbs.uvagem.m6; Strip RMS Time (ns);' sbs.uvagem.m6.strip.Tsigma[I] 150 0 150 sbs.uvagem.m6.strip.CM_GOOD[I]
+
+
+# Module 7 strip histograms, all strips: 
+th1d hsbs_uvagem_m7_nstripstot_good 'sbs.uvagem.m7; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m7.strip.nstripsfired 101 -0.5 100.5 sbs.uvagem.m7.ontrack
+th1d hsbs_uvagem_m7_nclustU_good 'sbs.uvagem.m7; num. U clusters;' sbs.uvagem.m7.clust.nclustu 51 -0.5 50.5 sbs.uvagem.m7.ontrack
+th1d hsbs_uvagem_m7_nclustV_good 'sbs.uvagem.m7; num. V clusters; ' sbs.uvagem.m7.clust.nclustv 51 -0.5 50.5 sbs.uvagem.m7.ontrack
+th1d hsbs_uvagem_m7_nstripstot_all 'sbs.uvagem.m7; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m7.strip.nstripsfired 101 -0.5 100.5
+th1d hsbs_uvagem_m7_nclustU_all 'sbs.uvagem.m7; num. U clusters;' sbs.uvagem.m7.clust.nclustu 51 -0.5 50.5
+th1d hsbs_uvagem_m7_nclustV_all 'sbs.uvagem.m7; num. V clusters;' sbs.uvagem.m7.clust.nclustv 51 -0.5 50.5
+th1d hsbs_uvagem_m7_stripU_all 'sbs.uvagem.m7; U/X strip index; ' sbs.uvagem.m7.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m7.strip.IsU[I]
+th1d hsbs_uvagem_m7_stripV_all 'sbs.uvagem.m7; V/Y strip index; ' sbs.uvagem.m7.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m7.strip.IsV[I]
+th1d hsbs_uvagem_m7_ADCsumU_all 'sbs.uvagem.m7; Strip ADC sum, U/X strips;' sbs.uvagem.m7.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m7.strip.IsU[I]
+th1d hsbs_uvagem_m7_ADCsumV_all 'sbs.uvagem.m7; Strip ADC sum, V/Y strips;' sbs.uvagem.m7.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m7.strip.IsV[I]
+th1d hsbs_uvagem_m7_ADCmaxU_all 'sbs.uvagem.m7; Strip ADC max, U/X strips;' sbs.uvagem.m7.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m7.strip.IsU[I]
+th1d hsbs_uvagem_m7_ADCmaxV_all 'sbs.uvagem.m7; Strip ADC max, V/Y strips; ' sbs.uvagem.m7.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m7.strip.IsV[I]
+th1d hsbs_uvagem_m7_TimeU_all 'sbs.uvagem.m7; Strip Time, U/X strips;' sbs.uvagem.m7.strip.Tmean[I] 150 0 150 sbs.uvagem.m7.strip.IsU[I]
+th1d hsbs_uvagem_m7_TimeV_all 'sbs.uvagem.m7; Strip Time, V/Y strips;' sbs.uvagem.m7.strip.Tmean[I] 150 0 150 sbs.uvagem.m7.strip.IsV[I]
+th1d hsbs_uvagem_m7_iSampMaxU_all 'sbs.uvagem.m7; Peak time sample, U/X strips;' sbs.uvagem.m7.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m7.strip.IsU[I]
+th1d hsbs_uvagem_m7_iSampMaxV_all 'sbs.uvagem.m7; Peak time sample, V/Y strips;' sbs.uvagem.m7.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m7.strip.IsV[I]
+th2d hsbs_uvagem_m7_ADCsum_vs_Ustrip_all 'sbs.uvagem.m7; U strip ADC sum vs strip;' sbs.uvagem.m7.strip.istrip[I] sbs.uvagem.m7.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m7.strip.IsU[I]
+th2d hsbs_uvagem_m7_ADCsum_vs_Vstrip_all 'sbs.uvagem.m7; V strip ADC sum vs strip;' sbs.uvagem.m7.strip.istrip[I] sbs.uvagem.m7.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m7.strip.IsV[I]
+th2d hsbs_uvagem_m7_ADCmax_vs_Ustrip_all 'sbs.uvagem.m7; U strip ADC max vs strip;' sbs.uvagem.m7.strip.istrip[I] sbs.uvagem.m7.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m7.strip.IsU[I]
+th2d hsbs_uvagem_m7_ADCmax_vs_Vstrip_all 'sbs.uvagem.m7; V strip ADC max vs strip;' sbs.uvagem.m7.strip.istrip[I] sbs.uvagem.m7.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m7.strip.IsV[I]
+
+# Module 7 strip histograms, strips on tracks: 
+th1d hsbs_uvagem_m7_stripU_good 'sbs.uvagem.m7 (strips on tracks); U/X strip index;' sbs.uvagem.m7.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m7.strip.ontrackU[I]
+th1d hsbs_uvagem_m7_stripV_good 'sbs.uvagem.m7 (strips on tracks); V/Y strip index;' sbs.uvagem.m7.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m7.strip.ontrackV[I]
+th1d hsbs_uvagem_m7_ADCsumU_good 'sbs.uvagem.m7; Strip ADC sum, U/X strips;' sbs.uvagem.m7.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m7.strip.ontrackU[I]
+th1d hsbs_uvagem_m7_ADCsumV_good 'sbs.uvagem.m7; Strip ADC sum, V/Y strips;' sbs.uvagem.m7.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m7.strip.ontrackV[I]
+th1d hsbs_uvagem_m7_ADCmaxU_good 'sbs.uvagem.m7; Strip ADC max, U/X strips;' sbs.uvagem.m7.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m7.strip.ontrackU[I]
+th1d hsbs_uvagem_m7_ADCmaxV_good 'sbs.uvagem.m7; Strip ADC max, V/Y strips;' sbs.uvagem.m7.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m7.strip.ontrackV[I]
+th1d hsbs_uvagem_m7_TimeU_good 'sbs.uvagem.m7; Strip Time, U/X strips;' sbs.uvagem.m7.strip.Tmean[I] 150 0 150 sbs.uvagem.m7.strip.ontrackU[I]
+th1d hsbs_uvagem_m7_TimeV_good 'sbs.uvagem.m7; Strip Time, V/Y strips;' sbs.uvagem.m7.strip.Tmean[I] 150 0 150 sbs.uvagem.m7.strip.ontrackV[I]
+th1d hsbs_uvagem_m7_iSampMaxU_good 'sbs.uvagem.m7; Peak time sample, U/X strips;' sbs.uvagem.m7.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m7.strip.ontrackU[I]
+th1d hsbs_uvagem_m7_iSampMaxV_good 'sbs.uvagem.m7; Peak time sample, V/Y strips;' sbs.uvagem.m7.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m7.strip.ontrackV[I]
+th2d hsbs_uvagem_m7_ADCsum_vs_Ustrip_good 'sbs.uvagem.m7; U strip ADC sum vs strip;' sbs.uvagem.m7.strip.istrip[I] sbs.uvagem.m7.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m7.strip.ontrackU[I]
+th2d hsbs_uvagem_m7_ADCsum_vs_Vstrip_good 'sbs.uvagem.m7; V strip ADC sum vs strip;' sbs.uvagem.m7.strip.istrip[I] sbs.uvagem.m7.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m7.strip.ontrackV[I]
+th2d hsbs_uvagem_m7_ADCmax_vs_Ustrip_good 'sbs.uvagem.m7; U strip ADC max vs strip;' sbs.uvagem.m7.strip.istrip[I] sbs.uvagem.m7.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m7.strip.ontrackU[I]
+th2d hsbs_uvagem_m7_ADCmax_vs_Vstrip_good 'sbs.uvagem.m7; V strip ADC max vs strip;' sbs.uvagem.m7.strip.istrip[I] sbs.uvagem.m7.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m7.strip.ontrackV[I]
+
+# Module 7 hit maps 
+#th1d hsbs_uvagem_m7_hit_xlocal 'Hit local X position (m), Module 7' sbs.uvagem.m7.hit.hitx[I] 250 -0.3072 0.3072 sbs.uvagem.m7.hit.ontrack[I]
+#th1d hsbs_uvagem_m7_hit_ylocal 'Hit local Y position (m), Module 7' sbs.uvagem.m7.hit.hity[I] 250 -0.256 0.256 sbs.uvagem.m7.hit.ontrack[I]
+#th2d hsbs_uvagem_m7_hit_xylocal 'Hit local X vs Y (m), Module 7' sbs.uvagem.m7.hit.hity[I] sbs.uvagem.m7.hit.hitx[I] 200 -0.256 0.256 200 -0.3072 0.3072 sbs.uvagem.m7.hit.ontrack[I]
+
+th1d hsbs_uvagem_m7_ADCmax_good_CM 'sbs.uvagem.m7; Strip ADC max; ' sbs.uvagem.m7.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m7.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m7_ADCsum_good_CM 'sbs.uvagem.m7; Strip ADC sum; ' sbs.uvagem.m7.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m7.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m7_iSampMax_good_CM 'sbs.uvagem.m7; Strip max time sample;' sbs.uvagem.m7.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m7.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m7_StripTime_good_CM 'sbs.uvagem.m7; Strip Mean Time (ns);' sbs.uvagem.m7.strip.Tmean[I] 150 0 150 sbs.uvagem.m7.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m7_StripTsigma_good_CM 'sbs.uvagem.m7; Strip RMS Time (ns);' sbs.uvagem.m7.strip.Tsigma[I] 150 0 150 sbs.uvagem.m7.strip.CM_GOOD[I]
+
+
+# Module 8 strip histograms, all strips: 
+th1d hsbs_uvagem_m8_nstripstot_good 'sbs.uvagem.m8; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m8.strip.nstripsfired 101 -0.5 100.5 sbs.uvagem.m8.ontrack
+th1d hsbs_uvagem_m8_nclustU_good 'sbs.uvagem.m8; num. U clusters;' sbs.uvagem.m8.clust.nclustu 51 -0.5 50.5 sbs.uvagem.m8.ontrack
+th1d hsbs_uvagem_m8_nclustV_good 'sbs.uvagem.m8; num. V clusters; ' sbs.uvagem.m8.clust.nclustv 51 -0.5 50.5 sbs.uvagem.m8.ontrack
+th1d hsbs_uvagem_m8_nstripstot_all 'sbs.uvagem.m8; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m8.strip.nstripsfired 101 -0.5 100.5
+th1d hsbs_uvagem_m8_nclustU_all 'sbs.uvagem.m8; num. U clusters;' sbs.uvagem.m8.clust.nclustu 51 -0.5 50.5
+th1d hsbs_uvagem_m8_nclustV_all 'sbs.uvagem.m8; num. V clusters;' sbs.uvagem.m8.clust.nclustv 51 -0.5 50.5
+th1d hsbs_uvagem_m8_stripU_all 'sbs.uvagem.m8; U/X strip index; ' sbs.uvagem.m8.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m8.strip.IsU[I]
+th1d hsbs_uvagem_m8_stripV_all 'sbs.uvagem.m8; V/Y strip index; ' sbs.uvagem.m8.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m8.strip.IsV[I]
+th1d hsbs_uvagem_m8_ADCsumU_all 'sbs.uvagem.m8; Strip ADC sum, U/X strips;' sbs.uvagem.m8.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m8.strip.IsU[I]
+th1d hsbs_uvagem_m8_ADCsumV_all 'sbs.uvagem.m8; Strip ADC sum, V/Y strips;' sbs.uvagem.m8.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m8.strip.IsV[I]
+th1d hsbs_uvagem_m8_ADCmaxU_all 'sbs.uvagem.m8; Strip ADC max, U/X strips;' sbs.uvagem.m8.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m8.strip.IsU[I]
+th1d hsbs_uvagem_m8_ADCmaxV_all 'sbs.uvagem.m8; Strip ADC max, V/Y strips; ' sbs.uvagem.m8.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m8.strip.IsV[I]
+th1d hsbs_uvagem_m8_TimeU_all 'sbs.uvagem.m8; Strip Time, U/X strips;' sbs.uvagem.m8.strip.Tmean[I] 150 0 150 sbs.uvagem.m8.strip.IsU[I]
+th1d hsbs_uvagem_m8_TimeV_all 'sbs.uvagem.m8; Strip Time, V/Y strips;' sbs.uvagem.m8.strip.Tmean[I] 150 0 150 sbs.uvagem.m8.strip.IsV[I]
+th1d hsbs_uvagem_m8_iSampMaxU_all 'sbs.uvagem.m8; Peak time sample, U/X strips;' sbs.uvagem.m8.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m8.strip.IsU[I]
+th1d hsbs_uvagem_m8_iSampMaxV_all 'sbs.uvagem.m8; Peak time sample, V/Y strips;' sbs.uvagem.m8.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m8.strip.IsV[I]
+th2d hsbs_uvagem_m8_ADCsum_vs_Ustrip_all 'sbs.uvagem.m8; U strip ADC sum vs strip;' sbs.uvagem.m8.strip.istrip[I] sbs.uvagem.m8.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m8.strip.IsU[I]
+th2d hsbs_uvagem_m8_ADCsum_vs_Vstrip_all 'sbs.uvagem.m8; V strip ADC sum vs strip;' sbs.uvagem.m8.strip.istrip[I] sbs.uvagem.m8.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m8.strip.IsV[I]
+th2d hsbs_uvagem_m8_ADCmax_vs_Ustrip_all 'sbs.uvagem.m8; U strip ADC max vs strip;' sbs.uvagem.m8.strip.istrip[I] sbs.uvagem.m8.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m8.strip.IsU[I]
+th2d hsbs_uvagem_m8_ADCmax_vs_Vstrip_all 'sbs.uvagem.m8; V strip ADC max vs strip;' sbs.uvagem.m8.strip.istrip[I] sbs.uvagem.m8.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m8.strip.IsV[I]
+
+# Module 8 strip histograms, strips on tracks: 
+th1d hsbs_uvagem_m8_stripU_good 'sbs.uvagem.m8 (strips on tracks); U/X strip index;' sbs.uvagem.m8.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m8.strip.ontrackU[I]
+th1d hsbs_uvagem_m8_stripV_good 'sbs.uvagem.m8 (strips on tracks); V/Y strip index;' sbs.uvagem.m8.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m8.strip.ontrackV[I]
+th1d hsbs_uvagem_m8_ADCsumU_good 'sbs.uvagem.m8; Strip ADC sum, U/X strips;' sbs.uvagem.m8.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m8.strip.ontrackU[I]
+th1d hsbs_uvagem_m8_ADCsumV_good 'sbs.uvagem.m8; Strip ADC sum, V/Y strips;' sbs.uvagem.m8.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m8.strip.ontrackV[I]
+th1d hsbs_uvagem_m8_ADCmaxU_good 'sbs.uvagem.m8; Strip ADC max, U/X strips;' sbs.uvagem.m8.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m8.strip.ontrackU[I]
+th1d hsbs_uvagem_m8_ADCmaxV_good 'sbs.uvagem.m8; Strip ADC max, V/Y strips;' sbs.uvagem.m8.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m8.strip.ontrackV[I]
+th1d hsbs_uvagem_m8_TimeU_good 'sbs.uvagem.m8; Strip Time, U/X strips;' sbs.uvagem.m8.strip.Tmean[I] 150 0 150 sbs.uvagem.m8.strip.ontrackU[I]
+th1d hsbs_uvagem_m8_TimeV_good 'sbs.uvagem.m8; Strip Time, V/Y strips;' sbs.uvagem.m8.strip.Tmean[I] 150 0 150 sbs.uvagem.m8.strip.ontrackV[I]
+th1d hsbs_uvagem_m8_iSampMaxU_good 'sbs.uvagem.m8; Peak time sample, U/X strips;' sbs.uvagem.m8.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m8.strip.ontrackU[I]
+th1d hsbs_uvagem_m8_iSampMaxV_good 'sbs.uvagem.m8; Peak time sample, V/Y strips;' sbs.uvagem.m8.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m8.strip.ontrackV[I]
+th2d hsbs_uvagem_m8_ADCsum_vs_Ustrip_good 'sbs.uvagem.m8; U strip ADC sum vs strip;' sbs.uvagem.m8.strip.istrip[I] sbs.uvagem.m8.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m8.strip.ontrackU[I]
+th2d hsbs_uvagem_m8_ADCsum_vs_Vstrip_good 'sbs.uvagem.m8; V strip ADC sum vs strip;' sbs.uvagem.m8.strip.istrip[I] sbs.uvagem.m8.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m8.strip.ontrackV[I]
+th2d hsbs_uvagem_m8_ADCmax_vs_Ustrip_good 'sbs.uvagem.m8; U strip ADC max vs strip;' sbs.uvagem.m8.strip.istrip[I] sbs.uvagem.m8.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m8.strip.ontrackU[I]
+th2d hsbs_uvagem_m8_ADCmax_vs_Vstrip_good 'sbs.uvagem.m8; V strip ADC max vs strip;' sbs.uvagem.m8.strip.istrip[I] sbs.uvagem.m8.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m8.strip.ontrackV[I]
+
+# Module 8 hit maps 
+#th1d hsbs_uvagem_m8_hit_xlocal 'Hit local X position (m), Module 8' sbs.uvagem.m8.hit.hitx[I] 250 -0.3072 0.3072 sbs.uvagem.m8.hit.ontrack[I]
+#th1d hsbs_uvagem_m8_hit_ylocal 'Hit local Y position (m), Module 8' sbs.uvagem.m8.hit.hity[I] 250 -0.256 0.256 sbs.uvagem.m8.hit.ontrack[I]
+#th2d hsbs_uvagem_m8_hit_xylocal 'Hit local X vs Y (m), Module 8' sbs.uvagem.m8.hit.hity[I] sbs.uvagem.m8.hit.hitx[I] 200 -0.256 0.256 200 -0.3072 0.3072 sbs.uvagem.m8.hit.ontrack[I]
+
+th1d hsbs_uvagem_m8_ADCmax_good_CM 'sbs.uvagem.m8; Strip ADC max; ' sbs.uvagem.m8.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m8.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m8_ADCsum_good_CM 'sbs.uvagem.m8; Strip ADC sum; ' sbs.uvagem.m8.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m8.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m8_iSampMax_good_CM 'sbs.uvagem.m8; Strip max time sample;' sbs.uvagem.m8.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m8.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m8_StripTime_good_CM 'sbs.uvagem.m8; Strip Mean Time (ns);' sbs.uvagem.m8.strip.Tmean[I] 150 0 150 sbs.uvagem.m8.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m8_StripTsigma_good_CM 'sbs.uvagem.m8; Strip RMS Time (ns);' sbs.uvagem.m8.strip.Tsigma[I] 150 0 150 sbs.uvagem.m8.strip.CM_GOOD[I]
+
+
+# Module 9 strip histograms, all strips: 
+th1d hsbs_uvagem_m9_nstripstot_good 'sbs.uvagem.m9; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m9.strip.nstripsfired 101 -0.5 100.5 sbs.uvagem.m9.ontrack
+th1d hsbs_uvagem_m9_nclustU_good 'sbs.uvagem.m9; num. U clusters;' sbs.uvagem.m9.clust.nclustu 51 -0.5 50.5 sbs.uvagem.m9.ontrack
+th1d hsbs_uvagem_m9_nclustV_good 'sbs.uvagem.m9; num. V clusters; ' sbs.uvagem.m9.clust.nclustv 51 -0.5 50.5 sbs.uvagem.m9.ontrack
+th1d hsbs_uvagem_m9_nstripstot_all 'sbs.uvagem.m9; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m9.strip.nstripsfired 101 -0.5 100.5
+th1d hsbs_uvagem_m9_nclustU_all 'sbs.uvagem.m9; num. U clusters;' sbs.uvagem.m9.clust.nclustu 51 -0.5 50.5
+th1d hsbs_uvagem_m9_nclustV_all 'sbs.uvagem.m9; num. V clusters;' sbs.uvagem.m9.clust.nclustv 51 -0.5 50.5
+th1d hsbs_uvagem_m9_stripU_all 'sbs.uvagem.m9; U/X strip index; ' sbs.uvagem.m9.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m9.strip.IsU[I]
+th1d hsbs_uvagem_m9_stripV_all 'sbs.uvagem.m9; V/Y strip index; ' sbs.uvagem.m9.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m9.strip.IsV[I]
+th1d hsbs_uvagem_m9_ADCsumU_all 'sbs.uvagem.m9; Strip ADC sum, U/X strips;' sbs.uvagem.m9.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m9.strip.IsU[I]
+th1d hsbs_uvagem_m9_ADCsumV_all 'sbs.uvagem.m9; Strip ADC sum, V/Y strips;' sbs.uvagem.m9.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m9.strip.IsV[I]
+th1d hsbs_uvagem_m9_ADCmaxU_all 'sbs.uvagem.m9; Strip ADC max, U/X strips;' sbs.uvagem.m9.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m9.strip.IsU[I]
+th1d hsbs_uvagem_m9_ADCmaxV_all 'sbs.uvagem.m9; Strip ADC max, V/Y strips; ' sbs.uvagem.m9.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m9.strip.IsV[I]
+th1d hsbs_uvagem_m9_TimeU_all 'sbs.uvagem.m9; Strip Time, U/X strips;' sbs.uvagem.m9.strip.Tmean[I] 150 0 150 sbs.uvagem.m9.strip.IsU[I]
+th1d hsbs_uvagem_m9_TimeV_all 'sbs.uvagem.m9; Strip Time, V/Y strips;' sbs.uvagem.m9.strip.Tmean[I] 150 0 150 sbs.uvagem.m9.strip.IsV[I]
+th1d hsbs_uvagem_m9_iSampMaxU_all 'sbs.uvagem.m9; Peak time sample, U/X strips;' sbs.uvagem.m9.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m9.strip.IsU[I]
+th1d hsbs_uvagem_m9_iSampMaxV_all 'sbs.uvagem.m9; Peak time sample, V/Y strips;' sbs.uvagem.m9.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m9.strip.IsV[I]
+th2d hsbs_uvagem_m9_ADCsum_vs_Ustrip_all 'sbs.uvagem.m9; U strip ADC sum vs strip;' sbs.uvagem.m9.strip.istrip[I] sbs.uvagem.m9.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m9.strip.IsU[I]
+th2d hsbs_uvagem_m9_ADCsum_vs_Vstrip_all 'sbs.uvagem.m9; V strip ADC sum vs strip;' sbs.uvagem.m9.strip.istrip[I] sbs.uvagem.m9.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m9.strip.IsV[I]
+th2d hsbs_uvagem_m9_ADCmax_vs_Ustrip_all 'sbs.uvagem.m9; U strip ADC max vs strip;' sbs.uvagem.m9.strip.istrip[I] sbs.uvagem.m9.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m9.strip.IsU[I]
+th2d hsbs_uvagem_m9_ADCmax_vs_Vstrip_all 'sbs.uvagem.m9; V strip ADC max vs strip;' sbs.uvagem.m9.strip.istrip[I] sbs.uvagem.m9.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m9.strip.IsV[I]
+
+# Module 9 strip histograms, strips on tracks: 
+th1d hsbs_uvagem_m9_stripU_good 'sbs.uvagem.m9 (strips on tracks); U/X strip index;' sbs.uvagem.m9.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m9.strip.ontrackU[I]
+th1d hsbs_uvagem_m9_stripV_good 'sbs.uvagem.m9 (strips on tracks); V/Y strip index;' sbs.uvagem.m9.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m9.strip.ontrackV[I]
+th1d hsbs_uvagem_m9_ADCsumU_good 'sbs.uvagem.m9; Strip ADC sum, U/X strips;' sbs.uvagem.m9.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m9.strip.ontrackU[I]
+th1d hsbs_uvagem_m9_ADCsumV_good 'sbs.uvagem.m9; Strip ADC sum, V/Y strips;' sbs.uvagem.m9.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m9.strip.ontrackV[I]
+th1d hsbs_uvagem_m9_ADCmaxU_good 'sbs.uvagem.m9; Strip ADC max, U/X strips;' sbs.uvagem.m9.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m9.strip.ontrackU[I]
+th1d hsbs_uvagem_m9_ADCmaxV_good 'sbs.uvagem.m9; Strip ADC max, V/Y strips;' sbs.uvagem.m9.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m9.strip.ontrackV[I]
+th1d hsbs_uvagem_m9_TimeU_good 'sbs.uvagem.m9; Strip Time, U/X strips;' sbs.uvagem.m9.strip.Tmean[I] 150 0 150 sbs.uvagem.m9.strip.ontrackU[I]
+th1d hsbs_uvagem_m9_TimeV_good 'sbs.uvagem.m9; Strip Time, V/Y strips;' sbs.uvagem.m9.strip.Tmean[I] 150 0 150 sbs.uvagem.m9.strip.ontrackV[I]
+th1d hsbs_uvagem_m9_iSampMaxU_good 'sbs.uvagem.m9; Peak time sample, U/X strips;' sbs.uvagem.m9.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m9.strip.ontrackU[I]
+th1d hsbs_uvagem_m9_iSampMaxV_good 'sbs.uvagem.m9; Peak time sample, V/Y strips;' sbs.uvagem.m9.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m9.strip.ontrackV[I]
+th2d hsbs_uvagem_m9_ADCsum_vs_Ustrip_good 'sbs.uvagem.m9; U strip ADC sum vs strip;' sbs.uvagem.m9.strip.istrip[I] sbs.uvagem.m9.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m9.strip.ontrackU[I]
+th2d hsbs_uvagem_m9_ADCsum_vs_Vstrip_good 'sbs.uvagem.m9; V strip ADC sum vs strip;' sbs.uvagem.m9.strip.istrip[I] sbs.uvagem.m9.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m9.strip.ontrackV[I]
+th2d hsbs_uvagem_m9_ADCmax_vs_Ustrip_good 'sbs.uvagem.m9; U strip ADC max vs strip;' sbs.uvagem.m9.strip.istrip[I] sbs.uvagem.m9.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m9.strip.ontrackU[I]
+th2d hsbs_uvagem_m9_ADCmax_vs_Vstrip_good 'sbs.uvagem.m9; V strip ADC max vs strip;' sbs.uvagem.m9.strip.istrip[I] sbs.uvagem.m9.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m9.strip.ontrackV[I]
+
+# Module 9 hit maps 
+#th1d hsbs_uvagem_m9_hit_xlocal 'Hit local X position (m), Module 9' sbs.uvagem.m9.hit.hitx[I] 250 -0.3072 0.3072 sbs.uvagem.m9.hit.ontrack[I]
+#th1d hsbs_uvagem_m9_hit_ylocal 'Hit local Y position (m), Module 9' sbs.uvagem.m9.hit.hity[I] 250 -0.256 0.256 sbs.uvagem.m9.hit.ontrack[I]
+#th2d hsbs_uvagem_m9_hit_xylocal 'Hit local X vs Y (m), Module 9' sbs.uvagem.m9.hit.hity[I] sbs.uvagem.m9.hit.hitx[I] 200 -0.256 0.256 200 -0.3072 0.3072 sbs.uvagem.m9.hit.ontrack[I]
+
+th1d hsbs_uvagem_m9_ADCmax_good_CM 'sbs.uvagem.m9; Strip ADC max; ' sbs.uvagem.m9.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m9.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m9_ADCsum_good_CM 'sbs.uvagem.m9; Strip ADC sum; ' sbs.uvagem.m9.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m9.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m9_iSampMax_good_CM 'sbs.uvagem.m9; Strip max time sample;' sbs.uvagem.m9.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m9.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m9_StripTime_good_CM 'sbs.uvagem.m9; Strip Mean Time (ns);' sbs.uvagem.m9.strip.Tmean[I] 150 0 150 sbs.uvagem.m9.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m9_StripTsigma_good_CM 'sbs.uvagem.m9; Strip RMS Time (ns);' sbs.uvagem.m9.strip.Tsigma[I] 150 0 150 sbs.uvagem.m9.strip.CM_GOOD[I]
+
+
+# Module 10 strip histograms, all strips: 
+th1d hsbs_uvagem_m10_nstripstot_good 'sbs.uvagem.m10; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m10.strip.nstripsfired 101 -0.5 100.5 sbs.uvagem.m10.ontrack
+th1d hsbs_uvagem_m10_nclustU_good 'sbs.uvagem.m10; num. U clusters;' sbs.uvagem.m10.clust.nclustu 51 -0.5 50.5 sbs.uvagem.m10.ontrack
+th1d hsbs_uvagem_m10_nclustV_good 'sbs.uvagem.m10; num. V clusters; ' sbs.uvagem.m10.clust.nclustv 51 -0.5 50.5 sbs.uvagem.m10.ontrack
+th1d hsbs_uvagem_m10_nstripstot_all 'sbs.uvagem.m10; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m10.strip.nstripsfired 101 -0.5 100.5
+th1d hsbs_uvagem_m10_nclustU_all 'sbs.uvagem.m10; num. U clusters;' sbs.uvagem.m10.clust.nclustu 51 -0.5 50.5
+th1d hsbs_uvagem_m10_nclustV_all 'sbs.uvagem.m10; num. V clusters;' sbs.uvagem.m10.clust.nclustv 51 -0.5 50.5
+th1d hsbs_uvagem_m10_stripU_all 'sbs.uvagem.m10; U/X strip index; ' sbs.uvagem.m10.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m10.strip.IsU[I]
+th1d hsbs_uvagem_m10_stripV_all 'sbs.uvagem.m10; V/Y strip index; ' sbs.uvagem.m10.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m10.strip.IsV[I]
+th1d hsbs_uvagem_m10_ADCsumU_all 'sbs.uvagem.m10; Strip ADC sum, U/X strips;' sbs.uvagem.m10.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m10.strip.IsU[I]
+th1d hsbs_uvagem_m10_ADCsumV_all 'sbs.uvagem.m10; Strip ADC sum, V/Y strips;' sbs.uvagem.m10.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m10.strip.IsV[I]
+th1d hsbs_uvagem_m10_ADCmaxU_all 'sbs.uvagem.m10; Strip ADC max, U/X strips;' sbs.uvagem.m10.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m10.strip.IsU[I]
+th1d hsbs_uvagem_m10_ADCmaxV_all 'sbs.uvagem.m10; Strip ADC max, V/Y strips; ' sbs.uvagem.m10.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m10.strip.IsV[I]
+th1d hsbs_uvagem_m10_TimeU_all 'sbs.uvagem.m10; Strip Time, U/X strips;' sbs.uvagem.m10.strip.Tmean[I] 150 0 150 sbs.uvagem.m10.strip.IsU[I]
+th1d hsbs_uvagem_m10_TimeV_all 'sbs.uvagem.m10; Strip Time, V/Y strips;' sbs.uvagem.m10.strip.Tmean[I] 150 0 150 sbs.uvagem.m10.strip.IsV[I]
+th1d hsbs_uvagem_m10_iSampMaxU_all 'sbs.uvagem.m10; Peak time sample, U/X strips;' sbs.uvagem.m10.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m10.strip.IsU[I]
+th1d hsbs_uvagem_m10_iSampMaxV_all 'sbs.uvagem.m10; Peak time sample, V/Y strips;' sbs.uvagem.m10.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m10.strip.IsV[I]
+th2d hsbs_uvagem_m10_ADCsum_vs_Ustrip_all 'sbs.uvagem.m10; U strip ADC sum vs strip;' sbs.uvagem.m10.strip.istrip[I] sbs.uvagem.m10.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m10.strip.IsU[I]
+th2d hsbs_uvagem_m10_ADCsum_vs_Vstrip_all 'sbs.uvagem.m10; V strip ADC sum vs strip;' sbs.uvagem.m10.strip.istrip[I] sbs.uvagem.m10.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m10.strip.IsV[I]
+th2d hsbs_uvagem_m10_ADCmax_vs_Ustrip_all 'sbs.uvagem.m10; U strip ADC max vs strip;' sbs.uvagem.m10.strip.istrip[I] sbs.uvagem.m10.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m10.strip.IsU[I]
+th2d hsbs_uvagem_m10_ADCmax_vs_Vstrip_all 'sbs.uvagem.m10; V strip ADC max vs strip;' sbs.uvagem.m10.strip.istrip[I] sbs.uvagem.m10.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m10.strip.IsV[I]
+
+# Module 10 strip histograms, strips on tracks: 
+th1d hsbs_uvagem_m10_stripU_good 'sbs.uvagem.m10 (strips on tracks); U/X strip index;' sbs.uvagem.m10.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m10.strip.ontrackU[I]
+th1d hsbs_uvagem_m10_stripV_good 'sbs.uvagem.m10 (strips on tracks); V/Y strip index;' sbs.uvagem.m10.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m10.strip.ontrackV[I]
+th1d hsbs_uvagem_m10_ADCsumU_good 'sbs.uvagem.m10; Strip ADC sum, U/X strips;' sbs.uvagem.m10.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m10.strip.ontrackU[I]
+th1d hsbs_uvagem_m10_ADCsumV_good 'sbs.uvagem.m10; Strip ADC sum, V/Y strips;' sbs.uvagem.m10.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m10.strip.ontrackV[I]
+th1d hsbs_uvagem_m10_ADCmaxU_good 'sbs.uvagem.m10; Strip ADC max, U/X strips;' sbs.uvagem.m10.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m10.strip.ontrackU[I]
+th1d hsbs_uvagem_m10_ADCmaxV_good 'sbs.uvagem.m10; Strip ADC max, V/Y strips;' sbs.uvagem.m10.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m10.strip.ontrackV[I]
+th1d hsbs_uvagem_m10_TimeU_good 'sbs.uvagem.m10; Strip Time, U/X strips;' sbs.uvagem.m10.strip.Tmean[I] 150 0 150 sbs.uvagem.m10.strip.ontrackU[I]
+th1d hsbs_uvagem_m10_TimeV_good 'sbs.uvagem.m10; Strip Time, V/Y strips;' sbs.uvagem.m10.strip.Tmean[I] 150 0 150 sbs.uvagem.m10.strip.ontrackV[I]
+th1d hsbs_uvagem_m10_iSampMaxU_good 'sbs.uvagem.m10; Peak time sample, U/X strips;' sbs.uvagem.m10.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m10.strip.ontrackU[I]
+th1d hsbs_uvagem_m10_iSampMaxV_good 'sbs.uvagem.m10; Peak time sample, V/Y strips;' sbs.uvagem.m10.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m10.strip.ontrackV[I]
+th2d hsbs_uvagem_m10_ADCsum_vs_Ustrip_good 'sbs.uvagem.m10; U strip ADC sum vs strip;' sbs.uvagem.m10.strip.istrip[I] sbs.uvagem.m10.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m10.strip.ontrackU[I]
+th2d hsbs_uvagem_m10_ADCsum_vs_Vstrip_good 'sbs.uvagem.m10; V strip ADC sum vs strip;' sbs.uvagem.m10.strip.istrip[I] sbs.uvagem.m10.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m10.strip.ontrackV[I]
+th2d hsbs_uvagem_m10_ADCmax_vs_Ustrip_good 'sbs.uvagem.m10; U strip ADC max vs strip;' sbs.uvagem.m10.strip.istrip[I] sbs.uvagem.m10.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m10.strip.ontrackU[I]
+th2d hsbs_uvagem_m10_ADCmax_vs_Vstrip_good 'sbs.uvagem.m10; V strip ADC max vs strip;' sbs.uvagem.m10.strip.istrip[I] sbs.uvagem.m10.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m10.strip.ontrackV[I]
+
+# Module 10 hit maps 
+#th1d hsbs_uvagem_m10_hit_xlocal 'Hit local X position (m), Module 10' sbs.uvagem.m10.hit.hitx[I] 250 -0.3072 0.3072 sbs.uvagem.m10.hit.ontrack[I]
+#th1d hsbs_uvagem_m10_hit_ylocal 'Hit local Y position (m), Module 10' sbs.uvagem.m10.hit.hity[I] 250 -0.256 0.256 sbs.uvagem.m10.hit.ontrack[I]
+#th2d hsbs_uvagem_m10_hit_xylocal 'Hit local X vs Y (m), Module 10' sbs.uvagem.m10.hit.hity[I] sbs.uvagem.m10.hit.hitx[I] 200 -0.256 0.256 200 -0.3072 0.3072 sbs.uvagem.m10.hit.ontrack[I]
+
+th1d hsbs_uvagem_m10_ADCmax_good_CM 'sbs.uvagem.m10; Strip ADC max; ' sbs.uvagem.m10.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m10.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m10_ADCsum_good_CM 'sbs.uvagem.m10; Strip ADC sum; ' sbs.uvagem.m10.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m10.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m10_iSampMax_good_CM 'sbs.uvagem.m10; Strip max time sample;' sbs.uvagem.m10.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m10.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m10_StripTime_good_CM 'sbs.uvagem.m10; Strip Mean Time (ns);' sbs.uvagem.m10.strip.Tmean[I] 150 0 150 sbs.uvagem.m10.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m10_StripTsigma_good_CM 'sbs.uvagem.m10; Strip RMS Time (ns);' sbs.uvagem.m10.strip.Tsigma[I] 150 0 150 sbs.uvagem.m10.strip.CM_GOOD[I]
+
+
+# Module 11 strip histograms, all strips: 
+th1d hsbs_uvagem_m11_nstripstot_good 'sbs.uvagem.m11; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m11.strip.nstripsfired 101 -0.5 100.5 sbs.uvagem.m11.ontrack
+th1d hsbs_uvagem_m11_nclustU_good 'sbs.uvagem.m11; num. U clusters;' sbs.uvagem.m11.clust.nclustu 51 -0.5 50.5 sbs.uvagem.m11.ontrack
+th1d hsbs_uvagem_m11_nclustV_good 'sbs.uvagem.m11; num. V clusters; ' sbs.uvagem.m11.clust.nclustv 51 -0.5 50.5 sbs.uvagem.m11.ontrack
+th1d hsbs_uvagem_m11_nstripstot_all 'sbs.uvagem.m11; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m11.strip.nstripsfired 101 -0.5 100.5
+th1d hsbs_uvagem_m11_nclustU_all 'sbs.uvagem.m11; num. U clusters;' sbs.uvagem.m11.clust.nclustu 51 -0.5 50.5
+th1d hsbs_uvagem_m11_nclustV_all 'sbs.uvagem.m11; num. V clusters;' sbs.uvagem.m11.clust.nclustv 51 -0.5 50.5
+th1d hsbs_uvagem_m11_stripU_all 'sbs.uvagem.m11; U/X strip index; ' sbs.uvagem.m11.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m11.strip.IsU[I]
+th1d hsbs_uvagem_m11_stripV_all 'sbs.uvagem.m11; V/Y strip index; ' sbs.uvagem.m11.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m11.strip.IsV[I]
+th1d hsbs_uvagem_m11_ADCsumU_all 'sbs.uvagem.m11; Strip ADC sum, U/X strips;' sbs.uvagem.m11.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m11.strip.IsU[I]
+th1d hsbs_uvagem_m11_ADCsumV_all 'sbs.uvagem.m11; Strip ADC sum, V/Y strips;' sbs.uvagem.m11.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m11.strip.IsV[I]
+th1d hsbs_uvagem_m11_ADCmaxU_all 'sbs.uvagem.m11; Strip ADC max, U/X strips;' sbs.uvagem.m11.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m11.strip.IsU[I]
+th1d hsbs_uvagem_m11_ADCmaxV_all 'sbs.uvagem.m11; Strip ADC max, V/Y strips; ' sbs.uvagem.m11.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m11.strip.IsV[I]
+th1d hsbs_uvagem_m11_TimeU_all 'sbs.uvagem.m11; Strip Time, U/X strips;' sbs.uvagem.m11.strip.Tmean[I] 150 0 150 sbs.uvagem.m11.strip.IsU[I]
+th1d hsbs_uvagem_m11_TimeV_all 'sbs.uvagem.m11; Strip Time, V/Y strips;' sbs.uvagem.m11.strip.Tmean[I] 150 0 150 sbs.uvagem.m11.strip.IsV[I]
+th1d hsbs_uvagem_m11_iSampMaxU_all 'sbs.uvagem.m11; Peak time sample, U/X strips;' sbs.uvagem.m11.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m11.strip.IsU[I]
+th1d hsbs_uvagem_m11_iSampMaxV_all 'sbs.uvagem.m11; Peak time sample, V/Y strips;' sbs.uvagem.m11.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m11.strip.IsV[I]
+th2d hsbs_uvagem_m11_ADCsum_vs_Ustrip_all 'sbs.uvagem.m11; U strip ADC sum vs strip;' sbs.uvagem.m11.strip.istrip[I] sbs.uvagem.m11.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m11.strip.IsU[I]
+th2d hsbs_uvagem_m11_ADCsum_vs_Vstrip_all 'sbs.uvagem.m11; V strip ADC sum vs strip;' sbs.uvagem.m11.strip.istrip[I] sbs.uvagem.m11.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m11.strip.IsV[I]
+th2d hsbs_uvagem_m11_ADCmax_vs_Ustrip_all 'sbs.uvagem.m11; U strip ADC max vs strip;' sbs.uvagem.m11.strip.istrip[I] sbs.uvagem.m11.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m11.strip.IsU[I]
+th2d hsbs_uvagem_m11_ADCmax_vs_Vstrip_all 'sbs.uvagem.m11; V strip ADC max vs strip;' sbs.uvagem.m11.strip.istrip[I] sbs.uvagem.m11.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m11.strip.IsV[I]
+
+# Module 11 strip histograms, strips on tracks: 
+th1d hsbs_uvagem_m11_stripU_good 'sbs.uvagem.m11 (strips on tracks); U/X strip index;' sbs.uvagem.m11.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m11.strip.ontrackU[I]
+th1d hsbs_uvagem_m11_stripV_good 'sbs.uvagem.m11 (strips on tracks); V/Y strip index;' sbs.uvagem.m11.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m11.strip.ontrackV[I]
+th1d hsbs_uvagem_m11_ADCsumU_good 'sbs.uvagem.m11; Strip ADC sum, U/X strips;' sbs.uvagem.m11.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m11.strip.ontrackU[I]
+th1d hsbs_uvagem_m11_ADCsumV_good 'sbs.uvagem.m11; Strip ADC sum, V/Y strips;' sbs.uvagem.m11.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m11.strip.ontrackV[I]
+th1d hsbs_uvagem_m11_ADCmaxU_good 'sbs.uvagem.m11; Strip ADC max, U/X strips;' sbs.uvagem.m11.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m11.strip.ontrackU[I]
+th1d hsbs_uvagem_m11_ADCmaxV_good 'sbs.uvagem.m11; Strip ADC max, V/Y strips;' sbs.uvagem.m11.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m11.strip.ontrackV[I]
+th1d hsbs_uvagem_m11_TimeU_good 'sbs.uvagem.m11; Strip Time, U/X strips;' sbs.uvagem.m11.strip.Tmean[I] 150 0 150 sbs.uvagem.m11.strip.ontrackU[I]
+th1d hsbs_uvagem_m11_TimeV_good 'sbs.uvagem.m11; Strip Time, V/Y strips;' sbs.uvagem.m11.strip.Tmean[I] 150 0 150 sbs.uvagem.m11.strip.ontrackV[I]
+th1d hsbs_uvagem_m11_iSampMaxU_good 'sbs.uvagem.m11; Peak time sample, U/X strips;' sbs.uvagem.m11.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m11.strip.ontrackU[I]
+th1d hsbs_uvagem_m11_iSampMaxV_good 'sbs.uvagem.m11; Peak time sample, V/Y strips;' sbs.uvagem.m11.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m11.strip.ontrackV[I]
+th2d hsbs_uvagem_m11_ADCsum_vs_Ustrip_good 'sbs.uvagem.m11; U strip ADC sum vs strip;' sbs.uvagem.m11.strip.istrip[I] sbs.uvagem.m11.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m11.strip.ontrackU[I]
+th2d hsbs_uvagem_m11_ADCsum_vs_Vstrip_good 'sbs.uvagem.m11; V strip ADC sum vs strip;' sbs.uvagem.m11.strip.istrip[I] sbs.uvagem.m11.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m11.strip.ontrackV[I]
+th2d hsbs_uvagem_m11_ADCmax_vs_Ustrip_good 'sbs.uvagem.m11; U strip ADC max vs strip;' sbs.uvagem.m11.strip.istrip[I] sbs.uvagem.m11.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m11.strip.ontrackU[I]
+th2d hsbs_uvagem_m11_ADCmax_vs_Vstrip_good 'sbs.uvagem.m11; V strip ADC max vs strip;' sbs.uvagem.m11.strip.istrip[I] sbs.uvagem.m11.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m11.strip.ontrackV[I]
+
+# Module 11 hit maps 
+#th1d hsbs_uvagem_m11_hit_xlocal 'Hit local X position (m), Module 11' sbs.uvagem.m11.hit.hitx[I] 250 -0.3072 0.3072 sbs.uvagem.m11.hit.ontrack[I]
+#th1d hsbs_uvagem_m11_hit_ylocal 'Hit local Y position (m), Module 11' sbs.uvagem.m11.hit.hity[I] 250 -0.256 0.256 sbs.uvagem.m11.hit.ontrack[I]
+#th2d hsbs_uvagem_m11_hit_xylocal 'Hit local X vs Y (m), Module 11' sbs.uvagem.m11.hit.hity[I] sbs.uvagem.m11.hit.hitx[I] 200 -0.256 0.256 200 -0.3072 0.3072 sbs.uvagem.m11.hit.ontrack[I]
+
+th1d hsbs_uvagem_m11_ADCmax_good_CM 'sbs.uvagem.m11; Strip ADC max; ' sbs.uvagem.m11.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m11.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m11_ADCsum_good_CM 'sbs.uvagem.m11; Strip ADC sum; ' sbs.uvagem.m11.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m11.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m11_iSampMax_good_CM 'sbs.uvagem.m11; Strip max time sample;' sbs.uvagem.m11.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m11.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m11_StripTime_good_CM 'sbs.uvagem.m11; Strip Mean Time (ns);' sbs.uvagem.m11.strip.Tmean[I] 150 0 150 sbs.uvagem.m11.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m11_StripTsigma_good_CM 'sbs.uvagem.m11; Strip RMS Time (ns);' sbs.uvagem.m11.strip.Tsigma[I] 150 0 150 sbs.uvagem.m11.strip.CM_GOOD[I]
+
+
+# Module 12 strip histograms, all strips: 
+th1d hsbs_uvagem_m12_nstripstot_good 'sbs.uvagem.m12; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m12.strip.nstripsfired 101 -0.5 100.5 sbs.uvagem.m12.ontrack
+th1d hsbs_uvagem_m12_nclustU_good 'sbs.uvagem.m12; num. U clusters;' sbs.uvagem.m12.clust.nclustu 51 -0.5 50.5 sbs.uvagem.m12.ontrack
+th1d hsbs_uvagem_m12_nclustV_good 'sbs.uvagem.m12; num. V clusters; ' sbs.uvagem.m12.clust.nclustv 51 -0.5 50.5 sbs.uvagem.m12.ontrack
+th1d hsbs_uvagem_m12_nstripstot_all 'sbs.uvagem.m12; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m12.strip.nstripsfired 101 -0.5 100.5
+th1d hsbs_uvagem_m12_nclustU_all 'sbs.uvagem.m12; num. U clusters;' sbs.uvagem.m12.clust.nclustu 51 -0.5 50.5
+th1d hsbs_uvagem_m12_nclustV_all 'sbs.uvagem.m12; num. V clusters;' sbs.uvagem.m12.clust.nclustv 51 -0.5 50.5
+th1d hsbs_uvagem_m12_stripU_all 'sbs.uvagem.m12; U/X strip index; ' sbs.uvagem.m12.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m12.strip.IsU[I]
+th1d hsbs_uvagem_m12_stripV_all 'sbs.uvagem.m12; V/Y strip index; ' sbs.uvagem.m12.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m12.strip.IsV[I]
+th1d hsbs_uvagem_m12_ADCsumU_all 'sbs.uvagem.m12; Strip ADC sum, U/X strips;' sbs.uvagem.m12.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m12.strip.IsU[I]
+th1d hsbs_uvagem_m12_ADCsumV_all 'sbs.uvagem.m12; Strip ADC sum, V/Y strips;' sbs.uvagem.m12.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m12.strip.IsV[I]
+th1d hsbs_uvagem_m12_ADCmaxU_all 'sbs.uvagem.m12; Strip ADC max, U/X strips;' sbs.uvagem.m12.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m12.strip.IsU[I]
+th1d hsbs_uvagem_m12_ADCmaxV_all 'sbs.uvagem.m12; Strip ADC max, V/Y strips; ' sbs.uvagem.m12.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m12.strip.IsV[I]
+th1d hsbs_uvagem_m12_TimeU_all 'sbs.uvagem.m12; Strip Time, U/X strips;' sbs.uvagem.m12.strip.Tmean[I] 150 0 150 sbs.uvagem.m12.strip.IsU[I]
+th1d hsbs_uvagem_m12_TimeV_all 'sbs.uvagem.m12; Strip Time, V/Y strips;' sbs.uvagem.m12.strip.Tmean[I] 150 0 150 sbs.uvagem.m12.strip.IsV[I]
+th1d hsbs_uvagem_m12_iSampMaxU_all 'sbs.uvagem.m12; Peak time sample, U/X strips;' sbs.uvagem.m12.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m12.strip.IsU[I]
+th1d hsbs_uvagem_m12_iSampMaxV_all 'sbs.uvagem.m12; Peak time sample, V/Y strips;' sbs.uvagem.m12.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m12.strip.IsV[I]
+th2d hsbs_uvagem_m12_ADCsum_vs_Ustrip_all 'sbs.uvagem.m12; U strip ADC sum vs strip;' sbs.uvagem.m12.strip.istrip[I] sbs.uvagem.m12.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m12.strip.IsU[I]
+th2d hsbs_uvagem_m12_ADCsum_vs_Vstrip_all 'sbs.uvagem.m12; V strip ADC sum vs strip;' sbs.uvagem.m12.strip.istrip[I] sbs.uvagem.m12.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m12.strip.IsV[I]
+th2d hsbs_uvagem_m12_ADCmax_vs_Ustrip_all 'sbs.uvagem.m12; U strip ADC max vs strip;' sbs.uvagem.m12.strip.istrip[I] sbs.uvagem.m12.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m12.strip.IsU[I]
+th2d hsbs_uvagem_m12_ADCmax_vs_Vstrip_all 'sbs.uvagem.m12; V strip ADC max vs strip;' sbs.uvagem.m12.strip.istrip[I] sbs.uvagem.m12.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m12.strip.IsV[I]
+
+# Module 12 strip histograms, strips on tracks: 
+th1d hsbs_uvagem_m12_stripU_good 'sbs.uvagem.m12 (strips on tracks); U/X strip index;' sbs.uvagem.m12.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m12.strip.ontrackU[I]
+th1d hsbs_uvagem_m12_stripV_good 'sbs.uvagem.m12 (strips on tracks); V/Y strip index;' sbs.uvagem.m12.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m12.strip.ontrackV[I]
+th1d hsbs_uvagem_m12_ADCsumU_good 'sbs.uvagem.m12; Strip ADC sum, U/X strips;' sbs.uvagem.m12.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m12.strip.ontrackU[I]
+th1d hsbs_uvagem_m12_ADCsumV_good 'sbs.uvagem.m12; Strip ADC sum, V/Y strips;' sbs.uvagem.m12.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m12.strip.ontrackV[I]
+th1d hsbs_uvagem_m12_ADCmaxU_good 'sbs.uvagem.m12; Strip ADC max, U/X strips;' sbs.uvagem.m12.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m12.strip.ontrackU[I]
+th1d hsbs_uvagem_m12_ADCmaxV_good 'sbs.uvagem.m12; Strip ADC max, V/Y strips;' sbs.uvagem.m12.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m12.strip.ontrackV[I]
+th1d hsbs_uvagem_m12_TimeU_good 'sbs.uvagem.m12; Strip Time, U/X strips;' sbs.uvagem.m12.strip.Tmean[I] 150 0 150 sbs.uvagem.m12.strip.ontrackU[I]
+th1d hsbs_uvagem_m12_TimeV_good 'sbs.uvagem.m12; Strip Time, V/Y strips;' sbs.uvagem.m12.strip.Tmean[I] 150 0 150 sbs.uvagem.m12.strip.ontrackV[I]
+th1d hsbs_uvagem_m12_iSampMaxU_good 'sbs.uvagem.m12; Peak time sample, U/X strips;' sbs.uvagem.m12.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m12.strip.ontrackU[I]
+th1d hsbs_uvagem_m12_iSampMaxV_good 'sbs.uvagem.m12; Peak time sample, V/Y strips;' sbs.uvagem.m12.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m12.strip.ontrackV[I]
+th2d hsbs_uvagem_m12_ADCsum_vs_Ustrip_good 'sbs.uvagem.m12; U strip ADC sum vs strip;' sbs.uvagem.m12.strip.istrip[I] sbs.uvagem.m12.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m12.strip.ontrackU[I]
+th2d hsbs_uvagem_m12_ADCsum_vs_Vstrip_good 'sbs.uvagem.m12; V strip ADC sum vs strip;' sbs.uvagem.m12.strip.istrip[I] sbs.uvagem.m12.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m12.strip.ontrackV[I]
+th2d hsbs_uvagem_m12_ADCmax_vs_Ustrip_good 'sbs.uvagem.m12; U strip ADC max vs strip;' sbs.uvagem.m12.strip.istrip[I] sbs.uvagem.m12.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m12.strip.ontrackU[I]
+th2d hsbs_uvagem_m12_ADCmax_vs_Vstrip_good 'sbs.uvagem.m12; V strip ADC max vs strip;' sbs.uvagem.m12.strip.istrip[I] sbs.uvagem.m12.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m12.strip.ontrackV[I]
+
+# Module 12 hit maps 
+#th1d hsbs_uvagem_m12_hit_xlocal 'Hit local X position (m), Module 12' sbs.uvagem.m12.hit.hitx[I] 250 -0.3072 0.3072 sbs.uvagem.m12.hit.ontrack[I]
+#th1d hsbs_uvagem_m12_hit_ylocal 'Hit local Y position (m), Module 12' sbs.uvagem.m12.hit.hity[I] 250 -0.256 0.256 sbs.uvagem.m12.hit.ontrack[I]
+#th2d hsbs_uvagem_m12_hit_xylocal 'Hit local X vs Y (m), Module 12' sbs.uvagem.m12.hit.hity[I] sbs.uvagem.m12.hit.hitx[I] 200 -0.256 0.256 200 -0.3072 0.3072 sbs.uvagem.m12.hit.ontrack[I]
+
+th1d hsbs_uvagem_m12_ADCmax_good_CM 'sbs.uvagem.m12; Strip ADC max; ' sbs.uvagem.m12.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m12.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m12_ADCsum_good_CM 'sbs.uvagem.m12; Strip ADC sum; ' sbs.uvagem.m12.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m12.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m12_iSampMax_good_CM 'sbs.uvagem.m12; Strip max time sample;' sbs.uvagem.m12.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m12.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m12_StripTime_good_CM 'sbs.uvagem.m12; Strip Mean Time (ns);' sbs.uvagem.m12.strip.Tmean[I] 150 0 150 sbs.uvagem.m12.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m12_StripTsigma_good_CM 'sbs.uvagem.m12; Strip RMS Time (ns);' sbs.uvagem.m12.strip.Tsigma[I] 150 0 150 sbs.uvagem.m12.strip.CM_GOOD[I]
+
+
+# Module 13 strip histograms, all strips: 
+th1d hsbs_uvagem_m13_nstripstot_good 'sbs.uvagem.m13; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m13.strip.nstripsfired 101 -0.5 100.5 sbs.uvagem.m13.ontrack
+th1d hsbs_uvagem_m13_nclustU_good 'sbs.uvagem.m13; num. U clusters;' sbs.uvagem.m13.clust.nclustu 51 -0.5 50.5 sbs.uvagem.m13.ontrack
+th1d hsbs_uvagem_m13_nclustV_good 'sbs.uvagem.m13; num. V clusters; ' sbs.uvagem.m13.clust.nclustv 51 -0.5 50.5 sbs.uvagem.m13.ontrack
+th1d hsbs_uvagem_m13_nstripstot_all 'sbs.uvagem.m13; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m13.strip.nstripsfired 101 -0.5 100.5
+th1d hsbs_uvagem_m13_nclustU_all 'sbs.uvagem.m13; num. U clusters;' sbs.uvagem.m13.clust.nclustu 51 -0.5 50.5
+th1d hsbs_uvagem_m13_nclustV_all 'sbs.uvagem.m13; num. V clusters;' sbs.uvagem.m13.clust.nclustv 51 -0.5 50.5
+th1d hsbs_uvagem_m13_stripU_all 'sbs.uvagem.m13; U/X strip index; ' sbs.uvagem.m13.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m13.strip.IsU[I]
+th1d hsbs_uvagem_m13_stripV_all 'sbs.uvagem.m13; V/Y strip index; ' sbs.uvagem.m13.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m13.strip.IsV[I]
+th1d hsbs_uvagem_m13_ADCsumU_all 'sbs.uvagem.m13; Strip ADC sum, U/X strips;' sbs.uvagem.m13.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m13.strip.IsU[I]
+th1d hsbs_uvagem_m13_ADCsumV_all 'sbs.uvagem.m13; Strip ADC sum, V/Y strips;' sbs.uvagem.m13.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m13.strip.IsV[I]
+th1d hsbs_uvagem_m13_ADCmaxU_all 'sbs.uvagem.m13; Strip ADC max, U/X strips;' sbs.uvagem.m13.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m13.strip.IsU[I]
+th1d hsbs_uvagem_m13_ADCmaxV_all 'sbs.uvagem.m13; Strip ADC max, V/Y strips; ' sbs.uvagem.m13.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m13.strip.IsV[I]
+th1d hsbs_uvagem_m13_TimeU_all 'sbs.uvagem.m13; Strip Time, U/X strips;' sbs.uvagem.m13.strip.Tmean[I] 150 0 150 sbs.uvagem.m13.strip.IsU[I]
+th1d hsbs_uvagem_m13_TimeV_all 'sbs.uvagem.m13; Strip Time, V/Y strips;' sbs.uvagem.m13.strip.Tmean[I] 150 0 150 sbs.uvagem.m13.strip.IsV[I]
+th1d hsbs_uvagem_m13_iSampMaxU_all 'sbs.uvagem.m13; Peak time sample, U/X strips;' sbs.uvagem.m13.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m13.strip.IsU[I]
+th1d hsbs_uvagem_m13_iSampMaxV_all 'sbs.uvagem.m13; Peak time sample, V/Y strips;' sbs.uvagem.m13.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m13.strip.IsV[I]
+th2d hsbs_uvagem_m13_ADCsum_vs_Ustrip_all 'sbs.uvagem.m13; U strip ADC sum vs strip;' sbs.uvagem.m13.strip.istrip[I] sbs.uvagem.m13.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m13.strip.IsU[I]
+th2d hsbs_uvagem_m13_ADCsum_vs_Vstrip_all 'sbs.uvagem.m13; V strip ADC sum vs strip;' sbs.uvagem.m13.strip.istrip[I] sbs.uvagem.m13.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m13.strip.IsV[I]
+th2d hsbs_uvagem_m13_ADCmax_vs_Ustrip_all 'sbs.uvagem.m13; U strip ADC max vs strip;' sbs.uvagem.m13.strip.istrip[I] sbs.uvagem.m13.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m13.strip.IsU[I]
+th2d hsbs_uvagem_m13_ADCmax_vs_Vstrip_all 'sbs.uvagem.m13; V strip ADC max vs strip;' sbs.uvagem.m13.strip.istrip[I] sbs.uvagem.m13.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m13.strip.IsV[I]
+
+# Module 13 strip histograms, strips on tracks: 
+th1d hsbs_uvagem_m13_stripU_good 'sbs.uvagem.m13 (strips on tracks); U/X strip index;' sbs.uvagem.m13.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m13.strip.ontrackU[I]
+th1d hsbs_uvagem_m13_stripV_good 'sbs.uvagem.m13 (strips on tracks); V/Y strip index;' sbs.uvagem.m13.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m13.strip.ontrackV[I]
+th1d hsbs_uvagem_m13_ADCsumU_good 'sbs.uvagem.m13; Strip ADC sum, U/X strips;' sbs.uvagem.m13.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m13.strip.ontrackU[I]
+th1d hsbs_uvagem_m13_ADCsumV_good 'sbs.uvagem.m13; Strip ADC sum, V/Y strips;' sbs.uvagem.m13.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m13.strip.ontrackV[I]
+th1d hsbs_uvagem_m13_ADCmaxU_good 'sbs.uvagem.m13; Strip ADC max, U/X strips;' sbs.uvagem.m13.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m13.strip.ontrackU[I]
+th1d hsbs_uvagem_m13_ADCmaxV_good 'sbs.uvagem.m13; Strip ADC max, V/Y strips;' sbs.uvagem.m13.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m13.strip.ontrackV[I]
+th1d hsbs_uvagem_m13_TimeU_good 'sbs.uvagem.m13; Strip Time, U/X strips;' sbs.uvagem.m13.strip.Tmean[I] 150 0 150 sbs.uvagem.m13.strip.ontrackU[I]
+th1d hsbs_uvagem_m13_TimeV_good 'sbs.uvagem.m13; Strip Time, V/Y strips;' sbs.uvagem.m13.strip.Tmean[I] 150 0 150 sbs.uvagem.m13.strip.ontrackV[I]
+th1d hsbs_uvagem_m13_iSampMaxU_good 'sbs.uvagem.m13; Peak time sample, U/X strips;' sbs.uvagem.m13.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m13.strip.ontrackU[I]
+th1d hsbs_uvagem_m13_iSampMaxV_good 'sbs.uvagem.m13; Peak time sample, V/Y strips;' sbs.uvagem.m13.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m13.strip.ontrackV[I]
+th2d hsbs_uvagem_m13_ADCsum_vs_Ustrip_good 'sbs.uvagem.m13; U strip ADC sum vs strip;' sbs.uvagem.m13.strip.istrip[I] sbs.uvagem.m13.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m13.strip.ontrackU[I]
+th2d hsbs_uvagem_m13_ADCsum_vs_Vstrip_good 'sbs.uvagem.m13; V strip ADC sum vs strip;' sbs.uvagem.m13.strip.istrip[I] sbs.uvagem.m13.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m13.strip.ontrackV[I]
+th2d hsbs_uvagem_m13_ADCmax_vs_Ustrip_good 'sbs.uvagem.m13; U strip ADC max vs strip;' sbs.uvagem.m13.strip.istrip[I] sbs.uvagem.m13.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m13.strip.ontrackU[I]
+th2d hsbs_uvagem_m13_ADCmax_vs_Vstrip_good 'sbs.uvagem.m13; V strip ADC max vs strip;' sbs.uvagem.m13.strip.istrip[I] sbs.uvagem.m13.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m13.strip.ontrackV[I]
+
+# Module 13 hit maps 
+#th1d hsbs_uvagem_m13_hit_xlocal 'Hit local X position (m), Module 13' sbs.uvagem.m13.hit.hitx[I] 250 -0.3072 0.3072 sbs.uvagem.m13.hit.ontrack[I]
+#th1d hsbs_uvagem_m13_hit_ylocal 'Hit local Y position (m), Module 13' sbs.uvagem.m13.hit.hity[I] 250 -0.256 0.256 sbs.uvagem.m13.hit.ontrack[I]
+#th2d hsbs_uvagem_m13_hit_xylocal 'Hit local X vs Y (m), Module 13' sbs.uvagem.m13.hit.hity[I] sbs.uvagem.m13.hit.hitx[I] 200 -0.256 0.256 200 -0.3072 0.3072 sbs.uvagem.m13.hit.ontrack[I]
+
+th1d hsbs_uvagem_m13_ADCmax_good_CM 'sbs.uvagem.m13; Strip ADC max; ' sbs.uvagem.m13.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m13.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m13_ADCsum_good_CM 'sbs.uvagem.m13; Strip ADC sum; ' sbs.uvagem.m13.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m13.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m13_iSampMax_good_CM 'sbs.uvagem.m13; Strip max time sample;' sbs.uvagem.m13.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m13.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m13_StripTime_good_CM 'sbs.uvagem.m13; Strip Mean Time (ns);' sbs.uvagem.m13.strip.Tmean[I] 150 0 150 sbs.uvagem.m13.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m13_StripTsigma_good_CM 'sbs.uvagem.m13; Strip RMS Time (ns);' sbs.uvagem.m13.strip.Tsigma[I] 150 0 150 sbs.uvagem.m13.strip.CM_GOOD[I]
+
+
+# Module 14 strip histograms, all strips: 
+th1d hsbs_uvagem_m14_nstripstot_good 'sbs.uvagem.m14; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m14.strip.nstripsfired 101 -0.5 100.5 sbs.uvagem.m14.ontrack
+th1d hsbs_uvagem_m14_nclustU_good 'sbs.uvagem.m14; num. U clusters;' sbs.uvagem.m14.clust.nclustu 51 -0.5 50.5 sbs.uvagem.m14.ontrack
+th1d hsbs_uvagem_m14_nclustV_good 'sbs.uvagem.m14; num. V clusters; ' sbs.uvagem.m14.clust.nclustv 51 -0.5 50.5 sbs.uvagem.m14.ontrack
+th1d hsbs_uvagem_m14_nstripstot_all 'sbs.uvagem.m14; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m14.strip.nstripsfired 101 -0.5 100.5
+th1d hsbs_uvagem_m14_nclustU_all 'sbs.uvagem.m14; num. U clusters;' sbs.uvagem.m14.clust.nclustu 51 -0.5 50.5
+th1d hsbs_uvagem_m14_nclustV_all 'sbs.uvagem.m14; num. V clusters;' sbs.uvagem.m14.clust.nclustv 51 -0.5 50.5
+th1d hsbs_uvagem_m14_stripU_all 'sbs.uvagem.m14; U/X strip index; ' sbs.uvagem.m14.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m14.strip.IsU[I]
+th1d hsbs_uvagem_m14_stripV_all 'sbs.uvagem.m14; V/Y strip index; ' sbs.uvagem.m14.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m14.strip.IsV[I]
+th1d hsbs_uvagem_m14_ADCsumU_all 'sbs.uvagem.m14; Strip ADC sum, U/X strips;' sbs.uvagem.m14.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m14.strip.IsU[I]
+th1d hsbs_uvagem_m14_ADCsumV_all 'sbs.uvagem.m14; Strip ADC sum, V/Y strips;' sbs.uvagem.m14.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m14.strip.IsV[I]
+th1d hsbs_uvagem_m14_ADCmaxU_all 'sbs.uvagem.m14; Strip ADC max, U/X strips;' sbs.uvagem.m14.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m14.strip.IsU[I]
+th1d hsbs_uvagem_m14_ADCmaxV_all 'sbs.uvagem.m14; Strip ADC max, V/Y strips; ' sbs.uvagem.m14.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m14.strip.IsV[I]
+th1d hsbs_uvagem_m14_TimeU_all 'sbs.uvagem.m14; Strip Time, U/X strips;' sbs.uvagem.m14.strip.Tmean[I] 150 0 150 sbs.uvagem.m14.strip.IsU[I]
+th1d hsbs_uvagem_m14_TimeV_all 'sbs.uvagem.m14; Strip Time, V/Y strips;' sbs.uvagem.m14.strip.Tmean[I] 150 0 150 sbs.uvagem.m14.strip.IsV[I]
+th1d hsbs_uvagem_m14_iSampMaxU_all 'sbs.uvagem.m14; Peak time sample, U/X strips;' sbs.uvagem.m14.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m14.strip.IsU[I]
+th1d hsbs_uvagem_m14_iSampMaxV_all 'sbs.uvagem.m14; Peak time sample, V/Y strips;' sbs.uvagem.m14.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m14.strip.IsV[I]
+th2d hsbs_uvagem_m14_ADCsum_vs_Ustrip_all 'sbs.uvagem.m14; U strip ADC sum vs strip;' sbs.uvagem.m14.strip.istrip[I] sbs.uvagem.m14.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m14.strip.IsU[I]
+th2d hsbs_uvagem_m14_ADCsum_vs_Vstrip_all 'sbs.uvagem.m14; V strip ADC sum vs strip;' sbs.uvagem.m14.strip.istrip[I] sbs.uvagem.m14.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m14.strip.IsV[I]
+th2d hsbs_uvagem_m14_ADCmax_vs_Ustrip_all 'sbs.uvagem.m14; U strip ADC max vs strip;' sbs.uvagem.m14.strip.istrip[I] sbs.uvagem.m14.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m14.strip.IsU[I]
+th2d hsbs_uvagem_m14_ADCmax_vs_Vstrip_all 'sbs.uvagem.m14; V strip ADC max vs strip;' sbs.uvagem.m14.strip.istrip[I] sbs.uvagem.m14.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m14.strip.IsV[I]
+
+# Module 14 strip histograms, strips on tracks: 
+th1d hsbs_uvagem_m14_stripU_good 'sbs.uvagem.m14 (strips on tracks); U/X strip index;' sbs.uvagem.m14.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m14.strip.ontrackU[I]
+th1d hsbs_uvagem_m14_stripV_good 'sbs.uvagem.m14 (strips on tracks); V/Y strip index;' sbs.uvagem.m14.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m14.strip.ontrackV[I]
+th1d hsbs_uvagem_m14_ADCsumU_good 'sbs.uvagem.m14; Strip ADC sum, U/X strips;' sbs.uvagem.m14.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m14.strip.ontrackU[I]
+th1d hsbs_uvagem_m14_ADCsumV_good 'sbs.uvagem.m14; Strip ADC sum, V/Y strips;' sbs.uvagem.m14.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m14.strip.ontrackV[I]
+th1d hsbs_uvagem_m14_ADCmaxU_good 'sbs.uvagem.m14; Strip ADC max, U/X strips;' sbs.uvagem.m14.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m14.strip.ontrackU[I]
+th1d hsbs_uvagem_m14_ADCmaxV_good 'sbs.uvagem.m14; Strip ADC max, V/Y strips;' sbs.uvagem.m14.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m14.strip.ontrackV[I]
+th1d hsbs_uvagem_m14_TimeU_good 'sbs.uvagem.m14; Strip Time, U/X strips;' sbs.uvagem.m14.strip.Tmean[I] 150 0 150 sbs.uvagem.m14.strip.ontrackU[I]
+th1d hsbs_uvagem_m14_TimeV_good 'sbs.uvagem.m14; Strip Time, V/Y strips;' sbs.uvagem.m14.strip.Tmean[I] 150 0 150 sbs.uvagem.m14.strip.ontrackV[I]
+th1d hsbs_uvagem_m14_iSampMaxU_good 'sbs.uvagem.m14; Peak time sample, U/X strips;' sbs.uvagem.m14.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m14.strip.ontrackU[I]
+th1d hsbs_uvagem_m14_iSampMaxV_good 'sbs.uvagem.m14; Peak time sample, V/Y strips;' sbs.uvagem.m14.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m14.strip.ontrackV[I]
+th2d hsbs_uvagem_m14_ADCsum_vs_Ustrip_good 'sbs.uvagem.m14; U strip ADC sum vs strip;' sbs.uvagem.m14.strip.istrip[I] sbs.uvagem.m14.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m14.strip.ontrackU[I]
+th2d hsbs_uvagem_m14_ADCsum_vs_Vstrip_good 'sbs.uvagem.m14; V strip ADC sum vs strip;' sbs.uvagem.m14.strip.istrip[I] sbs.uvagem.m14.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m14.strip.ontrackV[I]
+th2d hsbs_uvagem_m14_ADCmax_vs_Ustrip_good 'sbs.uvagem.m14; U strip ADC max vs strip;' sbs.uvagem.m14.strip.istrip[I] sbs.uvagem.m14.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m14.strip.ontrackU[I]
+th2d hsbs_uvagem_m14_ADCmax_vs_Vstrip_good 'sbs.uvagem.m14; V strip ADC max vs strip;' sbs.uvagem.m14.strip.istrip[I] sbs.uvagem.m14.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m14.strip.ontrackV[I]
+
+# Module 14 hit maps 
+#th1d hsbs_uvagem_m14_hit_xlocal 'Hit local X position (m), Module 14' sbs.uvagem.m14.hit.hitx[I] 250 -0.3072 0.3072 sbs.uvagem.m14.hit.ontrack[I]
+#th1d hsbs_uvagem_m14_hit_ylocal 'Hit local Y position (m), Module 14' sbs.uvagem.m14.hit.hity[I] 250 -0.256 0.256 sbs.uvagem.m14.hit.ontrack[I]
+#th2d hsbs_uvagem_m14_hit_xylocal 'Hit local X vs Y (m), Module 14' sbs.uvagem.m14.hit.hity[I] sbs.uvagem.m14.hit.hitx[I] 200 -0.256 0.256 200 -0.3072 0.3072 sbs.uvagem.m14.hit.ontrack[I]
+
+th1d hsbs_uvagem_m14_ADCmax_good_CM 'sbs.uvagem.m14; Strip ADC max; ' sbs.uvagem.m14.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m14.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m14_ADCsum_good_CM 'sbs.uvagem.m14; Strip ADC sum; ' sbs.uvagem.m14.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m14.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m14_iSampMax_good_CM 'sbs.uvagem.m14; Strip max time sample;' sbs.uvagem.m14.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m14.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m14_StripTime_good_CM 'sbs.uvagem.m14; Strip Mean Time (ns);' sbs.uvagem.m14.strip.Tmean[I] 150 0 150 sbs.uvagem.m14.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m14_StripTsigma_good_CM 'sbs.uvagem.m14; Strip RMS Time (ns);' sbs.uvagem.m14.strip.Tsigma[I] 150 0 150 sbs.uvagem.m14.strip.CM_GOOD[I]
+
+
+# Module 15 strip histograms, all strips: 
+th1d hsbs_uvagem_m15_nstripstot_good 'sbs.uvagem.m15; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m15.strip.nstripsfired 101 -0.5 100.5 sbs.uvagem.m15.ontrack
+th1d hsbs_uvagem_m15_nclustU_good 'sbs.uvagem.m15; num. U clusters;' sbs.uvagem.m15.clust.nclustu 51 -0.5 50.5 sbs.uvagem.m15.ontrack
+th1d hsbs_uvagem_m15_nclustV_good 'sbs.uvagem.m15; num. V clusters; ' sbs.uvagem.m15.clust.nclustv 51 -0.5 50.5 sbs.uvagem.m15.ontrack
+th1d hsbs_uvagem_m15_nstripstot_all 'sbs.uvagem.m15; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m15.strip.nstripsfired 101 -0.5 100.5
+th1d hsbs_uvagem_m15_nclustU_all 'sbs.uvagem.m15; num. U clusters;' sbs.uvagem.m15.clust.nclustu 51 -0.5 50.5
+th1d hsbs_uvagem_m15_nclustV_all 'sbs.uvagem.m15; num. V clusters;' sbs.uvagem.m15.clust.nclustv 51 -0.5 50.5
+th1d hsbs_uvagem_m15_stripU_all 'sbs.uvagem.m15; U/X strip index; ' sbs.uvagem.m15.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m15.strip.IsU[I]
+th1d hsbs_uvagem_m15_stripV_all 'sbs.uvagem.m15; V/Y strip index; ' sbs.uvagem.m15.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m15.strip.IsV[I]
+th1d hsbs_uvagem_m15_ADCsumU_all 'sbs.uvagem.m15; Strip ADC sum, U/X strips;' sbs.uvagem.m15.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m15.strip.IsU[I]
+th1d hsbs_uvagem_m15_ADCsumV_all 'sbs.uvagem.m15; Strip ADC sum, V/Y strips;' sbs.uvagem.m15.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m15.strip.IsV[I]
+th1d hsbs_uvagem_m15_ADCmaxU_all 'sbs.uvagem.m15; Strip ADC max, U/X strips;' sbs.uvagem.m15.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m15.strip.IsU[I]
+th1d hsbs_uvagem_m15_ADCmaxV_all 'sbs.uvagem.m15; Strip ADC max, V/Y strips; ' sbs.uvagem.m15.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m15.strip.IsV[I]
+th1d hsbs_uvagem_m15_TimeU_all 'sbs.uvagem.m15; Strip Time, U/X strips;' sbs.uvagem.m15.strip.Tmean[I] 150 0 150 sbs.uvagem.m15.strip.IsU[I]
+th1d hsbs_uvagem_m15_TimeV_all 'sbs.uvagem.m15; Strip Time, V/Y strips;' sbs.uvagem.m15.strip.Tmean[I] 150 0 150 sbs.uvagem.m15.strip.IsV[I]
+th1d hsbs_uvagem_m15_iSampMaxU_all 'sbs.uvagem.m15; Peak time sample, U/X strips;' sbs.uvagem.m15.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m15.strip.IsU[I]
+th1d hsbs_uvagem_m15_iSampMaxV_all 'sbs.uvagem.m15; Peak time sample, V/Y strips;' sbs.uvagem.m15.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m15.strip.IsV[I]
+th2d hsbs_uvagem_m15_ADCsum_vs_Ustrip_all 'sbs.uvagem.m15; U strip ADC sum vs strip;' sbs.uvagem.m15.strip.istrip[I] sbs.uvagem.m15.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m15.strip.IsU[I]
+th2d hsbs_uvagem_m15_ADCsum_vs_Vstrip_all 'sbs.uvagem.m15; V strip ADC sum vs strip;' sbs.uvagem.m15.strip.istrip[I] sbs.uvagem.m15.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m15.strip.IsV[I]
+th2d hsbs_uvagem_m15_ADCmax_vs_Ustrip_all 'sbs.uvagem.m15; U strip ADC max vs strip;' sbs.uvagem.m15.strip.istrip[I] sbs.uvagem.m15.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m15.strip.IsU[I]
+th2d hsbs_uvagem_m15_ADCmax_vs_Vstrip_all 'sbs.uvagem.m15; V strip ADC max vs strip;' sbs.uvagem.m15.strip.istrip[I] sbs.uvagem.m15.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m15.strip.IsV[I]
+
+# Module 15 strip histograms, strips on tracks: 
+th1d hsbs_uvagem_m15_stripU_good 'sbs.uvagem.m15 (strips on tracks); U/X strip index;' sbs.uvagem.m15.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m15.strip.ontrackU[I]
+th1d hsbs_uvagem_m15_stripV_good 'sbs.uvagem.m15 (strips on tracks); V/Y strip index;' sbs.uvagem.m15.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m15.strip.ontrackV[I]
+th1d hsbs_uvagem_m15_ADCsumU_good 'sbs.uvagem.m15; Strip ADC sum, U/X strips;' sbs.uvagem.m15.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m15.strip.ontrackU[I]
+th1d hsbs_uvagem_m15_ADCsumV_good 'sbs.uvagem.m15; Strip ADC sum, V/Y strips;' sbs.uvagem.m15.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m15.strip.ontrackV[I]
+th1d hsbs_uvagem_m15_ADCmaxU_good 'sbs.uvagem.m15; Strip ADC max, U/X strips;' sbs.uvagem.m15.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m15.strip.ontrackU[I]
+th1d hsbs_uvagem_m15_ADCmaxV_good 'sbs.uvagem.m15; Strip ADC max, V/Y strips;' sbs.uvagem.m15.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m15.strip.ontrackV[I]
+th1d hsbs_uvagem_m15_TimeU_good 'sbs.uvagem.m15; Strip Time, U/X strips;' sbs.uvagem.m15.strip.Tmean[I] 150 0 150 sbs.uvagem.m15.strip.ontrackU[I]
+th1d hsbs_uvagem_m15_TimeV_good 'sbs.uvagem.m15; Strip Time, V/Y strips;' sbs.uvagem.m15.strip.Tmean[I] 150 0 150 sbs.uvagem.m15.strip.ontrackV[I]
+th1d hsbs_uvagem_m15_iSampMaxU_good 'sbs.uvagem.m15; Peak time sample, U/X strips;' sbs.uvagem.m15.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m15.strip.ontrackU[I]
+th1d hsbs_uvagem_m15_iSampMaxV_good 'sbs.uvagem.m15; Peak time sample, V/Y strips;' sbs.uvagem.m15.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m15.strip.ontrackV[I]
+th2d hsbs_uvagem_m15_ADCsum_vs_Ustrip_good 'sbs.uvagem.m15; U strip ADC sum vs strip;' sbs.uvagem.m15.strip.istrip[I] sbs.uvagem.m15.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m15.strip.ontrackU[I]
+th2d hsbs_uvagem_m15_ADCsum_vs_Vstrip_good 'sbs.uvagem.m15; V strip ADC sum vs strip;' sbs.uvagem.m15.strip.istrip[I] sbs.uvagem.m15.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m15.strip.ontrackV[I]
+th2d hsbs_uvagem_m15_ADCmax_vs_Ustrip_good 'sbs.uvagem.m15; U strip ADC max vs strip;' sbs.uvagem.m15.strip.istrip[I] sbs.uvagem.m15.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m15.strip.ontrackU[I]
+th2d hsbs_uvagem_m15_ADCmax_vs_Vstrip_good 'sbs.uvagem.m15; V strip ADC max vs strip;' sbs.uvagem.m15.strip.istrip[I] sbs.uvagem.m15.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m15.strip.ontrackV[I]
+
+# Module 15 hit maps 
+#th1d hsbs_uvagem_m15_hit_xlocal 'Hit local X position (m), Module 15' sbs.uvagem.m15.hit.hitx[I] 250 -0.3072 0.3072 sbs.uvagem.m15.hit.ontrack[I]
+#th1d hsbs_uvagem_m15_hit_ylocal 'Hit local Y position (m), Module 15' sbs.uvagem.m15.hit.hity[I] 250 -0.256 0.256 sbs.uvagem.m15.hit.ontrack[I]
+#th2d hsbs_uvagem_m15_hit_xylocal 'Hit local X vs Y (m), Module 15' sbs.uvagem.m15.hit.hity[I] sbs.uvagem.m15.hit.hitx[I] 200 -0.256 0.256 200 -0.3072 0.3072 sbs.uvagem.m15.hit.ontrack[I]
+
+th1d hsbs_uvagem_m15_ADCmax_good_CM 'sbs.uvagem.m15; Strip ADC max; ' sbs.uvagem.m15.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m15.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m15_ADCsum_good_CM 'sbs.uvagem.m15; Strip ADC sum; ' sbs.uvagem.m15.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m15.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m15_iSampMax_good_CM 'sbs.uvagem.m15; Strip max time sample;' sbs.uvagem.m15.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m15.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m15_StripTime_good_CM 'sbs.uvagem.m15; Strip Mean Time (ns);' sbs.uvagem.m15.strip.Tmean[I] 150 0 150 sbs.uvagem.m15.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m15_StripTsigma_good_CM 'sbs.uvagem.m15; Strip RMS Time (ns);' sbs.uvagem.m15.strip.Tsigma[I] 150 0 150 sbs.uvagem.m15.strip.CM_GOOD[I]
+
+
+# Module 16 strip histograms, all strips: 
+th1d hsbs_uvagem_m16_nstripstot_good 'sbs.uvagem.m16; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m16.strip.nstripsfired 101 -0.5 100.5 sbs.uvagem.m16.ontrack
+th1d hsbs_uvagem_m16_nclustU_good 'sbs.uvagem.m16; num. U clusters;' sbs.uvagem.m16.clust.nclustu 51 -0.5 50.5 sbs.uvagem.m16.ontrack
+th1d hsbs_uvagem_m16_nclustV_good 'sbs.uvagem.m16; num. V clusters; ' sbs.uvagem.m16.clust.nclustv 51 -0.5 50.5 sbs.uvagem.m16.ontrack
+th1d hsbs_uvagem_m16_nstripstot_all 'sbs.uvagem.m16; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m16.strip.nstripsfired 101 -0.5 100.5
+th1d hsbs_uvagem_m16_nclustU_all 'sbs.uvagem.m16; num. U clusters;' sbs.uvagem.m16.clust.nclustu 51 -0.5 50.5
+th1d hsbs_uvagem_m16_nclustV_all 'sbs.uvagem.m16; num. V clusters;' sbs.uvagem.m16.clust.nclustv 51 -0.5 50.5
+th1d hsbs_uvagem_m16_stripU_all 'sbs.uvagem.m16; U/X strip index; ' sbs.uvagem.m16.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m16.strip.IsU[I]
+th1d hsbs_uvagem_m16_stripV_all 'sbs.uvagem.m16; V/Y strip index; ' sbs.uvagem.m16.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m16.strip.IsV[I]
+th1d hsbs_uvagem_m16_ADCsumU_all 'sbs.uvagem.m16; Strip ADC sum, U/X strips;' sbs.uvagem.m16.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m16.strip.IsU[I]
+th1d hsbs_uvagem_m16_ADCsumV_all 'sbs.uvagem.m16; Strip ADC sum, V/Y strips;' sbs.uvagem.m16.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m16.strip.IsV[I]
+th1d hsbs_uvagem_m16_ADCmaxU_all 'sbs.uvagem.m16; Strip ADC max, U/X strips;' sbs.uvagem.m16.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m16.strip.IsU[I]
+th1d hsbs_uvagem_m16_ADCmaxV_all 'sbs.uvagem.m16; Strip ADC max, V/Y strips; ' sbs.uvagem.m16.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m16.strip.IsV[I]
+th1d hsbs_uvagem_m16_TimeU_all 'sbs.uvagem.m16; Strip Time, U/X strips;' sbs.uvagem.m16.strip.Tmean[I] 150 0 150 sbs.uvagem.m16.strip.IsU[I]
+th1d hsbs_uvagem_m16_TimeV_all 'sbs.uvagem.m16; Strip Time, V/Y strips;' sbs.uvagem.m16.strip.Tmean[I] 150 0 150 sbs.uvagem.m16.strip.IsV[I]
+th1d hsbs_uvagem_m16_iSampMaxU_all 'sbs.uvagem.m16; Peak time sample, U/X strips;' sbs.uvagem.m16.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m16.strip.IsU[I]
+th1d hsbs_uvagem_m16_iSampMaxV_all 'sbs.uvagem.m16; Peak time sample, V/Y strips;' sbs.uvagem.m16.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m16.strip.IsV[I]
+th2d hsbs_uvagem_m16_ADCsum_vs_Ustrip_all 'sbs.uvagem.m16; U strip ADC sum vs strip;' sbs.uvagem.m16.strip.istrip[I] sbs.uvagem.m16.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m16.strip.IsU[I]
+th2d hsbs_uvagem_m16_ADCsum_vs_Vstrip_all 'sbs.uvagem.m16; V strip ADC sum vs strip;' sbs.uvagem.m16.strip.istrip[I] sbs.uvagem.m16.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m16.strip.IsV[I]
+th2d hsbs_uvagem_m16_ADCmax_vs_Ustrip_all 'sbs.uvagem.m16; U strip ADC max vs strip;' sbs.uvagem.m16.strip.istrip[I] sbs.uvagem.m16.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m16.strip.IsU[I]
+th2d hsbs_uvagem_m16_ADCmax_vs_Vstrip_all 'sbs.uvagem.m16; V strip ADC max vs strip;' sbs.uvagem.m16.strip.istrip[I] sbs.uvagem.m16.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m16.strip.IsV[I]
+
+# Module 16 strip histograms, strips on tracks: 
+th1d hsbs_uvagem_m16_stripU_good 'sbs.uvagem.m16 (strips on tracks); U/X strip index;' sbs.uvagem.m16.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m16.strip.ontrackU[I]
+th1d hsbs_uvagem_m16_stripV_good 'sbs.uvagem.m16 (strips on tracks); V/Y strip index;' sbs.uvagem.m16.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m16.strip.ontrackV[I]
+th1d hsbs_uvagem_m16_ADCsumU_good 'sbs.uvagem.m16; Strip ADC sum, U/X strips;' sbs.uvagem.m16.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m16.strip.ontrackU[I]
+th1d hsbs_uvagem_m16_ADCsumV_good 'sbs.uvagem.m16; Strip ADC sum, V/Y strips;' sbs.uvagem.m16.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m16.strip.ontrackV[I]
+th1d hsbs_uvagem_m16_ADCmaxU_good 'sbs.uvagem.m16; Strip ADC max, U/X strips;' sbs.uvagem.m16.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m16.strip.ontrackU[I]
+th1d hsbs_uvagem_m16_ADCmaxV_good 'sbs.uvagem.m16; Strip ADC max, V/Y strips;' sbs.uvagem.m16.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m16.strip.ontrackV[I]
+th1d hsbs_uvagem_m16_TimeU_good 'sbs.uvagem.m16; Strip Time, U/X strips;' sbs.uvagem.m16.strip.Tmean[I] 150 0 150 sbs.uvagem.m16.strip.ontrackU[I]
+th1d hsbs_uvagem_m16_TimeV_good 'sbs.uvagem.m16; Strip Time, V/Y strips;' sbs.uvagem.m16.strip.Tmean[I] 150 0 150 sbs.uvagem.m16.strip.ontrackV[I]
+th1d hsbs_uvagem_m16_iSampMaxU_good 'sbs.uvagem.m16; Peak time sample, U/X strips;' sbs.uvagem.m16.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m16.strip.ontrackU[I]
+th1d hsbs_uvagem_m16_iSampMaxV_good 'sbs.uvagem.m16; Peak time sample, V/Y strips;' sbs.uvagem.m16.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m16.strip.ontrackV[I]
+th2d hsbs_uvagem_m16_ADCsum_vs_Ustrip_good 'sbs.uvagem.m16; U strip ADC sum vs strip;' sbs.uvagem.m16.strip.istrip[I] sbs.uvagem.m16.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m16.strip.ontrackU[I]
+th2d hsbs_uvagem_m16_ADCsum_vs_Vstrip_good 'sbs.uvagem.m16; V strip ADC sum vs strip;' sbs.uvagem.m16.strip.istrip[I] sbs.uvagem.m16.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m16.strip.ontrackV[I]
+th2d hsbs_uvagem_m16_ADCmax_vs_Ustrip_good 'sbs.uvagem.m16; U strip ADC max vs strip;' sbs.uvagem.m16.strip.istrip[I] sbs.uvagem.m16.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m16.strip.ontrackU[I]
+th2d hsbs_uvagem_m16_ADCmax_vs_Vstrip_good 'sbs.uvagem.m16; V strip ADC max vs strip;' sbs.uvagem.m16.strip.istrip[I] sbs.uvagem.m16.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m16.strip.ontrackV[I]
+
+# Module 16 hit maps 
+#th1d hsbs_uvagem_m16_hit_xlocal 'Hit local X position (m), Module 16' sbs.uvagem.m16.hit.hitx[I] 250 -0.3072 0.3072 sbs.uvagem.m16.hit.ontrack[I]
+#th1d hsbs_uvagem_m16_hit_ylocal 'Hit local Y position (m), Module 16' sbs.uvagem.m16.hit.hity[I] 250 -0.256 0.256 sbs.uvagem.m16.hit.ontrack[I]
+#th2d hsbs_uvagem_m16_hit_xylocal 'Hit local X vs Y (m), Module 16' sbs.uvagem.m16.hit.hity[I] sbs.uvagem.m16.hit.hitx[I] 200 -0.256 0.256 200 -0.3072 0.3072 sbs.uvagem.m16.hit.ontrack[I]
+
+th1d hsbs_uvagem_m16_ADCmax_good_CM 'sbs.uvagem.m16; Strip ADC max; ' sbs.uvagem.m16.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m16.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m16_ADCsum_good_CM 'sbs.uvagem.m16; Strip ADC sum; ' sbs.uvagem.m16.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m16.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m16_iSampMax_good_CM 'sbs.uvagem.m16; Strip max time sample;' sbs.uvagem.m16.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m16.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m16_StripTime_good_CM 'sbs.uvagem.m16; Strip Mean Time (ns);' sbs.uvagem.m16.strip.Tmean[I] 150 0 150 sbs.uvagem.m16.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m16_StripTsigma_good_CM 'sbs.uvagem.m16; Strip RMS Time (ns);' sbs.uvagem.m16.strip.Tsigma[I] 150 0 150 sbs.uvagem.m16.strip.CM_GOOD[I]
+
+
+# Module 17 strip histograms, all strips: 
+th1d hsbs_uvagem_m17_nstripstot_good 'sbs.uvagem.m17; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m17.strip.nstripsfired 101 -0.5 100.5 sbs.uvagem.m17.ontrack
+th1d hsbs_uvagem_m17_nclustU_good 'sbs.uvagem.m17; num. U clusters;' sbs.uvagem.m17.clust.nclustu 51 -0.5 50.5 sbs.uvagem.m17.ontrack
+th1d hsbs_uvagem_m17_nclustV_good 'sbs.uvagem.m17; num. V clusters; ' sbs.uvagem.m17.clust.nclustv 51 -0.5 50.5 sbs.uvagem.m17.ontrack
+th1d hsbs_uvagem_m17_nstripstot_all 'sbs.uvagem.m17; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m17.strip.nstripsfired 101 -0.5 100.5
+th1d hsbs_uvagem_m17_nclustU_all 'sbs.uvagem.m17; num. U clusters;' sbs.uvagem.m17.clust.nclustu 51 -0.5 50.5
+th1d hsbs_uvagem_m17_nclustV_all 'sbs.uvagem.m17; num. V clusters;' sbs.uvagem.m17.clust.nclustv 51 -0.5 50.5
+th1d hsbs_uvagem_m17_stripU_all 'sbs.uvagem.m17; U/X strip index; ' sbs.uvagem.m17.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m17.strip.IsU[I]
+th1d hsbs_uvagem_m17_stripV_all 'sbs.uvagem.m17; V/Y strip index; ' sbs.uvagem.m17.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m17.strip.IsV[I]
+th1d hsbs_uvagem_m17_ADCsumU_all 'sbs.uvagem.m17; Strip ADC sum, U/X strips;' sbs.uvagem.m17.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m17.strip.IsU[I]
+th1d hsbs_uvagem_m17_ADCsumV_all 'sbs.uvagem.m17; Strip ADC sum, V/Y strips;' sbs.uvagem.m17.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m17.strip.IsV[I]
+th1d hsbs_uvagem_m17_ADCmaxU_all 'sbs.uvagem.m17; Strip ADC max, U/X strips;' sbs.uvagem.m17.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m17.strip.IsU[I]
+th1d hsbs_uvagem_m17_ADCmaxV_all 'sbs.uvagem.m17; Strip ADC max, V/Y strips; ' sbs.uvagem.m17.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m17.strip.IsV[I]
+th1d hsbs_uvagem_m17_TimeU_all 'sbs.uvagem.m17; Strip Time, U/X strips;' sbs.uvagem.m17.strip.Tmean[I] 150 0 150 sbs.uvagem.m17.strip.IsU[I]
+th1d hsbs_uvagem_m17_TimeV_all 'sbs.uvagem.m17; Strip Time, V/Y strips;' sbs.uvagem.m17.strip.Tmean[I] 150 0 150 sbs.uvagem.m17.strip.IsV[I]
+th1d hsbs_uvagem_m17_iSampMaxU_all 'sbs.uvagem.m17; Peak time sample, U/X strips;' sbs.uvagem.m17.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m17.strip.IsU[I]
+th1d hsbs_uvagem_m17_iSampMaxV_all 'sbs.uvagem.m17; Peak time sample, V/Y strips;' sbs.uvagem.m17.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m17.strip.IsV[I]
+th2d hsbs_uvagem_m17_ADCsum_vs_Ustrip_all 'sbs.uvagem.m17; U strip ADC sum vs strip;' sbs.uvagem.m17.strip.istrip[I] sbs.uvagem.m17.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m17.strip.IsU[I]
+th2d hsbs_uvagem_m17_ADCsum_vs_Vstrip_all 'sbs.uvagem.m17; V strip ADC sum vs strip;' sbs.uvagem.m17.strip.istrip[I] sbs.uvagem.m17.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m17.strip.IsV[I]
+th2d hsbs_uvagem_m17_ADCmax_vs_Ustrip_all 'sbs.uvagem.m17; U strip ADC max vs strip;' sbs.uvagem.m17.strip.istrip[I] sbs.uvagem.m17.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m17.strip.IsU[I]
+th2d hsbs_uvagem_m17_ADCmax_vs_Vstrip_all 'sbs.uvagem.m17; V strip ADC max vs strip;' sbs.uvagem.m17.strip.istrip[I] sbs.uvagem.m17.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m17.strip.IsV[I]
+
+# Module 17 strip histograms, strips on tracks: 
+th1d hsbs_uvagem_m17_stripU_good 'sbs.uvagem.m17 (strips on tracks); U/X strip index;' sbs.uvagem.m17.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m17.strip.ontrackU[I]
+th1d hsbs_uvagem_m17_stripV_good 'sbs.uvagem.m17 (strips on tracks); V/Y strip index;' sbs.uvagem.m17.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m17.strip.ontrackV[I]
+th1d hsbs_uvagem_m17_ADCsumU_good 'sbs.uvagem.m17; Strip ADC sum, U/X strips;' sbs.uvagem.m17.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m17.strip.ontrackU[I]
+th1d hsbs_uvagem_m17_ADCsumV_good 'sbs.uvagem.m17; Strip ADC sum, V/Y strips;' sbs.uvagem.m17.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m17.strip.ontrackV[I]
+th1d hsbs_uvagem_m17_ADCmaxU_good 'sbs.uvagem.m17; Strip ADC max, U/X strips;' sbs.uvagem.m17.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m17.strip.ontrackU[I]
+th1d hsbs_uvagem_m17_ADCmaxV_good 'sbs.uvagem.m17; Strip ADC max, V/Y strips;' sbs.uvagem.m17.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m17.strip.ontrackV[I]
+th1d hsbs_uvagem_m17_TimeU_good 'sbs.uvagem.m17; Strip Time, U/X strips;' sbs.uvagem.m17.strip.Tmean[I] 150 0 150 sbs.uvagem.m17.strip.ontrackU[I]
+th1d hsbs_uvagem_m17_TimeV_good 'sbs.uvagem.m17; Strip Time, V/Y strips;' sbs.uvagem.m17.strip.Tmean[I] 150 0 150 sbs.uvagem.m17.strip.ontrackV[I]
+th1d hsbs_uvagem_m17_iSampMaxU_good 'sbs.uvagem.m17; Peak time sample, U/X strips;' sbs.uvagem.m17.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m17.strip.ontrackU[I]
+th1d hsbs_uvagem_m17_iSampMaxV_good 'sbs.uvagem.m17; Peak time sample, V/Y strips;' sbs.uvagem.m17.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m17.strip.ontrackV[I]
+th2d hsbs_uvagem_m17_ADCsum_vs_Ustrip_good 'sbs.uvagem.m17; U strip ADC sum vs strip;' sbs.uvagem.m17.strip.istrip[I] sbs.uvagem.m17.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m17.strip.ontrackU[I]
+th2d hsbs_uvagem_m17_ADCsum_vs_Vstrip_good 'sbs.uvagem.m17; V strip ADC sum vs strip;' sbs.uvagem.m17.strip.istrip[I] sbs.uvagem.m17.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m17.strip.ontrackV[I]
+th2d hsbs_uvagem_m17_ADCmax_vs_Ustrip_good 'sbs.uvagem.m17; U strip ADC max vs strip;' sbs.uvagem.m17.strip.istrip[I] sbs.uvagem.m17.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m17.strip.ontrackU[I]
+th2d hsbs_uvagem_m17_ADCmax_vs_Vstrip_good 'sbs.uvagem.m17; V strip ADC max vs strip;' sbs.uvagem.m17.strip.istrip[I] sbs.uvagem.m17.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m17.strip.ontrackV[I]
+
+# Module 17 hit maps 
+#th1d hsbs_uvagem_m17_hit_xlocal 'Hit local X position (m), Module 17' sbs.uvagem.m17.hit.hitx[I] 250 -0.3072 0.3072 sbs.uvagem.m17.hit.ontrack[I]
+#th1d hsbs_uvagem_m17_hit_ylocal 'Hit local Y position (m), Module 17' sbs.uvagem.m17.hit.hity[I] 250 -0.256 0.256 sbs.uvagem.m17.hit.ontrack[I]
+#th2d hsbs_uvagem_m17_hit_xylocal 'Hit local X vs Y (m), Module 17' sbs.uvagem.m17.hit.hity[I] sbs.uvagem.m17.hit.hitx[I] 200 -0.256 0.256 200 -0.3072 0.3072 sbs.uvagem.m17.hit.ontrack[I]
+
+th1d hsbs_uvagem_m17_ADCmax_good_CM 'sbs.uvagem.m17; Strip ADC max; ' sbs.uvagem.m17.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m17.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m17_ADCsum_good_CM 'sbs.uvagem.m17; Strip ADC sum; ' sbs.uvagem.m17.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m17.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m17_iSampMax_good_CM 'sbs.uvagem.m17; Strip max time sample;' sbs.uvagem.m17.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m17.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m17_StripTime_good_CM 'sbs.uvagem.m17; Strip Mean Time (ns);' sbs.uvagem.m17.strip.Tmean[I] 150 0 150 sbs.uvagem.m17.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m17_StripTsigma_good_CM 'sbs.uvagem.m17; Strip RMS Time (ns);' sbs.uvagem.m17.strip.Tsigma[I] 150 0 150 sbs.uvagem.m17.strip.CM_GOOD[I]
+
+
+# Module 18 strip histograms, all strips: 
+th1d hsbs_uvagem_m18_nstripstot_good 'sbs.uvagem.m18; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m18.strip.nstripsfired 101 -0.5 100.5 sbs.uvagem.m18.ontrack
+th1d hsbs_uvagem_m18_nclustU_good 'sbs.uvagem.m18; num. U clusters;' sbs.uvagem.m18.clust.nclustu 51 -0.5 50.5 sbs.uvagem.m18.ontrack
+th1d hsbs_uvagem_m18_nclustV_good 'sbs.uvagem.m18; num. V clusters; ' sbs.uvagem.m18.clust.nclustv 51 -0.5 50.5 sbs.uvagem.m18.ontrack
+th1d hsbs_uvagem_m18_nstripstot_all 'sbs.uvagem.m18; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m18.strip.nstripsfired 101 -0.5 100.5
+th1d hsbs_uvagem_m18_nclustU_all 'sbs.uvagem.m18; num. U clusters;' sbs.uvagem.m18.clust.nclustu 51 -0.5 50.5
+th1d hsbs_uvagem_m18_nclustV_all 'sbs.uvagem.m18; num. V clusters;' sbs.uvagem.m18.clust.nclustv 51 -0.5 50.5
+th1d hsbs_uvagem_m18_stripU_all 'sbs.uvagem.m18; U/X strip index; ' sbs.uvagem.m18.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m18.strip.IsU[I]
+th1d hsbs_uvagem_m18_stripV_all 'sbs.uvagem.m18; V/Y strip index; ' sbs.uvagem.m18.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m18.strip.IsV[I]
+th1d hsbs_uvagem_m18_ADCsumU_all 'sbs.uvagem.m18; Strip ADC sum, U/X strips;' sbs.uvagem.m18.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m18.strip.IsU[I]
+th1d hsbs_uvagem_m18_ADCsumV_all 'sbs.uvagem.m18; Strip ADC sum, V/Y strips;' sbs.uvagem.m18.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m18.strip.IsV[I]
+th1d hsbs_uvagem_m18_ADCmaxU_all 'sbs.uvagem.m18; Strip ADC max, U/X strips;' sbs.uvagem.m18.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m18.strip.IsU[I]
+th1d hsbs_uvagem_m18_ADCmaxV_all 'sbs.uvagem.m18; Strip ADC max, V/Y strips; ' sbs.uvagem.m18.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m18.strip.IsV[I]
+th1d hsbs_uvagem_m18_TimeU_all 'sbs.uvagem.m18; Strip Time, U/X strips;' sbs.uvagem.m18.strip.Tmean[I] 150 0 150 sbs.uvagem.m18.strip.IsU[I]
+th1d hsbs_uvagem_m18_TimeV_all 'sbs.uvagem.m18; Strip Time, V/Y strips;' sbs.uvagem.m18.strip.Tmean[I] 150 0 150 sbs.uvagem.m18.strip.IsV[I]
+th1d hsbs_uvagem_m18_iSampMaxU_all 'sbs.uvagem.m18; Peak time sample, U/X strips;' sbs.uvagem.m18.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m18.strip.IsU[I]
+th1d hsbs_uvagem_m18_iSampMaxV_all 'sbs.uvagem.m18; Peak time sample, V/Y strips;' sbs.uvagem.m18.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m18.strip.IsV[I]
+th2d hsbs_uvagem_m18_ADCsum_vs_Ustrip_all 'sbs.uvagem.m18; U strip ADC sum vs strip;' sbs.uvagem.m18.strip.istrip[I] sbs.uvagem.m18.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m18.strip.IsU[I]
+th2d hsbs_uvagem_m18_ADCsum_vs_Vstrip_all 'sbs.uvagem.m18; V strip ADC sum vs strip;' sbs.uvagem.m18.strip.istrip[I] sbs.uvagem.m18.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m18.strip.IsV[I]
+th2d hsbs_uvagem_m18_ADCmax_vs_Ustrip_all 'sbs.uvagem.m18; U strip ADC max vs strip;' sbs.uvagem.m18.strip.istrip[I] sbs.uvagem.m18.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m18.strip.IsU[I]
+th2d hsbs_uvagem_m18_ADCmax_vs_Vstrip_all 'sbs.uvagem.m18; V strip ADC max vs strip;' sbs.uvagem.m18.strip.istrip[I] sbs.uvagem.m18.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m18.strip.IsV[I]
+
+# Module 18 strip histograms, strips on tracks: 
+th1d hsbs_uvagem_m18_stripU_good 'sbs.uvagem.m18 (strips on tracks); U/X strip index;' sbs.uvagem.m18.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m18.strip.ontrackU[I]
+th1d hsbs_uvagem_m18_stripV_good 'sbs.uvagem.m18 (strips on tracks); V/Y strip index;' sbs.uvagem.m18.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m18.strip.ontrackV[I]
+th1d hsbs_uvagem_m18_ADCsumU_good 'sbs.uvagem.m18; Strip ADC sum, U/X strips;' sbs.uvagem.m18.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m18.strip.ontrackU[I]
+th1d hsbs_uvagem_m18_ADCsumV_good 'sbs.uvagem.m18; Strip ADC sum, V/Y strips;' sbs.uvagem.m18.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m18.strip.ontrackV[I]
+th1d hsbs_uvagem_m18_ADCmaxU_good 'sbs.uvagem.m18; Strip ADC max, U/X strips;' sbs.uvagem.m18.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m18.strip.ontrackU[I]
+th1d hsbs_uvagem_m18_ADCmaxV_good 'sbs.uvagem.m18; Strip ADC max, V/Y strips;' sbs.uvagem.m18.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m18.strip.ontrackV[I]
+th1d hsbs_uvagem_m18_TimeU_good 'sbs.uvagem.m18; Strip Time, U/X strips;' sbs.uvagem.m18.strip.Tmean[I] 150 0 150 sbs.uvagem.m18.strip.ontrackU[I]
+th1d hsbs_uvagem_m18_TimeV_good 'sbs.uvagem.m18; Strip Time, V/Y strips;' sbs.uvagem.m18.strip.Tmean[I] 150 0 150 sbs.uvagem.m18.strip.ontrackV[I]
+th1d hsbs_uvagem_m18_iSampMaxU_good 'sbs.uvagem.m18; Peak time sample, U/X strips;' sbs.uvagem.m18.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m18.strip.ontrackU[I]
+th1d hsbs_uvagem_m18_iSampMaxV_good 'sbs.uvagem.m18; Peak time sample, V/Y strips;' sbs.uvagem.m18.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m18.strip.ontrackV[I]
+th2d hsbs_uvagem_m18_ADCsum_vs_Ustrip_good 'sbs.uvagem.m18; U strip ADC sum vs strip;' sbs.uvagem.m18.strip.istrip[I] sbs.uvagem.m18.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m18.strip.ontrackU[I]
+th2d hsbs_uvagem_m18_ADCsum_vs_Vstrip_good 'sbs.uvagem.m18; V strip ADC sum vs strip;' sbs.uvagem.m18.strip.istrip[I] sbs.uvagem.m18.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m18.strip.ontrackV[I]
+th2d hsbs_uvagem_m18_ADCmax_vs_Ustrip_good 'sbs.uvagem.m18; U strip ADC max vs strip;' sbs.uvagem.m18.strip.istrip[I] sbs.uvagem.m18.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m18.strip.ontrackU[I]
+th2d hsbs_uvagem_m18_ADCmax_vs_Vstrip_good 'sbs.uvagem.m18; V strip ADC max vs strip;' sbs.uvagem.m18.strip.istrip[I] sbs.uvagem.m18.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m18.strip.ontrackV[I]
+
+# Module 18 hit maps 
+#th1d hsbs_uvagem_m18_hit_xlocal 'Hit local X position (m), Module 18' sbs.uvagem.m18.hit.hitx[I] 250 -0.3072 0.3072 sbs.uvagem.m18.hit.ontrack[I]
+#th1d hsbs_uvagem_m18_hit_ylocal 'Hit local Y position (m), Module 18' sbs.uvagem.m18.hit.hity[I] 250 -0.256 0.256 sbs.uvagem.m18.hit.ontrack[I]
+#th2d hsbs_uvagem_m18_hit_xylocal 'Hit local X vs Y (m), Module 18' sbs.uvagem.m18.hit.hity[I] sbs.uvagem.m18.hit.hitx[I] 200 -0.256 0.256 200 -0.3072 0.3072 sbs.uvagem.m18.hit.ontrack[I]
+
+th1d hsbs_uvagem_m18_ADCmax_good_CM 'sbs.uvagem.m18; Strip ADC max; ' sbs.uvagem.m18.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m18.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m18_ADCsum_good_CM 'sbs.uvagem.m18; Strip ADC sum; ' sbs.uvagem.m18.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m18.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m18_iSampMax_good_CM 'sbs.uvagem.m18; Strip max time sample;' sbs.uvagem.m18.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m18.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m18_StripTime_good_CM 'sbs.uvagem.m18; Strip Mean Time (ns);' sbs.uvagem.m18.strip.Tmean[I] 150 0 150 sbs.uvagem.m18.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m18_StripTsigma_good_CM 'sbs.uvagem.m18; Strip RMS Time (ns);' sbs.uvagem.m18.strip.Tsigma[I] 150 0 150 sbs.uvagem.m18.strip.CM_GOOD[I]
+
+
+# Module 19 strip histograms, all strips: 
+th1d hsbs_uvagem_m19_nstripstot_good 'sbs.uvagem.m19; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m19.strip.nstripsfired 101 -0.5 100.5 sbs.uvagem.m19.ontrack
+th1d hsbs_uvagem_m19_nclustU_good 'sbs.uvagem.m19; num. U clusters;' sbs.uvagem.m19.clust.nclustu 51 -0.5 50.5 sbs.uvagem.m19.ontrack
+th1d hsbs_uvagem_m19_nclustV_good 'sbs.uvagem.m19; num. V clusters; ' sbs.uvagem.m19.clust.nclustv 51 -0.5 50.5 sbs.uvagem.m19.ontrack
+th1d hsbs_uvagem_m19_nstripstot_all 'sbs.uvagem.m19; Num. fired strips (U/X) + (V/Y);' sbs.uvagem.m19.strip.nstripsfired 101 -0.5 100.5
+th1d hsbs_uvagem_m19_nclustU_all 'sbs.uvagem.m19; num. U clusters;' sbs.uvagem.m19.clust.nclustu 51 -0.5 50.5
+th1d hsbs_uvagem_m19_nclustV_all 'sbs.uvagem.m19; num. V clusters;' sbs.uvagem.m19.clust.nclustv 51 -0.5 50.5
+th1d hsbs_uvagem_m19_stripU_all 'sbs.uvagem.m19; U/X strip index; ' sbs.uvagem.m19.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m19.strip.IsU[I]
+th1d hsbs_uvagem_m19_stripV_all 'sbs.uvagem.m19; V/Y strip index; ' sbs.uvagem.m19.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m19.strip.IsV[I]
+th1d hsbs_uvagem_m19_ADCsumU_all 'sbs.uvagem.m19; Strip ADC sum, U/X strips;' sbs.uvagem.m19.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m19.strip.IsU[I]
+th1d hsbs_uvagem_m19_ADCsumV_all 'sbs.uvagem.m19; Strip ADC sum, V/Y strips;' sbs.uvagem.m19.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m19.strip.IsV[I]
+th1d hsbs_uvagem_m19_ADCmaxU_all 'sbs.uvagem.m19; Strip ADC max, U/X strips;' sbs.uvagem.m19.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m19.strip.IsU[I]
+th1d hsbs_uvagem_m19_ADCmaxV_all 'sbs.uvagem.m19; Strip ADC max, V/Y strips; ' sbs.uvagem.m19.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m19.strip.IsV[I]
+th1d hsbs_uvagem_m19_TimeU_all 'sbs.uvagem.m19; Strip Time, U/X strips;' sbs.uvagem.m19.strip.Tmean[I] 150 0 150 sbs.uvagem.m19.strip.IsU[I]
+th1d hsbs_uvagem_m19_TimeV_all 'sbs.uvagem.m19; Strip Time, V/Y strips;' sbs.uvagem.m19.strip.Tmean[I] 150 0 150 sbs.uvagem.m19.strip.IsV[I]
+th1d hsbs_uvagem_m19_iSampMaxU_all 'sbs.uvagem.m19; Peak time sample, U/X strips;' sbs.uvagem.m19.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m19.strip.IsU[I]
+th1d hsbs_uvagem_m19_iSampMaxV_all 'sbs.uvagem.m19; Peak time sample, V/Y strips;' sbs.uvagem.m19.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m19.strip.IsV[I]
+th2d hsbs_uvagem_m19_ADCsum_vs_Ustrip_all 'sbs.uvagem.m19; U strip ADC sum vs strip;' sbs.uvagem.m19.strip.istrip[I] sbs.uvagem.m19.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m19.strip.IsU[I]
+th2d hsbs_uvagem_m19_ADCsum_vs_Vstrip_all 'sbs.uvagem.m19; V strip ADC sum vs strip;' sbs.uvagem.m19.strip.istrip[I] sbs.uvagem.m19.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m19.strip.IsV[I]
+th2d hsbs_uvagem_m19_ADCmax_vs_Ustrip_all 'sbs.uvagem.m19; U strip ADC max vs strip;' sbs.uvagem.m19.strip.istrip[I] sbs.uvagem.m19.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m19.strip.IsU[I]
+th2d hsbs_uvagem_m19_ADCmax_vs_Vstrip_all 'sbs.uvagem.m19; V strip ADC max vs strip;' sbs.uvagem.m19.strip.istrip[I] sbs.uvagem.m19.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m19.strip.IsV[I]
+
+# Module 19 strip histograms, strips on tracks: 
+th1d hsbs_uvagem_m19_stripU_good 'sbs.uvagem.m19 (strips on tracks); U/X strip index;' sbs.uvagem.m19.strip.istrip[I] 1536 -0.5 1535.5 sbs.uvagem.m19.strip.ontrackU[I]
+th1d hsbs_uvagem_m19_stripV_good 'sbs.uvagem.m19 (strips on tracks); V/Y strip index;' sbs.uvagem.m19.strip.istrip[I] 1280 -0.5 1279.5 sbs.uvagem.m19.strip.ontrackV[I]
+th1d hsbs_uvagem_m19_ADCsumU_good 'sbs.uvagem.m19; Strip ADC sum, U/X strips;' sbs.uvagem.m19.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m19.strip.ontrackU[I]
+th1d hsbs_uvagem_m19_ADCsumV_good 'sbs.uvagem.m19; Strip ADC sum, V/Y strips;' sbs.uvagem.m19.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m19.strip.ontrackV[I]
+th1d hsbs_uvagem_m19_ADCmaxU_good 'sbs.uvagem.m19; Strip ADC max, U/X strips;' sbs.uvagem.m19.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m19.strip.ontrackU[I]
+th1d hsbs_uvagem_m19_ADCmaxV_good 'sbs.uvagem.m19; Strip ADC max, V/Y strips;' sbs.uvagem.m19.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m19.strip.ontrackV[I]
+th1d hsbs_uvagem_m19_TimeU_good 'sbs.uvagem.m19; Strip Time, U/X strips;' sbs.uvagem.m19.strip.Tmean[I] 150 0 150 sbs.uvagem.m19.strip.ontrackU[I]
+th1d hsbs_uvagem_m19_TimeV_good 'sbs.uvagem.m19; Strip Time, V/Y strips;' sbs.uvagem.m19.strip.Tmean[I] 150 0 150 sbs.uvagem.m19.strip.ontrackV[I]
+th1d hsbs_uvagem_m19_iSampMaxU_good 'sbs.uvagem.m19; Peak time sample, U/X strips;' sbs.uvagem.m19.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m19.strip.ontrackU[I]
+th1d hsbs_uvagem_m19_iSampMaxV_good 'sbs.uvagem.m19; Peak time sample, V/Y strips;' sbs.uvagem.m19.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m19.strip.ontrackV[I]
+th2d hsbs_uvagem_m19_ADCsum_vs_Ustrip_good 'sbs.uvagem.m19; U strip ADC sum vs strip;' sbs.uvagem.m19.strip.istrip[I] sbs.uvagem.m19.strip.ADCsum[I] 1536 -0.5 1535.5 250 0 12000 sbs.uvagem.m19.strip.ontrackU[I]
+th2d hsbs_uvagem_m19_ADCsum_vs_Vstrip_good 'sbs.uvagem.m19; V strip ADC sum vs strip;' sbs.uvagem.m19.strip.istrip[I] sbs.uvagem.m19.strip.ADCsum[I] 1280 -0.5 1279.5 250 0 12000 sbs.uvagem.m19.strip.ontrackV[I]
+th2d hsbs_uvagem_m19_ADCmax_vs_Ustrip_good 'sbs.uvagem.m19; U strip ADC max vs strip;' sbs.uvagem.m19.strip.istrip[I] sbs.uvagem.m19.strip.ADCmax[I] 1536 -0.5 1535.5 250 0 4000 sbs.uvagem.m19.strip.ontrackU[I]
+th2d hsbs_uvagem_m19_ADCmax_vs_Vstrip_good 'sbs.uvagem.m19; V strip ADC max vs strip;' sbs.uvagem.m19.strip.istrip[I] sbs.uvagem.m19.strip.ADCmax[I] 1280 -0.5 1279.5 250 0 4000 sbs.uvagem.m19.strip.ontrackV[I]
+
+# Module 19 hit maps 
+#th1d hsbs_uvagem_m19_hit_xlocal 'Hit local X position (m), Module 19' sbs.uvagem.m19.hit.hitx[I] 250 -0.3072 0.3072 sbs.uvagem.m19.hit.ontrack[I]
+#th1d hsbs_uvagem_m19_hit_ylocal 'Hit local Y position (m), Module 19' sbs.uvagem.m19.hit.hity[I] 250 -0.256 0.256 sbs.uvagem.m19.hit.ontrack[I]
+#th2d hsbs_uvagem_m19_hit_xylocal 'Hit local X vs Y (m), Module 19' sbs.uvagem.m19.hit.hity[I] sbs.uvagem.m19.hit.hitx[I] 200 -0.256 0.256 200 -0.3072 0.3072 sbs.uvagem.m19.hit.ontrack[I]
+
+th1d hsbs_uvagem_m19_ADCmax_good_CM 'sbs.uvagem.m19; Strip ADC max; ' sbs.uvagem.m19.strip.ADCmax[I] 500 0 4000 sbs.uvagem.m19.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m19_ADCsum_good_CM 'sbs.uvagem.m19; Strip ADC sum; ' sbs.uvagem.m19.strip.ADCsum[I] 1000 0 15000 sbs.uvagem.m19.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m19_iSampMax_good_CM 'sbs.uvagem.m19; Strip max time sample;' sbs.uvagem.m19.strip.isampmax[I] 6 -0.5 5.5 sbs.uvagem.m19.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m19_StripTime_good_CM 'sbs.uvagem.m19; Strip Mean Time (ns);' sbs.uvagem.m19.strip.Tmean[I] 150 0 150 sbs.uvagem.m19.strip.CM_GOOD[I]
+th1d hsbs_uvagem_m19_StripTsigma_good_CM 'sbs.uvagem.m19; Strip RMS Time (ns);' sbs.uvagem.m19.strip.Tsigma[I] 150 0 150 sbs.uvagem.m19.strip.CM_GOOD[I]
+
+

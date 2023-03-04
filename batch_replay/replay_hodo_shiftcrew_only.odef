@@ -1,0 +1,46 @@
+#-----------------------------------------------------------------------------
+# Raw TDC and FADC data
+#-----------------------------------------------------------------------------
+
+#block bb.hodotdc.*
+#block bb.hodoadc.*
+
+#block bb.hodotdc.bar.*
+#block bb.hodoadc.bar.*
+
+#variable bb.hodotdc.nclus
+#block bb.hodotdc.clus.*
+
+# turn on only "main cluster" output for the tree to keep the tree lightweight for large-scale analysis:
+#block bb.hodotdc.allclus.*
+#block bb.hodotdc.clus.*
+
+#-----------------------------------------------------------------------------
+# 2D TDC histograms
+#-----------------------------------------------------------------------------
+
+# Reference channels
+TH2D h2d_RefLE 'BBHodo Ref LE vs PMT' bb.hodotdc.Ref.tdc bb.hodotdc.Ref.tdcelemID  100 0 2000 2 0 2 
+TH2D h2d_RefTE 'BBHodo Ref TE vs PMT' bb.hodotdc.Ref.tdc_te bb.hodotdc.Ref.tdcelemID  100 0 2500 2 0 2 
+TH2D h2d_RefTot 'BBHodo Ref Tot vs PMT' bb.hodotdc.Ref.tdc_tot bb.hodotdc.Ref.tdcelemID  50 0 50 2 0 2 
+TH2D h2d_RefMult 'BBHodo Ref PMT Multiplicity vs PMT' bb.hodotdc.Ref.tdc_mult bb.hodotdc.Ref.tdcelemID  5 1 5 2 0 2 
+
+
+# Raw PMT hits
+TH2D h2d_RawLE 'BBHodo LE vs PMT' bb.hodotdc.tdc bb.hodotdc.tdcelemID  100 -50 50 180 0 180
+TH2D h2d_RawTE 'BBHodo TE vs PMT' bb.hodotdc.tdc_te bb.hodotdc.tdcelemID  100 -50 50 180 0 180
+TH2D h2d_RawTot 'BBHodo Tot vs PMT' bb.hodotdc.tdc_tot bb.hodotdc.tdcelemID  50 0 50 180 0 180 
+TH2D h2d_RawMult 'BBHodo PMT Multiplicity vs PMT' bb.hodotdc.tdc_mult bb.hodotdc.tdcelemID  5 1 5 180 0 180 
+
+# Bar hits
+TH2D h2d_BarMT 'BBHodo Bar mean time vs bar' bb.hodotdc.bar.tdc.meantime bb.hodotdc.bar.tdc.id  100 -50 50 89 0 89
+TH2D h2d_BarTD 'BBHodo Bar time diff vs bar' bb.hodotdc.bar.tdc.timediff bb.hodotdc.bar.tdc.id   60 -30 30 89 0 89
+
+#-----------------------------------------------------------------------------
+# 2D FADC histograms
+#-----------------------------------------------------------------------------
+
+TH2D h2d_FADC_a_p 'BBHodo FADC integral' bb.hodoadc.a_p bb.hodoadc.adcelemID  100 3 103 65 0 65
+TH2D h2d_FADC_amp_p 'BBHodo FADC amplitide' bb.hodoadc.a_amp_p bb.hodoadc.adcelemID  100 6 106 65 0 65
+TH2D h2d_FADC_ped 'BBHodo FADC pedestal' bb.hodoadc.ped bb.hodoadc.adcelemID  100 50 150 65 0 65
+TH2D h2d_FADC_mult 'BBHodo FADC pedestal' bb.hodoadc.a_mult bb.hodoadc.adcelemID  5 1 5 65 0 65

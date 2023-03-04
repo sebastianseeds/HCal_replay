@@ -1,0 +1,90 @@
+#HCAL output definition file
+
+#HCal Branches to root file
+#block sbs.hcal.*
+#block bb.tdctrig.*
+#block bb.tr.*
+#block bb.ps.*
+#block bb.sh.*#HCAL output definition file for expert analysis
+#10.9.21 SSeeds
+
+#HCAL output definition file
+#Update for 10.15.21 per request to parse branches for general GMn replay
+
+#HCal Branches to general root file
+# too big, cut:
+#block sbs.hcal.a_p #Will eliminate post calibration
+#block sbs.hcal.a_c #Will eliminate post calibration
+#block sbs.hcal.a_amp #Will eliminate post calibration
+#block sbs.hcal.a_time #Will eliminate post calibration
+#block sbs.hcal.adcrow #Will eliminate post calibration
+#block sbs.hcal.adccol #Will eliminate post calibration
+
+
+#variable sbs.hcal.e
+#variable sbs.hcal.e_c
+#variable sbs.hcal.eblk
+#variable sbs.hcal.eblk_c
+#variable sbs.hcal.rowblk
+#variable sbs.hcal.colblk
+#variable sbs.hcal.x
+#variable sbs.hcal.y
+#variable sbs.hcal.nblk
+#variable sbs.hcal.idblk
+#variable sbs.hcal.atimeblk
+#block sbs.hcal.clus.*
+#variable sbs.hcal.nclus
+#block sbs.hcal.clus_blk.*
+#variable sbs.hcal.ngoodADChits
+
+
+############
+#Histograms#
+############ 
+
+#ADC Histograms
+th2d hADCtime_vs_elem_hcal 'ADC time vs element ID : HCAL' sbs.hcal.adcelemID[I] sbs.hcal.a_time[I] 288 1 288 250 -50 200 sbs.hcal.a_time[I]>0 
+th2d hADCint_vs_elem_hcal 'ADC integral vs element ID : HCAL' sbs.hcal.adcelemID[I] sbs.hcal.a_p[I] 288 1 288 300 0 300 sbs.hcal.a_time[I]>0 
+th2d hADCintE_vs_elem_hcal 'ADC Energy vs element ID : HCAL' sbs.hcal.adcelemID[I] sbs.hcal.a_c[I] 288 1 288 100 0 1 sbs.hcal.a_time[I]>0 
+th2d hADCamp_vs_elem_hcal 'ADC amplitude vs module ZOOM : HCAL' sbs.hcal.adcelemID[I] sbs.hcal.a_amp_p[I] 288 1 288 300 0 300 sbs.hcal.a_time[I]>0 
+
+#TDC Histograms
+th2d hTDC_vs_elem_hcal 'TDC vs element ID : HCAL' sbs.hcal.adcelemID[I] sbs.hcal.tdc[I] 288 1 288 300 0 300 sbs.hcal.a_time[I]>0 
+
+#Cluster Histograms
+th1d hNClus_vs_elem_hcal 'Number of clusters per event : HCAL' sbs.hcal.nclus 45 0 45  #Multiplicity
+th1d hNBlk_per_cluster 'Number of blocks per cluster : HCAL' sbs.hcal.clus.nblk 16 0 16 
+th1d hclusID_vs_elem_hcal 'Cluster ID over all events : HCAL' sbs.hcal.idblk 288 1 288 #Position, zero element is primary block in cluster
+th1d hClusADC_vs_elem_hcal 'Cluster ADC : HCAL' sbs.hcal.e 100 0 1 
+th1d hClusE_vs_elem_hcal 'Cluster Energy : HCAL' sbs.hcal.e_c 100 0 1
+th2d hClus_pos_hcal 'Position of best cluster : HCal' sbs.hcal.colblk sbs.hcal.rowblk 12 0 12 24 0 24 sbs.hcal.nclus>0
+
+#th2d hClusADC_vs_elem_hcal 'Cluster ADC vs element ID : HCAL' sbs.hcal.adcelemID[I] sbs.hcal.eblk[I] 288 0.5 288.5 100 0 100 
+#th2d hClusE_vs_elem_hcal 'Cluster Energy vs element ID : HCAL' sbs.hcal.adcelemID[I] sbs.hcal.eblk_c[I] 288 0.5 288.5 100 0 1 
+#th2d hClusID_vs_elem_hcal 'Cluster ID vs element ID : HCAL' sbs.hcal.adcelemID[I] sbs.hcal.idblk[I] 288 0.5 288.5 100 0 100 
+#th2d hClusE_vs_elem_hcal 'Cluster Energy vs element ID : HCAL' sbs.hcal.adcelemID[I] sbs.hcal.e[I] 288 0.5 288.5 100 0 100  
+
+#Misc. histograms
+th1d hnev_ADC_vs_elem_hcal 'Number ADC events vs module : HCAL' sbs.hcal.adcelemID 288 0.5 288.5 sbs.hcal.a_time[I]>0
+th2d hped_vs_elem_hcal 'Pedestal vs element ID : HCAL' sbs.hcal.adcelemID[I] sbs.hcal.ped[I] 288 0.5 288.5 400 0 2000 sbs.hcal.a_amp_p[I]>20 
+
+#11.29.21
+th1d hTDC_HCAL 'Cluster TDC over all channels : HCAL' sbs.hcal.clus.tdctime 250 -150 100 #sbs.hcal.clus.e[I]>0.05
+th2d hTDC_vs_clus_ID 'Cluster TDC vs Module : HCAL' sbs.hcal.clus.id[I] sbs.hcal.clus.tdctime[I] 288 0.5 288.5 250 -150 100 #sbs.hcal.clus.e[I]>0.05
+th1d hATime_HCAL 'Cluster ADC time over all channels : HCAL' sbs.hcal.clus.atime 64 0 160 sbs.hcal.clus.e[I]>0.05
+th2d hAmp_vs_elem_ID 'Amplitude vs Module (saturation check): HCAL' sbs.hcal.adcelemID[I] sbs.hcal.a_amp_p[I] 288 0.5 288.5 9000 2 9002
+th2d hADC_vs_clus_ID 'ADC vs module : HCAL' sbs.hcal.clus.id[I] sbs.hcal.clus.e[I] 288 0.5 288.5 100 0 1
+th1d hnev_TDC_vs_elem_ID 'Number TDC events vs Module : HCAL' sbs.hcal.tdcelemID 288 0.5 288.5 sbs.hcal.tdc[I]<1000
+th2d hAmp_vs_int 'ADC amp vs int : HCAL' sbs.hcal.a_p[I] sbs.hcal.a_amp_p[I] 100 0 10 200 0 40 sbs.hcal.a_time[I]>0
+th2d hE_vs_mult_clus 'Cluster E vs Multiplicity' sbs.hcal.clus.e[I] sbs.hcal.clus.nblk[I] 40 0 0.4 12 0 12 
+
+#cluster energy vs nblk
+
+
+
+
+
+
+
+
+

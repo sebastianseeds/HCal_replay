@@ -1,0 +1,34 @@
+# Sample output definition file
+#block bb.grinch.*
+#block bb.grinch_adc.*
+
+# test adding histograms directly per Bradley's script:
+
+#TH1D GRINCH_ntdc ' ; Nhit ; Counts' Ndata.bb.grinch.tdc 512 -0.5 511.5 #it just sounds like the analyzer won't take it...
+
+TH2D grinch_LE_vs_pmt ' ; PMT ; TDC leading edge (ns)' bb.grinch.tdcelemID bb.grinch.tdc 512 -0.5 511.5 1000 0 2000
+TH2D grinch_TE_vs_pmt ' ; PMT ; TDC trailing edge (ns)' bb.grinch.tdcelemID bb.grinch.tdc_te 512 -0.5 511.5 1000 0 2000
+TH2D GRINCH_mult_vs_pmt ' ; PMT ; PMT hit multiplicity' bb.grinch.tdcelemID bb.grinch.tdc_mult 512 -0.5 511.5 21 -0.5 20.5
+TH2D grinch_ToT_vs_pmt ' ; PMT ; Time over threshold (ns)' bb.grinch.tdcelemID bb.grinch.tdc_tot 512 -0.5 511.5 50 0 50
+TH2D GRINCH_adc_chan_vs_num ' ; ADC num. ; ADC channel' bb.grinch_adc.adcelemID bb.grinch_adc.a_amp_p 64 -0.5 63.5 4001 -0.5 4000.5
+
+#th2d h_GRINCH_ATime_vs_elem_ID 'ADC time vs channel : Grinch' bb.grinch_adc.adcelemID[I] bb.grinch_adc.a_time[I] 64 0.5 64.5 150 1200 1350
+th1d h_GRINCH 'TDC over all channels : Grinch' bb.grinch.tdc 2600 -100 2500 
+th2d h_GRINCH_vs_ID 'TDC vs cell : Grinch' bb.grinch.tdcelemID[I] bb.grinch.tdc[I] 512 0.5 512.5 260 0 2600
+th2d h_GRINCH_vs_ID_zoom 'TDC vs cell zoom : Grinch' bb.grinch.tdcelemID[I] bb.grinch.tdc[I] 512 0.5 512.5 150 1750 1900
+#th1d h_GRINCH_ATime 'ADC time over all channels : Grinch' bb.grinch_adc.a_time 64 0 1600
+#th1d h_GRINCH_ATime_zoom 'ADC time over all channels zoom: Grinch' bb.grinch_adc.a_time 160 1220 1300
+#th2d h_GRINCH_Amp_vs_elem_ID 'Amplitude vs channel : Grinch' bb.grinch_adc.adcelemID[I] bb.grinch_adc.a_amp_p[I] 64 0.5 64.5 2600 -100 2500
+th1d h_GRINCH_nev_TDC_vs_elem_ID 'Number TDC events vs channel : Grinch' bb.grinch.tdcelemID 512 0.5 512.5
+#th1d h_GRINCH_nev_ADC_vs_elem_ID 'Number ADC events vs channel : Grinch' bb.grinch_adc.adcelemID 64 0.5 64.5
+#th2d h_GRINCH_Amp_vs_int 'ADC amp vs int : Grinch' bb.grinch_adc.a_p[I] bb.grinch_adc.a_amp_p[I] 700 -400 30 2600 -100 2500
+th1d h_GRINCH_mult 'TDC multiplicity : Grinch' bb.grinch.tdc_mult 10 0.5 10.5
+
+variable bb.grinch.ngoodhits
+variable bb.grinch.hit.pmtnum
+variable bb.grinch.hit.row
+variable bb.grinch.hit.col
+variable bb.grinch.hit.xhit
+variable bb.grinch.hit.yhit
+variable bb.grinch.hit.time
+variable bb.grinch.hit.amp

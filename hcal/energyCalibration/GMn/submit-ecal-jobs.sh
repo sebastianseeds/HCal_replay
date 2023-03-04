@@ -17,7 +17,7 @@ jobname=$kine-$iter
 
 script='/w/halla-scshelf2102/sbs/seeds/HCal_replay/hcal/energyCalibration/GMn/run_ecal.sh'
 
-swif2 add-job -workflow $work_flow -partition production -name ecal-$jobname -cores 1 -disk 25GB -ram 1500MB $script $kine $iter
+swif2 add-job -workflow $work_flow -partition production -name ecal-$jobname -cores 1 -disk 25GB -ram 2000MB $script $kine $iter
 
 # run the workflow and then print status
 swif2 run $work_flow

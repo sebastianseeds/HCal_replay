@@ -62,8 +62,10 @@ void replay_hcal_SAS_general(int run_number, uint nev = -1, uint nseg = 0, Int_t
   SBSTimingHodoscope* hodotdc = new  SBSTimingHodoscope("hodotdc", "BigBite hodo");
   hodotdc->SetModeTDC(SBSModeTDC::kTDC);
   hodotdc->SetModeADC(SBSModeADC::kNone);
+  //hodotdc->SetDisableRefTDC(true);
+  hodotdc->SetStoreRawHits(kTRUE);
   hodotdc->SetStoreEmptyElements(kFALSE);
-  hodotdc->SetDataOutputLevel(1);// => this adds in the output the elements belonging to the "main" cluster.
+  //hodotdc->SetDataOutputLevel(1);// => this adds in the output the elements belonging to the "main" cluster.
   
   SBSTimingHodoscope* hodoadc = new  SBSTimingHodoscope("hodoadc", "BigBite hodo");
   hodoadc->SetModeTDC(SBSModeTDC::kNone);
@@ -124,7 +126,7 @@ void replay_hcal_SAS_general(int run_number, uint nev = -1, uint nseg = 0, Int_t
   bool path_ok = true;
   TString exp = "hcal_general";
   // Create file name patterns.
-  string firstname = "/e1209019_%d";
+  string firstname = "/e1209019_%d"; //Need to switch between GMn (9) and GEn (6)
   TString prefix = gSystem->Getenv("DATA_DIR");
   THaAnalyzer* analyzer = new THaAnalyzer;
 

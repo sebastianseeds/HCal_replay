@@ -1,4 +1,4 @@
-#HCal cosmic fit parameters obtained 2_28_2023
+#HCal cosmic fit parameters obtained 3_2_2023
 #Exponential fit for i PMTs -> y = P0_i*exp(-P1_i*x)+P2_i, P0_i = 
 0
 0

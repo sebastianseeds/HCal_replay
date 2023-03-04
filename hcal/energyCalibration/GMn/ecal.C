@@ -37,8 +37,10 @@ const Int_t xN = 48; //2*kNrows, total number of dispersive bins detection uni
 const Int_t yN = 24; //2*kNcols, total number of transverse bins detection uni
 //Double_t hcalheight = 0.365; //m The height of the center of HCAL above beam
 const Double_t hcalheight = -0.2897;
-const Double_t sampFrac[6] = {0.0797,0.0812,0.0812,0.0824,0.0811,0.0817}; //HCal sampling fractions from MC by kinematic. Position dependence confirmed to be negligible. 
+//const Double_t sampFrac[6] = {0.0797,0.0812,0.0812,0.0824,0.0811,0.0817}; //HCal sampling fractions from MC by kinematic. Position dependence confirmed to be negligible. 
+//const Double_t sampFrac[6] = {0.0997,0.1012,0.1012,0.1024,0.1011,0.1017}; //HCal sampling fractions tuned by hand 
 //Target constants
+const Double_t sampFrac[6] = {0.0641,0.0718,0.0734,0.0710,0.0686,0.0682}; //HCal sampling fraction from 3.3.23 study adding cluster constraint and fair comparison to MC
 const Double_t dEdx_tgt=0.00574; //According to NIST ESTAR, the collisional stopping power of hydrogen is about 5.74 MeV*cm2/g at 2 GeV energy
 const Double_t dEdx_Al = 0.0021; //According to NIST ESTAR, the collisional stopping power of Aluminum is about 2.1 MeV*cm2/g between 1-4 GeV
 const Double_t uwallthick_LH2 = 0.0145; //cm
@@ -119,10 +121,7 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
   if( kine == 8 ) kIdx=4;
   if( kine == 9 ) kIdx=5;
 
-  //Declare bool indicating iteration
-  //bool qreplay = false;
-  //if( iter==1 ) qreplay = true;
-
+  //Set up bool to track quasi-replay
   bool qreplay = iter==1;
 
   //Get gain parameters from database for pass0 where sbs.hcal.again not on tree
@@ -297,11 +296,19 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
   string errPath;
   if( qreplay ){
     constPath = Form("coefficients/coeff_sbs%d_qreplay.txt",kine);
-    errPath = Form("reporting/calReport_sbs%d_qreplay.txt",kine);
+    errPath = Form("reporting/ecalReport_sbs%d_qreplay.txt",kine);
   }else{
     constPath = Form("coefficients/coeff_sbs%d.txt",kine);
-    errPath = Form("reporting/calReport_sbs%d.txt",kine);
+    errPath = Form("reporting/ecalReport_sbs%d.txt",kine);
   }
+
+  //Declare report outfile
+  ofstream report;
+
+  report.open( errPath );
+  report << "#HCal energy calibration error and performance report from SBS-" << kine << " obtained " << date.c_str() << endl << endl;
+
+  report << "Quasi-replay is " << qreplay << endl;
 
   string configfilename_h[nfset_lh2[kIdx]];
   for( Int_t h=0; h<nfset_lh2[kIdx]; h++){
@@ -383,7 +390,7 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
 
       if( !currentline.BeginsWith("#") ){
 	Ch[f]->Add(currentline);
-	cout << "Loading file: " << currentline << ".." << endl;
+	report << "Loading file: " << currentline << ".." << endl;
       }    
     }
     //TCut globalcut = "";
@@ -400,77 +407,77 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
 	if( skey == "E_e" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  E_e_h[f] = sval.Atof();
-	  cout << "Loading beam energy: " << E_e_h[f] << endl;
+	  report << "Loading beam energy: " << E_e_h[f] << endl;
 	}
 	if( skey == "HCal_d" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  HCal_d_h[f] = sval.Atof();
-	  cout << "Loading HCal distance: " << HCal_d_h[f] << endl;
+	  report << "Loading HCal distance: " << HCal_d_h[f] << endl;
 	}
 	if( skey == "HCal_th" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  HCal_th_h[f] = sval.Atof() * TMath::DegToRad();	
-	  cout << "Loading HCal angle: " << HCal_th_h[f] << endl;
+	  report << "Loading HCal angle: " << HCal_th_h[f] << endl;
 	}
 	if( skey == "BB_th" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  BB_th_h[f] = sval.Atof() * TMath::DegToRad();	
-	  cout << "Loading BBCal angle: " << BB_th_h[f] << endl;
+	  report << "Loading BBCal angle: " << BB_th_h[f] << endl;
 	}
 	if( skey == "W2_mean" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  W2_mean_h[f] = sval.Atof();
-	  cout << "Loading W2 mean cut: " << W2_mean_h[f] << endl;
+	  report << "Loading W2 mean cut: " << W2_mean_h[f] << endl;
 	}
 	if( skey == "W2_sig" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  W2_sig_h[f] = sval.Atof();
-	  cout << "Loading W2 sigma cut: " << W2_sig_h[f] << endl;
+	  report << "Loading W2 sigma cut: " << W2_sig_h[f] << endl;
 	}
 	if( skey == "dx0_n" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dx0_n_h[f] = sval.Atof();
-	  cout << "Loading x position of neutron spot: " << dx0_n_h[f] << endl;
+	  report << "Loading x position of neutron spot: " << dx0_n_h[f] << endl;
 	}
 	if( skey == "dx0_p" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dx0_p_h[f] = sval.Atof();
-	  cout << "Loading y position of proton spot: " << dx0_p_h[f] << endl;
+	  report << "Loading y position of proton spot: " << dx0_p_h[f] << endl;
 	}
 	if( skey == "dy0" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dy0_h[f] = sval.Atof();
-	  cout << "Loading y position of both hadron spots: " << dy0_h[f] << endl;
+	  report << "Loading y position of both hadron spots: " << dy0_h[f] << endl;
 	}
 	if( skey == "dx_sig_n" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dx_sig_n_h[f] = sval.Atof();
-	  cout << "Loading x sigma of neutron spot: " << dx_sig_n_h[f] << endl;
+	  report << "Loading x sigma of neutron spot: " << dx_sig_n_h[f] << endl;
 	}
 	if( skey == "dx_sig_p" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dx_sig_p_h[f] = sval.Atof();
-	  cout << "Loading x sigma of proton spot: " << dx_sig_p_h[f] << endl;
+	  report << "Loading x sigma of proton spot: " << dx_sig_p_h[f] << endl;
 	}
 	if( skey == "dy_sig" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dy_sig_h[f] = sval.Atof();
-	  cout << "Loading y sigma of both hadron spots: " << dy_sig_h[f] << endl;
+	  report << "Loading y sigma of both hadron spots: " << dy_sig_h[f] << endl;
 	}
 	if( skey == "atime0" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  atime0_h[f] = sval.Atof();
-	  cout << "Loading ADC time mean: " << atime0_h[f] << endl;
+	  report << "Loading ADC time mean: " << atime0_h[f] << endl;
 	}
 	if( skey == "atime_sig" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  atime_sig_h[f] = sval.Atof();
-	  cout << "Loading ADC time sigma: " << atime_sig_h[f] << endl;
+	  report << "Loading ADC time sigma: " << atime_sig_h[f] << endl;
 	}
 	if( skey == "useAlshield" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  useAlshield_h[f] = sval.Atoi();
-	  cout << "Loading Aluminum absorber option: " << useAlshield_h[f] << endl;
+	  report << "Loading Aluminum absorber option: " << useAlshield_h[f] << endl;
 	}
       }
       delete tokens;
@@ -544,7 +551,7 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
     while( currentline.ReadLine( configfile ) && !currentline.BeginsWith("endlist") ){
       if( !currentline.BeginsWith("#") ){
 	Cd[f]->Add(currentline);
-	cout << "Loading file: " << currentline << ".." << endl;
+	report << "Loading file: " << currentline << ".." << endl;
       }    
     }
     //TCut globalcut = "";
@@ -561,77 +568,77 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
 	if( skey == "E_e" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  E_e_d[f] = sval.Atof();
-	  cout << "Loading beam energy: " << E_e_d[f] << endl;
+	  report << "Loading beam energy: " << E_e_d[f] << endl;
 	}
 	if( skey == "HCal_d" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  HCal_d_d[f] = sval.Atof();
-	  cout << "Loading HCal distance: " << HCal_d_d[f] << endl;
+	  report << "Loading HCal distance: " << HCal_d_d[f] << endl;
 	}
 	if( skey == "HCal_th" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  HCal_th_d[f] = sval.Atof() * TMath::DegToRad();	
-	  cout << "Loading HCal angle: " << HCal_th_d[f] << endl;
+	  report << "Loading HCal angle: " << HCal_th_d[f] << endl;
 	}
 	if( skey == "BB_th" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  BB_th_d[f] = sval.Atof() * TMath::DegToRad();	
-	  cout << "Loading BBCal angle: " << BB_th_d[f] << endl;
+	  report << "Loading BBCal angle: " << BB_th_d[f] << endl;
 	}
 	if( skey == "W2_mean" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  W2_mean_d[f] = sval.Atof();
-	  cout << "Loading W2 mean cut: " << W2_mean_d[f] << endl;
+	  report << "Loading W2 mean cut: " << W2_mean_d[f] << endl;
 	}
 	if( skey == "W2_sig" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  W2_sig_d[f] = sval.Atof();
-	  cout << "Loading W2 sigma cut: " << W2_sig_d[f] << endl;
+	  report << "Loading W2 sigma cut: " << W2_sig_d[f] << endl;
 	}
 	if( skey == "dx0_n" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dx0_n_d[f] = sval.Atof();
-	  cout << "Loading x position of neutron spot: " << dx0_n_d[f] << endl;
+	  report << "Loading x position of neutron spot: " << dx0_n_d[f] << endl;
 	}
 	if( skey == "dx0_p" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dx0_p_d[f] = sval.Atof();
-	  cout << "Loading y position of proton spot: " << dx0_p_d[f] << endl;
+	  report << "Loading y position of proton spot: " << dx0_p_d[f] << endl;
 	}
 	if( skey == "dy0" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dy0_d[f] = sval.Atof();
-	  cout << "Loading y position of both hadron spots: " << dy0_d[f] << endl;
+	  report << "Loading y position of both hadron spots: " << dy0_d[f] << endl;
 	}
 	if( skey == "dx_sig_n" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dx_sig_n_d[f] = sval.Atof();
-	  cout << "Loading x sigma of neutron spot: " << dx_sig_n_d[f] << endl;
+	  report << "Loading x sigma of neutron spot: " << dx_sig_n_d[f] << endl;
 	}
 	if( skey == "dx_sig_p" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dx_sig_p_d[f] = sval.Atof();
-	  cout << "Loading x sigma of proton spot: " << dx_sig_p_d[f] << endl;
+	  report << "Loading x sigma of proton spot: " << dx_sig_p_d[f] << endl;
 	}
 	if( skey == "dy_sig" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dy_sig_d[f] = sval.Atof();
-	  cout << "Loading y sigma of both hadron spots: " << dy_sig_d[f] << endl;
+	  report << "Loading y sigma of both hadron spots: " << dy_sig_d[f] << endl;
 	}
 	if( skey == "atime0" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  atime0_d[f] = sval.Atof();
-	  cout << "Loading ADC time mean: " << atime0_d[f] << endl;
+	  report << "Loading ADC time mean: " << atime0_d[f] << endl;
 	}
 	if( skey == "atime_sig" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  atime_sig_d[f] = sval.Atof();
-	  cout << "Loading ADC time sigma: " << atime_sig_d[f] << endl;
+	  report << "Loading ADC time sigma: " << atime_sig_d[f] << endl;
 	}
 	if( skey == "useAlshield" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  useAlshield_d[f] = sval.Atoi();
-	  cout << "Loading Aluminum absorber option: " << useAlshield_d[f] << endl;
+	  report << "Loading Aluminum absorber option: " << useAlshield_d[f] << endl;
 	}
       }
       delete tokens;
@@ -696,6 +703,7 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
   }//end config file for over ld2 field settings
 
   cout << endl << endl << "Setup parameters loaded and chains linked." << endl;
+  report << endl << endl << "Setup parameters loaded and chains linked." << endl;
 
   // Create stopwatch to track processing time
   TStopwatch *sw = new TStopwatch();
@@ -708,6 +716,8 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
   }else{
     fout = new TFile( Form("reporting/eCalEOut_sbs%d.root", kine ), "RECREATE" );
   }
+
+  report << "Output file located here: " << Form("reporting/qreplay_sbs%d.root", kine ) << endl;
 
   // Initialize vectors and arrays
   Double_t GCoeff[kNcell] = {0.0};
@@ -729,6 +739,10 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
   cout << "Opened many trees with " << ld2Events << " LD2 events passing global cuts." << endl << endl;
   cout << "Total available events to calibrate = " << lh2Events + ld2Events << "." << endl << endl;
 
+  report << "Opened many trees with " << lh2Events << " LH2 events passing global cuts." << endl;
+  report << "Opened many trees with " << ld2Events << " LD2 events passing global cuts." << endl << endl;
+  report << "Total available events to calibrate = " << lh2Events + ld2Events << "." << endl << endl;
+
   //Declare matrices for chi-square min calibration scheme and keep track of calibrated events
   TMatrixD Ma(kNcell,kNcell);
   TMatrixD Ma_oneblock(kNcell,kNcell);
@@ -744,6 +758,7 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
   Double_t err_ev[kNcell] = {0.};
   Double_t err_oneblock[kNcell] = {0.};
   Double_t err_ev_oneblock[kNcell] = {0.};
+  Int_t deadclus = 0;
   
   //Declare diagnostic histograms (as sparse as possible)
   TH2D *hdx_mag_h = new TH2D( "hdx_mag_h", "Delta X vs Field Setting (LH2); field (percent); x_{HCAL} - x_{exp} (m)", 21, 0, 105, 250, -4, 3 );
@@ -756,7 +771,8 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
   TH1D *hblkid = new TH1D( "hblkid","HCal Block ID", 400, -50, 350 );
 
   //Loop over events
-  cout << "Main loop over all data commencing.." << endl;
+  cout << "Main loop over hydrogen data commencing.." << endl;
+  report << "Main loop over hydrogen data commencing.." << endl;
   if(pass0) gROOT->ProcessLine( "gErrorIgnoreLevel = 6001" ); //Suppress error output to avoid undetectable sbs.hcal.clus_blk.again for pass0
 
   //Loop over all hydrogen data
@@ -773,6 +789,8 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
       if ( nevent%10000==0 ) cout << "LH2 kinematic " << kine << " at field " << hfieldset << "% , entry: " << nevent << "/" << Nevents_h[f] << ". Total events gathered for calibration: " << TNEV_h << " \r";
       cout.flush();
       
+      if ( nevent%100000==0 ) report << "LH2 kinematic " << kine << " at field " << hfieldset << "% , entry: " << nevent << "/" << Nevents_h[f] << ". Block atime cut dead clusters: " << deadclus << ". Total events gathered for calibration: " << TNEV_h << endl;
+
       Ch[f]->GetEntry( elist_h[f]->GetEntry( nevent ) ); 
 
 
@@ -841,6 +859,7 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
       Double_t E_pp = nu+M_p; // Get energy of the proton
       Double_t Enucleon = sqrt(pow(pp,2)+pow(M_p,2)); // Check on E_pp, same
       Double_t KE_p = nu; //For elastics
+      //Double_t KE_p = Enucleon; //For sanity check on sampling fraction (2.28.23)
       Double_t dx = HCALx_h[f] - xexpect_HCAL;
       Double_t dy = HCALy_h[f] - yexpect_HCAL;
       
@@ -853,7 +872,6 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
       //Calculate/declare new variables for analysis
       Double_t SFrac = HCALe_h[f]/KE_p;
       Double_t E_exp = KE_p*sampFrac[kIdx];
-      cout << KE_p << endl;
       Int_t rec_row = ( HCALx_h[f] - HCal_Xmin )/HCal_divx;
       Int_t rec_col = ( HCALy_h[f] - HCal_Ymin )/HCal_divy;
       Int_t rec_cell = rec_row*kNcols + rec_col;
@@ -948,7 +966,8 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
       }
 
       if(clusE<0.025){
-	cout << "Warning: Cluster block cut on atime killed cluster." << endl;
+	deadclus++;
+	report << "Warning: Cluster block cut on atime killed cluster." << endl;
 	continue;
       }
 
@@ -979,19 +998,26 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
     Int_t cell = 0;
 
     cout << endl << "Number of events available for calibration from hydrogen alone: " << endl << endl;
+    report << endl << "Number of events available for calibration from hydrogen alone: " << endl << endl;
 
     for( Int_t r = 0; r<kNrows; r++){
       for( Int_t c = 0; c<kNcols; c++){
 	cout << NEV[cell] << "  ";
+	report << NEV[cell] << "  ";
 	cell++;
       }
       cout << endl;
+      report << endl;
     }
   
     cout << endl;
+    report << endl;
 
     usleep( 3*second ); //Give some time for review of step
   }
+
+  cout << "Looping over deuterium data.." << endl;
+  report << "Looping over deuterium data.." << endl;
 
   //Loop over all deuterium data
   for( Int_t f=0; f<nfset_ld2[kIdx]; f++ ){
@@ -1006,6 +1032,8 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
 
       if ( nevent%10000==0 ) cout << "LD2 kinematic " << kine << " at field " << dfieldset << "%, entry: " << nevent << "/" << Nevents_d[f] << ". Total events gathered for calibration: " << TNEV_d << " \r";
       cout.flush();
+
+      if ( nevent%100000==0 ) report << "LD2 kinematic " << kine << " at field " << dfieldset << "% , entry: " << nevent << "/" << Nevents_d[f] << ". Total events gathered for calibration: " << TNEV_d << endl;
       
       Cd[f]->GetEntry( elist_d[f]->GetEntry( nevent ) ); 
 
@@ -1073,6 +1101,7 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
       Double_t E_pp = nu+M_p; // Get energy of the proton
       Double_t Enucleon = sqrt(pow(pp,2)+pow(M_p,2)); // Check on E_pp, same
       Double_t KE_p = nu; //For elastics
+      //Double_t KE_p = Enucleon; //For sanity check on sampling fraction (2.28.23)
       Double_t dx = HCALx_d[f] - xexpect_dCAL;
       Double_t dy = HCALy_d[f] - yexpect_dCAL;
       
@@ -1178,7 +1207,8 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
       }
 
       if(clusE<0.025){
-	cout << "Warning: Cluster block cut on atime killed cluster." << endl;
+	deadclus++;
+	report << "Warning: Cluster block cut on atime killed cluster." << endl;
 	continue;
       }
 
@@ -1205,13 +1235,10 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
     } //loop over events
   } //loop for ld2
 
-  if( !qreplay ) cout << endl << "Checking data, inverting matrix, and solving for coefficients.." << endl << endl;
-
-  //Declare report outfile
-  ofstream report;
-
-  report.open( errPath );
-  report << "#Error and performance report from SBS-" << kine << " obtained " << date.c_str() << endl << endl;
+  if( !qreplay ){
+    cout << endl << "Checking data, inverting matrix, and solving for coefficients.." << endl << endl;
+    report << endl << "Checking data, inverting matrix, and solving for coefficients.." << endl << endl;
+  }
 
   //Reject the bad cells and normalize the oneblock check
   Int_t badcell[kNcell];
@@ -1221,8 +1248,10 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
   
   for(Int_t i=0; i<kNcell; i++){
     if( qreplay ){
-      report << "Skipping matrix element checks for iteration 1 (quasi-replay).." << endl;
+      report << "Skipping matrix element checks for iteration 1 (quasi-replay).." << endl << endl;
       break;
+    }else{
+      report << "Proceeding to energy matrix quality check analysis.." << endl << endl;
     }
 
     badcell[i] = 0;
@@ -1248,7 +1277,7 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
       badcell[i] = 1;
       report << "Cell " << i << " bad" << endl;
       report << "Number of events in bad cell =" << NEV[i] << endl;
-      report << "Matrix element/vector element ratio =" << elemRatio << endl;
+      report << "Matrix element/vector element ratio =" << elemRatio << endl << endl;
     } 
 
     badcell_oneblock[i] = 0;
@@ -1271,10 +1300,9 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
 	}
       }
       badcell_oneblock[i] = 1;
-      report << "oneblock analysis" << endl;
-      report << "cell" << i << " bad" << endl;
-      report << "Number of events in bad cell =" << NEV_oneblock[i] << endl;
-      report << "Matrix element/vector element ratio =" << elemRatio << endl;
+      report << "Oneblock: cell" << i << " bad" << endl;
+      report << "Oneblock: number of events in bad cell =" << NEV_oneblock[i] << endl;
+      report << "Oneblock: matrix element/vector element ratio =" << elemRatio << endl << endl;
     }   
 
     //Calculate error per block (element of A)
@@ -1282,9 +1310,8 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
     err_oneblock[i] = sqrt(err_ev_oneblock[i]/NEV_oneblock[i]);
   }
 
-  report.close();
-
-  if( cellBad==0 && !qreplay ) cout << "No bad cells detected!" << endl << endl;
+  if( cellBad!=0 && !qreplay ) cout << "Bad cells detected. See report for details." << endl << endl;
+  if( cellBad==0 && !qreplay ) report << "No bad cells detected!" << endl << endl;
 
   //If iteration == 0, invert the matrix, solve for ratios
   if( !qreplay ){
@@ -1353,25 +1380,30 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
     GainCoeff << "sbs.hcal.adc.gain =" << endl;
 
     cout << "Gain Coefficients" << endl;
+    report << "Gain Coefficients" << endl;
     for( Int_t r=0; r<kNrows; r++ ){
       for( Int_t c=0; c<kNcols; c++ ){
 	GainCoeff << GCoeff[cell] << "  ";
 	cout << GCoeff[cell] << "  ";
+	report << GCoeff[cell] << "  ";
 	cell++;
       }
       GainCoeff << endl;
       cout << endl;
+      report << endl;
     }
 
     cell = 0;
 
     cout << endl << "One Block Std:" << endl;
+    report << endl << "One Block Std:" << endl;
     GainCoeff << endl << "#One Block Std = " << endl;
 
     for( Int_t r = 0; r<kNrows; r++){
       for( Int_t c = 0; c<kNcols; c++){
 	GainCoeff << GCoeff_oneblock[cell] << "  ";
 	cout << GCoeff_oneblock[cell] << "  ";
+	report << GCoeff_oneblock[cell] << "  ";
 	cell++;
       }
       GainCoeff << endl;
@@ -1381,16 +1413,19 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
     cell = 0;
 
     cout << endl << "Total Number of events available for calibration: " << endl << endl;
+    report << endl << "Total Number of events available for calibration: " << endl << endl;
     GainCoeff << endl << "#Number of events available for calibration = " << endl;
 
     for( Int_t r = 0; r<kNrows; r++){
       for( Int_t c = 0; c<kNcols; c++){
 	GainCoeff << NEV[cell] << "  ";
 	cout << NEV[cell] << "  ";
+	report << NEV[cell] << "  ";
 	cell++;
       }
       GainCoeff << endl;
       cout << endl;
+      report << endl;
     }
 
     GainCoeff.close();
@@ -1399,20 +1434,27 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
   fout->Write();
 
   cout << endl << endl;
+  report << endl << endl;
 
-  //cout << endl << endl << "Total blocks out of time with primary block / Multi-block clusters: " << badtimeblkclus << "/" << multblkclus << endl;
+  report << endl << endl << "Total blocks out of time with primary block / Multi-block clusters: " << badtimeblkclus << "/" << multblkclus << endl;
 
   cout << endl << endl << "Elastic yield for analyzed runs: " << elasYield << ". Total event bins available for calibration = LH2 + LD2: " << TNEV_h << " + " << TNEV_d << " = " << TNEV_h + TNEV_d << ". Total number of events analyzed: " << lh2Events + ld2Events << "." << endl << endl;
+
+  report << endl << endl << "Elastic yield for analyzed runs: " << elasYield << ". Total event bins available for calibration = LH2 + LD2: " << TNEV_h << " + " << TNEV_d << " = " << TNEV_h + TNEV_d << ". Total number of events analyzed: " << lh2Events + ld2Events << "." << endl << endl;
   
   if( qreplay ){
     cout << "Diagnostic iteration complete. Histograms written to file." << endl;
+    report << "Diagnostic iteration complete. Histograms written to file." << endl << endl;
   }else{
     cout << "Calibration complete. Constants and histograms written to file." << endl;
+    report << "Calibration complete. Constants and histograms written to file." << endl << endl;
   }
 
   st->Stop();
 
-  // Send time efficiency report to console
+  // Send time efficiency report to console/report
   cout << "CPU time elapsed = " << st->CpuTime() << " s = " << st->CpuTime()/60.0 << " min. Real time = " << st->RealTime() << " s = " << st->RealTime()/60.0 << " min." << endl;
+  report << "CPU time elapsed = " << st->CpuTime() << " s = " << st->CpuTime()/60.0 << " min. Real time = " << st->RealTime() << " s = " << st->RealTime()/60.0 << " min." << endl;
 
+  report.close();
 }

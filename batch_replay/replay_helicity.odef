@@ -1,0 +1,17 @@
+#
+#  Output variables for the helicity tagging
+#
+
+block    scalhel.lhrs.fadc.*
+
+variable scalhel.hel
+variable scalhel.errcode
+variable scalhel.evtcount
+variable scalhel.patcount
+variable scalhel.patphase
+variable scalhel.seed
+
+formula  scalhel.true_hel     scalhel.hel
+formula  scalhel.hel_stable   scalhel.lhrs.fadc.tsettle<60000
+
+th1d hscaler_hel 'Scaler Helicity;Scaler Helicity;' scalhel.hel 12 -1.5 1.5
