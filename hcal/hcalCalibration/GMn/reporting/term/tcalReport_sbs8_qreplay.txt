@@ -1,0 +1,1285 @@
+#Error and performance report from SBS-8 obtained 3_8_2023
+
+Opened many trees with 41394431 LH2 events passing global cuts.
+Opened many trees with 85712405 LD2 events passing global cuts.
+
+Total available events to calibrate = 127106836.
+
+Looping over hydrogen data..
+LH2 kinematic 8 at field 0% , entry: 100000/12478310. Total events gathered for calibration: 6312
+LH2 kinematic 8 at field 0% , entry: 200000/12478310. Total events gathered for calibration: 12596
+LH2 kinematic 8 at field 0% , entry: 300000/12478310. Total events gathered for calibration: 18677
+LH2 kinematic 8 at field 0% , entry: 400000/12478310. Total events gathered for calibration: 25014
+LH2 kinematic 8 at field 0% , entry: 500000/12478310. Total events gathered for calibration: 31374
+LH2 kinematic 8 at field 0% , entry: 600000/12478310. Total events gathered for calibration: 37791
+LH2 kinematic 8 at field 0% , entry: 700000/12478310. Total events gathered for calibration: 43917
+LH2 kinematic 8 at field 0% , entry: 800000/12478310. Total events gathered for calibration: 50427
+LH2 kinematic 8 at field 0% , entry: 900000/12478310. Total events gathered for calibration: 56569
+LH2 kinematic 8 at field 0% , entry: 1000000/12478310. Total events gathered for calibration: 62833
+LH2 kinematic 8 at field 0% , entry: 1100000/12478310. Total events gathered for calibration: 69138
+LH2 kinematic 8 at field 0% , entry: 1200000/12478310. Total events gathered for calibration: 75502
+LH2 kinematic 8 at field 0% , entry: 1300000/12478310. Total events gathered for calibration: 81950
+LH2 kinematic 8 at field 0% , entry: 1400000/12478310. Total events gathered for calibration: 88384
+LH2 kinematic 8 at field 0% , entry: 1500000/12478310. Total events gathered for calibration: 94756
+LH2 kinematic 8 at field 0% , entry: 1600000/12478310. Total events gathered for calibration: 101015
+LH2 kinematic 8 at field 0% , entry: 1700000/12478310. Total events gathered for calibration: 107530
+LH2 kinematic 8 at field 0% , entry: 1800000/12478310. Total events gathered for calibration: 113919
+LH2 kinematic 8 at field 0% , entry: 1900000/12478310. Total events gathered for calibration: 120619
+LH2 kinematic 8 at field 0% , entry: 2000000/12478310. Total events gathered for calibration: 126665
+LH2 kinematic 8 at field 0% , entry: 2100000/12478310. Total events gathered for calibration: 132955
+LH2 kinematic 8 at field 0% , entry: 2200000/12478310. Total events gathered for calibration: 139488
+LH2 kinematic 8 at field 0% , entry: 2300000/12478310. Total events gathered for calibration: 145767
+LH2 kinematic 8 at field 0% , entry: 2400000/12478310. Total events gathered for calibration: 152123
+LH2 kinematic 8 at field 0% , entry: 2500000/12478310. Total events gathered for calibration: 158696
+LH2 kinematic 8 at field 0% , entry: 2600000/12478310. Total events gathered for calibration: 164770
+LH2 kinematic 8 at field 0% , entry: 2700000/12478310. Total events gathered for calibration: 171172
+LH2 kinematic 8 at field 0% , entry: 2800000/12478310. Total events gathered for calibration: 177515
+LH2 kinematic 8 at field 0% , entry: 2900000/12478310. Total events gathered for calibration: 183914
+LH2 kinematic 8 at field 0% , entry: 3000000/12478310. Total events gathered for calibration: 190265
+LH2 kinematic 8 at field 0% , entry: 3100000/12478310. Total events gathered for calibration: 196832
+LH2 kinematic 8 at field 0% , entry: 3200000/12478310. Total events gathered for calibration: 203359
+LH2 kinematic 8 at field 0% , entry: 3300000/12478310. Total events gathered for calibration: 209741
+LH2 kinematic 8 at field 0% , entry: 3400000/12478310. Total events gathered for calibration: 216254
+LH2 kinematic 8 at field 0% , entry: 3500000/12478310. Total events gathered for calibration: 222527
+LH2 kinematic 8 at field 0% , entry: 3600000/12478310. Total events gathered for calibration: 228767
+LH2 kinematic 8 at field 0% , entry: 3700000/12478310. Total events gathered for calibration: 235123
+LH2 kinematic 8 at field 0% , entry: 3800000/12478310. Total events gathered for calibration: 241721
+LH2 kinematic 8 at field 0% , entry: 3900000/12478310. Total events gathered for calibration: 248157
+LH2 kinematic 8 at field 0% , entry: 4000000/12478310. Total events gathered for calibration: 254352
+LH2 kinematic 8 at field 0% , entry: 4100000/12478310. Total events gathered for calibration: 260691
+LH2 kinematic 8 at field 0% , entry: 4200000/12478310. Total events gathered for calibration: 266839
+LH2 kinematic 8 at field 0% , entry: 4300000/12478310. Total events gathered for calibration: 273471
+LH2 kinematic 8 at field 0% , entry: 4400000/12478310. Total events gathered for calibration: 279692
+LH2 kinematic 8 at field 0% , entry: 4500000/12478310. Total events gathered for calibration: 286043
+LH2 kinematic 8 at field 0% , entry: 4600000/12478310. Total events gathered for calibration: 292478
+LH2 kinematic 8 at field 0% , entry: 4700000/12478310. Total events gathered for calibration: 298596
+LH2 kinematic 8 at field 0% , entry: 4800000/12478310. Total events gathered for calibration: 305260
+LH2 kinematic 8 at field 0% , entry: 4900000/12478310. Total events gathered for calibration: 311960
+LH2 kinematic 8 at field 0% , entry: 5000000/12478310. Total events gathered for calibration: 318376
+LH2 kinematic 8 at field 0% , entry: 5100000/12478310. Total events gathered for calibration: 324825
+LH2 kinematic 8 at field 0% , entry: 5200000/12478310. Total events gathered for calibration: 331184
+LH2 kinematic 8 at field 0% , entry: 5300000/12478310. Total events gathered for calibration: 337523
+LH2 kinematic 8 at field 0% , entry: 5400000/12478310. Total events gathered for calibration: 343899
+LH2 kinematic 8 at field 0% , entry: 5500000/12478310. Total events gathered for calibration: 350257
+LH2 kinematic 8 at field 0% , entry: 5600000/12478310. Total events gathered for calibration: 356493
+LH2 kinematic 8 at field 0% , entry: 5700000/12478310. Total events gathered for calibration: 362697
+LH2 kinematic 8 at field 0% , entry: 5800000/12478310. Total events gathered for calibration: 368922
+LH2 kinematic 8 at field 0% , entry: 5900000/12478310. Total events gathered for calibration: 375373
+LH2 kinematic 8 at field 0% , entry: 6000000/12478310. Total events gathered for calibration: 382076
+LH2 kinematic 8 at field 0% , entry: 6100000/12478310. Total events gathered for calibration: 388500
+LH2 kinematic 8 at field 0% , entry: 6200000/12478310. Total events gathered for calibration: 395280
+LH2 kinematic 8 at field 0% , entry: 6300000/12478310. Total events gathered for calibration: 402008
+LH2 kinematic 8 at field 0% , entry: 6400000/12478310. Total events gathered for calibration: 408416
+LH2 kinematic 8 at field 0% , entry: 6500000/12478310. Total events gathered for calibration: 414899
+LH2 kinematic 8 at field 0% , entry: 6600000/12478310. Total events gathered for calibration: 421279
+LH2 kinematic 8 at field 0% , entry: 6700000/12478310. Total events gathered for calibration: 427465
+LH2 kinematic 8 at field 0% , entry: 6800000/12478310. Total events gathered for calibration: 433790
+LH2 kinematic 8 at field 0% , entry: 6900000/12478310. Total events gathered for calibration: 440016
+LH2 kinematic 8 at field 0% , entry: 7000000/12478310. Total events gathered for calibration: 446504
+LH2 kinematic 8 at field 0% , entry: 7100000/12478310. Total events gathered for calibration: 452975
+LH2 kinematic 8 at field 0% , entry: 7200000/12478310. Total events gathered for calibration: 459303
+LH2 kinematic 8 at field 0% , entry: 7300000/12478310. Total events gathered for calibration: 465500
+LH2 kinematic 8 at field 0% , entry: 7400000/12478310. Total events gathered for calibration: 472121
+LH2 kinematic 8 at field 0% , entry: 7500000/12478310. Total events gathered for calibration: 478705
+LH2 kinematic 8 at field 0% , entry: 7600000/12478310. Total events gathered for calibration: 484955
+LH2 kinematic 8 at field 0% , entry: 7700000/12478310. Total events gathered for calibration: 491324
+LH2 kinematic 8 at field 0% , entry: 7800000/12478310. Total events gathered for calibration: 497439
+LH2 kinematic 8 at field 0% , entry: 7900000/12478310. Total events gathered for calibration: 503839
+LH2 kinematic 8 at field 0% , entry: 8000000/12478310. Total events gathered for calibration: 510273
+LH2 kinematic 8 at field 0% , entry: 8100000/12478310. Total events gathered for calibration: 516741
+LH2 kinematic 8 at field 0% , entry: 8200000/12478310. Total events gathered for calibration: 523146
+LH2 kinematic 8 at field 0% , entry: 8300000/12478310. Total events gathered for calibration: 529628
+LH2 kinematic 8 at field 0% , entry: 8400000/12478310. Total events gathered for calibration: 536025
+LH2 kinematic 8 at field 0% , entry: 8500000/12478310. Total events gathered for calibration: 542431
+LH2 kinematic 8 at field 0% , entry: 8600000/12478310. Total events gathered for calibration: 548536
+LH2 kinematic 8 at field 0% , entry: 8700000/12478310. Total events gathered for calibration: 554970
+LH2 kinematic 8 at field 0% , entry: 8800000/12478310. Total events gathered for calibration: 561347
+LH2 kinematic 8 at field 0% , entry: 8900000/12478310. Total events gathered for calibration: 567451
+LH2 kinematic 8 at field 0% , entry: 9000000/12478310. Total events gathered for calibration: 573807
+LH2 kinematic 8 at field 0% , entry: 9100000/12478310. Total events gathered for calibration: 580193
+LH2 kinematic 8 at field 0% , entry: 9200000/12478310. Total events gathered for calibration: 586740
+LH2 kinematic 8 at field 0% , entry: 9300000/12478310. Total events gathered for calibration: 593354
+LH2 kinematic 8 at field 0% , entry: 9400000/12478310. Total events gathered for calibration: 599722
+LH2 kinematic 8 at field 0% , entry: 9500000/12478310. Total events gathered for calibration: 605988
+LH2 kinematic 8 at field 0% , entry: 9600000/12478310. Total events gathered for calibration: 612505
+LH2 kinematic 8 at field 0% , entry: 9700000/12478310. Total events gathered for calibration: 618980
+LH2 kinematic 8 at field 0% , entry: 9800000/12478310. Total events gathered for calibration: 625408
+LH2 kinematic 8 at field 0% , entry: 9900000/12478310. Total events gathered for calibration: 631673
+LH2 kinematic 8 at field 0% , entry: 10000000/12478310. Total events gathered for calibration: 637898
+LH2 kinematic 8 at field 0% , entry: 10100000/12478310. Total events gathered for calibration: 644181
+LH2 kinematic 8 at field 0% , entry: 10200000/12478310. Total events gathered for calibration: 650477
+LH2 kinematic 8 at field 0% , entry: 10300000/12478310. Total events gathered for calibration: 656707
+LH2 kinematic 8 at field 0% , entry: 10400000/12478310. Total events gathered for calibration: 663374
+LH2 kinematic 8 at field 0% , entry: 10500000/12478310. Total events gathered for calibration: 669800
+LH2 kinematic 8 at field 0% , entry: 10600000/12478310. Total events gathered for calibration: 676361
+LH2 kinematic 8 at field 0% , entry: 10700000/12478310. Total events gathered for calibration: 682463
+LH2 kinematic 8 at field 0% , entry: 10800000/12478310. Total events gathered for calibration: 688579
+LH2 kinematic 8 at field 0% , entry: 10900000/12478310. Total events gathered for calibration: 695044
+LH2 kinematic 8 at field 0% , entry: 11000000/12478310. Total events gathered for calibration: 701455
+LH2 kinematic 8 at field 0% , entry: 11100000/12478310. Total events gathered for calibration: 707726
+LH2 kinematic 8 at field 0% , entry: 11200000/12478310. Total events gathered for calibration: 714113
+LH2 kinematic 8 at field 0% , entry: 11300000/12478310. Total events gathered for calibration: 720603
+LH2 kinematic 8 at field 0% , entry: 11400000/12478310. Total events gathered for calibration: 726916
+LH2 kinematic 8 at field 0% , entry: 11500000/12478310. Total events gathered for calibration: 733217
+LH2 kinematic 8 at field 0% , entry: 11600000/12478310. Total events gathered for calibration: 739557
+LH2 kinematic 8 at field 0% , entry: 11700000/12478310. Total events gathered for calibration: 745828
+LH2 kinematic 8 at field 0% , entry: 11800000/12478310. Total events gathered for calibration: 752130
+LH2 kinematic 8 at field 0% , entry: 11900000/12478310. Total events gathered for calibration: 758396
+LH2 kinematic 8 at field 0% , entry: 12000000/12478310. Total events gathered for calibration: 764792
+LH2 kinematic 8 at field 0% , entry: 12100000/12478310. Total events gathered for calibration: 771309
+LH2 kinematic 8 at field 0% , entry: 12200000/12478310. Total events gathered for calibration: 777280
+LH2 kinematic 8 at field 0% , entry: 12300000/12478310. Total events gathered for calibration: 783835
+LH2 kinematic 8 at field 0% , entry: 12400000/12478310. Total events gathered for calibration: 790028
+LH2 kinematic 8 at field 50% , entry: 100000/1617288. Total events gathered for calibration: 803552
+LH2 kinematic 8 at field 50% , entry: 200000/1617288. Total events gathered for calibration: 812248
+LH2 kinematic 8 at field 50% , entry: 300000/1617288. Total events gathered for calibration: 820753
+LH2 kinematic 8 at field 50% , entry: 400000/1617288. Total events gathered for calibration: 829033
+LH2 kinematic 8 at field 50% , entry: 500000/1617288. Total events gathered for calibration: 837551
+LH2 kinematic 8 at field 50% , entry: 600000/1617288. Total events gathered for calibration: 846343
+LH2 kinematic 8 at field 50% , entry: 700000/1617288. Total events gathered for calibration: 854825
+LH2 kinematic 8 at field 50% , entry: 800000/1617288. Total events gathered for calibration: 863351
+LH2 kinematic 8 at field 50% , entry: 900000/1617288. Total events gathered for calibration: 871829
+LH2 kinematic 8 at field 50% , entry: 1000000/1617288. Total events gathered for calibration: 880330
+LH2 kinematic 8 at field 50% , entry: 1100000/1617288. Total events gathered for calibration: 888943
+LH2 kinematic 8 at field 50% , entry: 1200000/1617288. Total events gathered for calibration: 897413
+LH2 kinematic 8 at field 50% , entry: 1300000/1617288. Total events gathered for calibration: 906112
+LH2 kinematic 8 at field 50% , entry: 1400000/1617288. Total events gathered for calibration: 914547
+LH2 kinematic 8 at field 50% , entry: 1500000/1617288. Total events gathered for calibration: 923194
+LH2 kinematic 8 at field 50% , entry: 1600000/1617288. Total events gathered for calibration: 931881
+LH2 kinematic 8 at field 70% , entry: 100000/18636639. Total events gathered for calibration: 941003
+LH2 kinematic 8 at field 70% , entry: 200000/18636639. Total events gathered for calibration: 948484
+LH2 kinematic 8 at field 70% , entry: 300000/18636639. Total events gathered for calibration: 955385
+LH2 kinematic 8 at field 70% , entry: 400000/18636639. Total events gathered for calibration: 961881
+LH2 kinematic 8 at field 70% , entry: 500000/18636639. Total events gathered for calibration: 969728
+LH2 kinematic 8 at field 70% , entry: 600000/18636639. Total events gathered for calibration: 977377
+LH2 kinematic 8 at field 70% , entry: 700000/18636639. Total events gathered for calibration: 985230
+LH2 kinematic 8 at field 70% , entry: 800000/18636639. Total events gathered for calibration: 992966
+LH2 kinematic 8 at field 70% , entry: 900000/18636639. Total events gathered for calibration: 1000876
+LH2 kinematic 8 at field 70% , entry: 1000000/18636639. Total events gathered for calibration: 1008522
+LH2 kinematic 8 at field 70% , entry: 1100000/18636639. Total events gathered for calibration: 1017089
+LH2 kinematic 8 at field 70% , entry: 1200000/18636639. Total events gathered for calibration: 1028772
+LH2 kinematic 8 at field 70% , entry: 1300000/18636639. Total events gathered for calibration: 1041008
+LH2 kinematic 8 at field 70% , entry: 1400000/18636639. Total events gathered for calibration: 1052958
+LH2 kinematic 8 at field 70% , entry: 1500000/18636639. Total events gathered for calibration: 1065395
+LH2 kinematic 8 at field 70% , entry: 1600000/18636639. Total events gathered for calibration: 1077301
+LH2 kinematic 8 at field 70% , entry: 1700000/18636639. Total events gathered for calibration: 1089211
+LH2 kinematic 8 at field 70% , entry: 1800000/18636639. Total events gathered for calibration: 1101154
+LH2 kinematic 8 at field 70% , entry: 1900000/18636639. Total events gathered for calibration: 1113240
+LH2 kinematic 8 at field 70% , entry: 2000000/18636639. Total events gathered for calibration: 1125067
+LH2 kinematic 8 at field 70% , entry: 2100000/18636639. Total events gathered for calibration: 1137248
+LH2 kinematic 8 at field 70% , entry: 2200000/18636639. Total events gathered for calibration: 1149643
+LH2 kinematic 8 at field 70% , entry: 2300000/18636639. Total events gathered for calibration: 1161320
+LH2 kinematic 8 at field 70% , entry: 2400000/18636639. Total events gathered for calibration: 1173881
+LH2 kinematic 8 at field 70% , entry: 2500000/18636639. Total events gathered for calibration: 1185887
+LH2 kinematic 8 at field 70% , entry: 2600000/18636639. Total events gathered for calibration: 1197975
+LH2 kinematic 8 at field 70% , entry: 2700000/18636639. Total events gathered for calibration: 1209735
+LH2 kinematic 8 at field 70% , entry: 2800000/18636639. Total events gathered for calibration: 1221699
+LH2 kinematic 8 at field 70% , entry: 2900000/18636639. Total events gathered for calibration: 1233966
+LH2 kinematic 8 at field 70% , entry: 3000000/18636639. Total events gathered for calibration: 1246093
+LH2 kinematic 8 at field 70% , entry: 3100000/18636639. Total events gathered for calibration: 1258468
+LH2 kinematic 8 at field 70% , entry: 3200000/18636639. Total events gathered for calibration: 1270682
+LH2 kinematic 8 at field 70% , entry: 3300000/18636639. Total events gathered for calibration: 1282929
+LH2 kinematic 8 at field 70% , entry: 3400000/18636639. Total events gathered for calibration: 1294979
+LH2 kinematic 8 at field 70% , entry: 3500000/18636639. Total events gathered for calibration: 1306819
+LH2 kinematic 8 at field 70% , entry: 3600000/18636639. Total events gathered for calibration: 1318838
+LH2 kinematic 8 at field 70% , entry: 3700000/18636639. Total events gathered for calibration: 1331027
+LH2 kinematic 8 at field 70% , entry: 3800000/18636639. Total events gathered for calibration: 1343309
+LH2 kinematic 8 at field 70% , entry: 3900000/18636639. Total events gathered for calibration: 1355175
+LH2 kinematic 8 at field 70% , entry: 4000000/18636639. Total events gathered for calibration: 1367578
+LH2 kinematic 8 at field 70% , entry: 4100000/18636639. Total events gathered for calibration: 1379472
+LH2 kinematic 8 at field 70% , entry: 4200000/18636639. Total events gathered for calibration: 1392030
+LH2 kinematic 8 at field 70% , entry: 4300000/18636639. Total events gathered for calibration: 1404445
+LH2 kinematic 8 at field 70% , entry: 4400000/18636639. Total events gathered for calibration: 1416408
+LH2 kinematic 8 at field 70% , entry: 4500000/18636639. Total events gathered for calibration: 1428633
+LH2 kinematic 8 at field 70% , entry: 4600000/18636639. Total events gathered for calibration: 1440602
+LH2 kinematic 8 at field 70% , entry: 4700000/18636639. Total events gathered for calibration: 1452459
+LH2 kinematic 8 at field 70% , entry: 4800000/18636639. Total events gathered for calibration: 1464285
+LH2 kinematic 8 at field 70% , entry: 4900000/18636639. Total events gathered for calibration: 1476120
+LH2 kinematic 8 at field 70% , entry: 5000000/18636639. Total events gathered for calibration: 1488475
+LH2 kinematic 8 at field 70% , entry: 5100000/18636639. Total events gathered for calibration: 1500873
+LH2 kinematic 8 at field 70% , entry: 5200000/18636639. Total events gathered for calibration: 1513137
+LH2 kinematic 8 at field 70% , entry: 5300000/18636639. Total events gathered for calibration: 1524731
+LH2 kinematic 8 at field 70% , entry: 5400000/18636639. Total events gathered for calibration: 1536849
+LH2 kinematic 8 at field 70% , entry: 5500000/18636639. Total events gathered for calibration: 1549023
+LH2 kinematic 8 at field 70% , entry: 5600000/18636639. Total events gathered for calibration: 1560930
+LH2 kinematic 8 at field 70% , entry: 5700000/18636639. Total events gathered for calibration: 1572991
+LH2 kinematic 8 at field 70% , entry: 5800000/18636639. Total events gathered for calibration: 1584854
+LH2 kinematic 8 at field 70% , entry: 5900000/18636639. Total events gathered for calibration: 1596726
+LH2 kinematic 8 at field 70% , entry: 6000000/18636639. Total events gathered for calibration: 1608544
+LH2 kinematic 8 at field 70% , entry: 6100000/18636639. Total events gathered for calibration: 1620628
+LH2 kinematic 8 at field 70% , entry: 6200000/18636639. Total events gathered for calibration: 1632536
+LH2 kinematic 8 at field 70% , entry: 6300000/18636639. Total events gathered for calibration: 1644464
+LH2 kinematic 8 at field 70% , entry: 6400000/18636639. Total events gathered for calibration: 1656355
+LH2 kinematic 8 at field 70% , entry: 6500000/18636639. Total events gathered for calibration: 1668300
+LH2 kinematic 8 at field 70% , entry: 6600000/18636639. Total events gathered for calibration: 1680393
+LH2 kinematic 8 at field 70% , entry: 6700000/18636639. Total events gathered for calibration: 1692035
+LH2 kinematic 8 at field 70% , entry: 6800000/18636639. Total events gathered for calibration: 1704131
+LH2 kinematic 8 at field 70% , entry: 6900000/18636639. Total events gathered for calibration: 1716323
+LH2 kinematic 8 at field 70% , entry: 7000000/18636639. Total events gathered for calibration: 1728499
+LH2 kinematic 8 at field 70% , entry: 7100000/18636639. Total events gathered for calibration: 1741056
+LH2 kinematic 8 at field 70% , entry: 7200000/18636639. Total events gathered for calibration: 1753309
+LH2 kinematic 8 at field 70% , entry: 7300000/18636639. Total events gathered for calibration: 1765545
+LH2 kinematic 8 at field 70% , entry: 7400000/18636639. Total events gathered for calibration: 1777311
+LH2 kinematic 8 at field 70% , entry: 7500000/18636639. Total events gathered for calibration: 1789370
+LH2 kinematic 8 at field 70% , entry: 7600000/18636639. Total events gathered for calibration: 1801717
+LH2 kinematic 8 at field 70% , entry: 7700000/18636639. Total events gathered for calibration: 1813865
+LH2 kinematic 8 at field 70% , entry: 7800000/18636639. Total events gathered for calibration: 1825842
+LH2 kinematic 8 at field 70% , entry: 7900000/18636639. Total events gathered for calibration: 1837559
+LH2 kinematic 8 at field 70% , entry: 8000000/18636639. Total events gathered for calibration: 1849622
+LH2 kinematic 8 at field 70% , entry: 8100000/18636639. Total events gathered for calibration: 1861660
+LH2 kinematic 8 at field 70% , entry: 8200000/18636639. Total events gathered for calibration: 1874296
+LH2 kinematic 8 at field 70% , entry: 8300000/18636639. Total events gathered for calibration: 1886372
+LH2 kinematic 8 at field 70% , entry: 8400000/18636639. Total events gathered for calibration: 1898691
+LH2 kinematic 8 at field 70% , entry: 8500000/18636639. Total events gathered for calibration: 1910945
+LH2 kinematic 8 at field 70% , entry: 8600000/18636639. Total events gathered for calibration: 1922327
+LH2 kinematic 8 at field 70% , entry: 8700000/18636639. Total events gathered for calibration: 1932652
+LH2 kinematic 8 at field 70% , entry: 8800000/18636639. Total events gathered for calibration: 1942829
+LH2 kinematic 8 at field 70% , entry: 8900000/18636639. Total events gathered for calibration: 1953301
+LH2 kinematic 8 at field 70% , entry: 9000000/18636639. Total events gathered for calibration: 1963570
+LH2 kinematic 8 at field 70% , entry: 9100000/18636639. Total events gathered for calibration: 1973815
+LH2 kinematic 8 at field 70% , entry: 9200000/18636639. Total events gathered for calibration: 1984092
+LH2 kinematic 8 at field 70% , entry: 9300000/18636639. Total events gathered for calibration: 1994443
+LH2 kinematic 8 at field 70% , entry: 9400000/18636639. Total events gathered for calibration: 2005012
+LH2 kinematic 8 at field 70% , entry: 9500000/18636639. Total events gathered for calibration: 2015158
+LH2 kinematic 8 at field 70% , entry: 9600000/18636639. Total events gathered for calibration: 2025491
+LH2 kinematic 8 at field 70% , entry: 9700000/18636639. Total events gathered for calibration: 2036066
+LH2 kinematic 8 at field 70% , entry: 9800000/18636639. Total events gathered for calibration: 2046195
+LH2 kinematic 8 at field 70% , entry: 9900000/18636639. Total events gathered for calibration: 2056533
+LH2 kinematic 8 at field 70% , entry: 10000000/18636639. Total events gathered for calibration: 2066770
+LH2 kinematic 8 at field 70% , entry: 10100000/18636639. Total events gathered for calibration: 2077031
+LH2 kinematic 8 at field 70% , entry: 10200000/18636639. Total events gathered for calibration: 2087263
+LH2 kinematic 8 at field 70% , entry: 10300000/18636639. Total events gathered for calibration: 2097670
+LH2 kinematic 8 at field 70% , entry: 10400000/18636639. Total events gathered for calibration: 2108011
+LH2 kinematic 8 at field 70% , entry: 10500000/18636639. Total events gathered for calibration: 2118279
+LH2 kinematic 8 at field 70% , entry: 10600000/18636639. Total events gathered for calibration: 2128313
+LH2 kinematic 8 at field 70% , entry: 10700000/18636639. Total events gathered for calibration: 2138926
+LH2 kinematic 8 at field 70% , entry: 10800000/18636639. Total events gathered for calibration: 2149792
+LH2 kinematic 8 at field 70% , entry: 10900000/18636639. Total events gathered for calibration: 2160566
+LH2 kinematic 8 at field 70% , entry: 11000000/18636639. Total events gathered for calibration: 2170833
+LH2 kinematic 8 at field 70% , entry: 11100000/18636639. Total events gathered for calibration: 2180925
+LH2 kinematic 8 at field 70% , entry: 11200000/18636639. Total events gathered for calibration: 2190834
+LH2 kinematic 8 at field 70% , entry: 11300000/18636639. Total events gathered for calibration: 2200827
+LH2 kinematic 8 at field 70% , entry: 11400000/18636639. Total events gathered for calibration: 2211204
+LH2 kinematic 8 at field 70% , entry: 11500000/18636639. Total events gathered for calibration: 2221292
+LH2 kinematic 8 at field 70% , entry: 11600000/18636639. Total events gathered for calibration: 2231085
+LH2 kinematic 8 at field 70% , entry: 11700000/18636639. Total events gathered for calibration: 2241184
+LH2 kinematic 8 at field 70% , entry: 11800000/18636639. Total events gathered for calibration: 2251635
+LH2 kinematic 8 at field 70% , entry: 11900000/18636639. Total events gathered for calibration: 2261991
+LH2 kinematic 8 at field 70% , entry: 12000000/18636639. Total events gathered for calibration: 2272721
+LH2 kinematic 8 at field 70% , entry: 12100000/18636639. Total events gathered for calibration: 2282756
+LH2 kinematic 8 at field 70% , entry: 12200000/18636639. Total events gathered for calibration: 2293252
+LH2 kinematic 8 at field 70% , entry: 12300000/18636639. Total events gathered for calibration: 2303262
+LH2 kinematic 8 at field 70% , entry: 12400000/18636639. Total events gathered for calibration: 2313330
+LH2 kinematic 8 at field 70% , entry: 12500000/18636639. Total events gathered for calibration: 2323680
+LH2 kinematic 8 at field 70% , entry: 12600000/18636639. Total events gathered for calibration: 2334154
+LH2 kinematic 8 at field 70% , entry: 12700000/18636639. Total events gathered for calibration: 2344776
+LH2 kinematic 8 at field 70% , entry: 12800000/18636639. Total events gathered for calibration: 2355200
+LH2 kinematic 8 at field 70% , entry: 12900000/18636639. Total events gathered for calibration: 2365094
+LH2 kinematic 8 at field 70% , entry: 13000000/18636639. Total events gathered for calibration: 2375762
+LH2 kinematic 8 at field 70% , entry: 13100000/18636639. Total events gathered for calibration: 2386130
+LH2 kinematic 8 at field 70% , entry: 13200000/18636639. Total events gathered for calibration: 2396644
+LH2 kinematic 8 at field 70% , entry: 13300000/18636639. Total events gathered for calibration: 2406703
+LH2 kinematic 8 at field 70% , entry: 13400000/18636639. Total events gathered for calibration: 2416785
+LH2 kinematic 8 at field 70% , entry: 13500000/18636639. Total events gathered for calibration: 2427118
+LH2 kinematic 8 at field 70% , entry: 13600000/18636639. Total events gathered for calibration: 2437171
+LH2 kinematic 8 at field 70% , entry: 13700000/18636639. Total events gathered for calibration: 2447676
+LH2 kinematic 8 at field 70% , entry: 13800000/18636639. Total events gathered for calibration: 2457799
+LH2 kinematic 8 at field 70% , entry: 13900000/18636639. Total events gathered for calibration: 2468065
+LH2 kinematic 8 at field 70% , entry: 14000000/18636639. Total events gathered for calibration: 2478404
+LH2 kinematic 8 at field 70% , entry: 14100000/18636639. Total events gathered for calibration: 2489110
+LH2 kinematic 8 at field 70% , entry: 14200000/18636639. Total events gathered for calibration: 2499466
+LH2 kinematic 8 at field 70% , entry: 14300000/18636639. Total events gathered for calibration: 2509874
+LH2 kinematic 8 at field 70% , entry: 14400000/18636639. Total events gathered for calibration: 2519999
+LH2 kinematic 8 at field 70% , entry: 14500000/18636639. Total events gathered for calibration: 2530274
+LH2 kinematic 8 at field 70% , entry: 14600000/18636639. Total events gathered for calibration: 2540637
+LH2 kinematic 8 at field 70% , entry: 14700000/18636639. Total events gathered for calibration: 2550798
+LH2 kinematic 8 at field 70% , entry: 14800000/18636639. Total events gathered for calibration: 2561256
+LH2 kinematic 8 at field 70% , entry: 14900000/18636639. Total events gathered for calibration: 2571812
+LH2 kinematic 8 at field 70% , entry: 15000000/18636639. Total events gathered for calibration: 2581951
+LH2 kinematic 8 at field 70% , entry: 15100000/18636639. Total events gathered for calibration: 2592547
+LH2 kinematic 8 at field 70% , entry: 15200000/18636639. Total events gathered for calibration: 2603231
+LH2 kinematic 8 at field 70% , entry: 15300000/18636639. Total events gathered for calibration: 2613687
+LH2 kinematic 8 at field 70% , entry: 15400000/18636639. Total events gathered for calibration: 2623969
+LH2 kinematic 8 at field 70% , entry: 15500000/18636639. Total events gathered for calibration: 2634484
+LH2 kinematic 8 at field 70% , entry: 15600000/18636639. Total events gathered for calibration: 2644317
+LH2 kinematic 8 at field 70% , entry: 15700000/18636639. Total events gathered for calibration: 2654658
+LH2 kinematic 8 at field 70% , entry: 15800000/18636639. Total events gathered for calibration: 2664950
+LH2 kinematic 8 at field 70% , entry: 15900000/18636639. Total events gathered for calibration: 2675194
+LH2 kinematic 8 at field 70% , entry: 16000000/18636639. Total events gathered for calibration: 2685488
+LH2 kinematic 8 at field 70% , entry: 16100000/18636639. Total events gathered for calibration: 2696022
+LH2 kinematic 8 at field 70% , entry: 16200000/18636639. Total events gathered for calibration: 2706354
+LH2 kinematic 8 at field 70% , entry: 16300000/18636639. Total events gathered for calibration: 2716212
+LH2 kinematic 8 at field 70% , entry: 16400000/18636639. Total events gathered for calibration: 2726990
+LH2 kinematic 8 at field 70% , entry: 16500000/18636639. Total events gathered for calibration: 2737222
+LH2 kinematic 8 at field 70% , entry: 16600000/18636639. Total events gathered for calibration: 2747698
+LH2 kinematic 8 at field 70% , entry: 16700000/18636639. Total events gathered for calibration: 2758171
+LH2 kinematic 8 at field 70% , entry: 16800000/18636639. Total events gathered for calibration: 2768365
+LH2 kinematic 8 at field 70% , entry: 16900000/18636639. Total events gathered for calibration: 2778848
+LH2 kinematic 8 at field 70% , entry: 17000000/18636639. Total events gathered for calibration: 2789137
+LH2 kinematic 8 at field 70% , entry: 17100000/18636639. Total events gathered for calibration: 2799396
+LH2 kinematic 8 at field 70% , entry: 17200000/18636639. Total events gathered for calibration: 2809652
+LH2 kinematic 8 at field 70% , entry: 17300000/18636639. Total events gathered for calibration: 2820159
+LH2 kinematic 8 at field 70% , entry: 17400000/18636639. Total events gathered for calibration: 2830111
+LH2 kinematic 8 at field 70% , entry: 17500000/18636639. Total events gathered for calibration: 2840533
+LH2 kinematic 8 at field 70% , entry: 17600000/18636639. Total events gathered for calibration: 2851144
+LH2 kinematic 8 at field 70% , entry: 17700000/18636639. Total events gathered for calibration: 2861643
+LH2 kinematic 8 at field 70% , entry: 17800000/18636639. Total events gathered for calibration: 2872050
+LH2 kinematic 8 at field 70% , entry: 17900000/18636639. Total events gathered for calibration: 2882204
+LH2 kinematic 8 at field 70% , entry: 18000000/18636639. Total events gathered for calibration: 2892686
+LH2 kinematic 8 at field 70% , entry: 18100000/18636639. Total events gathered for calibration: 2903028
+LH2 kinematic 8 at field 70% , entry: 18200000/18636639. Total events gathered for calibration: 2913394
+LH2 kinematic 8 at field 70% , entry: 18300000/18636639. Total events gathered for calibration: 2924114
+LH2 kinematic 8 at field 70% , entry: 18400000/18636639. Total events gathered for calibration: 2934353
+LH2 kinematic 8 at field 70% , entry: 18500000/18636639. Total events gathered for calibration: 2944226
+LH2 kinematic 8 at field 70% , entry: 18600000/18636639. Total events gathered for calibration: 2954410
+LH2 kinematic 8 at field 100% , entry: 100000/8662194. Total events gathered for calibration: 2968745
+LH2 kinematic 8 at field 100% , entry: 200000/8662194. Total events gathered for calibration: 2979047
+LH2 kinematic 8 at field 100% , entry: 300000/8662194. Total events gathered for calibration: 2989041
+LH2 kinematic 8 at field 100% , entry: 400000/8662194. Total events gathered for calibration: 2998878
+LH2 kinematic 8 at field 100% , entry: 500000/8662194. Total events gathered for calibration: 3009211
+LH2 kinematic 8 at field 100% , entry: 600000/8662194. Total events gathered for calibration: 3019423
+LH2 kinematic 8 at field 100% , entry: 700000/8662194. Total events gathered for calibration: 3029651
+LH2 kinematic 8 at field 100% , entry: 800000/8662194. Total events gathered for calibration: 3040460
+LH2 kinematic 8 at field 100% , entry: 900000/8662194. Total events gathered for calibration: 3050531
+LH2 kinematic 8 at field 100% , entry: 1000000/8662194. Total events gathered for calibration: 3060552
+LH2 kinematic 8 at field 100% , entry: 1100000/8662194. Total events gathered for calibration: 3070863
+LH2 kinematic 8 at field 100% , entry: 1200000/8662194. Total events gathered for calibration: 3080523
+LH2 kinematic 8 at field 100% , entry: 1300000/8662194. Total events gathered for calibration: 3090908
+LH2 kinematic 8 at field 100% , entry: 1400000/8662194. Total events gathered for calibration: 3101033
+LH2 kinematic 8 at field 100% , entry: 1500000/8662194. Total events gathered for calibration: 3111206
+LH2 kinematic 8 at field 100% , entry: 1600000/8662194. Total events gathered for calibration: 3121356
+LH2 kinematic 8 at field 100% , entry: 1700000/8662194. Total events gathered for calibration: 3131531
+LH2 kinematic 8 at field 100% , entry: 1800000/8662194. Total events gathered for calibration: 3141914
+LH2 kinematic 8 at field 100% , entry: 1900000/8662194. Total events gathered for calibration: 3152548
+LH2 kinematic 8 at field 100% , entry: 2000000/8662194. Total events gathered for calibration: 3162676
+LH2 kinematic 8 at field 100% , entry: 2100000/8662194. Total events gathered for calibration: 3173514
+LH2 kinematic 8 at field 100% , entry: 2200000/8662194. Total events gathered for calibration: 3183758
+LH2 kinematic 8 at field 100% , entry: 2300000/8662194. Total events gathered for calibration: 3194091
+LH2 kinematic 8 at field 100% , entry: 2400000/8662194. Total events gathered for calibration: 3204309
+LH2 kinematic 8 at field 100% , entry: 2500000/8662194. Total events gathered for calibration: 3214617
+LH2 kinematic 8 at field 100% , entry: 2600000/8662194. Total events gathered for calibration: 3225359
+LH2 kinematic 8 at field 100% , entry: 2700000/8662194. Total events gathered for calibration: 3238625
+LH2 kinematic 8 at field 100% , entry: 2800000/8662194. Total events gathered for calibration: 3249167
+LH2 kinematic 8 at field 100% , entry: 2900000/8662194. Total events gathered for calibration: 3259717
+LH2 kinematic 8 at field 100% , entry: 3000000/8662194. Total events gathered for calibration: 3269924
+LH2 kinematic 8 at field 100% , entry: 3100000/8662194. Total events gathered for calibration: 3280510
+LH2 kinematic 8 at field 100% , entry: 3200000/8662194. Total events gathered for calibration: 3291142
+LH2 kinematic 8 at field 100% , entry: 3300000/8662194. Total events gathered for calibration: 3301433
+LH2 kinematic 8 at field 100% , entry: 3400000/8662194. Total events gathered for calibration: 3311831
+LH2 kinematic 8 at field 100% , entry: 3500000/8662194. Total events gathered for calibration: 3321760
+LH2 kinematic 8 at field 100% , entry: 3600000/8662194. Total events gathered for calibration: 3332001
+LH2 kinematic 8 at field 100% , entry: 3700000/8662194. Total events gathered for calibration: 3342530
+LH2 kinematic 8 at field 100% , entry: 3800000/8662194. Total events gathered for calibration: 3352880
+LH2 kinematic 8 at field 100% , entry: 3900000/8662194. Total events gathered for calibration: 3362854
+LH2 kinematic 8 at field 100% , entry: 4000000/8662194. Total events gathered for calibration: 3373475
+LH2 kinematic 8 at field 100% , entry: 4100000/8662194. Total events gathered for calibration: 3384013
+LH2 kinematic 8 at field 100% , entry: 4200000/8662194. Total events gathered for calibration: 3394501
+LH2 kinematic 8 at field 100% , entry: 4300000/8662194. Total events gathered for calibration: 3404638
+LH2 kinematic 8 at field 100% , entry: 4400000/8662194. Total events gathered for calibration: 3415160
+LH2 kinematic 8 at field 100% , entry: 4500000/8662194. Total events gathered for calibration: 3425086
+LH2 kinematic 8 at field 100% , entry: 4600000/8662194. Total events gathered for calibration: 3435319
+LH2 kinematic 8 at field 100% , entry: 4700000/8662194. Total events gathered for calibration: 3445535
+LH2 kinematic 8 at field 100% , entry: 4800000/8662194. Total events gathered for calibration: 3455957
+LH2 kinematic 8 at field 100% , entry: 4900000/8662194. Total events gathered for calibration: 3466576
+LH2 kinematic 8 at field 100% , entry: 5000000/8662194. Total events gathered for calibration: 3477087
+LH2 kinematic 8 at field 100% , entry: 5100000/8662194. Total events gathered for calibration: 3487193
+LH2 kinematic 8 at field 100% , entry: 5200000/8662194. Total events gathered for calibration: 3497508
+LH2 kinematic 8 at field 100% , entry: 5300000/8662194. Total events gathered for calibration: 3507766
+LH2 kinematic 8 at field 100% , entry: 5400000/8662194. Total events gathered for calibration: 3518091
+LH2 kinematic 8 at field 100% , entry: 5500000/8662194. Total events gathered for calibration: 3528799
+LH2 kinematic 8 at field 100% , entry: 5600000/8662194. Total events gathered for calibration: 3538892
+LH2 kinematic 8 at field 100% , entry: 5700000/8662194. Total events gathered for calibration: 3549071
+LH2 kinematic 8 at field 100% , entry: 5800000/8662194. Total events gathered for calibration: 3559084
+LH2 kinematic 8 at field 100% , entry: 5900000/8662194. Total events gathered for calibration: 3569126
+LH2 kinematic 8 at field 100% , entry: 6000000/8662194. Total events gathered for calibration: 3579638
+LH2 kinematic 8 at field 100% , entry: 6100000/8662194. Total events gathered for calibration: 3590000
+LH2 kinematic 8 at field 100% , entry: 6200000/8662194. Total events gathered for calibration: 3600230
+LH2 kinematic 8 at field 100% , entry: 6300000/8662194. Total events gathered for calibration: 3610529
+LH2 kinematic 8 at field 100% , entry: 6400000/8662194. Total events gathered for calibration: 3620984
+LH2 kinematic 8 at field 100% , entry: 6500000/8662194. Total events gathered for calibration: 3631481
+LH2 kinematic 8 at field 100% , entry: 6600000/8662194. Total events gathered for calibration: 3641819
+LH2 kinematic 8 at field 100% , entry: 6700000/8662194. Total events gathered for calibration: 3652070
+LH2 kinematic 8 at field 100% , entry: 6800000/8662194. Total events gathered for calibration: 3662257
+LH2 kinematic 8 at field 100% , entry: 6900000/8662194. Total events gathered for calibration: 3672508
+LH2 kinematic 8 at field 100% , entry: 7000000/8662194. Total events gathered for calibration: 3682748
+LH2 kinematic 8 at field 100% , entry: 7100000/8662194. Total events gathered for calibration: 3693609
+LH2 kinematic 8 at field 100% , entry: 7200000/8662194. Total events gathered for calibration: 3704108
+LH2 kinematic 8 at field 100% , entry: 7300000/8662194. Total events gathered for calibration: 3714200
+LH2 kinematic 8 at field 100% , entry: 7400000/8662194. Total events gathered for calibration: 3724823
+LH2 kinematic 8 at field 100% , entry: 7500000/8662194. Total events gathered for calibration: 3735342
+LH2 kinematic 8 at field 100% , entry: 7600000/8662194. Total events gathered for calibration: 3745854
+LH2 kinematic 8 at field 100% , entry: 7700000/8662194. Total events gathered for calibration: 3756394
+LH2 kinematic 8 at field 100% , entry: 7800000/8662194. Total events gathered for calibration: 3766657
+LH2 kinematic 8 at field 100% , entry: 7900000/8662194. Total events gathered for calibration: 3777445
+LH2 kinematic 8 at field 100% , entry: 8000000/8662194. Total events gathered for calibration: 3787866
+LH2 kinematic 8 at field 100% , entry: 8100000/8662194. Total events gathered for calibration: 3798113
+LH2 kinematic 8 at field 100% , entry: 8200000/8662194. Total events gathered for calibration: 3808508
+LH2 kinematic 8 at field 100% , entry: 8300000/8662194. Total events gathered for calibration: 3818729
+LH2 kinematic 8 at field 100% , entry: 8400000/8662194. Total events gathered for calibration: 3829706
+LH2 kinematic 8 at field 100% , entry: 8500000/8662194. Total events gathered for calibration: 3840215
+LH2 kinematic 8 at field 100% , entry: 8600000/8662194. Total events gathered for calibration: 3850699
+Looping over deuterium data..
+LD2 kinematic 8 at field 0%, entry: 100000/16753693. Total events gathered for calibration: 5729
+LD2 kinematic 8 at field 0%, entry: 200000/16753693. Total events gathered for calibration: 11282
+LD2 kinematic 8 at field 0%, entry: 300000/16753693. Total events gathered for calibration: 17129
+LD2 kinematic 8 at field 0%, entry: 400000/16753693. Total events gathered for calibration: 22799
+LD2 kinematic 8 at field 0%, entry: 500000/16753693. Total events gathered for calibration: 28292
+LD2 kinematic 8 at field 0%, entry: 600000/16753693. Total events gathered for calibration: 34069
+LD2 kinematic 8 at field 0%, entry: 700000/16753693. Total events gathered for calibration: 39948
+LD2 kinematic 8 at field 0%, entry: 800000/16753693. Total events gathered for calibration: 45605
+LD2 kinematic 8 at field 0%, entry: 900000/16753693. Total events gathered for calibration: 51185
+LD2 kinematic 8 at field 0%, entry: 1000000/16753693. Total events gathered for calibration: 56584
+LD2 kinematic 8 at field 0%, entry: 1100000/16753693. Total events gathered for calibration: 61974
+LD2 kinematic 8 at field 0%, entry: 1200000/16753693. Total events gathered for calibration: 67517
+LD2 kinematic 8 at field 0%, entry: 1300000/16753693. Total events gathered for calibration: 72904
+LD2 kinematic 8 at field 0%, entry: 1400000/16753693. Total events gathered for calibration: 78425
+LD2 kinematic 8 at field 0%, entry: 1500000/16753693. Total events gathered for calibration: 84159
+LD2 kinematic 8 at field 0%, entry: 1600000/16753693. Total events gathered for calibration: 89970
+LD2 kinematic 8 at field 0%, entry: 1700000/16753693. Total events gathered for calibration: 95388
+LD2 kinematic 8 at field 0%, entry: 1800000/16753693. Total events gathered for calibration: 100870
+LD2 kinematic 8 at field 0%, entry: 1900000/16753693. Total events gathered for calibration: 106305
+LD2 kinematic 8 at field 0%, entry: 2000000/16753693. Total events gathered for calibration: 111641
+LD2 kinematic 8 at field 0%, entry: 2100000/16753693. Total events gathered for calibration: 117135
+LD2 kinematic 8 at field 0%, entry: 2200000/16753693. Total events gathered for calibration: 122724
+LD2 kinematic 8 at field 0%, entry: 2300000/16753693. Total events gathered for calibration: 128404
+LD2 kinematic 8 at field 0%, entry: 2400000/16753693. Total events gathered for calibration: 133866
+LD2 kinematic 8 at field 0%, entry: 2500000/16753693. Total events gathered for calibration: 139535
+LD2 kinematic 8 at field 0%, entry: 2600000/16753693. Total events gathered for calibration: 145247
+LD2 kinematic 8 at field 0%, entry: 2700000/16753693. Total events gathered for calibration: 150675
+LD2 kinematic 8 at field 0%, entry: 2800000/16753693. Total events gathered for calibration: 156272
+LD2 kinematic 8 at field 0%, entry: 2900000/16753693. Total events gathered for calibration: 161860
+LD2 kinematic 8 at field 0%, entry: 3000000/16753693. Total events gathered for calibration: 167424
+LD2 kinematic 8 at field 0%, entry: 3100000/16753693. Total events gathered for calibration: 172959
+LD2 kinematic 8 at field 0%, entry: 3200000/16753693. Total events gathered for calibration: 178637
+LD2 kinematic 8 at field 0%, entry: 3300000/16753693. Total events gathered for calibration: 184226
+LD2 kinematic 8 at field 0%, entry: 3400000/16753693. Total events gathered for calibration: 189813
+LD2 kinematic 8 at field 0%, entry: 3500000/16753693. Total events gathered for calibration: 195186
+LD2 kinematic 8 at field 0%, entry: 3600000/16753693. Total events gathered for calibration: 200978
+LD2 kinematic 8 at field 0%, entry: 3700000/16753693. Total events gathered for calibration: 206582
+LD2 kinematic 8 at field 0%, entry: 3800000/16753693. Total events gathered for calibration: 212236
+LD2 kinematic 8 at field 0%, entry: 3900000/16753693. Total events gathered for calibration: 217928
+LD2 kinematic 8 at field 0%, entry: 4000000/16753693. Total events gathered for calibration: 223725
+LD2 kinematic 8 at field 0%, entry: 4100000/16753693. Total events gathered for calibration: 229360
+LD2 kinematic 8 at field 0%, entry: 4200000/16753693. Total events gathered for calibration: 234975
+LD2 kinematic 8 at field 0%, entry: 4300000/16753693. Total events gathered for calibration: 240513
+LD2 kinematic 8 at field 0%, entry: 4400000/16753693. Total events gathered for calibration: 246239
+LD2 kinematic 8 at field 0%, entry: 4500000/16753693. Total events gathered for calibration: 251800
+LD2 kinematic 8 at field 0%, entry: 4600000/16753693. Total events gathered for calibration: 257505
+LD2 kinematic 8 at field 0%, entry: 4700000/16753693. Total events gathered for calibration: 263145
+LD2 kinematic 8 at field 0%, entry: 4800000/16753693. Total events gathered for calibration: 268937
+LD2 kinematic 8 at field 0%, entry: 4900000/16753693. Total events gathered for calibration: 274474
+LD2 kinematic 8 at field 0%, entry: 5000000/16753693. Total events gathered for calibration: 280136
+LD2 kinematic 8 at field 0%, entry: 5100000/16753693. Total events gathered for calibration: 285723
+LD2 kinematic 8 at field 0%, entry: 5200000/16753693. Total events gathered for calibration: 291437
+LD2 kinematic 8 at field 0%, entry: 5300000/16753693. Total events gathered for calibration: 296946
+LD2 kinematic 8 at field 0%, entry: 5400000/16753693. Total events gathered for calibration: 302648
+LD2 kinematic 8 at field 0%, entry: 5500000/16753693. Total events gathered for calibration: 308244
+LD2 kinematic 8 at field 0%, entry: 5600000/16753693. Total events gathered for calibration: 313828
+LD2 kinematic 8 at field 0%, entry: 5700000/16753693. Total events gathered for calibration: 319356
+LD2 kinematic 8 at field 0%, entry: 5800000/16753693. Total events gathered for calibration: 324850
+LD2 kinematic 8 at field 0%, entry: 5900000/16753693. Total events gathered for calibration: 330107
+LD2 kinematic 8 at field 0%, entry: 6000000/16753693. Total events gathered for calibration: 335522
+LD2 kinematic 8 at field 0%, entry: 6100000/16753693. Total events gathered for calibration: 341159
+LD2 kinematic 8 at field 0%, entry: 6200000/16753693. Total events gathered for calibration: 346839
+LD2 kinematic 8 at field 0%, entry: 6300000/16753693. Total events gathered for calibration: 352451
+LD2 kinematic 8 at field 0%, entry: 6400000/16753693. Total events gathered for calibration: 358251
+LD2 kinematic 8 at field 0%, entry: 6500000/16753693. Total events gathered for calibration: 363835
+LD2 kinematic 8 at field 0%, entry: 6600000/16753693. Total events gathered for calibration: 369525
+LD2 kinematic 8 at field 0%, entry: 6700000/16753693. Total events gathered for calibration: 374987
+LD2 kinematic 8 at field 0%, entry: 6800000/16753693. Total events gathered for calibration: 380619
+LD2 kinematic 8 at field 0%, entry: 6900000/16753693. Total events gathered for calibration: 386156
+LD2 kinematic 8 at field 0%, entry: 7000000/16753693. Total events gathered for calibration: 391679
+LD2 kinematic 8 at field 0%, entry: 7100000/16753693. Total events gathered for calibration: 397349
+LD2 kinematic 8 at field 0%, entry: 7200000/16753693. Total events gathered for calibration: 402908
+LD2 kinematic 8 at field 0%, entry: 7300000/16753693. Total events gathered for calibration: 408520
+LD2 kinematic 8 at field 0%, entry: 7400000/16753693. Total events gathered for calibration: 414124
+LD2 kinematic 8 at field 0%, entry: 7500000/16753693. Total events gathered for calibration: 419879
+LD2 kinematic 8 at field 0%, entry: 7600000/16753693. Total events gathered for calibration: 425563
+LD2 kinematic 8 at field 0%, entry: 7700000/16753693. Total events gathered for calibration: 431053
+LD2 kinematic 8 at field 0%, entry: 7800000/16753693. Total events gathered for calibration: 436727
+LD2 kinematic 8 at field 0%, entry: 7900000/16753693. Total events gathered for calibration: 442485
+LD2 kinematic 8 at field 0%, entry: 8000000/16753693. Total events gathered for calibration: 448181
+LD2 kinematic 8 at field 0%, entry: 8100000/16753693. Total events gathered for calibration: 453834
+LD2 kinematic 8 at field 0%, entry: 8200000/16753693. Total events gathered for calibration: 459295
+LD2 kinematic 8 at field 0%, entry: 8300000/16753693. Total events gathered for calibration: 464957
+LD2 kinematic 8 at field 0%, entry: 8400000/16753693. Total events gathered for calibration: 470705
+LD2 kinematic 8 at field 0%, entry: 8500000/16753693. Total events gathered for calibration: 476160
+LD2 kinematic 8 at field 0%, entry: 8600000/16753693. Total events gathered for calibration: 481214
+LD2 kinematic 8 at field 0%, entry: 8700000/16753693. Total events gathered for calibration: 486576
+LD2 kinematic 8 at field 0%, entry: 8800000/16753693. Total events gathered for calibration: 492101
+LD2 kinematic 8 at field 0%, entry: 8900000/16753693. Total events gathered for calibration: 497391
+LD2 kinematic 8 at field 0%, entry: 9000000/16753693. Total events gathered for calibration: 502885
+LD2 kinematic 8 at field 0%, entry: 9100000/16753693. Total events gathered for calibration: 508334
+LD2 kinematic 8 at field 0%, entry: 9200000/16753693. Total events gathered for calibration: 513862
+LD2 kinematic 8 at field 0%, entry: 9300000/16753693. Total events gathered for calibration: 519421
+LD2 kinematic 8 at field 0%, entry: 9400000/16753693. Total events gathered for calibration: 524898
+LD2 kinematic 8 at field 0%, entry: 9500000/16753693. Total events gathered for calibration: 530691
+LD2 kinematic 8 at field 0%, entry: 9600000/16753693. Total events gathered for calibration: 536258
+LD2 kinematic 8 at field 0%, entry: 9700000/16753693. Total events gathered for calibration: 541859
+LD2 kinematic 8 at field 0%, entry: 9800000/16753693. Total events gathered for calibration: 547506
+LD2 kinematic 8 at field 0%, entry: 9900000/16753693. Total events gathered for calibration: 552964
+LD2 kinematic 8 at field 0%, entry: 10000000/16753693. Total events gathered for calibration: 558302
+LD2 kinematic 8 at field 0%, entry: 10100000/16753693. Total events gathered for calibration: 563799
+LD2 kinematic 8 at field 0%, entry: 10200000/16753693. Total events gathered for calibration: 569214
+LD2 kinematic 8 at field 0%, entry: 10300000/16753693. Total events gathered for calibration: 574963
+LD2 kinematic 8 at field 0%, entry: 10400000/16753693. Total events gathered for calibration: 580702
+LD2 kinematic 8 at field 0%, entry: 10500000/16753693. Total events gathered for calibration: 586394
+LD2 kinematic 8 at field 0%, entry: 10600000/16753693. Total events gathered for calibration: 592140
+LD2 kinematic 8 at field 0%, entry: 10700000/16753693. Total events gathered for calibration: 597671
+LD2 kinematic 8 at field 0%, entry: 10800000/16753693. Total events gathered for calibration: 602956
+LD2 kinematic 8 at field 0%, entry: 10900000/16753693. Total events gathered for calibration: 608818
+LD2 kinematic 8 at field 0%, entry: 11000000/16753693. Total events gathered for calibration: 614447
+LD2 kinematic 8 at field 0%, entry: 11100000/16753693. Total events gathered for calibration: 620123
+LD2 kinematic 8 at field 0%, entry: 11200000/16753693. Total events gathered for calibration: 625840
+LD2 kinematic 8 at field 0%, entry: 11300000/16753693. Total events gathered for calibration: 631231
+LD2 kinematic 8 at field 0%, entry: 11400000/16753693. Total events gathered for calibration: 636901
+LD2 kinematic 8 at field 0%, entry: 11500000/16753693. Total events gathered for calibration: 642593
+LD2 kinematic 8 at field 0%, entry: 11600000/16753693. Total events gathered for calibration: 648219
+LD2 kinematic 8 at field 0%, entry: 11700000/16753693. Total events gathered for calibration: 653734
+LD2 kinematic 8 at field 0%, entry: 11800000/16753693. Total events gathered for calibration: 659308
+LD2 kinematic 8 at field 0%, entry: 11900000/16753693. Total events gathered for calibration: 665023
+LD2 kinematic 8 at field 0%, entry: 12000000/16753693. Total events gathered for calibration: 670875
+LD2 kinematic 8 at field 0%, entry: 12100000/16753693. Total events gathered for calibration: 676535
+LD2 kinematic 8 at field 0%, entry: 12200000/16753693. Total events gathered for calibration: 681942
+LD2 kinematic 8 at field 0%, entry: 12300000/16753693. Total events gathered for calibration: 687545
+LD2 kinematic 8 at field 0%, entry: 12400000/16753693. Total events gathered for calibration: 693165
+LD2 kinematic 8 at field 0%, entry: 12500000/16753693. Total events gathered for calibration: 698668
+LD2 kinematic 8 at field 0%, entry: 12600000/16753693. Total events gathered for calibration: 704599
+LD2 kinematic 8 at field 0%, entry: 12700000/16753693. Total events gathered for calibration: 710727
+LD2 kinematic 8 at field 0%, entry: 12800000/16753693. Total events gathered for calibration: 716322
+LD2 kinematic 8 at field 0%, entry: 12900000/16753693. Total events gathered for calibration: 721920
+LD2 kinematic 8 at field 0%, entry: 13000000/16753693. Total events gathered for calibration: 727492
+LD2 kinematic 8 at field 0%, entry: 13100000/16753693. Total events gathered for calibration: 732922
+LD2 kinematic 8 at field 0%, entry: 13200000/16753693. Total events gathered for calibration: 738462
+LD2 kinematic 8 at field 0%, entry: 13300000/16753693. Total events gathered for calibration: 743851
+LD2 kinematic 8 at field 0%, entry: 13400000/16753693. Total events gathered for calibration: 749356
+LD2 kinematic 8 at field 0%, entry: 13500000/16753693. Total events gathered for calibration: 754893
+LD2 kinematic 8 at field 0%, entry: 13600000/16753693. Total events gathered for calibration: 760440
+LD2 kinematic 8 at field 0%, entry: 13700000/16753693. Total events gathered for calibration: 766221
+LD2 kinematic 8 at field 0%, entry: 13800000/16753693. Total events gathered for calibration: 772005
+LD2 kinematic 8 at field 0%, entry: 13900000/16753693. Total events gathered for calibration: 777510
+LD2 kinematic 8 at field 0%, entry: 14000000/16753693. Total events gathered for calibration: 783163
+LD2 kinematic 8 at field 0%, entry: 14100000/16753693. Total events gathered for calibration: 788783
+LD2 kinematic 8 at field 0%, entry: 14200000/16753693. Total events gathered for calibration: 794471
+LD2 kinematic 8 at field 0%, entry: 14300000/16753693. Total events gathered for calibration: 799836
+LD2 kinematic 8 at field 0%, entry: 14400000/16753693. Total events gathered for calibration: 805306
+LD2 kinematic 8 at field 0%, entry: 14500000/16753693. Total events gathered for calibration: 811044
+LD2 kinematic 8 at field 0%, entry: 14600000/16753693. Total events gathered for calibration: 816557
+LD2 kinematic 8 at field 0%, entry: 14700000/16753693. Total events gathered for calibration: 822288
+LD2 kinematic 8 at field 0%, entry: 14800000/16753693. Total events gathered for calibration: 827888
+LD2 kinematic 8 at field 0%, entry: 14900000/16753693. Total events gathered for calibration: 833340
+LD2 kinematic 8 at field 0%, entry: 15000000/16753693. Total events gathered for calibration: 838868
+LD2 kinematic 8 at field 0%, entry: 15100000/16753693. Total events gathered for calibration: 844487
+LD2 kinematic 8 at field 0%, entry: 15200000/16753693. Total events gathered for calibration: 850283
+LD2 kinematic 8 at field 0%, entry: 15300000/16753693. Total events gathered for calibration: 856065
+LD2 kinematic 8 at field 0%, entry: 15400000/16753693. Total events gathered for calibration: 861411
+LD2 kinematic 8 at field 0%, entry: 15500000/16753693. Total events gathered for calibration: 867055
+LD2 kinematic 8 at field 0%, entry: 15600000/16753693. Total events gathered for calibration: 872598
+LD2 kinematic 8 at field 0%, entry: 15700000/16753693. Total events gathered for calibration: 878236
+LD2 kinematic 8 at field 0%, entry: 15800000/16753693. Total events gathered for calibration: 884125
+LD2 kinematic 8 at field 0%, entry: 15900000/16753693. Total events gathered for calibration: 889868
+LD2 kinematic 8 at field 0%, entry: 16000000/16753693. Total events gathered for calibration: 895574
+LD2 kinematic 8 at field 0%, entry: 16100000/16753693. Total events gathered for calibration: 901023
+LD2 kinematic 8 at field 0%, entry: 16200000/16753693. Total events gathered for calibration: 906760
+LD2 kinematic 8 at field 0%, entry: 16300000/16753693. Total events gathered for calibration: 912270
+LD2 kinematic 8 at field 0%, entry: 16400000/16753693. Total events gathered for calibration: 917708
+LD2 kinematic 8 at field 0%, entry: 16500000/16753693. Total events gathered for calibration: 923153
+LD2 kinematic 8 at field 0%, entry: 16600000/16753693. Total events gathered for calibration: 929043
+LD2 kinematic 8 at field 0%, entry: 16700000/16753693. Total events gathered for calibration: 934528
+LD2 kinematic 8 at field 50%, entry: 100000/8099577. Total events gathered for calibration: 945075
+LD2 kinematic 8 at field 50%, entry: 200000/8099577. Total events gathered for calibration: 952309
+LD2 kinematic 8 at field 50%, entry: 300000/8099577. Total events gathered for calibration: 959523
+LD2 kinematic 8 at field 50%, entry: 400000/8099577. Total events gathered for calibration: 966472
+LD2 kinematic 8 at field 50%, entry: 500000/8099577. Total events gathered for calibration: 973770
+LD2 kinematic 8 at field 50%, entry: 600000/8099577. Total events gathered for calibration: 981272
+LD2 kinematic 8 at field 50%, entry: 700000/8099577. Total events gathered for calibration: 988210
+LD2 kinematic 8 at field 50%, entry: 800000/8099577. Total events gathered for calibration: 995556
+LD2 kinematic 8 at field 50%, entry: 900000/8099577. Total events gathered for calibration: 1002761
+LD2 kinematic 8 at field 50%, entry: 1000000/8099577. Total events gathered for calibration: 1009749
+LD2 kinematic 8 at field 50%, entry: 1100000/8099577. Total events gathered for calibration: 1017065
+LD2 kinematic 8 at field 50%, entry: 1200000/8099577. Total events gathered for calibration: 1024337
+LD2 kinematic 8 at field 50%, entry: 1300000/8099577. Total events gathered for calibration: 1031719
+LD2 kinematic 8 at field 50%, entry: 1400000/8099577. Total events gathered for calibration: 1039097
+LD2 kinematic 8 at field 50%, entry: 1500000/8099577. Total events gathered for calibration: 1046290
+LD2 kinematic 8 at field 50%, entry: 1600000/8099577. Total events gathered for calibration: 1053928
+LD2 kinematic 8 at field 50%, entry: 1700000/8099577. Total events gathered for calibration: 1061440
+LD2 kinematic 8 at field 50%, entry: 1800000/8099577. Total events gathered for calibration: 1068617
+LD2 kinematic 8 at field 50%, entry: 1900000/8099577. Total events gathered for calibration: 1075901
+LD2 kinematic 8 at field 50%, entry: 2000000/8099577. Total events gathered for calibration: 1083129
+LD2 kinematic 8 at field 50%, entry: 2100000/8099577. Total events gathered for calibration: 1090260
+LD2 kinematic 8 at field 50%, entry: 2200000/8099577. Total events gathered for calibration: 1097742
+LD2 kinematic 8 at field 50%, entry: 2300000/8099577. Total events gathered for calibration: 1104844
+LD2 kinematic 8 at field 50%, entry: 2400000/8099577. Total events gathered for calibration: 1111849
+LD2 kinematic 8 at field 50%, entry: 2500000/8099577. Total events gathered for calibration: 1118897
+LD2 kinematic 8 at field 50%, entry: 2600000/8099577. Total events gathered for calibration: 1126086
+LD2 kinematic 8 at field 50%, entry: 2700000/8099577. Total events gathered for calibration: 1133307
+LD2 kinematic 8 at field 50%, entry: 2800000/8099577. Total events gathered for calibration: 1140632
+LD2 kinematic 8 at field 50%, entry: 2900000/8099577. Total events gathered for calibration: 1147712
+LD2 kinematic 8 at field 50%, entry: 3000000/8099577. Total events gathered for calibration: 1154958
+LD2 kinematic 8 at field 50%, entry: 3100000/8099577. Total events gathered for calibration: 1162330
+LD2 kinematic 8 at field 50%, entry: 3200000/8099577. Total events gathered for calibration: 1169753
+LD2 kinematic 8 at field 50%, entry: 3300000/8099577. Total events gathered for calibration: 1177151
+LD2 kinematic 8 at field 50%, entry: 3400000/8099577. Total events gathered for calibration: 1184555
+LD2 kinematic 8 at field 50%, entry: 3500000/8099577. Total events gathered for calibration: 1191522
+LD2 kinematic 8 at field 50%, entry: 3600000/8099577. Total events gathered for calibration: 1198699
+LD2 kinematic 8 at field 50%, entry: 3700000/8099577. Total events gathered for calibration: 1206140
+LD2 kinematic 8 at field 50%, entry: 3800000/8099577. Total events gathered for calibration: 1213213
+LD2 kinematic 8 at field 50%, entry: 3900000/8099577. Total events gathered for calibration: 1220641
+LD2 kinematic 8 at field 50%, entry: 4000000/8099577. Total events gathered for calibration: 1228011
+LD2 kinematic 8 at field 50%, entry: 4100000/8099577. Total events gathered for calibration: 1235140
+LD2 kinematic 8 at field 50%, entry: 4200000/8099577. Total events gathered for calibration: 1242429
+LD2 kinematic 8 at field 50%, entry: 4300000/8099577. Total events gathered for calibration: 1249590
+LD2 kinematic 8 at field 50%, entry: 4400000/8099577. Total events gathered for calibration: 1256816
+LD2 kinematic 8 at field 50%, entry: 4500000/8099577. Total events gathered for calibration: 1264170
+LD2 kinematic 8 at field 50%, entry: 4600000/8099577. Total events gathered for calibration: 1271445
+LD2 kinematic 8 at field 50%, entry: 4700000/8099577. Total events gathered for calibration: 1278637
+LD2 kinematic 8 at field 50%, entry: 4800000/8099577. Total events gathered for calibration: 1285788
+LD2 kinematic 8 at field 50%, entry: 4900000/8099577. Total events gathered for calibration: 1293203
+LD2 kinematic 8 at field 50%, entry: 5000000/8099577. Total events gathered for calibration: 1300604
+LD2 kinematic 8 at field 50%, entry: 5100000/8099577. Total events gathered for calibration: 1307526
+LD2 kinematic 8 at field 50%, entry: 5200000/8099577. Total events gathered for calibration: 1314921
+LD2 kinematic 8 at field 50%, entry: 5300000/8099577. Total events gathered for calibration: 1322449
+LD2 kinematic 8 at field 50%, entry: 5400000/8099577. Total events gathered for calibration: 1329964
+LD2 kinematic 8 at field 50%, entry: 5500000/8099577. Total events gathered for calibration: 1337387
+LD2 kinematic 8 at field 50%, entry: 5600000/8099577. Total events gathered for calibration: 1344544
+LD2 kinematic 8 at field 50%, entry: 5700000/8099577. Total events gathered for calibration: 1351728
+LD2 kinematic 8 at field 50%, entry: 5800000/8099577. Total events gathered for calibration: 1358822
+LD2 kinematic 8 at field 50%, entry: 5900000/8099577. Total events gathered for calibration: 1366010
+LD2 kinematic 8 at field 50%, entry: 6000000/8099577. Total events gathered for calibration: 1373557
+LD2 kinematic 8 at field 50%, entry: 6100000/8099577. Total events gathered for calibration: 1380959
+LD2 kinematic 8 at field 50%, entry: 6200000/8099577. Total events gathered for calibration: 1388123
+LD2 kinematic 8 at field 50%, entry: 6300000/8099577. Total events gathered for calibration: 1395573
+LD2 kinematic 8 at field 50%, entry: 6400000/8099577. Total events gathered for calibration: 1402585
+LD2 kinematic 8 at field 50%, entry: 6500000/8099577. Total events gathered for calibration: 1409867
+LD2 kinematic 8 at field 50%, entry: 6600000/8099577. Total events gathered for calibration: 1417183
+LD2 kinematic 8 at field 50%, entry: 6700000/8099577. Total events gathered for calibration: 1424479
+LD2 kinematic 8 at field 50%, entry: 6800000/8099577. Total events gathered for calibration: 1431782
+LD2 kinematic 8 at field 50%, entry: 6900000/8099577. Total events gathered for calibration: 1439030
+LD2 kinematic 8 at field 50%, entry: 7000000/8099577. Total events gathered for calibration: 1446701
+LD2 kinematic 8 at field 50%, entry: 7100000/8099577. Total events gathered for calibration: 1454169
+LD2 kinematic 8 at field 50%, entry: 7200000/8099577. Total events gathered for calibration: 1461463
+LD2 kinematic 8 at field 50%, entry: 7300000/8099577. Total events gathered for calibration: 1469038
+LD2 kinematic 8 at field 50%, entry: 7400000/8099577. Total events gathered for calibration: 1476403
+LD2 kinematic 8 at field 50%, entry: 7500000/8099577. Total events gathered for calibration: 1483818
+LD2 kinematic 8 at field 50%, entry: 7600000/8099577. Total events gathered for calibration: 1491385
+LD2 kinematic 8 at field 50%, entry: 7700000/8099577. Total events gathered for calibration: 1498846
+LD2 kinematic 8 at field 50%, entry: 7800000/8099577. Total events gathered for calibration: 1506024
+LD2 kinematic 8 at field 50%, entry: 7900000/8099577. Total events gathered for calibration: 1513600
+LD2 kinematic 8 at field 50%, entry: 8000000/8099577. Total events gathered for calibration: 1521123
+LD2 kinematic 8 at field 70%, entry: 100000/55545418. Total events gathered for calibration: 1537043
+LD2 kinematic 8 at field 70%, entry: 200000/55545418. Total events gathered for calibration: 1545253
+LD2 kinematic 8 at field 70%, entry: 300000/55545418. Total events gathered for calibration: 1553576
+LD2 kinematic 8 at field 70%, entry: 400000/55545418. Total events gathered for calibration: 1561746
+LD2 kinematic 8 at field 70%, entry: 500000/55545418. Total events gathered for calibration: 1570017
+LD2 kinematic 8 at field 70%, entry: 600000/55545418. Total events gathered for calibration: 1578093
+LD2 kinematic 8 at field 70%, entry: 700000/55545418. Total events gathered for calibration: 1586260
+LD2 kinematic 8 at field 70%, entry: 800000/55545418. Total events gathered for calibration: 1594741
+LD2 kinematic 8 at field 70%, entry: 900000/55545418. Total events gathered for calibration: 1602910
+LD2 kinematic 8 at field 70%, entry: 1000000/55545418. Total events gathered for calibration: 1611331
+LD2 kinematic 8 at field 70%, entry: 1100000/55545418. Total events gathered for calibration: 1619169
+LD2 kinematic 8 at field 70%, entry: 1200000/55545418. Total events gathered for calibration: 1627557
+LD2 kinematic 8 at field 70%, entry: 1300000/55545418. Total events gathered for calibration: 1635564
+LD2 kinematic 8 at field 70%, entry: 1400000/55545418. Total events gathered for calibration: 1643729
+LD2 kinematic 8 at field 70%, entry: 1500000/55545418. Total events gathered for calibration: 1651861
+LD2 kinematic 8 at field 70%, entry: 1600000/55545418. Total events gathered for calibration: 1660391
+LD2 kinematic 8 at field 70%, entry: 1700000/55545418. Total events gathered for calibration: 1668417
+LD2 kinematic 8 at field 70%, entry: 1800000/55545418. Total events gathered for calibration: 1676571
+LD2 kinematic 8 at field 70%, entry: 1900000/55545418. Total events gathered for calibration: 1685131
+LD2 kinematic 8 at field 70%, entry: 2000000/55545418. Total events gathered for calibration: 1693560
+LD2 kinematic 8 at field 70%, entry: 2100000/55545418. Total events gathered for calibration: 1701880
+LD2 kinematic 8 at field 70%, entry: 2200000/55545418. Total events gathered for calibration: 1709742
+LD2 kinematic 8 at field 70%, entry: 2300000/55545418. Total events gathered for calibration: 1718058
+LD2 kinematic 8 at field 70%, entry: 2400000/55545418. Total events gathered for calibration: 1726088
+LD2 kinematic 8 at field 70%, entry: 2500000/55545418. Total events gathered for calibration: 1734229
+LD2 kinematic 8 at field 70%, entry: 2600000/55545418. Total events gathered for calibration: 1742714
+LD2 kinematic 8 at field 70%, entry: 2700000/55545418. Total events gathered for calibration: 1751466
+LD2 kinematic 8 at field 70%, entry: 2800000/55545418. Total events gathered for calibration: 1761490
+LD2 kinematic 8 at field 70%, entry: 2900000/55545418. Total events gathered for calibration: 1771646
+LD2 kinematic 8 at field 70%, entry: 3000000/55545418. Total events gathered for calibration: 1781546
+LD2 kinematic 8 at field 70%, entry: 3100000/55545418. Total events gathered for calibration: 1791801
+LD2 kinematic 8 at field 70%, entry: 3200000/55545418. Total events gathered for calibration: 1801738
+LD2 kinematic 8 at field 70%, entry: 3300000/55545418. Total events gathered for calibration: 1811925
+LD2 kinematic 8 at field 70%, entry: 3400000/55545418. Total events gathered for calibration: 1823547
+LD2 kinematic 8 at field 70%, entry: 3500000/55545418. Total events gathered for calibration: 1837055
+LD2 kinematic 8 at field 70%, entry: 3600000/55545418. Total events gathered for calibration: 1849881
+LD2 kinematic 8 at field 70%, entry: 3700000/55545418. Total events gathered for calibration: 1862517
+LD2 kinematic 8 at field 70%, entry: 3800000/55545418. Total events gathered for calibration: 1875478
+LD2 kinematic 8 at field 70%, entry: 3900000/55545418. Total events gathered for calibration: 1888199
+LD2 kinematic 8 at field 70%, entry: 4000000/55545418. Total events gathered for calibration: 1900794
+LD2 kinematic 8 at field 70%, entry: 4100000/55545418. Total events gathered for calibration: 1913648
+LD2 kinematic 8 at field 70%, entry: 4200000/55545418. Total events gathered for calibration: 1926472
+LD2 kinematic 8 at field 70%, entry: 4300000/55545418. Total events gathered for calibration: 1940404
+LD2 kinematic 8 at field 70%, entry: 4400000/55545418. Total events gathered for calibration: 1953929
+LD2 kinematic 8 at field 70%, entry: 4500000/55545418. Total events gathered for calibration: 1968264
+LD2 kinematic 8 at field 70%, entry: 4600000/55545418. Total events gathered for calibration: 1984878
+LD2 kinematic 8 at field 70%, entry: 4700000/55545418. Total events gathered for calibration: 1998018
+LD2 kinematic 8 at field 70%, entry: 4800000/55545418. Total events gathered for calibration: 2010993
+LD2 kinematic 8 at field 70%, entry: 4900000/55545418. Total events gathered for calibration: 2023922
+LD2 kinematic 8 at field 70%, entry: 5000000/55545418. Total events gathered for calibration: 2036792
+LD2 kinematic 8 at field 70%, entry: 5100000/55545418. Total events gathered for calibration: 2049932
+LD2 kinematic 8 at field 70%, entry: 5200000/55545418. Total events gathered for calibration: 2062862
+LD2 kinematic 8 at field 70%, entry: 5300000/55545418. Total events gathered for calibration: 2076151
+LD2 kinematic 8 at field 70%, entry: 5400000/55545418. Total events gathered for calibration: 2089002
+LD2 kinematic 8 at field 70%, entry: 5500000/55545418. Total events gathered for calibration: 2101935
+LD2 kinematic 8 at field 70%, entry: 5600000/55545418. Total events gathered for calibration: 2114899
+LD2 kinematic 8 at field 70%, entry: 5700000/55545418. Total events gathered for calibration: 2128005
+LD2 kinematic 8 at field 70%, entry: 5800000/55545418. Total events gathered for calibration: 2141092
+LD2 kinematic 8 at field 70%, entry: 5900000/55545418. Total events gathered for calibration: 2154130
+LD2 kinematic 8 at field 70%, entry: 6000000/55545418. Total events gathered for calibration: 2167286
+LD2 kinematic 8 at field 70%, entry: 6100000/55545418. Total events gathered for calibration: 2180236
+LD2 kinematic 8 at field 70%, entry: 6200000/55545418. Total events gathered for calibration: 2193456
+LD2 kinematic 8 at field 70%, entry: 6300000/55545418. Total events gathered for calibration: 2206539
+LD2 kinematic 8 at field 70%, entry: 6400000/55545418. Total events gathered for calibration: 2219845
+LD2 kinematic 8 at field 70%, entry: 6500000/55545418. Total events gathered for calibration: 2232933
+LD2 kinematic 8 at field 70%, entry: 6600000/55545418. Total events gathered for calibration: 2246244
+LD2 kinematic 8 at field 70%, entry: 6700000/55545418. Total events gathered for calibration: 2259026
+LD2 kinematic 8 at field 70%, entry: 6800000/55545418. Total events gathered for calibration: 2272146
+LD2 kinematic 8 at field 70%, entry: 6900000/55545418. Total events gathered for calibration: 2285656
+LD2 kinematic 8 at field 70%, entry: 7000000/55545418. Total events gathered for calibration: 2298478
+LD2 kinematic 8 at field 70%, entry: 7100000/55545418. Total events gathered for calibration: 2311677
+LD2 kinematic 8 at field 70%, entry: 7200000/55545418. Total events gathered for calibration: 2324936
+LD2 kinematic 8 at field 70%, entry: 7300000/55545418. Total events gathered for calibration: 2338033
+LD2 kinematic 8 at field 70%, entry: 7400000/55545418. Total events gathered for calibration: 2350805
+LD2 kinematic 8 at field 70%, entry: 7500000/55545418. Total events gathered for calibration: 2364081
+LD2 kinematic 8 at field 70%, entry: 7600000/55545418. Total events gathered for calibration: 2377441
+LD2 kinematic 8 at field 70%, entry: 7700000/55545418. Total events gathered for calibration: 2390339
+LD2 kinematic 8 at field 70%, entry: 7800000/55545418. Total events gathered for calibration: 2403939
+LD2 kinematic 8 at field 70%, entry: 7900000/55545418. Total events gathered for calibration: 2417093
+LD2 kinematic 8 at field 70%, entry: 8000000/55545418. Total events gathered for calibration: 2430115
+LD2 kinematic 8 at field 70%, entry: 8100000/55545418. Total events gathered for calibration: 2443360
+LD2 kinematic 8 at field 70%, entry: 8200000/55545418. Total events gathered for calibration: 2456686
+LD2 kinematic 8 at field 70%, entry: 8300000/55545418. Total events gathered for calibration: 2469835
+LD2 kinematic 8 at field 70%, entry: 8400000/55545418. Total events gathered for calibration: 2482984
+LD2 kinematic 8 at field 70%, entry: 8500000/55545418. Total events gathered for calibration: 2496285
+LD2 kinematic 8 at field 70%, entry: 8600000/55545418. Total events gathered for calibration: 2509336
+LD2 kinematic 8 at field 70%, entry: 8700000/55545418. Total events gathered for calibration: 2522844
+LD2 kinematic 8 at field 70%, entry: 8800000/55545418. Total events gathered for calibration: 2535775
+LD2 kinematic 8 at field 70%, entry: 8900000/55545418. Total events gathered for calibration: 2549077
+LD2 kinematic 8 at field 70%, entry: 9000000/55545418. Total events gathered for calibration: 2562164
+LD2 kinematic 8 at field 70%, entry: 9100000/55545418. Total events gathered for calibration: 2574990
+LD2 kinematic 8 at field 70%, entry: 9200000/55545418. Total events gathered for calibration: 2588097
+LD2 kinematic 8 at field 70%, entry: 9300000/55545418. Total events gathered for calibration: 2601603
+LD2 kinematic 8 at field 70%, entry: 9400000/55545418. Total events gathered for calibration: 2614742
+LD2 kinematic 8 at field 70%, entry: 9500000/55545418. Total events gathered for calibration: 2628054
+LD2 kinematic 8 at field 70%, entry: 9600000/55545418. Total events gathered for calibration: 2641291
+LD2 kinematic 8 at field 70%, entry: 9700000/55545418. Total events gathered for calibration: 2654558
+LD2 kinematic 8 at field 70%, entry: 9800000/55545418. Total events gathered for calibration: 2667574
+LD2 kinematic 8 at field 70%, entry: 9900000/55545418. Total events gathered for calibration: 2680480
+LD2 kinematic 8 at field 70%, entry: 10000000/55545418. Total events gathered for calibration: 2693853
+LD2 kinematic 8 at field 70%, entry: 10100000/55545418. Total events gathered for calibration: 2707394
+LD2 kinematic 8 at field 70%, entry: 10200000/55545418. Total events gathered for calibration: 2720493
+LD2 kinematic 8 at field 70%, entry: 10300000/55545418. Total events gathered for calibration: 2733591
+LD2 kinematic 8 at field 70%, entry: 10400000/55545418. Total events gathered for calibration: 2746681
+LD2 kinematic 8 at field 70%, entry: 10500000/55545418. Total events gathered for calibration: 2759699
+LD2 kinematic 8 at field 70%, entry: 10600000/55545418. Total events gathered for calibration: 2772733
+LD2 kinematic 8 at field 70%, entry: 10700000/55545418. Total events gathered for calibration: 2785972
+LD2 kinematic 8 at field 70%, entry: 10800000/55545418. Total events gathered for calibration: 2799268
+LD2 kinematic 8 at field 70%, entry: 10900000/55545418. Total events gathered for calibration: 2811693
+LD2 kinematic 8 at field 70%, entry: 11000000/55545418. Total events gathered for calibration: 2825121
+LD2 kinematic 8 at field 70%, entry: 11100000/55545418. Total events gathered for calibration: 2837449
+LD2 kinematic 8 at field 70%, entry: 11200000/55545418. Total events gathered for calibration: 2849213
+LD2 kinematic 8 at field 70%, entry: 11300000/55545418. Total events gathered for calibration: 2860354
+LD2 kinematic 8 at field 70%, entry: 11400000/55545418. Total events gathered for calibration: 2871591
+LD2 kinematic 8 at field 70%, entry: 11500000/55545418. Total events gathered for calibration: 2882914
+LD2 kinematic 8 at field 70%, entry: 11600000/55545418. Total events gathered for calibration: 2894309
+LD2 kinematic 8 at field 70%, entry: 11700000/55545418. Total events gathered for calibration: 2905608
+LD2 kinematic 8 at field 70%, entry: 11800000/55545418. Total events gathered for calibration: 2916539
+LD2 kinematic 8 at field 70%, entry: 11900000/55545418. Total events gathered for calibration: 2927949
+LD2 kinematic 8 at field 70%, entry: 12000000/55545418. Total events gathered for calibration: 2939059
+LD2 kinematic 8 at field 70%, entry: 12100000/55545418. Total events gathered for calibration: 2950328
+LD2 kinematic 8 at field 70%, entry: 12200000/55545418. Total events gathered for calibration: 2961626
+LD2 kinematic 8 at field 70%, entry: 12300000/55545418. Total events gathered for calibration: 2973133
+LD2 kinematic 8 at field 70%, entry: 12400000/55545418. Total events gathered for calibration: 2984412
+LD2 kinematic 8 at field 70%, entry: 12500000/55545418. Total events gathered for calibration: 2995803
+LD2 kinematic 8 at field 70%, entry: 12600000/55545418. Total events gathered for calibration: 3006748
+LD2 kinematic 8 at field 70%, entry: 12700000/55545418. Total events gathered for calibration: 3017708
+LD2 kinematic 8 at field 70%, entry: 12800000/55545418. Total events gathered for calibration: 3028755
+LD2 kinematic 8 at field 70%, entry: 12900000/55545418. Total events gathered for calibration: 3039895
+LD2 kinematic 8 at field 70%, entry: 13000000/55545418. Total events gathered for calibration: 3050927
+LD2 kinematic 8 at field 70%, entry: 13100000/55545418. Total events gathered for calibration: 3062161
+LD2 kinematic 8 at field 70%, entry: 13200000/55545418. Total events gathered for calibration: 3073615
+LD2 kinematic 8 at field 70%, entry: 13300000/55545418. Total events gathered for calibration: 3084537
+LD2 kinematic 8 at field 70%, entry: 13400000/55545418. Total events gathered for calibration: 3096078
+LD2 kinematic 8 at field 70%, entry: 13500000/55545418. Total events gathered for calibration: 3107051
+LD2 kinematic 8 at field 70%, entry: 13600000/55545418. Total events gathered for calibration: 3118028
+LD2 kinematic 8 at field 70%, entry: 13700000/55545418. Total events gathered for calibration: 3129178
+LD2 kinematic 8 at field 70%, entry: 13800000/55545418. Total events gathered for calibration: 3140417
+LD2 kinematic 8 at field 70%, entry: 13900000/55545418. Total events gathered for calibration: 3151453
+LD2 kinematic 8 at field 70%, entry: 14000000/55545418. Total events gathered for calibration: 3162642
+LD2 kinematic 8 at field 70%, entry: 14100000/55545418. Total events gathered for calibration: 3173629
+LD2 kinematic 8 at field 70%, entry: 14200000/55545418. Total events gathered for calibration: 3184752
+LD2 kinematic 8 at field 70%, entry: 14300000/55545418. Total events gathered for calibration: 3195580
+LD2 kinematic 8 at field 70%, entry: 14400000/55545418. Total events gathered for calibration: 3206800
+LD2 kinematic 8 at field 70%, entry: 14500000/55545418. Total events gathered for calibration: 3218195
+LD2 kinematic 8 at field 70%, entry: 14600000/55545418. Total events gathered for calibration: 3229405
+LD2 kinematic 8 at field 70%, entry: 14700000/55545418. Total events gathered for calibration: 3240330
+LD2 kinematic 8 at field 70%, entry: 14800000/55545418. Total events gathered for calibration: 3251200
+LD2 kinematic 8 at field 70%, entry: 14900000/55545418. Total events gathered for calibration: 3262253
+LD2 kinematic 8 at field 70%, entry: 15000000/55545418. Total events gathered for calibration: 3273267
+LD2 kinematic 8 at field 70%, entry: 15100000/55545418. Total events gathered for calibration: 3284827
+LD2 kinematic 8 at field 70%, entry: 15200000/55545418. Total events gathered for calibration: 3295872
+LD2 kinematic 8 at field 70%, entry: 15300000/55545418. Total events gathered for calibration: 3306856
+LD2 kinematic 8 at field 70%, entry: 15400000/55545418. Total events gathered for calibration: 3318000
+LD2 kinematic 8 at field 70%, entry: 15500000/55545418. Total events gathered for calibration: 3329083
+LD2 kinematic 8 at field 70%, entry: 15600000/55545418. Total events gathered for calibration: 3340115
+LD2 kinematic 8 at field 70%, entry: 15700000/55545418. Total events gathered for calibration: 3351050
+LD2 kinematic 8 at field 70%, entry: 15800000/55545418. Total events gathered for calibration: 3361855
+LD2 kinematic 8 at field 70%, entry: 15900000/55545418. Total events gathered for calibration: 3373079
+LD2 kinematic 8 at field 70%, entry: 16000000/55545418. Total events gathered for calibration: 3383893
+LD2 kinematic 8 at field 70%, entry: 16100000/55545418. Total events gathered for calibration: 3394922
+LD2 kinematic 8 at field 70%, entry: 16200000/55545418. Total events gathered for calibration: 3405839
+LD2 kinematic 8 at field 70%, entry: 16300000/55545418. Total events gathered for calibration: 3416669
+LD2 kinematic 8 at field 70%, entry: 16400000/55545418. Total events gathered for calibration: 3427469
+LD2 kinematic 8 at field 70%, entry: 16500000/55545418. Total events gathered for calibration: 3438127
+LD2 kinematic 8 at field 70%, entry: 16600000/55545418. Total events gathered for calibration: 3449027
+LD2 kinematic 8 at field 70%, entry: 16700000/55545418. Total events gathered for calibration: 3459793
+LD2 kinematic 8 at field 70%, entry: 16800000/55545418. Total events gathered for calibration: 3470521
+LD2 kinematic 8 at field 70%, entry: 16900000/55545418. Total events gathered for calibration: 3481317
+LD2 kinematic 8 at field 70%, entry: 17000000/55545418. Total events gathered for calibration: 3492579
+LD2 kinematic 8 at field 70%, entry: 17100000/55545418. Total events gathered for calibration: 3503719
+LD2 kinematic 8 at field 70%, entry: 17200000/55545418. Total events gathered for calibration: 3514562
+LD2 kinematic 8 at field 70%, entry: 17300000/55545418. Total events gathered for calibration: 3525328
+LD2 kinematic 8 at field 70%, entry: 17400000/55545418. Total events gathered for calibration: 3536098
+LD2 kinematic 8 at field 70%, entry: 17500000/55545418. Total events gathered for calibration: 3546423
+LD2 kinematic 8 at field 70%, entry: 17600000/55545418. Total events gathered for calibration: 3557178
+LD2 kinematic 8 at field 70%, entry: 17700000/55545418. Total events gathered for calibration: 3567993
+LD2 kinematic 8 at field 70%, entry: 17800000/55545418. Total events gathered for calibration: 3579142
+LD2 kinematic 8 at field 70%, entry: 17900000/55545418. Total events gathered for calibration: 3590339
+LD2 kinematic 8 at field 70%, entry: 18000000/55545418. Total events gathered for calibration: 3601341
+LD2 kinematic 8 at field 70%, entry: 18100000/55545418. Total events gathered for calibration: 3612177
+LD2 kinematic 8 at field 70%, entry: 18200000/55545418. Total events gathered for calibration: 3622936
+LD2 kinematic 8 at field 70%, entry: 18300000/55545418. Total events gathered for calibration: 3633773
+LD2 kinematic 8 at field 70%, entry: 18400000/55545418. Total events gathered for calibration: 3644508
+LD2 kinematic 8 at field 70%, entry: 18500000/55545418. Total events gathered for calibration: 3655257
+LD2 kinematic 8 at field 70%, entry: 18600000/55545418. Total events gathered for calibration: 3666569
+LD2 kinematic 8 at field 70%, entry: 18700000/55545418. Total events gathered for calibration: 3677286
+LD2 kinematic 8 at field 70%, entry: 18800000/55545418. Total events gathered for calibration: 3688174
+LD2 kinematic 8 at field 70%, entry: 18900000/55545418. Total events gathered for calibration: 3698902
+LD2 kinematic 8 at field 70%, entry: 19000000/55545418. Total events gathered for calibration: 3709676
+LD2 kinematic 8 at field 70%, entry: 19100000/55545418. Total events gathered for calibration: 3720380
+LD2 kinematic 8 at field 70%, entry: 19200000/55545418. Total events gathered for calibration: 3731240
+LD2 kinematic 8 at field 70%, entry: 19300000/55545418. Total events gathered for calibration: 3742112
+LD2 kinematic 8 at field 70%, entry: 19400000/55545418. Total events gathered for calibration: 3753509
+LD2 kinematic 8 at field 70%, entry: 19500000/55545418. Total events gathered for calibration: 3764569
+LD2 kinematic 8 at field 70%, entry: 19600000/55545418. Total events gathered for calibration: 3775467
+LD2 kinematic 8 at field 70%, entry: 19700000/55545418. Total events gathered for calibration: 3786295
+LD2 kinematic 8 at field 70%, entry: 19800000/55545418. Total events gathered for calibration: 3796909
+LD2 kinematic 8 at field 70%, entry: 19900000/55545418. Total events gathered for calibration: 3808072
+LD2 kinematic 8 at field 70%, entry: 20000000/55545418. Total events gathered for calibration: 3818889
+LD2 kinematic 8 at field 70%, entry: 20100000/55545418. Total events gathered for calibration: 3830107
+LD2 kinematic 8 at field 70%, entry: 20200000/55545418. Total events gathered for calibration: 3840889
+LD2 kinematic 8 at field 70%, entry: 20300000/55545418. Total events gathered for calibration: 3851856
+LD2 kinematic 8 at field 70%, entry: 20400000/55545418. Total events gathered for calibration: 3862651
+LD2 kinematic 8 at field 70%, entry: 20500000/55545418. Total events gathered for calibration: 3873549
+LD2 kinematic 8 at field 70%, entry: 20600000/55545418. Total events gathered for calibration: 3884432
+LD2 kinematic 8 at field 70%, entry: 20700000/55545418. Total events gathered for calibration: 3894975
+LD2 kinematic 8 at field 70%, entry: 20800000/55545418. Total events gathered for calibration: 3905778
+LD2 kinematic 8 at field 70%, entry: 20900000/55545418. Total events gathered for calibration: 3916843
+LD2 kinematic 8 at field 70%, entry: 21000000/55545418. Total events gathered for calibration: 3927915
+LD2 kinematic 8 at field 70%, entry: 21100000/55545418. Total events gathered for calibration: 3938711
+LD2 kinematic 8 at field 70%, entry: 21200000/55545418. Total events gathered for calibration: 3949474
+LD2 kinematic 8 at field 70%, entry: 21300000/55545418. Total events gathered for calibration: 3961218
+LD2 kinematic 8 at field 70%, entry: 21400000/55545418. Total events gathered for calibration: 3971801
+LD2 kinematic 8 at field 70%, entry: 21500000/55545418. Total events gathered for calibration: 3982699
+LD2 kinematic 8 at field 70%, entry: 21600000/55545418. Total events gathered for calibration: 3993389
+LD2 kinematic 8 at field 70%, entry: 21700000/55545418. Total events gathered for calibration: 4004316
+LD2 kinematic 8 at field 70%, entry: 21800000/55545418. Total events gathered for calibration: 4015162
+LD2 kinematic 8 at field 70%, entry: 21900000/55545418. Total events gathered for calibration: 4025813
+LD2 kinematic 8 at field 70%, entry: 22000000/55545418. Total events gathered for calibration: 4036666
+LD2 kinematic 8 at field 70%, entry: 22100000/55545418. Total events gathered for calibration: 4047736
+LD2 kinematic 8 at field 70%, entry: 22200000/55545418. Total events gathered for calibration: 4058634
+LD2 kinematic 8 at field 70%, entry: 22300000/55545418. Total events gathered for calibration: 4069744
+LD2 kinematic 8 at field 70%, entry: 22400000/55545418. Total events gathered for calibration: 4080887
+LD2 kinematic 8 at field 70%, entry: 22500000/55545418. Total events gathered for calibration: 4092126
+LD2 kinematic 8 at field 70%, entry: 22600000/55545418. Total events gathered for calibration: 4103259
+LD2 kinematic 8 at field 70%, entry: 22700000/55545418. Total events gathered for calibration: 4114547
+LD2 kinematic 8 at field 70%, entry: 22800000/55545418. Total events gathered for calibration: 4125544
+LD2 kinematic 8 at field 70%, entry: 22900000/55545418. Total events gathered for calibration: 4136684
+LD2 kinematic 8 at field 70%, entry: 23000000/55545418. Total events gathered for calibration: 4147275
+LD2 kinematic 8 at field 70%, entry: 23100000/55545418. Total events gathered for calibration: 4158243
+LD2 kinematic 8 at field 70%, entry: 23200000/55545418. Total events gathered for calibration: 4169453
+LD2 kinematic 8 at field 70%, entry: 23300000/55545418. Total events gathered for calibration: 4180485
+LD2 kinematic 8 at field 70%, entry: 23400000/55545418. Total events gathered for calibration: 4191608
+LD2 kinematic 8 at field 70%, entry: 23500000/55545418. Total events gathered for calibration: 4202764
+LD2 kinematic 8 at field 70%, entry: 23600000/55545418. Total events gathered for calibration: 4213989
+LD2 kinematic 8 at field 70%, entry: 23700000/55545418. Total events gathered for calibration: 4225783
+LD2 kinematic 8 at field 70%, entry: 23800000/55545418. Total events gathered for calibration: 4237013
+LD2 kinematic 8 at field 70%, entry: 23900000/55545418. Total events gathered for calibration: 4247947
+LD2 kinematic 8 at field 70%, entry: 24000000/55545418. Total events gathered for calibration: 4258951
+LD2 kinematic 8 at field 70%, entry: 24100000/55545418. Total events gathered for calibration: 4270074
+LD2 kinematic 8 at field 70%, entry: 24200000/55545418. Total events gathered for calibration: 4281496
+LD2 kinematic 8 at field 70%, entry: 24300000/55545418. Total events gathered for calibration: 4292223
+LD2 kinematic 8 at field 70%, entry: 24400000/55545418. Total events gathered for calibration: 4303610
+LD2 kinematic 8 at field 70%, entry: 24500000/55545418. Total events gathered for calibration: 4315064
+LD2 kinematic 8 at field 70%, entry: 24600000/55545418. Total events gathered for calibration: 4326230
+LD2 kinematic 8 at field 70%, entry: 24700000/55545418. Total events gathered for calibration: 4337146
+LD2 kinematic 8 at field 70%, entry: 24800000/55545418. Total events gathered for calibration: 4347965
+LD2 kinematic 8 at field 70%, entry: 24900000/55545418. Total events gathered for calibration: 4359143
+LD2 kinematic 8 at field 70%, entry: 25000000/55545418. Total events gathered for calibration: 4370032
+LD2 kinematic 8 at field 70%, entry: 25100000/55545418. Total events gathered for calibration: 4381692
+LD2 kinematic 8 at field 70%, entry: 25200000/55545418. Total events gathered for calibration: 4392638
+LD2 kinematic 8 at field 70%, entry: 25300000/55545418. Total events gathered for calibration: 4403756
+LD2 kinematic 8 at field 70%, entry: 25400000/55545418. Total events gathered for calibration: 4414580
+LD2 kinematic 8 at field 70%, entry: 25500000/55545418. Total events gathered for calibration: 4425511
+LD2 kinematic 8 at field 70%, entry: 25600000/55545418. Total events gathered for calibration: 4436540
+LD2 kinematic 8 at field 70%, entry: 25700000/55545418. Total events gathered for calibration: 4447230
+LD2 kinematic 8 at field 70%, entry: 25800000/55545418. Total events gathered for calibration: 4458342
+LD2 kinematic 8 at field 70%, entry: 25900000/55545418. Total events gathered for calibration: 4469383
+LD2 kinematic 8 at field 70%, entry: 26000000/55545418. Total events gathered for calibration: 4480529
+LD2 kinematic 8 at field 70%, entry: 26100000/55545418. Total events gathered for calibration: 4491326
+LD2 kinematic 8 at field 70%, entry: 26200000/55545418. Total events gathered for calibration: 4502376
+LD2 kinematic 8 at field 70%, entry: 26300000/55545418. Total events gathered for calibration: 4513266
+LD2 kinematic 8 at field 70%, entry: 26400000/55545418. Total events gathered for calibration: 4524388
+LD2 kinematic 8 at field 70%, entry: 26500000/55545418. Total events gathered for calibration: 4535444
+LD2 kinematic 8 at field 70%, entry: 26600000/55545418. Total events gathered for calibration: 4546225
+LD2 kinematic 8 at field 70%, entry: 26700000/55545418. Total events gathered for calibration: 4557435
+LD2 kinematic 8 at field 70%, entry: 26800000/55545418. Total events gathered for calibration: 4568698
+LD2 kinematic 8 at field 70%, entry: 26900000/55545418. Total events gathered for calibration: 4579498
+LD2 kinematic 8 at field 70%, entry: 27000000/55545418. Total events gathered for calibration: 4590283
+LD2 kinematic 8 at field 70%, entry: 27100000/55545418. Total events gathered for calibration: 4601325
+LD2 kinematic 8 at field 70%, entry: 27200000/55545418. Total events gathered for calibration: 4611915
+LD2 kinematic 8 at field 70%, entry: 27300000/55545418. Total events gathered for calibration: 4622853
+LD2 kinematic 8 at field 70%, entry: 27400000/55545418. Total events gathered for calibration: 4634064
+LD2 kinematic 8 at field 70%, entry: 27500000/55545418. Total events gathered for calibration: 4645013
+LD2 kinematic 8 at field 70%, entry: 27600000/55545418. Total events gathered for calibration: 4655720
+LD2 kinematic 8 at field 70%, entry: 27700000/55545418. Total events gathered for calibration: 4666876
+LD2 kinematic 8 at field 70%, entry: 27800000/55545418. Total events gathered for calibration: 4678222
+LD2 kinematic 8 at field 70%, entry: 27900000/55545418. Total events gathered for calibration: 4689148
+LD2 kinematic 8 at field 70%, entry: 28000000/55545418. Total events gathered for calibration: 4700141
+LD2 kinematic 8 at field 70%, entry: 28100000/55545418. Total events gathered for calibration: 4710871
+LD2 kinematic 8 at field 70%, entry: 28200000/55545418. Total events gathered for calibration: 4721919
+LD2 kinematic 8 at field 70%, entry: 28300000/55545418. Total events gathered for calibration: 4733124
+LD2 kinematic 8 at field 70%, entry: 28400000/55545418. Total events gathered for calibration: 4744138
+LD2 kinematic 8 at field 70%, entry: 28500000/55545418. Total events gathered for calibration: 4754896
+LD2 kinematic 8 at field 70%, entry: 28600000/55545418. Total events gathered for calibration: 4766045
+LD2 kinematic 8 at field 70%, entry: 28700000/55545418. Total events gathered for calibration: 4777168
+LD2 kinematic 8 at field 70%, entry: 28800000/55545418. Total events gathered for calibration: 4788307
+LD2 kinematic 8 at field 70%, entry: 28900000/55545418. Total events gathered for calibration: 4799037
+LD2 kinematic 8 at field 70%, entry: 29000000/55545418. Total events gathered for calibration: 4809938
+LD2 kinematic 8 at field 70%, entry: 29100000/55545418. Total events gathered for calibration: 4820683
+LD2 kinematic 8 at field 70%, entry: 29200000/55545418. Total events gathered for calibration: 4831898
+LD2 kinematic 8 at field 70%, entry: 29300000/55545418. Total events gathered for calibration: 4842550
+LD2 kinematic 8 at field 70%, entry: 29400000/55545418. Total events gathered for calibration: 4853556
+LD2 kinematic 8 at field 70%, entry: 29500000/55545418. Total events gathered for calibration: 4864621
+LD2 kinematic 8 at field 70%, entry: 29600000/55545418. Total events gathered for calibration: 4875505
+LD2 kinematic 8 at field 70%, entry: 29700000/55545418. Total events gathered for calibration: 4886451
+LD2 kinematic 8 at field 70%, entry: 29800000/55545418. Total events gathered for calibration: 4897111
+LD2 kinematic 8 at field 70%, entry: 29900000/55545418. Total events gathered for calibration: 4908037
+LD2 kinematic 8 at field 70%, entry: 30000000/55545418. Total events gathered for calibration: 4919193
+LD2 kinematic 8 at field 70%, entry: 30100000/55545418. Total events gathered for calibration: 4929981
+LD2 kinematic 8 at field 70%, entry: 30200000/55545418. Total events gathered for calibration: 4940883
+LD2 kinematic 8 at field 70%, entry: 30300000/55545418. Total events gathered for calibration: 4951869
+LD2 kinematic 8 at field 70%, entry: 30400000/55545418. Total events gathered for calibration: 4962794
+LD2 kinematic 8 at field 70%, entry: 30500000/55545418. Total events gathered for calibration: 4973954
+LD2 kinematic 8 at field 70%, entry: 30600000/55545418. Total events gathered for calibration: 4984798
+LD2 kinematic 8 at field 70%, entry: 30700000/55545418. Total events gathered for calibration: 4995980
+LD2 kinematic 8 at field 70%, entry: 30800000/55545418. Total events gathered for calibration: 5006894
+LD2 kinematic 8 at field 70%, entry: 30900000/55545418. Total events gathered for calibration: 5018062
+LD2 kinematic 8 at field 70%, entry: 31000000/55545418. Total events gathered for calibration: 5029056
+LD2 kinematic 8 at field 70%, entry: 31100000/55545418. Total events gathered for calibration: 5039350
+LD2 kinematic 8 at field 70%, entry: 31200000/55545418. Total events gathered for calibration: 5050695
+LD2 kinematic 8 at field 70%, entry: 31300000/55545418. Total events gathered for calibration: 5061953
+LD2 kinematic 8 at field 70%, entry: 31400000/55545418. Total events gathered for calibration: 5073119
+LD2 kinematic 8 at field 70%, entry: 31500000/55545418. Total events gathered for calibration: 5084546
+LD2 kinematic 8 at field 70%, entry: 31600000/55545418. Total events gathered for calibration: 5095847
+LD2 kinematic 8 at field 70%, entry: 31700000/55545418. Total events gathered for calibration: 5107465
+LD2 kinematic 8 at field 70%, entry: 31800000/55545418. Total events gathered for calibration: 5118804
+LD2 kinematic 8 at field 70%, entry: 31900000/55545418. Total events gathered for calibration: 5130341
+LD2 kinematic 8 at field 70%, entry: 32000000/55545418. Total events gathered for calibration: 5141579
+LD2 kinematic 8 at field 70%, entry: 32100000/55545418. Total events gathered for calibration: 5152946
+LD2 kinematic 8 at field 70%, entry: 32200000/55545418. Total events gathered for calibration: 5164497
+LD2 kinematic 8 at field 70%, entry: 32300000/55545418. Total events gathered for calibration: 5176098
+LD2 kinematic 8 at field 70%, entry: 32400000/55545418. Total events gathered for calibration: 5187738
+LD2 kinematic 8 at field 70%, entry: 32500000/55545418. Total events gathered for calibration: 5198934
+LD2 kinematic 8 at field 70%, entry: 32600000/55545418. Total events gathered for calibration: 5210795
+LD2 kinematic 8 at field 70%, entry: 32700000/55545418. Total events gathered for calibration: 5222053
+LD2 kinematic 8 at field 70%, entry: 32800000/55545418. Total events gathered for calibration: 5233765
+LD2 kinematic 8 at field 70%, entry: 32900000/55545418. Total events gathered for calibration: 5245747
+LD2 kinematic 8 at field 70%, entry: 33000000/55545418. Total events gathered for calibration: 5257480
+LD2 kinematic 8 at field 70%, entry: 33100000/55545418. Total events gathered for calibration: 5268899
+LD2 kinematic 8 at field 70%, entry: 33200000/55545418. Total events gathered for calibration: 5280234
+LD2 kinematic 8 at field 70%, entry: 33300000/55545418. Total events gathered for calibration: 5291893
+LD2 kinematic 8 at field 70%, entry: 33400000/55545418. Total events gathered for calibration: 5303500
+LD2 kinematic 8 at field 70%, entry: 33500000/55545418. Total events gathered for calibration: 5314962
+LD2 kinematic 8 at field 70%, entry: 33600000/55545418. Total events gathered for calibration: 5326532
+LD2 kinematic 8 at field 70%, entry: 33700000/55545418. Total events gathered for calibration: 5337736
+LD2 kinematic 8 at field 70%, entry: 33800000/55545418. Total events gathered for calibration: 5349411
+LD2 kinematic 8 at field 70%, entry: 33900000/55545418. Total events gathered for calibration: 5361442
+LD2 kinematic 8 at field 70%, entry: 34000000/55545418. Total events gathered for calibration: 5372727
+LD2 kinematic 8 at field 70%, entry: 34100000/55545418. Total events gathered for calibration: 5384337
+LD2 kinematic 8 at field 70%, entry: 34200000/55545418. Total events gathered for calibration: 5395447
+LD2 kinematic 8 at field 70%, entry: 34300000/55545418. Total events gathered for calibration: 5406569
+LD2 kinematic 8 at field 70%, entry: 34400000/55545418. Total events gathered for calibration: 5417948
+LD2 kinematic 8 at field 70%, entry: 34500000/55545418. Total events gathered for calibration: 5429509
+LD2 kinematic 8 at field 70%, entry: 34600000/55545418. Total events gathered for calibration: 5440626
+LD2 kinematic 8 at field 70%, entry: 34700000/55545418. Total events gathered for calibration: 5451835
+LD2 kinematic 8 at field 70%, entry: 34800000/55545418. Total events gathered for calibration: 5462936
+LD2 kinematic 8 at field 70%, entry: 34900000/55545418. Total events gathered for calibration: 5474544
+LD2 kinematic 8 at field 70%, entry: 35000000/55545418. Total events gathered for calibration: 5485625
+LD2 kinematic 8 at field 70%, entry: 35100000/55545418. Total events gathered for calibration: 5496542
+LD2 kinematic 8 at field 70%, entry: 35200000/55545418. Total events gathered for calibration: 5507708
+LD2 kinematic 8 at field 70%, entry: 35300000/55545418. Total events gathered for calibration: 5519199
+LD2 kinematic 8 at field 70%, entry: 35400000/55545418. Total events gathered for calibration: 5530526
+LD2 kinematic 8 at field 70%, entry: 35500000/55545418. Total events gathered for calibration: 5541819
+LD2 kinematic 8 at field 70%, entry: 35600000/55545418. Total events gathered for calibration: 5553009
+LD2 kinematic 8 at field 70%, entry: 35700000/55545418. Total events gathered for calibration: 5564549
+LD2 kinematic 8 at field 70%, entry: 35800000/55545418. Total events gathered for calibration: 5575806
+LD2 kinematic 8 at field 70%, entry: 35900000/55545418. Total events gathered for calibration: 5587131
+LD2 kinematic 8 at field 70%, entry: 36000000/55545418. Total events gathered for calibration: 5598754
+LD2 kinematic 8 at field 70%, entry: 36100000/55545418. Total events gathered for calibration: 5611120
+LD2 kinematic 8 at field 70%, entry: 36200000/55545418. Total events gathered for calibration: 5623284
+LD2 kinematic 8 at field 70%, entry: 36300000/55545418. Total events gathered for calibration: 5634921
+LD2 kinematic 8 at field 70%, entry: 36400000/55545418. Total events gathered for calibration: 5646870
+LD2 kinematic 8 at field 70%, entry: 36500000/55545418. Total events gathered for calibration: 5659547
+LD2 kinematic 8 at field 70%, entry: 36600000/55545418. Total events gathered for calibration: 5671642
+LD2 kinematic 8 at field 70%, entry: 36700000/55545418. Total events gathered for calibration: 5683702
+LD2 kinematic 8 at field 70%, entry: 36800000/55545418. Total events gathered for calibration: 5695688
+LD2 kinematic 8 at field 70%, entry: 36900000/55545418. Total events gathered for calibration: 5708111
+LD2 kinematic 8 at field 70%, entry: 37000000/55545418. Total events gathered for calibration: 5720237
+LD2 kinematic 8 at field 70%, entry: 37100000/55545418. Total events gathered for calibration: 5732181
+LD2 kinematic 8 at field 70%, entry: 37200000/55545418. Total events gathered for calibration: 5744721
+LD2 kinematic 8 at field 70%, entry: 37300000/55545418. Total events gathered for calibration: 5757191
+LD2 kinematic 8 at field 70%, entry: 37400000/55545418. Total events gathered for calibration: 5769067
+LD2 kinematic 8 at field 70%, entry: 37500000/55545418. Total events gathered for calibration: 5781100
+LD2 kinematic 8 at field 70%, entry: 37600000/55545418. Total events gathered for calibration: 5793500
+LD2 kinematic 8 at field 70%, entry: 37700000/55545418. Total events gathered for calibration: 5805403
+LD2 kinematic 8 at field 70%, entry: 37800000/55545418. Total events gathered for calibration: 5818001
+LD2 kinematic 8 at field 70%, entry: 37900000/55545418. Total events gathered for calibration: 5830367
+LD2 kinematic 8 at field 70%, entry: 38000000/55545418. Total events gathered for calibration: 5842428
+LD2 kinematic 8 at field 70%, entry: 38100000/55545418. Total events gathered for calibration: 5854680
+LD2 kinematic 8 at field 70%, entry: 38200000/55545418. Total events gathered for calibration: 5866876
+LD2 kinematic 8 at field 70%, entry: 38300000/55545418. Total events gathered for calibration: 5879029
+LD2 kinematic 8 at field 70%, entry: 38400000/55545418. Total events gathered for calibration: 5891137
+LD2 kinematic 8 at field 70%, entry: 38500000/55545418. Total events gathered for calibration: 5903467
+LD2 kinematic 8 at field 70%, entry: 38600000/55545418. Total events gathered for calibration: 5915801
+LD2 kinematic 8 at field 70%, entry: 38700000/55545418. Total events gathered for calibration: 5928177
+LD2 kinematic 8 at field 70%, entry: 38800000/55545418. Total events gathered for calibration: 5940001
+LD2 kinematic 8 at field 70%, entry: 38900000/55545418. Total events gathered for calibration: 5952434
+LD2 kinematic 8 at field 70%, entry: 39000000/55545418. Total events gathered for calibration: 5964317
+LD2 kinematic 8 at field 70%, entry: 39100000/55545418. Total events gathered for calibration: 5976677
+LD2 kinematic 8 at field 70%, entry: 39200000/55545418. Total events gathered for calibration: 5988760
+LD2 kinematic 8 at field 70%, entry: 39300000/55545418. Total events gathered for calibration: 6000754
+LD2 kinematic 8 at field 70%, entry: 39400000/55545418. Total events gathered for calibration: 6013191
+LD2 kinematic 8 at field 70%, entry: 39500000/55545418. Total events gathered for calibration: 6025059
+LD2 kinematic 8 at field 70%, entry: 39600000/55545418. Total events gathered for calibration: 6037369
+LD2 kinematic 8 at field 70%, entry: 39700000/55545418. Total events gathered for calibration: 6049351
+LD2 kinematic 8 at field 70%, entry: 39800000/55545418. Total events gathered for calibration: 6061299
+LD2 kinematic 8 at field 70%, entry: 39900000/55545418. Total events gathered for calibration: 6073467
+LD2 kinematic 8 at field 70%, entry: 40000000/55545418. Total events gathered for calibration: 6085675
+LD2 kinematic 8 at field 70%, entry: 40100000/55545418. Total events gathered for calibration: 6098219
+LD2 kinematic 8 at field 70%, entry: 40200000/55545418. Total events gathered for calibration: 6110350
+LD2 kinematic 8 at field 70%, entry: 40300000/55545418. Total events gathered for calibration: 6122689
+LD2 kinematic 8 at field 70%, entry: 40400000/55545418. Total events gathered for calibration: 6134895
+LD2 kinematic 8 at field 70%, entry: 40500000/55545418. Total events gathered for calibration: 6147377
+LD2 kinematic 8 at field 70%, entry: 40600000/55545418. Total events gathered for calibration: 6159636
+LD2 kinematic 8 at field 70%, entry: 40700000/55545418. Total events gathered for calibration: 6170999
+LD2 kinematic 8 at field 70%, entry: 40800000/55545418. Total events gathered for calibration: 6182469
+LD2 kinematic 8 at field 70%, entry: 40900000/55545418. Total events gathered for calibration: 6193603
+LD2 kinematic 8 at field 70%, entry: 41000000/55545418. Total events gathered for calibration: 6204778
+LD2 kinematic 8 at field 70%, entry: 41100000/55545418. Total events gathered for calibration: 6216098
+LD2 kinematic 8 at field 70%, entry: 41200000/55545418. Total events gathered for calibration: 6227574
+LD2 kinematic 8 at field 70%, entry: 41300000/55545418. Total events gathered for calibration: 6238845
+LD2 kinematic 8 at field 70%, entry: 41400000/55545418. Total events gathered for calibration: 6250349
+LD2 kinematic 8 at field 70%, entry: 41500000/55545418. Total events gathered for calibration: 6261786
+LD2 kinematic 8 at field 70%, entry: 41600000/55545418. Total events gathered for calibration: 6273722
+LD2 kinematic 8 at field 70%, entry: 41700000/55545418. Total events gathered for calibration: 6285181
+LD2 kinematic 8 at field 70%, entry: 41800000/55545418. Total events gathered for calibration: 6296833
+LD2 kinematic 8 at field 70%, entry: 41900000/55545418. Total events gathered for calibration: 6308383
+LD2 kinematic 8 at field 70%, entry: 42000000/55545418. Total events gathered for calibration: 6319499
+LD2 kinematic 8 at field 70%, entry: 42100000/55545418. Total events gathered for calibration: 6330955
+LD2 kinematic 8 at field 70%, entry: 42200000/55545418. Total events gathered for calibration: 6342310
+LD2 kinematic 8 at field 70%, entry: 42300000/55545418. Total events gathered for calibration: 6353806
+LD2 kinematic 8 at field 70%, entry: 42400000/55545418. Total events gathered for calibration: 6365164
+LD2 kinematic 8 at field 70%, entry: 42500000/55545418. Total events gathered for calibration: 6376297
+LD2 kinematic 8 at field 70%, entry: 42600000/55545418. Total events gathered for calibration: 6387850
+LD2 kinematic 8 at field 70%, entry: 42700000/55545418. Total events gathered for calibration: 6399132
+LD2 kinematic 8 at field 70%, entry: 42800000/55545418. Total events gathered for calibration: 6410384
+LD2 kinematic 8 at field 70%, entry: 42900000/55545418. Total events gathered for calibration: 6422253
+LD2 kinematic 8 at field 70%, entry: 43000000/55545418. Total events gathered for calibration: 6433926
+LD2 kinematic 8 at field 70%, entry: 43100000/55545418. Total events gathered for calibration: 6445307
+LD2 kinematic 8 at field 70%, entry: 43200000/55545418. Total events gathered for calibration: 6456713
+LD2 kinematic 8 at field 70%, entry: 43300000/55545418. Total events gathered for calibration: 6467816
+LD2 kinematic 8 at field 70%, entry: 43400000/55545418. Total events gathered for calibration: 6479475
+LD2 kinematic 8 at field 70%, entry: 43500000/55545418. Total events gathered for calibration: 6490515
+LD2 kinematic 8 at field 70%, entry: 43600000/55545418. Total events gathered for calibration: 6502354
+LD2 kinematic 8 at field 70%, entry: 43700000/55545418. Total events gathered for calibration: 6513635
+LD2 kinematic 8 at field 70%, entry: 43800000/55545418. Total events gathered for calibration: 6525031
+LD2 kinematic 8 at field 70%, entry: 43900000/55545418. Total events gathered for calibration: 6536594
+LD2 kinematic 8 at field 70%, entry: 44000000/55545418. Total events gathered for calibration: 6547754
+LD2 kinematic 8 at field 70%, entry: 44100000/55545418. Total events gathered for calibration: 6559472
+LD2 kinematic 8 at field 70%, entry: 44200000/55545418. Total events gathered for calibration: 6570930
+LD2 kinematic 8 at field 70%, entry: 44300000/55545418. Total events gathered for calibration: 6582598
+LD2 kinematic 8 at field 70%, entry: 44400000/55545418. Total events gathered for calibration: 6593806
+LD2 kinematic 8 at field 70%, entry: 44500000/55545418. Total events gathered for calibration: 6605051
+LD2 kinematic 8 at field 70%, entry: 44600000/55545418. Total events gathered for calibration: 6616624
+LD2 kinematic 8 at field 70%, entry: 44700000/55545418. Total events gathered for calibration: 6627810
+LD2 kinematic 8 at field 70%, entry: 44800000/55545418. Total events gathered for calibration: 6639112
+LD2 kinematic 8 at field 70%, entry: 44900000/55545418. Total events gathered for calibration: 6650641
+LD2 kinematic 8 at field 70%, entry: 45000000/55545418. Total events gathered for calibration: 6662222
+LD2 kinematic 8 at field 70%, entry: 45100000/55545418. Total events gathered for calibration: 6673746
+LD2 kinematic 8 at field 70%, entry: 45200000/55545418. Total events gathered for calibration: 6685439
+LD2 kinematic 8 at field 70%, entry: 45300000/55545418. Total events gathered for calibration: 6697002
+LD2 kinematic 8 at field 70%, entry: 45400000/55545418. Total events gathered for calibration: 6708201
+LD2 kinematic 8 at field 70%, entry: 45500000/55545418. Total events gathered for calibration: 6719733
+LD2 kinematic 8 at field 70%, entry: 45600000/55545418. Total events gathered for calibration: 6731051
+LD2 kinematic 8 at field 70%, entry: 45700000/55545418. Total events gathered for calibration: 6742785
+LD2 kinematic 8 at field 70%, entry: 45800000/55545418. Total events gathered for calibration: 6754255
+LD2 kinematic 8 at field 70%, entry: 45900000/55545418. Total events gathered for calibration: 6765824
+LD2 kinematic 8 at field 70%, entry: 46000000/55545418. Total events gathered for calibration: 6777221
+LD2 kinematic 8 at field 70%, entry: 46100000/55545418. Total events gathered for calibration: 6789172
+LD2 kinematic 8 at field 70%, entry: 46200000/55545418. Total events gathered for calibration: 6800707
+LD2 kinematic 8 at field 70%, entry: 46300000/55545418. Total events gathered for calibration: 6812221
+LD2 kinematic 8 at field 70%, entry: 46400000/55545418. Total events gathered for calibration: 6823743
+LD2 kinematic 8 at field 70%, entry: 46500000/55545418. Total events gathered for calibration: 6835453
+LD2 kinematic 8 at field 70%, entry: 46600000/55545418. Total events gathered for calibration: 6847274
+LD2 kinematic 8 at field 70%, entry: 46700000/55545418. Total events gathered for calibration: 6858717
+LD2 kinematic 8 at field 70%, entry: 46800000/55545418. Total events gathered for calibration: 6870183
+LD2 kinematic 8 at field 70%, entry: 46900000/55545418. Total events gathered for calibration: 6881546
+LD2 kinematic 8 at field 70%, entry: 47000000/55545418. Total events gathered for calibration: 6893021
+LD2 kinematic 8 at field 70%, entry: 47100000/55545418. Total events gathered for calibration: 6904994
+LD2 kinematic 8 at field 70%, entry: 47200000/55545418. Total events gathered for calibration: 6916212
+LD2 kinematic 8 at field 70%, entry: 47300000/55545418. Total events gathered for calibration: 6927813
+LD2 kinematic 8 at field 70%, entry: 47400000/55545418. Total events gathered for calibration: 6939249
+LD2 kinematic 8 at field 70%, entry: 47500000/55545418. Total events gathered for calibration: 6950666
+LD2 kinematic 8 at field 70%, entry: 47600000/55545418. Total events gathered for calibration: 6962344
+LD2 kinematic 8 at field 70%, entry: 47700000/55545418. Total events gathered for calibration: 6974294
+LD2 kinematic 8 at field 70%, entry: 47800000/55545418. Total events gathered for calibration: 6985965
+LD2 kinematic 8 at field 70%, entry: 47900000/55545418. Total events gathered for calibration: 6997730
+LD2 kinematic 8 at field 70%, entry: 48000000/55545418. Total events gathered for calibration: 7009404
+LD2 kinematic 8 at field 70%, entry: 48100000/55545418. Total events gathered for calibration: 7020974
+LD2 kinematic 8 at field 70%, entry: 48200000/55545418. Total events gathered for calibration: 7032768
+LD2 kinematic 8 at field 70%, entry: 48300000/55545418. Total events gathered for calibration: 7044617
+LD2 kinematic 8 at field 70%, entry: 48400000/55545418. Total events gathered for calibration: 7056498
+LD2 kinematic 8 at field 70%, entry: 48500000/55545418. Total events gathered for calibration: 7068411
+LD2 kinematic 8 at field 70%, entry: 48600000/55545418. Total events gathered for calibration: 7080101
+LD2 kinematic 8 at field 70%, entry: 48700000/55545418. Total events gathered for calibration: 7091896
+LD2 kinematic 8 at field 70%, entry: 48800000/55545418. Total events gathered for calibration: 7103686
+LD2 kinematic 8 at field 70%, entry: 48900000/55545418. Total events gathered for calibration: 7115031
+LD2 kinematic 8 at field 70%, entry: 49000000/55545418. Total events gathered for calibration: 7126477
+LD2 kinematic 8 at field 70%, entry: 49100000/55545418. Total events gathered for calibration: 7137896
+LD2 kinematic 8 at field 70%, entry: 49200000/55545418. Total events gathered for calibration: 7149584
+LD2 kinematic 8 at field 70%, entry: 49300000/55545418. Total events gathered for calibration: 7160807
+LD2 kinematic 8 at field 70%, entry: 49400000/55545418. Total events gathered for calibration: 7172513
+LD2 kinematic 8 at field 70%, entry: 49500000/55545418. Total events gathered for calibration: 7184042
+LD2 kinematic 8 at field 70%, entry: 49600000/55545418. Total events gathered for calibration: 7195408
+LD2 kinematic 8 at field 70%, entry: 49700000/55545418. Total events gathered for calibration: 7207119
+LD2 kinematic 8 at field 70%, entry: 49800000/55545418. Total events gathered for calibration: 7218673
+LD2 kinematic 8 at field 70%, entry: 49900000/55545418. Total events gathered for calibration: 7230821
+LD2 kinematic 8 at field 70%, entry: 50000000/55545418. Total events gathered for calibration: 7242413
+LD2 kinematic 8 at field 70%, entry: 50100000/55545418. Total events gathered for calibration: 7253479
+LD2 kinematic 8 at field 70%, entry: 50200000/55545418. Total events gathered for calibration: 7264971
+LD2 kinematic 8 at field 70%, entry: 50300000/55545418. Total events gathered for calibration: 7276539
+LD2 kinematic 8 at field 70%, entry: 50400000/55545418. Total events gathered for calibration: 7288201
+LD2 kinematic 8 at field 70%, entry: 50500000/55545418. Total events gathered for calibration: 7299480
+LD2 kinematic 8 at field 70%, entry: 50600000/55545418. Total events gathered for calibration: 7310721
+LD2 kinematic 8 at field 70%, entry: 50700000/55545418. Total events gathered for calibration: 7322550
+LD2 kinematic 8 at field 70%, entry: 50800000/55545418. Total events gathered for calibration: 7334118
+LD2 kinematic 8 at field 70%, entry: 50900000/55545418. Total events gathered for calibration: 7345649
+LD2 kinematic 8 at field 70%, entry: 51000000/55545418. Total events gathered for calibration: 7357165
+LD2 kinematic 8 at field 70%, entry: 51100000/55545418. Total events gathered for calibration: 7369015
+LD2 kinematic 8 at field 70%, entry: 51200000/55545418. Total events gathered for calibration: 7380397
+LD2 kinematic 8 at field 70%, entry: 51300000/55545418. Total events gathered for calibration: 7391928
+LD2 kinematic 8 at field 70%, entry: 51400000/55545418. Total events gathered for calibration: 7403544
+LD2 kinematic 8 at field 70%, entry: 51500000/55545418. Total events gathered for calibration: 7415236
+LD2 kinematic 8 at field 70%, entry: 51600000/55545418. Total events gathered for calibration: 7426604
+LD2 kinematic 8 at field 70%, entry: 51700000/55545418. Total events gathered for calibration: 7438233
+LD2 kinematic 8 at field 70%, entry: 51800000/55545418. Total events gathered for calibration: 7449824
+LD2 kinematic 8 at field 70%, entry: 51900000/55545418. Total events gathered for calibration: 7460986
+LD2 kinematic 8 at field 70%, entry: 52000000/55545418. Total events gathered for calibration: 7472466
+LD2 kinematic 8 at field 70%, entry: 52100000/55545418. Total events gathered for calibration: 7483709
+LD2 kinematic 8 at field 70%, entry: 52200000/55545418. Total events gathered for calibration: 7495281
+LD2 kinematic 8 at field 70%, entry: 52300000/55545418. Total events gathered for calibration: 7506835
+LD2 kinematic 8 at field 70%, entry: 52400000/55545418. Total events gathered for calibration: 7518456
+LD2 kinematic 8 at field 70%, entry: 52500000/55545418. Total events gathered for calibration: 7529653
+LD2 kinematic 8 at field 70%, entry: 52600000/55545418. Total events gathered for calibration: 7540764
+LD2 kinematic 8 at field 70%, entry: 52700000/55545418. Total events gathered for calibration: 7552006
+LD2 kinematic 8 at field 70%, entry: 52800000/55545418. Total events gathered for calibration: 7563652
+LD2 kinematic 8 at field 70%, entry: 52900000/55545418. Total events gathered for calibration: 7574982
+LD2 kinematic 8 at field 70%, entry: 53000000/55545418. Total events gathered for calibration: 7586465
+LD2 kinematic 8 at field 70%, entry: 53100000/55545418. Total events gathered for calibration: 7597753
+LD2 kinematic 8 at field 70%, entry: 53200000/55545418. Total events gathered for calibration: 7609153
+LD2 kinematic 8 at field 70%, entry: 53300000/55545418. Total events gathered for calibration: 7620547
+LD2 kinematic 8 at field 70%, entry: 53400000/55545418. Total events gathered for calibration: 7631793
+LD2 kinematic 8 at field 70%, entry: 53500000/55545418. Total events gathered for calibration: 7643410
+LD2 kinematic 8 at field 70%, entry: 53600000/55545418. Total events gathered for calibration: 7654806
+LD2 kinematic 8 at field 70%, entry: 53700000/55545418. Total events gathered for calibration: 7666355
+LD2 kinematic 8 at field 70%, entry: 53800000/55545418. Total events gathered for calibration: 7678028
+LD2 kinematic 8 at field 70%, entry: 53900000/55545418. Total events gathered for calibration: 7689590
+LD2 kinematic 8 at field 70%, entry: 54000000/55545418. Total events gathered for calibration: 7701379
+LD2 kinematic 8 at field 70%, entry: 54100000/55545418. Total events gathered for calibration: 7712860
+LD2 kinematic 8 at field 70%, entry: 54200000/55545418. Total events gathered for calibration: 7724781
+LD2 kinematic 8 at field 70%, entry: 54300000/55545418. Total events gathered for calibration: 7736364
+LD2 kinematic 8 at field 70%, entry: 54400000/55545418. Total events gathered for calibration: 7748703
+LD2 kinematic 8 at field 70%, entry: 54500000/55545418. Total events gathered for calibration: 7760467
+LD2 kinematic 8 at field 70%, entry: 54600000/55545418. Total events gathered for calibration: 7772256
+LD2 kinematic 8 at field 70%, entry: 54700000/55545418. Total events gathered for calibration: 7784297
+LD2 kinematic 8 at field 70%, entry: 54800000/55545418. Total events gathered for calibration: 7796211
+LD2 kinematic 8 at field 70%, entry: 54900000/55545418. Total events gathered for calibration: 7808006
+LD2 kinematic 8 at field 70%, entry: 55000000/55545418. Total events gathered for calibration: 7819697
+LD2 kinematic 8 at field 70%, entry: 55100000/55545418. Total events gathered for calibration: 7831783
+LD2 kinematic 8 at field 70%, entry: 55200000/55545418. Total events gathered for calibration: 7843455
+LD2 kinematic 8 at field 70%, entry: 55300000/55545418. Total events gathered for calibration: 7855273
+LD2 kinematic 8 at field 70%, entry: 55400000/55545418. Total events gathered for calibration: 7866727
+LD2 kinematic 8 at field 70%, entry: 55500000/55545418. Total events gathered for calibration: 7878302
+LD2 kinematic 8 at field 100%, entry: 100000/5313717. Total events gathered for calibration: 7894270
+LD2 kinematic 8 at field 100%, entry: 200000/5313717. Total events gathered for calibration: 7905586
+LD2 kinematic 8 at field 100%, entry: 300000/5313717. Total events gathered for calibration: 7917124
+LD2 kinematic 8 at field 100%, entry: 400000/5313717. Total events gathered for calibration: 7928426
+LD2 kinematic 8 at field 100%, entry: 500000/5313717. Total events gathered for calibration: 7939942
+LD2 kinematic 8 at field 100%, entry: 600000/5313717. Total events gathered for calibration: 7951209
+LD2 kinematic 8 at field 100%, entry: 700000/5313717. Total events gathered for calibration: 7962719
+LD2 kinematic 8 at field 100%, entry: 800000/5313717. Total events gathered for calibration: 7973765
+LD2 kinematic 8 at field 100%, entry: 900000/5313717. Total events gathered for calibration: 7985009
+LD2 kinematic 8 at field 100%, entry: 1000000/5313717. Total events gathered for calibration: 7996269
+LD2 kinematic 8 at field 100%, entry: 1100000/5313717. Total events gathered for calibration: 8007536
+LD2 kinematic 8 at field 100%, entry: 1200000/5313717. Total events gathered for calibration: 8018986
+LD2 kinematic 8 at field 100%, entry: 1300000/5313717. Total events gathered for calibration: 8030356
+LD2 kinematic 8 at field 100%, entry: 1400000/5313717. Total events gathered for calibration: 8041936
+LD2 kinematic 8 at field 100%, entry: 1500000/5313717. Total events gathered for calibration: 8053070
+LD2 kinematic 8 at field 100%, entry: 1600000/5313717. Total events gathered for calibration: 8064720
+LD2 kinematic 8 at field 100%, entry: 1700000/5313717. Total events gathered for calibration: 8076070
+LD2 kinematic 8 at field 100%, entry: 1800000/5313717. Total events gathered for calibration: 8087672
+LD2 kinematic 8 at field 100%, entry: 1900000/5313717. Total events gathered for calibration: 8098480
+LD2 kinematic 8 at field 100%, entry: 2000000/5313717. Total events gathered for calibration: 8109882
+LD2 kinematic 8 at field 100%, entry: 2100000/5313717. Total events gathered for calibration: 8121326
+LD2 kinematic 8 at field 100%, entry: 2200000/5313717. Total events gathered for calibration: 8132466
+LD2 kinematic 8 at field 100%, entry: 2300000/5313717. Total events gathered for calibration: 8144126
+LD2 kinematic 8 at field 100%, entry: 2400000/5313717. Total events gathered for calibration: 8155906
+LD2 kinematic 8 at field 100%, entry: 2500000/5313717. Total events gathered for calibration: 8167430
+LD2 kinematic 8 at field 100%, entry: 2600000/5313717. Total events gathered for calibration: 8178639
+LD2 kinematic 8 at field 100%, entry: 2700000/5313717. Total events gathered for calibration: 8190301
+LD2 kinematic 8 at field 100%, entry: 2800000/5313717. Total events gathered for calibration: 8201697
+LD2 kinematic 8 at field 100%, entry: 2900000/5313717. Total events gathered for calibration: 8213395
+LD2 kinematic 8 at field 100%, entry: 3000000/5313717. Total events gathered for calibration: 8224658
+LD2 kinematic 8 at field 100%, entry: 3100000/5313717. Total events gathered for calibration: 8236146
+LD2 kinematic 8 at field 100%, entry: 3200000/5313717. Total events gathered for calibration: 8247207
+LD2 kinematic 8 at field 100%, entry: 3300000/5313717. Total events gathered for calibration: 8258505
+LD2 kinematic 8 at field 100%, entry: 3400000/5313717. Total events gathered for calibration: 8269846
+LD2 kinematic 8 at field 100%, entry: 3500000/5313717. Total events gathered for calibration: 8281428
+LD2 kinematic 8 at field 100%, entry: 3600000/5313717. Total events gathered for calibration: 8292445
+LD2 kinematic 8 at field 100%, entry: 3700000/5313717. Total events gathered for calibration: 8303968
+LD2 kinematic 8 at field 100%, entry: 3800000/5313717. Total events gathered for calibration: 8315284
+LD2 kinematic 8 at field 100%, entry: 3900000/5313717. Total events gathered for calibration: 8326806
+LD2 kinematic 8 at field 100%, entry: 4000000/5313717. Total events gathered for calibration: 8338883
+LD2 kinematic 8 at field 100%, entry: 4100000/5313717. Total events gathered for calibration: 8350401
+LD2 kinematic 8 at field 100%, entry: 4200000/5313717. Total events gathered for calibration: 8361588
+LD2 kinematic 8 at field 100%, entry: 4300000/5313717. Total events gathered for calibration: 8373768
+LD2 kinematic 8 at field 100%, entry: 4400000/5313717. Total events gathered for calibration: 8385473
+LD2 kinematic 8 at field 100%, entry: 4500000/5313717. Total events gathered for calibration: 8397196
+LD2 kinematic 8 at field 100%, entry: 4600000/5313717. Total events gathered for calibration: 8408593
+LD2 kinematic 8 at field 100%, entry: 4700000/5313717. Total events gathered for calibration: 8420150
+LD2 kinematic 8 at field 100%, entry: 4800000/5313717. Total events gathered for calibration: 8431224
+LD2 kinematic 8 at field 100%, entry: 4900000/5313717. Total events gathered for calibration: 8442487
+LD2 kinematic 8 at field 100%, entry: 5000000/5313717. Total events gathered for calibration: 8454338
+LD2 kinematic 8 at field 100%, entry: 5100000/5313717. Total events gathered for calibration: 8466070
+LD2 kinematic 8 at field 100%, entry: 5200000/5313717. Total events gathered for calibration: 8477403
+LD2 kinematic 8 at field 100%, entry: 5300000/5313717. Total events gathered for calibration: 8488758
+
+Fitting TDC/ADCt/TW distributions
+
+
+Elastic yield for analyzed runs: 6503776. Total event bins available for calibration = LH2 + LD2: 3857178 + 8490134 = 12347312. Total number of events analyzed: 127106836.
+
+Diagnostic iteration complete. Histograms written to file.
+
+CPU time elapsed = 2052.06 s = 34.201 min. Real time = 3551.25 s = 59.1875 min.

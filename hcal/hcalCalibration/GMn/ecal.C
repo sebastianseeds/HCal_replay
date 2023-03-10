@@ -1,6 +1,6 @@
 //SSeeds - Calibration code which employs best current cuts on elastic events to obtain ADC gain calibration parameters (pC/GeV).
 //2.23.23 - Pass2 Update - Adds beam energy loss to target and structure updates to easily run on batch farm. Restructured to remove memset and use sbs.hcal.again branch. Now loops over all data and cuts on both dx and dy with array of chains.
-//3.7.23 Update - Adds sampling fraction by kinematic from MC. Adds Esigfactor to account for ADC distribution to sigma ratio != 1 for HCal. Without sufficient data to characterize every channel with ecal_blockE_spectra.C, will use average ratio (0.80)
+//3.7.23 Update - Adds sampling fraction by kinematic from MC. Adds pCsigfactor to account for ADC distribution to sigma ratio != 1 for HCal. Without sufficient data to characterize every channel with ecal_blockE_spectra.C, will use average ratio (0.80)
 
 #include <ctime>
 #include <iostream>
@@ -29,7 +29,7 @@
 #include "TF1.h"
 
 //Detector constants
-const Double_t Esigfactor = 0.80;  //Factor describing per event Edep to Edep_sig ratio (>1 shifts samp frac down)
+const Double_t pCsigfactor[6] = {0.58,0.82,0.83,0.78,0.66,0.72};  //Factor describing per event Edep to Edep_sig ratio (>1 shifts samp frac down)
 const Int_t ifac = 3; // Inclusion factor, number of sigma to keep around cut peaks
 const Int_t kNcell = 288; // Total number of HCal modules
 const Int_t kNrows = 24; // Total number of HCal rows
@@ -885,7 +885,7 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
 
       //Calculate/declare new variables for analysis
       Double_t SFrac = HCALe_h[f]/KE_p;
-      Double_t E_exp = KE_p*sampFrac[kIdx]/Esigfactor; //TEST on Esigfactor
+      Double_t E_exp = KE_p*sampFrac[kIdx]/pCsigfactor[kIdx]; //Currently testing pCsigfactor
       Int_t rec_row = ( HCALx_h[f] - HCal_Xmin )/HCal_divx;
       Int_t rec_col = ( HCALy_h[f] - HCal_Ymin )/HCal_divy;
       Int_t rec_cell = rec_row*kNcols + rec_col;
@@ -1140,7 +1140,7 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
 
       //Calculate/declare new variables for analysis
       Double_t SFrac = HCALe_d[f]/KE_p;
-      Double_t E_exp = KE_p*sampFrac[kIdx]/Esigfactor; //TEST on Esigfactor
+      Double_t E_exp = KE_p*sampFrac[kIdx]/pCsigfactor[kIdx]; //Currently testing pCsigfactor
       Int_t rec_row = ( HCALx_d[f] - HCal_Xmin )/HCal_divx;
       Int_t rec_col = ( HCALy_d[f] - HCal_Ymin )/HCal_divy;
       Int_t rec_cell = rec_row*kNcols + rec_col;

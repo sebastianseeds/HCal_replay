@@ -1,4 +1,4 @@
-#HCal TDC offsets obtained 3_7_2023
+#HCal TDC offsets obtained 3_8_2023
 #Offsets obtained from fits over TDC distributions = 
 -1863.03
 -1863.03

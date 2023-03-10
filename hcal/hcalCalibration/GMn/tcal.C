@@ -38,6 +38,8 @@ const Int_t xN = 48; //2*kNrows, total number of dispersive bins detection uni
 const Int_t yN = 24; //2*kNcols, total number of transverse bins detection uni
 const Double_t hcalheight = -0.2897;
 const Double_t TDCCalib = 0.112;
+const Double_t TDC_target = -75.; //Target tdc values for aligning block times
+const Double_t ADCt_target = 50.; //Target adct values for aligning block times
 
 //Target constants
 const Double_t dEdx_tgt=0.00574; //According to NIST ESTAR, the collisional stopping power of hydrogen is about 5.74 MeV*cm2/g at 2 GeV energy
@@ -674,7 +676,7 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
     adcttwP0path = Form("parameters/adcttwP0_sbs%d_qreplay.txt",kine);
     adcttwP1path = Form("parameters/adcttwP1_sbs%d_qreplay.txt",kine);
     adcttwP2path = Form("parameters/adcttwP2_sbs%d_qreplay.txt",kine);
-    errPath = Form("reporting/tcalReport_sbs%d_qreplay.txt",kine);
+    errPath = Form("reporting/term/tcalReport_sbs%d_qreplay.txt",kine);
   }else{
     tdcconstPath = Form("parameters/tdcoffsets_sbs%d.txt",kine);
     adctconstPath = Form("parameters/adctoffsets_sbs%d.txt",kine);
@@ -684,7 +686,7 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
     adcttwP0path = Form("parameters/adcttwP0_sbs%d.txt",kine);
     adcttwP1path = Form("parameters/adcttwP1_sbs%d.txt",kine);
     adcttwP2path = Form("parameters/adcttwP2_sbs%d.txt",kine);
-    errPath = Form("reporting/tcalReport_sbs%d.txt",kine);
+    errPath = Form("reporting/term/tcalReport_sbs%d.txt",kine);
   }
 
   //Declare report outfile
@@ -1287,6 +1289,8 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 
       //Fill some histograms with only the primary block timing
       Int_t pblkid = int(cblkid_h[f][0])-1;
+      Double_t pTDC = cblktime_h[f][0];
+      Double_t pADCt = cblkatime_h[f][0];
       Double_t pTDCcorr = 0.;
       Double_t pADCtcorr = 0.;
       Double_t pblke = 0.;
@@ -1295,15 +1299,21 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
       }else{
 	pblke = cblke_h[f][0]/cblkagain_h[f][0]*gConst_iter1[pblkid];
       }
-      if( qreplay ) pTDCcorr = otdcP0[pblkid]*exp(-otdcP1[pblkid]*pblke);
-      htp_ID->Fill( pblkid, cblktime_h[f][0] );
-      htpDiff_ID->Fill( pblkid, cblktime_h[f][0]-hodot );
-      htpCorr_ID->Fill( pblkid, cblktime_h[f][0]-hodot-pTDCcorr );
+      if( qreplay ){
+	pTDCcorr = otdcP0[pblkid]*exp(-otdcP1[pblkid]*pblke);
+	pTDC = cblktime_h[f][0] + oldTDCoffsets[pblkid]*TDCCalib - calTDCoffsets[pblkid]*TDCCalib;
+      }
+      htp_ID->Fill( pblkid, pTDC );
+      htpDiff_ID->Fill( pblkid, pTDC-hodot );
+      htpCorr_ID->Fill( pblkid, pTDC-hodot-pTDCcorr );
       
-      if( qreplay ) pADCtcorr = oadctP0[pblkid]*exp(-oadctP1[pblkid]*pblke);
-      hap_ID->Fill( pblkid, cblkatime_h[f][0] );
-      hapDiff_ID->Fill( pblkid, cblkatime_h[f][0]-hodot );
-      hap_ID->Fill( pblkid, cblkatime_h[f][0]-hodot-pADCtcorr );
+      if( qreplay ){
+	pADCtcorr = oadctP0[pblkid]*exp(-oadctP1[pblkid]*pblke);
+	pADCt = cblkatime_h[f][0] + oldADCtoffsets[pblkid] - calADCtoffsets[pblkid];
+      }
+      hap_ID->Fill( pblkid, pADCt );
+      hapDiff_ID->Fill( pblkid, pADCt-hodot );
+      hapCorr_ID->Fill( pblkid, pADCt-hodot-pADCtcorr );
 
       //Loop over primary cluster
       for( Int_t blk = 0; blk<(int)nblk_h[f]; blk++ ){
@@ -1487,6 +1497,8 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 
       //Fill some histograms with only the primary block timing
       Int_t pblkid = int(cblkid_d[f][0])-1;
+      Double_t pTDC = cblktime_d[f][0];
+      Double_t pADCt = cblkatime_d[f][0];
       Double_t pTDCcorr = 0.;
       Double_t pADCtcorr = 0.;
       Double_t pblke = 0.;
@@ -1495,15 +1507,21 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
       }else{
 	pblke = cblke_d[f][0]/cblkagain_d[f][0]*gConst_iter1[pblkid];
       }
-      if( qreplay ) pTDCcorr = otdcP0[pblkid]*exp(-otdcP1[pblkid]*pblke);
-      htp_ID->Fill( pblkid, cblktime_d[f][0] );
-      htpDiff_ID->Fill( pblkid, cblktime_d[f][0]-hodot );
-      htpCorr_ID->Fill( pblkid, cblktime_d[f][0]-hodot-pTDCcorr );
+      if( qreplay ){
+	pTDCcorr = otdcP0[pblkid]*exp(-otdcP1[pblkid]*pblke);
+	pTDC = cblktime_d[f][0] + oldTDCoffsets[pblkid]*TDCCalib - calTDCoffsets[pblkid]*TDCCalib;
+      }
+      htp_ID->Fill( pblkid, pTDC );
+      htpDiff_ID->Fill( pblkid, pTDC-hodot );
+      htpCorr_ID->Fill( pblkid, pTDC-hodot-pTDCcorr );
       
-      if( qreplay ) pADCtcorr = oadctP0[pblkid]*exp(-oadctP1[pblkid]*pblke);
-      hap_ID->Fill( pblkid, cblkatime_d[f][0] );
-      hapDiff_ID->Fill( pblkid, cblkatime_d[f][0]-hodot );
-      hap_ID->Fill( pblkid, cblkatime_d[f][0]-hodot-pADCtcorr );
+      if( qreplay ){
+	pADCtcorr = oadctP0[pblkid]*exp(-oadctP1[pblkid]*pblke);
+	pADCt = cblkatime_d[f][0] + oldADCtoffsets[pblkid] - calADCtoffsets[pblkid];
+      }
+      hap_ID->Fill( pblkid, pADCt );
+      hapDiff_ID->Fill( pblkid, pADCt-hodot );
+      hapCorr_ID->Fill( pblkid, pADCt-hodot-pADCtcorr );
 
       //Loop over primary cluster
       for( Int_t blk = 0; blk<(int)nblk_d[f]; blk++ ){
@@ -1666,7 +1684,7 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
     Double_t tfitl = 0.;
     Double_t tfith = 0.;
     tcell[c] = c;
-    tcellslice[c] = htDiff_ID->ProjectionY(Form("tcellslice_%d",c+1),c+1,c+1);
+    tcellslice[c] = htpDiff_ID->ProjectionY(Form("tcellslice_%d",c+1),c+1,c+1); //Trying htpDiff_ID from htDiff_ID
     tcval[c] = oldTDCoffsets[c]; //will overwrite if fit is good.
     tcvalw[c] = 0.; //leave as zero to evaluate fit values only
 
@@ -1730,7 +1748,7 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
     Double_t afitl = 0.; //50. empirically
     Double_t afith = 0.; //75.
     acell[c] = c;
-    acellslice[c] = haDiff_ID->ProjectionY(Form("acellslice_%d",c+1),c+1,c+1);
+    acellslice[c] = haDiff_ID->ProjectionY(Form("acellslice_%d",c+1),c+1,c+1); //Trying hapDiff_ID from haDiff_ID
     acval[c] = oldADCtoffsets[c]; //will overwrite if fit is good.
     acvalw[c] = 0.; //will overwrite if fit is good.
 
@@ -1908,8 +1926,8 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 	tdcoff << tcval_avg << endl;
 	report << tcval_avg << " with adjustment" << endl;
       }else{
-	tdcoff << tcval[i]/TDCCalib + oldTDCoffsets[i] + 75/TDCCalib << endl;  //Targeting -75ns w/TDCs
-	report << tcval[i]/TDCCalib + oldTDCoffsets[i] + 75/TDCCalib << endl;  //Targeting -75ns w/TDCs
+	tdcoff << tcval[i]/TDCCalib + oldTDCoffsets[i] - TDC_target/TDCCalib << endl;
+	report << tcval[i]/TDCCalib + oldTDCoffsets[i] - TDC_target/TDCCalib << endl;
       }
     }  
 
@@ -1925,8 +1943,8 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
     report << "#Offsets obtained from fits over ADCT distributions = " << endl;
   
     for( Int_t i=0; i<kNcell; i++ ){   
-      adctoff << acval[i] + oldADCtoffsets[i] << endl;
-      report << acval[i] + oldADCtoffsets[i] << endl;
+      adctoff << acval[i] + oldADCtoffsets[i] - ADCt_target << endl;
+      report << acval[i] + oldADCtoffsets[i] - ADCt_target << endl;
     }
   
     adctoff.close();

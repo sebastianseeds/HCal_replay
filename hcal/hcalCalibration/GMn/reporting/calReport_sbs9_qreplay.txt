@@ -1,3 +1,0 @@
-#Error and performance report from SBS-9 obtained 2_28_2023
-
-Skipping matrix element checks for iteration 1 (quasi-replay)..

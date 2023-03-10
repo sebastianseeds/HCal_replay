@@ -1,0 +1,41 @@
+#Error and performance report from SBS-7 obtained 3_8_2023
+
+Opened many trees with 503378 LH2 events passing global cuts.
+Opened many trees with 1893940 LD2 events passing global cuts.
+
+Total available events to calibrate = 2397318.
+
+Looping over hydrogen data..
+LH2 kinematic 7 at field 85% , entry: 100000/503378. Total events gathered for calibration: 2942
+LH2 kinematic 7 at field 85% , entry: 200000/503378. Total events gathered for calibration: 5758
+LH2 kinematic 7 at field 85% , entry: 300000/503378. Total events gathered for calibration: 9507
+LH2 kinematic 7 at field 85% , entry: 400000/503378. Total events gathered for calibration: 13054
+LH2 kinematic 7 at field 85% , entry: 500000/503378. Total events gathered for calibration: 16883
+Looping over deuterium data..
+LD2 kinematic 7 at field 85%, entry: 100000/1893940. Total events gathered for calibration: 2152
+LD2 kinematic 7 at field 85%, entry: 200000/1893940. Total events gathered for calibration: 4078
+LD2 kinematic 7 at field 85%, entry: 300000/1893940. Total events gathered for calibration: 6392
+LD2 kinematic 7 at field 85%, entry: 400000/1893940. Total events gathered for calibration: 8555
+LD2 kinematic 7 at field 85%, entry: 500000/1893940. Total events gathered for calibration: 11185
+LD2 kinematic 7 at field 85%, entry: 600000/1893940. Total events gathered for calibration: 13879
+LD2 kinematic 7 at field 85%, entry: 700000/1893940. Total events gathered for calibration: 16374
+LD2 kinematic 7 at field 85%, entry: 800000/1893940. Total events gathered for calibration: 18828
+LD2 kinematic 7 at field 85%, entry: 900000/1893940. Total events gathered for calibration: 21506
+LD2 kinematic 7 at field 85%, entry: 1000000/1893940. Total events gathered for calibration: 24045
+LD2 kinematic 7 at field 85%, entry: 1100000/1893940. Total events gathered for calibration: 26993
+LD2 kinematic 7 at field 85%, entry: 1200000/1893940. Total events gathered for calibration: 29694
+LD2 kinematic 7 at field 85%, entry: 1300000/1893940. Total events gathered for calibration: 32361
+LD2 kinematic 7 at field 85%, entry: 1400000/1893940. Total events gathered for calibration: 35213
+LD2 kinematic 7 at field 85%, entry: 1500000/1893940. Total events gathered for calibration: 37962
+LD2 kinematic 7 at field 85%, entry: 1600000/1893940. Total events gathered for calibration: 41071
+LD2 kinematic 7 at field 85%, entry: 1700000/1893940. Total events gathered for calibration: 43877
+LD2 kinematic 7 at field 85%, entry: 1800000/1893940. Total events gathered for calibration: 46508
+
+Fitting TDC/ADCt/TW distributions
+
+
+Elastic yield for analyzed runs: 33022. Total event bins available for calibration = LH2 + LD2: 16951 + 49357 = 66308. Total number of events analyzed: 2397318.
+
+Diagnostic iteration complete. Histograms written to file.
+
+CPU time elapsed = 93.71 s = 1.56183 min. Real time = 196.554 s = 3.2759 min.

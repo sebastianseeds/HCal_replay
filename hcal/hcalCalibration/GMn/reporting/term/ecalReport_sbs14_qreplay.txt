@@ -1,0 +1,978 @@
+#HCal energy calibration error and performance report from SBS-14 obtained 3_8_2023
+
+Quasi-replay is 1
+
+
+ADC gain params from iteration 0 calibration: 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0.0028114 0.00168388 0.00165362 0.00176223 0.00191629 0.00127553 0.00033258 0.000987108 0.00208857 0.00104803 0.00256277 
+0.00175 0.000549083 0.000775478 0.00442065 0.00258831 0.00494617 0.00128529 0.00207281 0.00138078 0.00254466 0.000868816 0.0031688 
+0.00175 0.00165191 0.0021764 0.00212841 0.00198702 0.00189607 0.00256706 0.00366797 0.00182842 0.00342251 0.00301538 0.00296845 
+0.00175 0.00252655 0.00283923 0.0023337 0.00223751 0.00158411 0.0027284 0.00225524 0.00344816 0.00279704 0.00337447 0.00272894 
+0.00539881 0.00488097 0.00335483 0.00229536 0.00248509 0.00273405 0.00236282 0.00257491 0.00219291 0.00166954 0.00328149 0.00254265 
+0.00169373 0.000456589 0.000193289 0.000625858 0.00183406 0.0018025 0.00293563 0.00230933 0.00241573 0.00239109 0.00227851 0.00612074 
+0.0030827 0.00312109 0.00226237 0.00265706 0.00242545 0.0020049 0.00270662 0.00267814 0.00284806 0.00251039 0.00290511 0.00326762 
+0.000922817 0.00261391 0.00202307 0.00236802 0.00298865 0.00234485 0.00222066 0.00275161 0.00261441 0.00288247 0.004789 0.00300717 
+0.000271313 0.00196184 0.00253123 0.00300286 0.00265223 0.00238791 0.0030046 0.00276733 0.00251686 0.00245683 0.00167764 0.00305697 
+0.00247769 0.00322691 0.00242075 0.0027007 0.00260908 0.00277459 0.0028544 0.00270173 0.00262339 0.0028019 0.0012648 0.00538236 
+0.00157274 0.00267579 0.00207231 0.00265826 0.00281092 0.00285955 0.00225815 0.00270488 0.0024998 0.00283968 0.00486787 0.00372126 
+0.000449533 0.000498657 0.000839221 0.000634621 0.00079159 0.00137681 0.00288436 0.00260981 0.00253399 0.0020927 0.00252167 0.00244154 
+0.00543512 0.00145329 0.0024244 0.00143854 0.00148153 0.00260386 0.00220043 0.00308078 0.00199639 0.00296227 0.00346623 0.00259561 
+0.00115784 0.00317763 0.00175302 0.00229347 0.00269827 0.00265232 0.00250627 0.00257606 0.00228467 0.000146326 0.00341643 0.0042445 
+-0.000225241 0.00197603 0.00301274 0.00225008 0.00232604 0.00176954 0.00264473 0.00308585 0.00250842 0.00351764 0.00269524 -0.000584444 
+0.00447517 0.00115145 0.00273911 0.00239762 0.00178165 0.00255837 0.00246565 0.0012047 0.00144044 0.00174364 0.00357932 -0.000324018 
+-0.000672466 0.0021081 0.00253146 0.00151823 0.00275602 0.0018865 0.00278363 0.00327626 0.00252962 0.00201712 0.00363895 0.00299214 
+-0.000177071 0.00360517 0.00286913 0.00246682 0.00292424 0.00213905 0.00249807 0.0030407 0.001609 0.00234856 0.00395956 0.00478733 
+0.00432152 0.00300227 0.00230117 0.00224309 0.00345952 0.00208681 0.00216674 0.00192251 0.00287924 0.00263711 0.00281329 0.00372496 
+0.0045194 0.00271234 0.000218915 0.00208248 0.00218311 0.00219096 0.00206527 0.00306425 0.00303448 0.00218169 0.00271732 0.00410904 
+0.00265122 0.00132603 0.00291784 0.00333816 0.00318485 0.00317885 0.00307468 0.00276074 0.00267686 0.00146291 0.00267179 0.00338812 
+0.00175 0.0039503 0.00260093 0.0024333 0.00252718 0.00316758 0.00235997 0.00239385 0.00263458 0.00297045 0.00344367 0.00308539 
+0.00731553 0.00733844 0.00209338 0.0010918 0.00272237 0.00274204 0.00362374 0.00321225 0.00163467 0.00334515 0.00450925 0.00416878 
+
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13375_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13375_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13375_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13375_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13375_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13375_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13375_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13375_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13375_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13375_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13375_stream0_seg100_104.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13376_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13376_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13376_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13376_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13376_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13376_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13376_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13376_stream0_seg70_77.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13377_stream0_seg0_4.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13378_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13378_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13378_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13378_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13378_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13378_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13378_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13378_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13378_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13378_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13378_stream0_seg100_102.root..
+Loading beam energy: 5.9649
+Loading HCal distance: 14
+Loading HCal angle: 0.301942
+Loading BBCal angle: 0.811578
+Loading W2 mean cut: 0.777344
+Loading W2 sigma cut: 0.168992
+Loading x position of neutron spot: 0.0799085
+Loading y position of proton spot: 0.0799085
+Loading y position of both hadron spots: -0.0351797
+Loading x sigma of neutron spot: 0.0777094
+Loading x sigma of proton spot: 0.0777094
+Loading y sigma of both hadron spots: 0.0817252
+Loading ADC time mean: 58.3328
+Loading ADC time sigma: 3.12629
+Loading Aluminum absorber option: 0
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13239_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13239_stream0_seg10_18.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13240_stream0_seg0_2.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13241_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13241_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13241_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13242_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13242_stream0_seg10_12.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13243_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13243_stream0_seg10_13.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13244_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13244_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13244_stream0_seg20_25.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13312_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13312_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13312_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13312_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13312_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13312_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13312_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13312_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13312_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13312_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13312_stream0_seg100_102.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13313_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13313_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13313_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13313_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13313_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13313_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13313_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13313_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13313_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13313_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13313_stream0_seg100_105.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13320_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13320_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13320_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13320_stream0_seg30_35.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13321_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13321_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13321_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13321_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13321_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13321_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13321_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13321_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13321_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13321_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13321_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13321_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13321_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13321_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13321_stream0_seg140_149.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13321_stream0_seg150_159.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13321_stream0_seg160_169.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13321_stream0_seg170_179.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13321_stream0_seg180_186.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13345_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13345_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13345_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13345_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13345_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13345_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13345_stream0_seg60_60.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13346_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13346_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13346_stream0_seg20_28.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13348_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13348_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13348_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13348_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13348_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13348_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13348_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13348_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13348_stream0_seg80_82.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13349_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13349_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13349_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13349_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13349_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13349_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13349_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13349_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13349_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13349_stream0_seg90_98.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13351_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13351_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13351_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13351_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13351_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13351_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13351_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13351_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13351_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13351_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13351_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13351_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13351_stream0_seg120_126.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13352_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13352_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13352_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13352_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13352_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13352_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13352_stream0_seg60_66.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13379_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13379_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13379_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13379_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13379_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13379_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13379_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13379_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13379_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13379_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13379_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13379_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13379_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13379_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13379_stream0_seg140_149.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13379_stream0_seg150_159.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13379_stream0_seg160_160.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13396_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13396_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13396_stream0_seg20_26.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13397_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13397_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13397_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13397_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13397_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13397_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13397_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13397_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13397_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13397_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13397_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13397_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13397_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13397_stream0_seg130_132.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13405_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13405_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13405_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13405_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13405_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13405_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13405_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13405_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13405_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13405_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LH2/rootfiles/e1209019_fullreplay_13405_stream0_seg100_102.root..
+Loading beam energy: 5.9649
+Loading HCal distance: 14
+Loading HCal angle: 0.301942
+Loading BBCal angle: 0.811578
+Loading W2 mean cut: 0.888156
+Loading W2 sigma cut: 0.17924
+Loading x position of neutron spot: -0.722565
+Loading y position of proton spot: -0.722565
+Loading y position of both hadron spots: -0.0132459
+Loading x sigma of neutron spot: 0.0761898
+Loading x sigma of proton spot: 0.0761898
+Loading y sigma of both hadron spots: 0.0846373
+Loading ADC time mean: 58.7913
+Loading ADC time sigma: 3.77873
+Loading Aluminum absorber option: 0
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13305_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13305_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13305_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13305_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13305_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13305_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13305_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13305_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13305_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13305_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13305_stream0_seg100_106.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13306_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13306_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13306_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13306_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13306_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13306_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13306_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13306_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13306_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13306_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13306_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13306_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13306_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13306_stream0_seg130_134.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13307_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13307_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13307_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13307_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13307_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13307_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13307_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13307_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13307_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13307_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13307_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13307_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13307_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13307_stream0_seg130_138.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13308_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13308_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13308_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13308_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13308_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13308_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13308_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13308_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13308_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13308_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13308_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13308_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13308_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13308_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13308_stream0_seg140_149.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13308_stream0_seg150_150.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13309_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13309_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13309_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13309_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13309_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13309_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13309_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13309_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13309_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13309_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13309_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13309_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13309_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13309_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13309_stream0_seg140_143.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13314_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13314_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13314_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13314_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13314_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13314_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13314_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13314_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13314_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13314_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13314_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13314_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13314_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13314_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13314_stream0_seg140_149.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13315_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13315_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13315_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13315_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13315_stream0_seg40_46.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13316_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13316_stream0_seg10_14.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13317_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13317_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13317_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13317_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13317_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13317_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13317_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13317_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13317_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13317_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13317_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13317_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13317_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13317_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13317_stream0_seg140_149.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13317_stream0_seg150_159.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13317_stream0_seg160_169.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13317_stream0_seg170_172.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13318_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13318_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13318_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13318_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13318_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13318_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13318_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13318_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13318_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13318_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13318_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13318_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13318_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13318_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13318_stream0_seg140_149.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13318_stream0_seg150_159.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13318_stream0_seg160_169.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13318_stream0_seg170_179.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13318_stream0_seg180_182.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13319_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13319_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13319_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13319_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13319_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13319_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13319_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13319_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13319_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13319_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13319_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13319_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13319_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13319_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13319_stream0_seg140_149.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13319_stream0_seg150_157.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13322_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13322_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13322_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13322_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13322_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13322_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13322_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13322_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13322_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13322_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13322_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13322_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13322_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13322_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13322_stream0_seg140_146.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13323_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13323_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13323_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13323_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13323_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13323_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13323_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13323_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13323_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13323_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13323_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13323_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13323_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13323_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13323_stream0_seg140_149.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13323_stream0_seg150_159.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13323_stream0_seg160_162.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13324_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13324_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13324_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13324_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13324_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13324_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13324_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13324_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13324_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13324_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13324_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13324_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13324_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13324_stream0_seg130_138.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13325_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13325_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13325_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13325_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13325_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13325_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13325_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13325_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13325_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13325_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13325_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13325_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13325_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13325_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13325_stream0_seg140_149.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13325_stream0_seg150_155.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13342_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13342_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13342_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13342_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13342_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13342_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13344_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13344_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13344_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13344_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13344_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13344_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13344_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13344_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13344_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13344_stream0_seg90_94.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13353_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13353_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13353_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13353_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13353_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13353_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13353_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13353_stream0_seg70_72.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13357_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13357_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13357_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13357_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13357_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13357_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13357_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13357_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13357_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13357_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13357_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13357_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13357_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13357_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13357_stream0_seg140_149.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13357_stream0_seg150_159.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13357_stream0_seg160_169.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13357_stream0_seg170_178.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13358_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13358_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13358_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13358_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13358_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13358_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13358_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13358_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13358_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13358_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13358_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13358_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13358_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13358_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13358_stream0_seg140_149.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13358_stream0_seg150_159.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13358_stream0_seg160_162.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13359_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13359_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13359_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13359_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13359_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13359_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13359_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13359_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13359_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13359_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13359_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13359_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13359_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13359_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13359_stream0_seg140_149.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13359_stream0_seg150_158.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13360_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13360_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13360_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13360_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13360_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13360_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13360_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13360_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13360_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13360_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13360_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13360_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13360_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13360_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13360_stream0_seg140_149.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13360_stream0_seg150_159.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13360_stream0_seg160_169.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13360_stream0_seg170_179.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13360_stream0_seg180_189.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13360_stream0_seg190_190.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13361_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13361_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13361_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13361_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13361_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13361_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13361_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13361_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13361_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13361_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13361_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13361_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13361_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13361_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13361_stream0_seg140_149.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13361_stream0_seg150_159.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13361_stream0_seg160_169.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13361_stream0_seg170_179.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13361_stream0_seg180_186.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13362_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13362_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13362_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13362_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13362_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13362_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13362_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13362_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13362_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13362_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13362_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13362_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13362_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13362_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13362_stream0_seg140_141.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13363_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13363_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13363_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13363_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13363_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13363_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13363_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13363_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13363_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13363_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13363_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13363_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13363_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13363_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13363_stream0_seg140_149.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13363_stream0_seg150_158.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13364_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13364_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13364_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13364_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13364_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13364_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13364_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13364_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13364_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13364_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13364_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13364_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13364_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13364_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13364_stream0_seg140_149.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13364_stream0_seg150_158.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13368_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13368_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13368_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13368_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13368_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13368_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13368_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13368_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13368_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13368_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13368_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13368_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13368_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13368_stream0_seg130_136.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13369_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13369_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13369_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13369_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13369_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13369_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13369_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13369_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13369_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13369_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13369_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13369_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13369_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13369_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13369_stream0_seg140_149.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13369_stream0_seg150_159.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13369_stream0_seg160_162.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13370_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13370_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13370_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13370_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13370_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13370_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13370_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13370_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13370_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13370_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13370_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13370_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13370_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13370_stream0_seg130_136.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13371_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13371_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13371_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13371_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13371_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13371_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13371_stream0_seg60_68.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13372_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13372_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13372_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13372_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13372_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13372_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13372_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13372_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13372_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13372_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13372_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13372_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13372_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13372_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13372_stream0_seg140_149.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13373_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13373_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13373_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13373_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13373_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13373_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13373_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13373_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13373_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13373_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13373_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13373_stream0_seg110_115.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13381_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13381_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13381_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13381_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13381_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13381_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13381_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13381_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13381_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13381_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13381_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13381_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13381_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13381_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13381_stream0_seg140_143.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13382_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13382_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13382_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13382_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13382_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13382_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13382_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13382_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13382_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13382_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13382_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13382_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13382_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13382_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13382_stream0_seg140_142.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13384_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13384_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13384_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13384_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13384_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13384_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13384_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13384_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13384_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13384_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13384_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13384_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13384_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13384_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13384_stream0_seg140_142.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13385_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13385_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13385_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13385_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13385_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13385_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13385_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13385_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13385_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13385_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13385_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13385_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13385_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13385_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13385_stream0_seg140_149.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13385_stream0_seg150_152.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13387_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13387_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13387_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13387_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13387_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13387_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13387_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13387_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13387_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13387_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13387_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13387_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13387_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13387_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13387_stream0_seg140_145.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13388_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13388_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13388_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13388_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13388_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13388_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13388_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13388_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13388_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13388_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13388_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13388_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13388_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13388_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13388_stream0_seg140_149.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13389_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13389_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13389_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13389_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13389_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13389_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13389_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13389_stream0_seg70_70.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13390_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13390_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13390_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13390_stream0_seg30_30.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13391_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13391_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13391_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13391_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13391_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13391_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13391_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13391_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13391_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13391_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13391_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13391_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13391_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13391_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13391_stream0_seg140_149.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13391_stream0_seg150_159.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13391_stream0_seg160_169.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13391_stream0_seg170_171.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13392_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13392_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13392_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13392_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13392_stream0_seg40_40.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13393_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13393_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13393_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13393_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13393_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13393_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13393_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13393_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13393_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13393_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13393_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13393_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13393_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13393_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13393_stream0_seg140_141.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13394_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13394_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13394_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13394_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13394_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13394_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13394_stream0_seg60_66.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13395_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13395_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13395_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13395_stream0_seg30_36.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13398_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13398_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13398_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13398_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13398_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13398_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13398_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13398_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13398_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13398_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13398_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13398_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13398_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13398_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13398_stream0_seg140_149.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13398_stream0_seg150_150.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13399_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13399_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13399_stream0_seg20_26.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13400_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13400_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13400_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13400_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13400_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13400_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13400_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13400_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13400_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13400_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13400_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13400_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13400_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13400_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13400_stream0_seg140_148.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13402_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13402_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13402_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13402_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13402_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13402_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13402_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13402_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13402_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13402_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13402_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13402_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13402_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13402_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13402_stream0_seg140_146.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13403_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13403_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13403_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13403_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13403_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13403_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13403_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13403_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13403_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13403_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13403_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13403_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13406_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13406_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13406_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13406_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13406_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13406_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13406_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13406_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13406_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13406_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13406_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13406_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13406_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13406_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13406_stream0_seg140_149.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13406_stream0_seg150_159.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13406_stream0_seg160_161.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13407_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13407_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13407_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13407_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13407_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13407_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13407_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13407_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13407_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13407_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13407_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13407_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13407_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13407_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13407_stream0_seg140_149.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13407_stream0_seg150_159.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13407_stream0_seg160_169.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13407_stream0_seg170_179.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13407_stream0_seg180_189.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13407_stream0_seg190_199.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass1/SBS14/LD2/rootfiles/e1209019_fullreplay_13407_stream0_seg200_202.root..
+Loading beam energy: 5.9649
+Loading HCal distance: 14
+Loading HCal angle: 0.301942
+Loading BBCal angle: 0.811578
+Loading W2 mean cut: 0.870819
+Loading W2 sigma cut: 0.19443
+Loading x position of neutron spot: 0.078859
+Loading y position of proton spot: -0.719273
+Loading y position of both hadron spots: 0.000633742
+Loading x sigma of neutron spot: 0.171009
+Loading x sigma of proton spot: 0.161225
+Loading y sigma of both hadron spots: 0.218423
+Loading ADC time mean: 58.5008
+Loading ADC time sigma: 3.75217
+Loading Aluminum absorber option: 0
+
+
+Setup parameters loaded and chains linked.
+Output file located here: reporting/qreplay_sbs14.root
+Opened many trees with 933343 LH2 events passing global cuts.
+Opened many trees with 3211403 LD2 events passing global cuts.
+
+Total available events to calibrate = 4144746.
+
+Looping over hydrogen data..
+qreplay at LH2 kinematic 14 at field 0% , entry: 100000/150058 qreplay at LH2 kinematic 14 at field 70% , entry: 100000/783285 qreplay at LH2 kinematic 14 at field 70% , entry: 200000/783285 qreplay at LH2 kinematic 14 at field 70% , entry: 300000/783285 qreplay at LH2 kinematic 14 at field 70% , entry: 400000/783285 qreplay at LH2 kinematic 14 at field 70% , entry: 500000/783285 qreplay at LH2 kinematic 14 at field 70% , entry: 600000/783285 qreplay at LH2 kinematic 14 at field 70% , entry: 700000/783285 Hydrogen loop complete.
+Looping over deuterium data..
+
+qreplay at LD2 kinematic 14 at field 70% , entry: 100000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 200000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 300000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 400000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 500000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 600000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 700000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 800000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 900000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 1000000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 1100000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 1200000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 1300000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 1400000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 1500000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 1600000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 1700000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 1800000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 1900000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 2000000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 2100000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 2200000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 2300000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 2400000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 2500000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 2600000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 2700000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 2800000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 2900000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 3000000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 3100000/3211403 qreplay at LD2 kinematic 14 at field 70% , entry: 3200000/3211403 Deuterium loop complete.
+
+Skipping matrix element checks for iteration 1 (quasi-replay)..
+
+
+Diagnostic iteration complete. Histograms written to file.
+
+CPU time elapsed = 357.67 s = 5.96117 min. Real time = 2217.73 s = 36.9622 min.
