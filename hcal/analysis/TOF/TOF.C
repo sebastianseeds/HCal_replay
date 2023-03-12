@@ -79,7 +79,7 @@ string getDate(){
   return date;
 }
 
-void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pelas_out.root" ){
+void TOF( const char *configfilename="sTOF.cfg" ){
   
   // Define a clock to check overall time
   TStopwatch *st = new TStopwatch();
@@ -353,7 +353,7 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
   sw->Start();
   
   // Declare outfiles
-  outputfilename = Form( "outfiles/TOF_SBS%d_tar%s_%s.root", magSet, tar.c_str(), date.c_str() );
+  string outputfilename = Form( "outfiles/TOF_SBS%d_tar%s_%s.root", magSet, tar.c_str(), date.c_str() );
   TFile *fout = new TFile( outputfilename, "RECREATE" );
   string logpath = Form( "outfiles/TOFLog_%s.log", date.c_str() );
 
@@ -365,8 +365,8 @@ void TOF( const char *configfilename="sTOF.cfg", const char *outputfilename="pel
   double Eloss_outgoing = celldiameter/2.0/sin(BB_th) * rho_tgt * dEdx_tgt; //Energy lost in target. Approximately 1 MeV, could correct further with raster position
   if( useAlshield != 0 ) Eloss_outgoing += Alshieldthick * rho_Al * dEdx_Al; //Add energy loss from aluminum shield for runs where relevant
 
-  TH1D *h_W = new TH1D("h_W",";W (GeV);",250,0,2); //Invarient mass 1D histo
-  TH1D *h_Wcut = new TH1D("h_Wcut",";W (GeV);",250,0,2); //Invarient mass 1D histo
+  TH1D *h_W = new TH1D("h_W",";W (GeV);",250,0,2); //Invariant mass 1D histo
+  TH1D *h_Wcut = new TH1D("h_Wcut",";W (GeV);",250,0,2); //Invariant mass 1D histo
 
   //TH1D *Pelastic = new TH1D("Pelastic","Pelastic", 250,0,5);
   //TH1D *Precon = new TH1D("Precon","Precon",250,0,5);
