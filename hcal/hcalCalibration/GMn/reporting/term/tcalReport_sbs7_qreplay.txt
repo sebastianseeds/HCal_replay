@@ -1,4 +1,4 @@
-#Error and performance report from SBS-7 obtained 3_8_2023
+#Error and performance report from SBS-7 obtained 3_14_2023
 
 Opened many trees with 503378 LH2 events passing global cuts.
 Opened many trees with 1893940 LD2 events passing global cuts.
@@ -38,4 +38,4 @@ Elastic yield for analyzed runs: 33022. Total event bins available for calibrati
 
 Diagnostic iteration complete. Histograms written to file.
 
-CPU time elapsed = 93.71 s = 1.56183 min. Real time = 196.554 s = 3.2759 min.
+CPU time elapsed = 126.74 s = 2.11233 min. Real time = 310.866 s = 5.18111 min.

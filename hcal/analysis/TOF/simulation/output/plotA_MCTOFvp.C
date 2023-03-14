@@ -31,9 +31,9 @@ const Int_t kIdx[6] = {4,7,11,14,8,9}; //indexing kinematics for processing
 
 void plotA_MCTOFvp( ){
   
-  TCanvas *c1 = new TCanvas("c1","G4SBS TOF vs p, Protons",1600,1200);
+  TCanvas *c1 = new TCanvas("c1","G4SBS TOF vs p, Protons",2200,1200);
   c1->Divide(3,2);
-  TCanvas *c2 = new TCanvas("c2","G4SBS TOF vs p, Neutrons",1600,1200);
+  TCanvas *c2 = new TCanvas("c2","G4SBS TOF vs p, Neutrons",2200,1200);
   c2->Divide(3,2);
 
   gStyle->SetOptStat(0);
@@ -41,42 +41,16 @@ void plotA_MCTOFvp( ){
   //Get TOF v p for protons and send to canvas 1
   TFile *fmc[nkine];
   TH2D *hmc_p[nkine];
-  //TF1 *fitmc[nkine];
-  //Double_t fitp1[nkine];
   for( Int_t i=0; i<nkine; i++ ){
     c1->cd(i+1);
 
     fmc[i] = TFile::Open(Form("simTOFout_sbs%d.root",kIdx[i]));
     hmc_p[i]= (TH2D*)fmc[i]->Get("TOF_vs_pp");
-    //hmc[i]->GetXaxis()->SetRange(0,80);
-    //hmc[i]->SetLineWidth(3);
-    //hmc[i]->SetLineColor(i+40);
-    
-    //hmc[i]->Fit("gaus","","",0.04,0.1);
-    //fitmc[i] = hmc[i]->GetFunction("gaus");
-    //fitp1[i] = fitmc[i]->GetParameter(1);
-
-    //hmc[i]->Draw("hist same");
-
-    // if( i==0 ){
-    //   hmc[i]->Draw("hist");
-    // }else{
-    //   hmc[i]->Draw("hist same");
-    // }
-
-    hmc_p[i]->Draw("hist");
+    hmc_p[i]->SetTitle(Form("Proton Time of Flight vs Momentum, SBS%d",kIdx[i]));
+    hmc_p[i]->GetXaxis()->SetTitle("p (GeV)");
+    hmc_p[i]->GetYaxis()->SetTitle("Time of Flight (ns)");
+    hmc_p[i]->Draw("hist colz");
   }
-
-  //Add a legend
-  c1->cd(3);
-  auto legend = new TLegend(0.45,0.65,0.89,0.89);
-  legend->SetTextSize(0.03);
-  legend->SetHeader("HCal MC TOF vs p Results");
-  for( Int_t i=0; i<nkine; i++ ){
-
-    legend->AddEntry(hmc[i],Form("SBS%d",kIdx[i]),"l");
-  }
-  legend->Draw();
 
   //Get TOF v p for neutrons and send to canvas 2
   TH2D *hmc_n[nkine];
@@ -85,20 +59,13 @@ void plotA_MCTOFvp( ){
 
     fmc[i] = TFile::Open(Form("simTOFout_sbs%d.root",kIdx[i]));
     hmc_n[i]= (TH2D*)fmc[i]->Get("TOF_vs_pn");
-    hmc_n[i]->Draw("hist");
+    hmc_n[i]->SetTitle(Form("Neutron Time of Flight vs Momentum, SBS%d",kIdx[i]));
+    hmc_n[i]->GetXaxis()->SetTitle("p (GeV)");
+    hmc_n[i]->GetYaxis()->SetTitle("Time of Flight (ns)");
+    hmc_n[i]->Draw("hist colz");
   }
 
-  //Add a legend
-  c1->cd(3);
-  auto legend = new TLegend(0.45,0.65,0.89,0.89);
-  legend->SetTextSize(0.03);
-  legend->SetHeader("HCal MC TOF vs p Results");
-  for( Int_t i=0; i<nkine; i++ ){
-
-    legend->AddEntry(hmc[i],Form("SBS%d",kIdx[i]),"l");
-  }
-  legend->Draw();
-
-  c1->SaveAs("/u/home/sseeds/Plots/MC_TOFvp_proton_allkine.pdf");
+  c1->SaveAs("/u/home/sseeds/Plots/MC_TOFvp_proton_allkine.png");
+  c2->SaveAs("/u/home/sseeds/Plots/MC_TOFvp_neutron_allkine.png");
 
 }

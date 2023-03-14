@@ -94,6 +94,7 @@ const Int_t tofB[6] = {30,85,100,70,70,70};
 const Double_t PI = TMath::Pi();
 const Double_t M_e = 0.00051;
 const Double_t M_p = 0.938272;
+const Double_t M_n = 0.939565;
 const Int_t tFitMin = 120;
 
 // Get today's date
@@ -222,11 +223,11 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
     pass0=true;
     
     // Reading ADC gain parameters from database 
-    string inOldConstPath = "/u/home/sbs-gmn/pass0/SBS_REPLAY/SBS-replay/DB/db_sbs.hcal.dat";
+    string inOldGainConstPath = "/u/home/sbs-gmn/pass0/SBS_REPLAY/SBS-replay/DB/db_sbs.hcal.dat";
     
-    cout << "Loading previous gain coefficients from file for pass0 kinematics: " << inOldConstPath << ".." << endl;
-    ifstream inOldConstFile( inOldConstPath );
-    if( !inOldConstFile ){
+    cout << "Loading previous gain coefficients from file for pass0 kinematics: " << inOldGainConstPath << ".." << endl;
+    ifstream inOldGainConstFile( inOldGainConstPath );
+    if( !inOldGainConstFile ){
       cerr << endl << "ERROR: No input constant file present -> path to db_sbs.hcal.dat expected." << endl;
       return 0;
     }
@@ -238,7 +239,7 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
     bool skip_one_line = true;
     bool skip_first_instance = true;
     
-    while( getline( inOldConstFile, line ) ){
+    while( getline( inOldGainConstFile, line ) ){
       
       if( n1==( kNcell ) ) break;
       
@@ -559,6 +560,7 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 
   // Path for previous ADCt and TDC constants
   string inOldConstPath = "/u/home/sbs-gmn/pass0/SBS_REPLAY/SBS-replay/DB/db_sbs.hcal.dat";
+  if( kine==11 ) inOldConstPath = "../config/GMn/SBS11/db_sbs.hcal.sbs11alttiming.dat";
 
   // Reading ADC and TDC timing offsets from database
   cout << endl << "Loading previous offsets from database file: " << inOldConstPath << ".." << endl;
@@ -1121,7 +1123,9 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
   
   // Declare outfile
   TFile *fout;
-  if( qreplay ){
+  if( tofreplay ){
+    fout = new TFile( Form("reporting/timing/allCorrReplay_sbs%d.root", kine ), "RECREATE" );
+  }else if( qreplay ){
     fout = new TFile( Form("reporting/timing/qtreplay_sbs%d.root", kine ), "RECREATE" );
   }else{
     fout = new TFile( Form("reporting/timing/tCalOut_sbs%d.root", kine ), "RECREATE" );
@@ -1377,7 +1381,7 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 	    TOFcorr = TOFfitp_p[kIdx][0]+TOFfitp_p[kIdx][1]*protmom+TOFfitp_p[kIdx][2]*pow(protmom,2)+TOFfitp_p[kIdx][3]*pow(protmom,3); //proton correction, only overwrite if data matches currently available MC fit results
 	  }
 	  if( isneutron && tofready){ //Check if tofreplay, in neutron dxdy, not ambiguous, if field set matches current MC fits
-	    Double neutmom = pn;
+	    Double_t neutmom = pn;
 	    if( pn>pulim[kIdx] ) neutmom = pulim[kIdx]; //do not pass corrections for momenta > fit limit in MC
 	    TOFcorr = TOFfitp_n[kIdx][0]+TOFfitp_n[kIdx][1]*neutmom+TOFfitp_n[kIdx][2]*pow(neutmom,2)+TOFfitp_n[kIdx][3]*pow(neutmom,3); //proton correction, only overwrite if data matches currently available MC fit results
 	  }
@@ -1493,6 +1497,7 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
   for( Int_t f=0; f<nfset_ld2[kIdx]; f++ ){
 
     Int_t dfieldset = fset_ld2[kIdx][f];
+    bool tofready = tofreplay && dfieldset==tofB[kIdx]; //Check if TOF corrections can be applied for these data
 
     //Declare energy loss parameters for beam going through the target
     Double_t pBeam = E_e_d[f]/(1.+E_e_d[f]/M_p*(1.-cos(BB_th_d[f])));
@@ -1644,7 +1649,7 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 	    TOFcorr = TOFfitp_p[kIdx][0]+TOFfitp_p[kIdx][1]*protmom+TOFfitp_p[kIdx][2]*pow(protmom,2)+TOFfitp_p[kIdx][3]*pow(protmom,3); //proton correction, only overwrite if data matches currently available MC fit results
 	  }
 	  if( isneutron && tofready){ //Check if tofreplay, in neutron dxdy, not ambiguous, if field set matches current MC fits
-	    Double neutmom = pn;
+	    Double_t neutmom = pn;
 	    if( pn>pulim[kIdx] ) neutmom = pulim[kIdx]; //do not pass corrections for momenta > fit limit in MC
 	    TOFcorr = TOFfitp_n[kIdx][0]+TOFfitp_n[kIdx][1]*neutmom+TOFfitp_n[kIdx][2]*pow(neutmom,2)+TOFfitp_n[kIdx][3]*pow(neutmom,3); //proton correction, only overwrite if data matches currently available MC fit results
 	  }

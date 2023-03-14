@@ -142,7 +142,7 @@ void simTOF( Int_t kine = 4, Int_t iter = 0 ){
   TH1D *hp = new TH1D("hp","Hadron p; GeV",dpbins,dpllim,dpulim);
   TH2D *TOF_vs_px = new TH2D("TOF_vs_px","Time of Flight vs Hadron x Momentum", 100, -pcompr, pcompr, dtbins, dtllim, dtulim);
   TH2D *TOF_vs_py = new TH2D("TOF_vs_py","Time of Flight vs Hadron y Momentum", 100, -pcompr, pcompr, dtbins, dtllim, dtulim);
-  TH2D *TOF_vs_pz = new TH2D("TOF_vs_pz","Time of Flight vs Hadron z Momentum", 100, -pcompr, pcompr, dtbins, tllim[kIdx], tulim[kIdx]);
+  TH2D *TOF_vs_pz = new TH2D("TOF_vs_pz","Time of Flight vs Hadron z Momentum", 100, -pcompr, pcompr, dtbins, dtllim, dtulim);
 
   //Define TOF histograms
   TH1D *TOF_all_p = new TH1D("TOF_all_p","Time of Flight over All Modules: Protons", Ntbins[kIdx], tllim[kIdx], tulim[kIdx]);
@@ -166,6 +166,11 @@ void simTOF( Int_t kine = 4, Int_t iter = 0 ){
   TH2D *TOF_vs_py_n = new TH2D("TOF_vs_py_n","Time of Flight vs Neutron y Momentum", 100, -pcompr, pcompr, Ntbins[kIdx], tllim[kIdx], tulim[kIdx]);
   TH2D *TOF_vs_pz_p = new TH2D("TOF_vs_pz_p","Time of Flight vs Proton z Momentum", 100,-pcompr, pcompr, Ntbins[kIdx], tllim[kIdx], tulim[kIdx]);
   TH2D *TOF_vs_pz_n = new TH2D("TOF_vs_pz_n","Time of Flight vs Neutron z Momentum", 100, -pcompr, pcompr, Ntbins[kIdx], tllim[kIdx], tulim[kIdx]);
+
+  //Momentum component slices
+  TH2D *TOF_vs_px_cent = new TH2D("TOF_vs_px_cent","Time of Flight vs Hadron x Momentum, Central py/pz", 100, -pcompr, pcompr, Ntbins[kIdx], tllim[kIdx], tulim[kIdx]);
+  TH2D *TOF_vs_py_cent = new TH2D("TOF_vs_py_cent","Time of Flight vs Hadron y Momentum, Central px/pz", 100, -pcompr, pcompr, Ntbins[kIdx], tllim[kIdx], tulim[kIdx]);
+  TH2D *TOF_vs_pz_cent = new TH2D("TOF_vs_pz_cent","Time of Flight vs Hadron z Momentum, Central px/py", 100, -pcompr, pcompr, Ntbins[kIdx], tllim[kIdx], tulim[kIdx]);
 
 
   //Define supplementary histograms
