@@ -1,4 +1,4 @@
-#HCal energy calibration error and performance report from SBS-9 obtained 3_8_2023
+#HCal energy calibration error and performance report from SBS-9 obtained 3_9_2023
 
 Quasi-replay is 0
 
@@ -3311,7 +3311,7 @@ Proceeding to energy matrix quality check analysis..
 
 Cell 3 bad
 Number of events in bad cell =1
-Matrix element/vector element ratio =18.2232
+Matrix element/vector element ratio =17.7307
 
 Oneblock: cell3 bad
 Oneblock: number of events in bad cell =0
@@ -3321,7 +3321,7 @@ Proceeding to energy matrix quality check analysis..
 
 Cell 4 bad
 Number of events in bad cell =1
-Matrix element/vector element ratio =9.24405
+Matrix element/vector element ratio =8.99421
 
 Oneblock: cell4 bad
 Oneblock: number of events in bad cell =0
@@ -3401,7 +3401,7 @@ Proceeding to energy matrix quality check analysis..
 
 Cell 12 bad
 Number of events in bad cell =4
-Matrix element/vector element ratio =35.0661
+Matrix element/vector element ratio =34.1183
 
 Oneblock: cell12 bad
 Oneblock: number of events in bad cell =0
@@ -3411,7 +3411,7 @@ Proceeding to energy matrix quality check analysis..
 
 Cell 13 bad
 Number of events in bad cell =8
-Matrix element/vector element ratio =35.5255
+Matrix element/vector element ratio =34.5654
 
 Oneblock: cell13 bad
 Oneblock: number of events in bad cell =0
@@ -3439,7 +3439,7 @@ Proceeding to energy matrix quality check analysis..
 
 Cell 17 bad
 Number of events in bad cell =19
-Matrix element/vector element ratio =87.407
+Matrix element/vector element ratio =85.0447
 
 Oneblock: cell17 bad
 Oneblock: number of events in bad cell =0
@@ -3449,7 +3449,7 @@ Proceeding to energy matrix quality check analysis..
 
 Cell 18 bad
 Number of events in bad cell =11
-Matrix element/vector element ratio =166.389
+Matrix element/vector element ratio =161.892
 
 Oneblock: cell18 bad
 Oneblock: number of events in bad cell =0
@@ -3459,7 +3459,7 @@ Proceeding to energy matrix quality check analysis..
 
 Cell 19 bad
 Number of events in bad cell =3
-Matrix element/vector element ratio =1065.52
+Matrix element/vector element ratio =1036.73
 
 Oneblock: cell19 bad
 Oneblock: number of events in bad cell =0
@@ -3469,7 +3469,7 @@ Proceeding to energy matrix quality check analysis..
 
 Cell 20 bad
 Number of events in bad cell =2
-Matrix element/vector element ratio =46.8379
+Matrix element/vector element ratio =45.5721
 
 Oneblock: cell20 bad
 Oneblock: number of events in bad cell =0
@@ -3479,7 +3479,7 @@ Proceeding to energy matrix quality check analysis..
 
 Cell 21 bad
 Number of events in bad cell =2
-Matrix element/vector element ratio =90.5415
+Matrix element/vector element ratio =88.0944
 
 Oneblock: cell21 bad
 Oneblock: number of events in bad cell =0
@@ -3509,7 +3509,7 @@ Proceeding to energy matrix quality check analysis..
 
 Cell 24 bad
 Number of events in bad cell =4
-Matrix element/vector element ratio =27.0623
+Matrix element/vector element ratio =26.3309
 
 Oneblock: cell24 bad
 Oneblock: number of events in bad cell =0
@@ -3525,25 +3525,25 @@ Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell26 bad
 Oneblock: number of events in bad cell =1
-Oneblock: matrix element/vector element ratio =514.494
+Oneblock: matrix element/vector element ratio =500.589
 
 Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell27 bad
 Oneblock: number of events in bad cell =3
-Oneblock: matrix element/vector element ratio =270.789
+Oneblock: matrix element/vector element ratio =263.47
 
 Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell28 bad
 Oneblock: number of events in bad cell =2
-Oneblock: matrix element/vector element ratio =894.679
+Oneblock: matrix element/vector element ratio =870.498
 
 Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell29 bad
 Oneblock: number of events in bad cell =3
-Oneblock: matrix element/vector element ratio =399.309
+Oneblock: matrix element/vector element ratio =388.517
 
 Proceeding to energy matrix quality check analysis..
 
@@ -3555,25 +3555,25 @@ Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell31 bad
 Oneblock: number of events in bad cell =2
-Oneblock: matrix element/vector element ratio =510.366
+Oneblock: matrix element/vector element ratio =496.572
 
 Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell32 bad
 Oneblock: number of events in bad cell =1
-Oneblock: matrix element/vector element ratio =367.311
+Oneblock: matrix element/vector element ratio =357.383
 
 Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell33 bad
 Oneblock: number of events in bad cell =1
-Oneblock: matrix element/vector element ratio =89.9615
+Oneblock: matrix element/vector element ratio =87.5301
 
 Proceeding to energy matrix quality check analysis..
 
 Cell 34 bad
 Number of events in bad cell =7
-Matrix element/vector element ratio =74.4288
+Matrix element/vector element ratio =72.4172
 
 Oneblock: cell34 bad
 Oneblock: number of events in bad cell =0
@@ -3599,7 +3599,7 @@ Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell37 bad
 Oneblock: number of events in bad cell =15
-Oneblock: matrix element/vector element ratio =307.024
+Oneblock: matrix element/vector element ratio =298.727
 
 Proceeding to energy matrix quality check analysis..
 
@@ -3607,55 +3607,55 @@ Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell39 bad
 Oneblock: number of events in bad cell =21
-Oneblock: matrix element/vector element ratio =351.444
+Oneblock: matrix element/vector element ratio =341.945
 
 Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell40 bad
 Oneblock: number of events in bad cell =18
-Oneblock: matrix element/vector element ratio =412.802
+Oneblock: matrix element/vector element ratio =401.646
 
 Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell41 bad
 Oneblock: number of events in bad cell =17
-Oneblock: matrix element/vector element ratio =535.783
+Oneblock: matrix element/vector element ratio =521.302
 
 Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell42 bad
 Oneblock: number of events in bad cell =16
-Oneblock: matrix element/vector element ratio =287.826
+Oneblock: matrix element/vector element ratio =280.047
 
 Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell43 bad
 Oneblock: number of events in bad cell =10
-Oneblock: matrix element/vector element ratio =210.724
+Oneblock: matrix element/vector element ratio =205.028
 
 Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell44 bad
 Oneblock: number of events in bad cell =10
-Oneblock: matrix element/vector element ratio =296.279
+Oneblock: matrix element/vector element ratio =288.271
 
 Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell45 bad
 Oneblock: number of events in bad cell =6
-Oneblock: matrix element/vector element ratio =184.467
+Oneblock: matrix element/vector element ratio =179.482
 
 Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell46 bad
 Oneblock: number of events in bad cell =1
-Oneblock: matrix element/vector element ratio =275.653
+Oneblock: matrix element/vector element ratio =268.203
 
 Proceeding to energy matrix quality check analysis..
 
 Cell 47 bad
 Number of events in bad cell =4
-Matrix element/vector element ratio =86.0303
+Matrix element/vector element ratio =83.7051
 
 Oneblock: cell47 bad
 Oneblock: number of events in bad cell =0
@@ -3671,7 +3671,7 @@ Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell49 bad
 Oneblock: number of events in bad cell =22
-Oneblock: matrix element/vector element ratio =283.821
+Oneblock: matrix element/vector element ratio =276.15
 
 Proceeding to energy matrix quality check analysis..
 
@@ -3687,7 +3687,7 @@ Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell55 bad
 Oneblock: number of events in bad cell =17
-Oneblock: matrix element/vector element ratio =314.363
+Oneblock: matrix element/vector element ratio =305.866
 
 Proceeding to energy matrix quality check analysis..
 
@@ -3695,19 +3695,19 @@ Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell57 bad
 Oneblock: number of events in bad cell =11
-Oneblock: matrix element/vector element ratio =287.343
+Oneblock: matrix element/vector element ratio =279.577
 
 Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell58 bad
 Oneblock: number of events in bad cell =2
-Oneblock: matrix element/vector element ratio =196.015
+Oneblock: matrix element/vector element ratio =190.717
 
 Proceeding to energy matrix quality check analysis..
 
 Cell 59 bad
 Number of events in bad cell =6
-Matrix element/vector element ratio =73.4379
+Matrix element/vector element ratio =71.4531
 
 Oneblock: cell59 bad
 Oneblock: number of events in bad cell =0
@@ -3739,19 +3739,19 @@ Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell69 bad
 Oneblock: number of events in bad cell =28
-Oneblock: matrix element/vector element ratio =418.773
+Oneblock: matrix element/vector element ratio =407.455
 
 Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell70 bad
 Oneblock: number of events in bad cell =1
-Oneblock: matrix element/vector element ratio =147.773
+Oneblock: matrix element/vector element ratio =143.779
 
 Proceeding to energy matrix quality check analysis..
 
 Cell 71 bad
 Number of events in bad cell =22
-Matrix element/vector element ratio =53.6245
+Matrix element/vector element ratio =52.1752
 
 Oneblock: cell71 bad
 Oneblock: number of events in bad cell =0
@@ -3767,7 +3767,7 @@ Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell73 bad
 Oneblock: number of events in bad cell =10
-Oneblock: matrix element/vector element ratio =5740.09
+Oneblock: matrix element/vector element ratio =5584.95
 
 Proceeding to energy matrix quality check analysis..
 
@@ -3787,13 +3787,13 @@ Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell81 bad
 Oneblock: number of events in bad cell =27
-Oneblock: matrix element/vector element ratio =266.016
+Oneblock: matrix element/vector element ratio =258.827
 
 Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell82 bad
 Oneblock: number of events in bad cell =2
-Oneblock: matrix element/vector element ratio =264.744
+Oneblock: matrix element/vector element ratio =257.589
 
 Proceeding to energy matrix quality check analysis..
 
@@ -3829,7 +3829,7 @@ Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell94 bad
 Oneblock: number of events in bad cell =4
-Oneblock: matrix element/vector element ratio =101.173
+Oneblock: matrix element/vector element ratio =98.4383
 
 Proceeding to energy matrix quality check analysis..
 
@@ -3865,7 +3865,7 @@ Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell106 bad
 Oneblock: number of events in bad cell =7
-Oneblock: matrix element/vector element ratio =256.954
+Oneblock: matrix element/vector element ratio =250.01
 
 Proceeding to energy matrix quality check analysis..
 
@@ -3901,7 +3901,7 @@ Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell118 bad
 Oneblock: number of events in bad cell =19
-Oneblock: matrix element/vector element ratio =326.294
+Oneblock: matrix element/vector element ratio =317.475
 
 Proceeding to energy matrix quality check analysis..
 
@@ -3937,7 +3937,7 @@ Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell130 bad
 Oneblock: number of events in bad cell =5
-Oneblock: matrix element/vector element ratio =448.617
+Oneblock: matrix element/vector element ratio =436.492
 
 Proceeding to energy matrix quality check analysis..
 
@@ -3973,7 +3973,7 @@ Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell142 bad
 Oneblock: number of events in bad cell =22
-Oneblock: matrix element/vector element ratio =219.696
+Oneblock: matrix element/vector element ratio =213.758
 
 Proceeding to energy matrix quality check analysis..
 
@@ -4073,7 +4073,7 @@ Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell178 bad
 Oneblock: number of events in bad cell =24
-Oneblock: matrix element/vector element ratio =238.861
+Oneblock: matrix element/vector element ratio =232.406
 
 Proceeding to energy matrix quality check analysis..
 
@@ -4141,7 +4141,7 @@ Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell202 bad
 Oneblock: number of events in bad cell =7
-Oneblock: matrix element/vector element ratio =258.753
+Oneblock: matrix element/vector element ratio =251.759
 
 Proceeding to energy matrix quality check analysis..
 
@@ -4177,7 +4177,7 @@ Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell214 bad
 Oneblock: number of events in bad cell =14
-Oneblock: matrix element/vector element ratio =233.764
+Oneblock: matrix element/vector element ratio =227.446
 
 Proceeding to energy matrix quality check analysis..
 
@@ -4195,7 +4195,7 @@ Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell217 bad
 Oneblock: number of events in bad cell =27
-Oneblock: matrix element/vector element ratio =154.456
+Oneblock: matrix element/vector element ratio =150.281
 
 Proceeding to energy matrix quality check analysis..
 
@@ -4217,7 +4217,7 @@ Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell226 bad
 Oneblock: number of events in bad cell =13
-Oneblock: matrix element/vector element ratio =312.479
+Oneblock: matrix element/vector element ratio =304.033
 
 Proceeding to energy matrix quality check analysis..
 
@@ -4253,7 +4253,7 @@ Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell238 bad
 Oneblock: number of events in bad cell =2
-Oneblock: matrix element/vector element ratio =238.365
+Oneblock: matrix element/vector element ratio =231.923
 
 Proceeding to energy matrix quality check analysis..
 
@@ -4289,7 +4289,7 @@ Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell250 bad
 Oneblock: number of events in bad cell =3
-Oneblock: matrix element/vector element ratio =305.086
+Oneblock: matrix element/vector element ratio =296.841
 
 Proceeding to energy matrix quality check analysis..
 
@@ -4307,7 +4307,7 @@ Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell253 bad
 Oneblock: number of events in bad cell =25
-Oneblock: matrix element/vector element ratio =566.027
+Oneblock: matrix element/vector element ratio =550.729
 
 Proceeding to energy matrix quality check analysis..
 
@@ -4329,13 +4329,13 @@ Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell262 bad
 Oneblock: number of events in bad cell =1
-Oneblock: matrix element/vector element ratio =108.876
+Oneblock: matrix element/vector element ratio =105.933
 
 Proceeding to energy matrix quality check analysis..
 
 Cell 263 bad
 Number of events in bad cell =29
-Matrix element/vector element ratio =46.0074
+Matrix element/vector element ratio =44.764
 
 Oneblock: cell263 bad
 Oneblock: number of events in bad cell =0
@@ -4367,7 +4367,7 @@ Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell271 bad
 Oneblock: number of events in bad cell =23
-Oneblock: matrix element/vector element ratio =429.243
+Oneblock: matrix element/vector element ratio =417.642
 
 Proceeding to energy matrix quality check analysis..
 
@@ -4375,19 +4375,19 @@ Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell273 bad
 Oneblock: number of events in bad cell =17
-Oneblock: matrix element/vector element ratio =271.458
+Oneblock: matrix element/vector element ratio =264.121
 
 Proceeding to energy matrix quality check analysis..
 
 Oneblock: cell274 bad
 Oneblock: number of events in bad cell =4
-Oneblock: matrix element/vector element ratio =158.529
+Oneblock: matrix element/vector element ratio =154.244
 
 Proceeding to energy matrix quality check analysis..
 
 Cell 275 bad
 Number of events in bad cell =19
-Matrix element/vector element ratio =47.0739
+Matrix element/vector element ratio =45.8016
 
 Oneblock: cell275 bad
 Oneblock: number of events in bad cell =0
@@ -4463,7 +4463,7 @@ Proceeding to energy matrix quality check analysis..
 
 Cell 287 bad
 Number of events in bad cell =4
-Matrix element/vector element ratio =85.5685
+Matrix element/vector element ratio =83.2558
 
 Oneblock: cell287 bad
 Oneblock: number of events in bad cell =0
@@ -4471,32 +4471,32 @@ Oneblock: matrix element/vector element ratio =-nan
 
 Gain Coefficients
 0  0.00266867  0.00263163  0.00180382  0.00263728  0  0  0  0  0  0  0  
-0.00175  0.0028114  0.000249887  0.00335881  0.0029274  0.00191629  0.00127553  0.00033258  0.000987108  0.00208857  0  0  
-0.00175  0.000422276  0.000972223  0.00269665  0.00208541  0.00262158  0.00111361  0.00133193  0.00179653  0.00364722  0.000868816  0.0031688  
-0.00251902  0.00242479  0.00191364  0.001609  0.00155122  0.00176055  0.00262005  0.00290879  0.00267435  0.00343437  0.00277787  0.00296845  
-0.00283455  0.00204789  0.00237066  0.00238439  0.00212436  0.00149114  0.00237693  0.00238709  0.00268287  0.0031482  0.00269741  0.00272894  
-0.00298561  0.00341053  0.00256317  0.00235804  0.00237175  0.0027767  0.00220714  0.00262472  0.00223932  0.00139363  0.00206711  0.00254265  
-0.000486356  0.000334079  0.000258076  0.00062134  0.00153158  0.00160501  0.00278503  0.00209731  0.00252574  0.00275736  0.00173127  0.00448484  
-0.00285625  0.00264931  0.00233642  0.00259605  0.00232565  0.00197154  0.00274788  0.00275247  0.00289242  0.00231222  0.00321762  0.00142729  
-0.0025766  0.00275043  0.00172864  0.00213989  0.00289175  0.00232501  0.00200487  0.00262263  0.00245918  0.00278632  0.00267199  0.00113695  
-0.000928701  0.0021302  0.00228755  0.00275732  0.0025869  0.00236948  0.00282225  0.00249113  0.00236255  0.00243376  0.00215621  0.00304325  
-0.00310732  0.00282132  0.00219966  0.00260991  0.00254641  0.00275546  0.00280177  0.00274264  0.00262054  0.00297104  0.00132573  0.00248514  
-0.0033665  0.00256397  0.00203713  0.0023395  0.0027053  0.00276935  0.0021935  0.00268151  0.0021923  0.00278568  0.00377217  0.00573433  
-0.00042441  0.000431159  0.000768258  0.000669204  0.00076216  0.0013464  0.00278893  0.00271099  0.00259459  0.0017795  0.00195211  0.00227849  
-0.00281351  0.00165918  0.0022019  0.00144694  0.00143304  0.0025014  0.00205862  0.00295379  0.00188496  0.00281356  0.00312338  0.00156041  
-0.00135215  0.00293312  0.00170084  0.00219913  0.00264873  0.0025242  0.00250968  0.00260937  0.00237332  0.000157779  0.00260309  0.00358008  
-0.00273583  0.0018255  0.00261879  0.00212292  0.00228362  0.00175879  0.0025887  0.00296189  0.00239014  0.00281699  0.00254563  0.00300913  
-0.00265546  0.000947702  0.00275409  0.00227537  0.00168453  0.00244974  0.00238053  0.00115132  0.00141401  0.00210207  0.00287161  0.002241  
-0.00199036  0.00220462  0.00241486  0.00171299  0.00258238  0.00213524  0.00272676  0.00349064  0.0026356  0.00220895  0.00361733  0.00305421  
-0.00317514  0.00626882  0.00274845  0.0021924  0.00282164  0.00221822  0.00264779  0.00299546  0.00168983  0.00263543  0.00296559  0.0052396  
-0.0025519  0.00281779  0.00224536  0.00230529  0.00359227  0.00202885  0.00212416  0.00159825  0.00283401  0.00261586  0.00332521  0.00050859  
-0.00196271  0.00250714  0.000307893  0.00208957  0.00213003  0.00225514  0.00218118  0.00304829  0.0026803  0.0020253  0.00212638  0.00763305  
-0.00226964  0.00146972  0.00288497  0.00279342  0.00313644  0.00303409  0.00281456  0.00276766  0.00262664  0.00135613  0.00252341  0.00338812  
-0.00175  0.00452565  0.00231708  0.00254879  0.00257066  0.0029722  0.0021524  0.00241955  0.00293241  0.00310585  0.00320361  0.00308539  
--0.00116944  3.54434e-05  0.0017381  0.00163209  0.00290612  0.00178949  0.00349653  0.00115958  0.00286842  0.00230439  0.000582964  0.00416878  
+0.00175  0.0028114  0.000256828  0.00345211  0.00300872  0.00191629  0.00127553  0.00033258  0.000987108  0.00208857  0  0  
+0.00175  0.000434006  0.000999229  0.00277155  0.00214334  0.0026944  0.00114454  0.00136893  0.00184643  0.00374853  0.000868816  0.0031688  
+0.00258899  0.00249215  0.00196679  0.00165369  0.00159431  0.00180945  0.00269283  0.00298959  0.00274863  0.00352976  0.00285504  0.00296845  
+0.00291328  0.00210477  0.00243651  0.00245062  0.00218337  0.00153256  0.00244295  0.00245339  0.00275739  0.00323565  0.00277234  0.00272894  
+0.00306854  0.00350527  0.00263437  0.00242354  0.00243763  0.00285383  0.00226845  0.00269762  0.00230152  0.00143234  0.00212453  0.00254265  
+0.000499866  0.000343359  0.000265245  0.0006386  0.00157412  0.00164959  0.00286239  0.00215557  0.0025959  0.00283396  0.00177936  0.00460942  
+0.00293559  0.00272291  0.00240132  0.00266816  0.00239025  0.00202631  0.00282421  0.00282893  0.00297276  0.00237645  0.003307  0.00146694  
+0.00264817  0.00282684  0.00177665  0.00219933  0.00297208  0.0023896  0.00206056  0.00269548  0.00252749  0.00286372  0.00274621  0.00116853  
+0.000954498  0.00218938  0.00235109  0.00283392  0.00265876  0.0024353  0.00290065  0.00256033  0.00242818  0.00250136  0.0022161  0.00312778  
+0.00319363  0.00289969  0.00226076  0.0026824  0.00261714  0.002832  0.0028796  0.00281882  0.00269334  0.00305357  0.00136256  0.00255417  
+0.00346002  0.00263519  0.00209372  0.00240449  0.00278045  0.00284628  0.00225443  0.00275599  0.00225319  0.00286306  0.00387696  0.00589362  
+0.0004362  0.000443135  0.000789598  0.000687793  0.000783331  0.0013838  0.0028664  0.0027863  0.00266666  0.00182893  0.00200633  0.00234178  
+0.00289166  0.00170527  0.00226307  0.00148713  0.00147285  0.00257089  0.0021158  0.00303584  0.00193732  0.00289172  0.00321014  0.00160376  
+0.00138971  0.0030146  0.00174808  0.00226022  0.0027223  0.00259432  0.00257939  0.00268185  0.00243924  0.000162162  0.0026754  0.00367953  
+0.00281182  0.00187621  0.00269154  0.00218189  0.00234706  0.00180765  0.00266061  0.00304416  0.00245653  0.00289524  0.00261634  0.00309272  
+0.00272923  0.000974027  0.00283059  0.00233858  0.00173132  0.00251779  0.00244666  0.0011833  0.00145329  0.00216046  0.00295138  0.00230325  
+0.00204565  0.00226586  0.00248194  0.00176057  0.00265411  0.00219455  0.0028025  0.00358761  0.00270881  0.00227031  0.00371781  0.00313905  
+0.00326334  0.00644295  0.00282479  0.0022533  0.00290002  0.00227984  0.00272134  0.00307867  0.00173676  0.00270863  0.00304797  0.00538515  
+0.00262279  0.00289606  0.00230774  0.00236932  0.00369205  0.00208521  0.00218317  0.00164264  0.00291273  0.00268852  0.00341757  0.000522718  
+0.00201723  0.00257678  0.000316446  0.00214761  0.0021892  0.00231778  0.00224177  0.00313297  0.00275475  0.00208156  0.00218545  0.00784507  
+0.00233268  0.00151055  0.00296511  0.00287101  0.00322356  0.00311837  0.00289274  0.00284454  0.0026996  0.0013938  0.00259351  0.00338812  
+0.00175  0.00465136  0.00238144  0.00261959  0.00264207  0.00305476  0.00221219  0.00248676  0.00301387  0.00319212  0.0032926  0.00308539  
+-0.00120192  3.64279e-05  0.00178638  0.00167742  0.00298685  0.0018392  0.00359366  0.00119179  0.00294809  0.0023684  0.000599157  0.00416878  
 
 One Block Std:
-0  0.00266867  0.00263163  0.00180382  0.00263728  0  0  0  0  0  0  0  0.00175  0.0028114  0.00168388  0.00165362  0.00176223  0.00191629  0.00127553  0.00033258  0.000987108  0.00208857  0  0  0.00175  0.000549083  0.000775478  0.00143323  0.00133923  0.00150582  0.000878316  0.00116677  0.00122135  0.00180183  0.000868816  0.0031688  0.00175  0.00165191  0.00276337  0.00117046  0.00117154  0.00130065  0.00149967  0.00168174  0.00171157  0.00208062  0.00191594  0.00296845  0.00175  0.00131023  0.00308906  0.00316477  0.00260212  0.00193561  0.00333112  0.0015631  0.00426635  0.00202092  0.00184944  0.00272894  0.00539881  0.00421738  0.00302766  0.00269865  0.00267957  0.00324547  0.00300187  0.00345119  0.00306743  0.00147743  0.00173477  0.00254265  0.00169373  0.000275533  0.000319829  0.000874302  0.00197309  0.00228308  0.00350431  0.00299403  0.00315132  0.00200068  0.00173649  0.00311957  0.0030827  0.00336507  0.00303822  0.00316051  0.00282465  0.00236306  0.00325497  0.00320563  0.00431195  0.00287213  0.00197725  0.00326762  0.00512732  0.00365749  0.00211025  0.00256979  0.00338289  0.00272861  0.00218676  0.00318609  0.00316716  0.00399287  0.00176975  0.00300717  0.00260136  0.00277532  0.00262728  0.00315552  0.00297581  0.00265362  0.00323522  0.00315224  0.00284868  0.00306176  0.00155949  0.00305697  0.00607633  0.00350528  0.00252974  0.00305087  0.00287226  0.00308406  0.00314864  0.00313822  0.00356528  0.00420465  0.00126722  0.00216883  0.0072298  0.00308797  0.0024364  0.00218804  0.0028309  0.00301665  0.0024844  0.00315887  0.00251381  0.00356152  0.00240923  0.00372126  0.000449533  0.00040393  0.000842427  0.000604528  0.00070591  0.00123463  0.00247474  0.00308552  0.00304769  0.00225223  0.00162299  0.0035386  0.00660769  0.00235869  0.00248592  0.00161595  0.00148789  0.00254382  0.00195929  0.00339272  0.00242349  0.00333551  0.0039895  0.00379699  0.00212358  0.00345011  0.0020211  0.0022208  0.00277689  0.00262652  0.00267174  0.00302648  0.00288813  0.000278773  0.00250264  0.00341337  0.00335189  0.00196769  0.00291088  0.00231952  0.00221874  0.00170013  0.00277686  0.00318838  0.00252604  0.00314444  0.00373965  0.00356526  0.00349821  0.00139162  0.00330318  0.00244539  0.00166475  0.00237951  0.00217172  0.000743204  0.00159618  0.00285024  0.00195526  0.00340549  0.00274887  0.00270395  0.00306817  0.00203958  0.00304471  0.00217653  0.00285993  0.00383009  0.00270789  0.00293564  0.00244788  0.00366691  0.0050249  0.00292725  0.00332467  0.00255708  0.00336566  0.00220485  0.00284353  0.00324366  0.00180383  0.00332526  0.0020386  0.0037875  0.00432152  0.00296312  0.00248299  0.00279832  0.0038887  0.00213001  0.00247046  0.00188739  0.00321129  0.00345285  0.00168128  0.00372496  0.0045194  0.00335574  0.000492159  0.00246984  0.00247033  0.0025911  0.00282748  0.00353165  0.0029957  0.00228914  0.00138985  0.00410904  0.00265122  0.00116889  0.00350596  0.00340156  0.00343087  0.00368488  0.00306739  0.00352476  0.00307027  0.00143885  0.00183152  0.00338812  0.00175  0.00510581  0.00306054  0.0030502  0.0032224  0.00353742  0.00278867  0.00142973  0.0033724  0.00171401  0.00262937  0.00308539  0.00731553  0.00733844  0.00269888  0.00236267  0.00204097  0.00246712  0.00241754  0.00240661  0.00195007  0.00151657  0.00263376  0.00416878  
+0  0.00266867  0.00263163  0.00180382  0.00263728  0  0  0  0  0  0  0  0.00175  0.0028114  0.00168388  0.00165362  0.00176223  0.00191629  0.00127553  0.00033258  0.000987108  0.00208857  0  0  0.00175  0.000549083  0.000775478  0.00143323  0.00133923  0.00150582  0.000878316  0.00116677  0.00122135  0.00180183  0.000868816  0.0031688  0.00175  0.00165191  0.00284013  0.00117046  0.00117154  0.00130065  0.00149967  0.00168174  0.00171157  0.00208062  0.00191594  0.00296845  0.00175  0.00131023  0.00317487  0.00325268  0.0026744  0.00198937  0.00342365  0.0015631  0.00438486  0.00202092  0.00184944  0.00272894  0.00539881  0.00433453  0.00311177  0.00277361  0.00275401  0.00333562  0.00308525  0.00354706  0.00315264  0.00147743  0.00173477  0.00254265  0.00169373  0.000275533  0.000328713  0.000898588  0.0020279  0.0023465  0.00360165  0.0030772  0.00323885  0.00200068  0.00173649  0.00311957  0.0030827  0.00345854  0.00312262  0.0032483  0.00290311  0.0024287  0.00334538  0.00329468  0.00443173  0.00295191  0.00197725  0.00326762  0.00512732  0.00375909  0.00216887  0.00264118  0.00347686  0.00280441  0.00224751  0.00327459  0.00325514  0.00410378  0.00176975  0.00300717  0.00260136  0.00285241  0.00270026  0.00324318  0.00305847  0.00272733  0.00332509  0.00323981  0.00292781  0.00314681  0.00155949  0.00305697  0.00607633  0.00360265  0.00260001  0.00313562  0.00295205  0.00316973  0.00323611  0.0032254  0.00366431  0.00432144  0.00126722  0.00216883  0.0072298  0.00317375  0.00250408  0.00224882  0.00290953  0.00310045  0.00255341  0.00324662  0.00258364  0.00366045  0.00240923  0.00372126  0.000449533  0.00041515  0.000865828  0.000621321  0.000725519  0.00126892  0.00254349  0.00317123  0.00313234  0.00231479  0.00166808  0.0035386  0.00660769  0.00242421  0.00255497  0.00166084  0.00152922  0.00261448  0.00201371  0.00348697  0.00249081  0.00342817  0.00410032  0.00379699  0.00212358  0.00354595  0.00207724  0.00228249  0.00285403  0.00269948  0.00274596  0.00311055  0.00296835  0.000286517  0.00250264  0.00341337  0.00335189  0.00202235  0.00299174  0.00238395  0.00228037  0.00174736  0.00285399  0.00327694  0.0025962  0.00323178  0.00384353  0.00356526  0.00349821  0.00143027  0.00339493  0.00251332  0.00171099  0.00244561  0.00223205  0.000763848  0.00164052  0.00292941  0.00195526  0.00340549  0.00274887  0.00277906  0.0031534  0.00209624  0.00312929  0.00223699  0.00293937  0.00393648  0.00278311  0.00301719  0.00244788  0.00366691  0.0050249  0.00292725  0.00341702  0.00262811  0.00345915  0.00226609  0.00292252  0.00333376  0.00185393  0.00341762  0.0020386  0.0037875  0.00432152  0.00304543  0.00255196  0.00287605  0.00399672  0.00218918  0.00253908  0.00193982  0.00330049  0.00354877  0.00168128  0.00372496  0.0045194  0.00344896  0.00050583  0.00253845  0.00253895  0.00266308  0.00290602  0.00362975  0.00307891  0.00235273  0.00138985  0.00410904  0.00265122  0.00116889  0.00360335  0.00349605  0.00352617  0.00378724  0.00315259  0.00362267  0.00315555  0.00147882  0.00183152  0.00338812  0.00175  0.00524764  0.00314555  0.00313493  0.00331191  0.00363568  0.00286614  0.00142973  0.00346607  0.00171401  0.00262937  0.00308539  0.00731553  0.00733844  0.00269888  0.00236267  0.00204097  0.00246712  0.00241754  0.00240661  0.00195007  0.00151657  0.00263376  0.00416878  
 Total Number of events available for calibration: 
 
 0  0  0  1  1  0  0  0  0  0  0  0  
@@ -4532,4 +4532,4 @@ Elastic yield for analyzed runs: 1114587. Total event bins available for calibra
 
 Calibration complete. Constants and histograms written to file.
 
-CPU time elapsed = 2215.7 s = 36.9283 min. Real time = 4368.15 s = 72.8024 min.
+CPU time elapsed = 2066.42 s = 34.4403 min. Real time = 3916.44 s = 65.274 min.

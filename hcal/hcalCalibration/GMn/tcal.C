@@ -1,5 +1,6 @@
 //SSeeds 2.27.23 - Pass2 Update - Calibration code which employs best current cuts on elastic events to obtain ADC time and TDC offset parameters (ns). Applies timewalk corrections. Now loops over all data and cuts on both dx and dy with array of chains.
 //NOTE: should be used only after gain parameters are available from ecal.C
+//3.13.23 Update - added iteration 2 fuctionality which enables TOF corrections and internal cluster timing to output files, otherwise identical to iteration 1. Note that MC fits for TOF extrapolate well to low momentum, but NOT for high momentum.
 
 #include <ctime>
 #include <iostream>
@@ -74,7 +75,20 @@ const Int_t fset_ld2[6][4] = {{0,30,50,-1},
 			      {70,-1,-1,-1},
 			      {0,50,70,100},
 			      {70,-1,-1,-1}}; //All field settings for all kinematics LH2. -1 indicates no setting
-
+const Double_t TOFfitp_p[6][4] = {{73.7816, -35.8806, 12.90060, -1.60996},
+				  {52.7549, -2.05791, 0.273797, -0.01309},
+				  {54.6380, -1.97939, 0.231943, -0.00934},
+				  {65.2843, -10.6005, 2.252520, -0.16723},
+				  {60.6177, -18.2422, 5.123620, -0.49684},
+				  {71.7263, -32.1323, 41.57460, -1.18023}}; //Pol3 TOF fit params from proton MC data with SBS fields {30,85,100,70,70,70}
+const Double_t TOFfitp_n[6][4] = {{62.1158, -20.8086, 6.464510, -0.71342},
+				  {55.8218, -3.84358, 06176470, -0.03516},
+				  {51.4030, -0.51868, 0.016076, 0.001009},
+				  {64.1014, -9.30317, 1.818670, -0.12324},
+				  {56.1597, -13.4154, 3.449660, -0.30995},
+				  {63.9328, -22.3211, 6.673740, -0.68472}}; //Pol3 TOF fit params from neutron MC data with SBS fields {30,85,100,70,70,70} 
+const Double_t pulim[6] = {2.8,6.7,8.9,5.4,3.9,3.7}; //p upper limit on fits, beyond this fits diverge
+const Int_t tofB[6] = {30,85,100,70,70,70};
 
 //Math/other
 const Double_t PI = TMath::Pi();
@@ -132,7 +146,9 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
   if( kine == 9 ) kIdx=5;
 
   //Declare bool indicating iteration
-  bool qreplay = iter==1;
+  bool qreplay = iter>0;
+
+  bool tofreplay = iter==2;
 
   //Set up arrays to hold gain parameters for energy corrections
   Double_t gOldConst_pass0[kNcell] = {0.};
@@ -699,13 +715,13 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
   for( Int_t h=0; h<nfset_lh2[kIdx]; h++){
     Int_t field = fset_lh2[kIdx][h];
     if(field==-1) cout << "Error. configfilename array out of bounds." << endl;
-    configfilename_h[h] = Form("../config/GMn/SBS%d/secal_lh2_sbs%d_f%d.cfg",kine,kine,fset_lh2[kIdx][h]);
+    configfilename_h[h] = Form("../config/GMn/SBS%d/secal_lh2_sbs%d_f%d.cfg",kine,kine,field);
   }
   string configfilename_d[nfset_ld2[kIdx]];
   for( Int_t d=0; d<nfset_ld2[kIdx]; d++){
     Int_t field = fset_ld2[kIdx][d];
     if(field==-1) cout << "Error. configfilename array out of bounds." << endl;
-    configfilename_d[d] = Form("../config/GMn/SBS%d/secal_ld2_sbs%d_f%d.cfg",kine,kine,fset_ld2[kIdx][d]);
+    configfilename_d[d] = Form("../config/GMn/SBS%d/secal_ld2_sbs%d_f%d.cfg",kine,kine,field);
   }
 
   // Declare general physics/fit parameters
@@ -1149,13 +1165,18 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
   Double_t aulim = 150.;
   Double_t atotb = 2*abs(allim-aulim);
 
+  //Declare physics histograms for match to MC
+  TH1D *hpp_p = new TH1D( "hpp_p", "Expected proton momentum from BB; GeV", 100, 0, 10 );
+  TH1D *hpp_n = new TH1D( "hpp_n", "Expected neutron momentum from BB; GeV", 100, 0, 10 );
+
   //Declare diagnostic histograms (as sparse as possible)
   TH2D *hdx_mag_h = new TH2D( "hdx_mag_h", "Delta X vs Field Setting (LH2); field (percent); x_{HCAL} - x_{exp} (m)", 21, 0, 105, 250, -4, 3 );
   TH2D *hdy_mag_h = new TH2D( "hdy_mag_h", "Delta Y vs Field Setting (LH2); field (percent); y_{HCAL} - y_{exp} (m)", 21, 0, 105, 250, -1.25, 1.25 );
   TH2D *hdx_mag_d = new TH2D( "hdx_mag_d", "Delta X vs Field Setting (LD2); field (percent); x_{HCAL} - x_{exp} (m)", 21, 0, 105, 250, -4, 3 );
   TH2D *hdy_mag_d = new TH2D( "hdy_mag_d", "Delta Y vs Field Setting (LD2); field (percent); y_{HCAL} - y_{exp} (m)", 21, 0, 105, 250, -1.25, 1.25 );
   TH1D *htdc = new TH1D("htdc","TDC (All Channels); ns",ttotb,tllim,tulim);
-  TH1D *htdc_corr = new TH1D("htdc_corr","TDC TWalk/Hodo Corrected (All Channels); ns",ttotb,tllim,tulim);
+  TH1D *htdc_corr = new TH1D("htdc_corr","TDC TWalk/Hodo Corrected TW (All Channels); ns",ttotb,tllim,tulim);
+  TH1D *htdc_allcorr = new TH1D("htdc_allcorr","TDC TWalk/Hodo Corrected TW/TOF (All Channels); ns",ttotb,tllim,tulim);
   TH1D *hadct = new TH1D("hadct","ADCt (All Channels); ns",atotb,allim,aulim);
   TH1D *hadct_corr = new TH1D("hadct_corr","ADCt TWalk/Hodo Corrected (All Channels); ns",atotb,allim,aulim);
   TH2D *ht_ID = new TH2D("ht_ID","TDC;Channel;TDC_{HCAL} (ns)",288,0,288,ttotb,tllim,tulim);
@@ -1164,12 +1185,19 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
   TH2D *htpCorr_ID = new TH2D("htpCorr_ID","TDC Primary Block, Corrected;Channel;TDC_{HCAL}-TDC_{HODO}-Corr_{TW} (ns)",288,0,288,ttotb,tllim,tulim);
   TH2D *htDiff_ID = new TH2D("htDiff_ID",";Channel;TDC_{HCAL}-TDC_{HODO} (ns)",288,0,288,ttotb,tllim,tulim);
   TH2D *htCorr_ID = new TH2D("htCorr_ID",";Channel;TDC_{HCAL}-TDC_{HODO} w/TWalk (ns)",288,0,288,ttotb,tllim,tulim);
+  TH2D *htAllCorr_ID = new TH2D("htAllCorr_ID",";Channel;TDC_{HCAL}-TDC_{HODO} w/TWalk w/TOF (ns)",288,0,288,ttotb,tllim,tulim);
   TH2D *ha_ID = new TH2D("ha_ID","ADCt;Channel;ADCtime_{HCAL} (ns)",288,0,288,atotb,allim,aulim);
   TH2D *hap_ID = new TH2D("hap_ID","ADCt Primary Block;Channel;ADCtime_{HCAL} (ns)",288,0,288,atotb,allim,aulim);
   TH2D *hapDiff_ID = new TH2D("hapDiff_ID","ADCt Primary Block - TDC hodo;Channel;ADCtime_{HCAL} - TDC_{HODO} (ns)",288,0,288,atotb,allim,aulim);
   TH2D *hapCorr_ID = new TH2D("hapCorr_ID","ADCt Primary Block, Corrected;Channel;ADCtime_{HCAL}-TDC_{HODO}-Corr_{TW} (ns)",288,0,288,atotb,allim,aulim);
   TH2D *haDiff_ID = new TH2D("haDiff_ID",";Channel;ADCtime_{HCAL}-TDC_{HODO} (ns)",288,0,288,atotb,allim,aulim);
   TH2D *haCorr_ID = new TH2D("haCorr_ID",";Channel;ADCtime_{HCAL}-TDC_{HODO}-Corr_{TW} (ns)",288,0,288,atotb,allim,aulim);
+
+  //Declare self timing histograms
+  TH1D *hclusmean = new TH1D( "hclusmean", "HCal Cluster Mean Time (Primary Block Reftime, nblk>1)", 1000, -50, 50 );
+  TH2D *hclusmeanID = new TH2D( "hclusmeanID", "HCal Cluster Mean Time, (Primary Block Reftime/ID, nblk>1), vs ID", 288, 0, 288, 1000, -50, 50 );
+  TH1D *hclusdiff = new TH1D( "hclusdiff", "HCal Cluster Seed - Block Diff, (Primary Block Reftime, nblk>1)", 1000, -50, 50 );  
+  TH2D *hclusdiffID = new TH2D( "hclusdiffID", "HCal Cluster Seed - Block Diff, (Primary Block Reftime, nblk>1), vs ID", 288, 0, 288, 1000, -50, 50 );
 
   //TW fit diagnostic histos
   TH1D *htdcP0 = new TH1D("htdcP0","TDC P0, P0exp(P1*x)+P2",60,0,30);
@@ -1195,7 +1223,8 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
   //Loop over all hydrogen data
   for( Int_t f=0; f<nfset_lh2[kIdx]; f++ ){
     
-    Int_t hfieldset = fset_lh2[kIdx][f];
+    Int_t hfieldset = fset_lh2[kIdx][f]; //Check B field setting
+    bool tofready = tofreplay && hfieldset==tofB[kIdx]; //Check if TOF corrections can be applied for these data
 
     //Declare energy loss parameters for beam going through the target
     Double_t pBeam = E_e_h[f]/(1.+E_e_h[f]/M_p*(1.-cos(BB_th_h[f])));
@@ -1229,7 +1258,8 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 
       Double_t pel = E_corr/(1.+E_corr/M_p*(1.-cos(etheta)));
       Double_t nu = E_corr - BBtr_p_h[f][0];
-      Double_t pp = sqrt(pow(nu,2)+2.*M_p*nu);
+      Double_t pp = sqrt(pow(nu,2)+2.*M_p*nu); //momentum of proton
+      Double_t pn = sqrt(pow(nu,2)+2.*M_n*nu); //momentum of neutron
       Double_t phinucleon = ephi + PI; //assume coplanarity
       Double_t thetanucleon = acos( (E_corr - BBtr_pz_h[f][0])/pp ); //use elastic constraint on nucleon kinematic
       TVector3 pNhat( sin(thetanucleon)*cos(phinucleon),sin(thetanucleon)*sin(phinucleon),cos(thetanucleon));
@@ -1281,8 +1311,14 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
       if( !pass_y ) continue;
       bool pass_p = abs(dx-dx0_p_h[f])<ifac*dx_sig_p_h[f];
       bool pass_n = abs(dx-dx0_n_h[f])<ifac*dx_sig_n_h[f]; //Redundant for LH2
+      bool isproton = pass_p && !pass_n;
+      bool isneutron = pass_n && !pass_p;
+      bool isamb = pass_p && pass_n;
       if( !pass_p && !pass_n ) continue; //Cut on both n and p spots for each event, cannot know which apriori
       //////////////////////////////////////////////////////////////////
+      if( isproton ) hpp_p->Fill( pp );
+      if( isneutron ) hpp_n->Fill( pn );
+      
 
       //Hodo cluster mean time
       Double_t hodot = HODOtmean_h[f];
@@ -1291,7 +1327,7 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
       Int_t pblkid = int(cblkid_h[f][0])-1;
       Double_t pTDC = cblktime_h[f][0];
       Double_t pADCt = cblkatime_h[f][0];
-      Double_t pTDCcorr = 0.;
+      Double_t pTWcorr = 0.; //primary block timewalk correction
       Double_t pADCtcorr = 0.;
       Double_t pblke = 0.;
       if( pass0 ){
@@ -1300,12 +1336,12 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 	pblke = cblke_h[f][0]/cblkagain_h[f][0]*gConst_iter1[pblkid];
       }
       if( qreplay ){
-	pTDCcorr = otdcP0[pblkid]*exp(-otdcP1[pblkid]*pblke);
+	pTWcorr = otdcP0[pblkid]*exp(-otdcP1[pblkid]*pblke);
 	pTDC = cblktime_h[f][0] + oldTDCoffsets[pblkid]*TDCCalib - calTDCoffsets[pblkid]*TDCCalib;
       }
       htp_ID->Fill( pblkid, pTDC );
       htpDiff_ID->Fill( pblkid, pTDC-hodot );
-      htpCorr_ID->Fill( pblkid, pTDC-hodot-pTDCcorr );
+      htpCorr_ID->Fill( pblkid, pTDC-hodot-pTWcorr );
       
       if( qreplay ){
 	pADCtcorr = oadctP0[pblkid]*exp(-oadctP1[pblkid]*pblke);
@@ -1316,7 +1352,10 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
       hapCorr_ID->Fill( pblkid, pADCt-hodot-pADCtcorr );
 
       //Loop over primary cluster
-      for( Int_t blk = 0; blk<(int)nblk_h[f]; blk++ ){
+      Double_t blkseed = 0.;
+      Double_t tavg = 0;
+      Int_t nblk = (int)nblk_h[f];
+      for( Int_t blk = 0; blk<nblk; blk++ ){
 	Int_t blkid = int(cblkid_h[f][blk])-1; //-1 necessary since sbs.hcal.clus_blk.id ranges from 1 to 288 (different than just about everything else)
 	Double_t blkatime = cblkatime_h[f][blk];
 	Double_t blktime = cblktime_h[f][blk];
@@ -1326,11 +1365,22 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 	}else{
 	  blke = cblke_h[f][blk]/cblkagain_h[f][blk]*gConst_iter1[blkid];
 	}
-
-	Double_t TDCcorr = 0.;
+	
+	Double_t TOFcorr = 0; //time of flight correction
+	Double_t TWcorr = 0.; //timewalk correction
 	Double_t ADCtcorr = 0.;
 	if( qreplay ){
-	  TDCcorr = otdcP0[blkid]*exp(-otdcP1[blkid]*blke);
+	  TWcorr = otdcP0[blkid]*exp(-otdcP1[blkid]*blke); //timewalk correction applied
+	  if( isproton && tofready){ //Check if tofreplay, in proton dxdy, not ambiguous, if field set matches current MC fits
+	    Double_t protmom = pp;
+	    if( pp>pulim[kIdx] ) protmom = pulim[kIdx]; //do not pass corrections for momenta > fit limit in MC
+	    TOFcorr = TOFfitp_p[kIdx][0]+TOFfitp_p[kIdx][1]*protmom+TOFfitp_p[kIdx][2]*pow(protmom,2)+TOFfitp_p[kIdx][3]*pow(protmom,3); //proton correction, only overwrite if data matches currently available MC fit results
+	  }
+	  if( isneutron && tofready){ //Check if tofreplay, in neutron dxdy, not ambiguous, if field set matches current MC fits
+	    Double neutmom = pn;
+	    if( pn>pulim[kIdx] ) neutmom = pulim[kIdx]; //do not pass corrections for momenta > fit limit in MC
+	    TOFcorr = TOFfitp_n[kIdx][0]+TOFfitp_n[kIdx][1]*neutmom+TOFfitp_n[kIdx][2]*pow(neutmom,2)+TOFfitp_n[kIdx][3]*pow(neutmom,3); //proton correction, only overwrite if data matches currently available MC fit results
+	  }
 	  ADCtcorr = oadctP0[blkid]*exp(-oadctP1[blkid]*blke);
 	  Double_t blkatime_new = blkatime + oldADCtoffsets[blkid] - calADCtoffsets[blkid]; //reverse replay "+", then qreplay "-"
 	  Double_t blktime_new = blktime + oldTDCoffsets[blkid]*TDCCalib - calTDCoffsets[blkid]*TDCCalib; //reverse replay "+", then qreplay "-", but first note that both offset values are in tdc units and need conversion to ns with tdccalib
@@ -1344,11 +1394,28 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 	  }
 	  if( blktime_new<10000 && blktime_new>-500){ //ensure that good tdc times exist on tree
 	    htdc->Fill( blktime_new );
-	    htdc_corr->Fill( blktime_new - hodot - TDCcorr );
+	    htdc_corr->Fill( blktime_new - hodot - TWcorr );
 	    ht_ID->Fill( blkid, blktime_new );
 	    htDiff_ID->Fill( blkid, blktime_new - hodot );
-	    htCorr_ID->Fill( blkid, blktime_new - hodot - TDCcorr );
+	    htCorr_ID->Fill( blkid, blktime_new - hodot - TWcorr );
 	    htdcVe[blkid]->Fill( blke*1000, blktime_new ); //Convert to MeV for clarity in plots
+	    if( tofready ){
+	      htdc_allcorr->Fill( blktime_new - hodot - TWcorr - TOFcorr );
+	      htAllCorr_ID->Fill( blkid, blktime_new - hodot - TWcorr - TOFcorr);
+	    }
+
+	    //Get self timing histograms
+	    if( blk==0 ){ //Just set the reference time with the time of the primary block
+	      blkseed = blktime_new;
+	    }else if( blkseed != 0. ){
+	      
+	      Double_t tcdiff = blktime_new-blkseed;
+	      
+	      tavg += tcdiff;
+	      hclusdiffID->Fill( blkid, tcdiff );
+	      hclusdiff->Fill( tcdiff );
+	    }
+	    
 	  }
 	}else{
 	  if( blkatime>0 ){
@@ -1361,17 +1428,39 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 	  }
 	  if( blktime<10000 && blktime>-500){ //ensure that good tdc times exist on tree
 	    htdc->Fill( blktime );
-	    htdc_corr->Fill( blktime - hodot - TDCcorr );
+	    htdc_corr->Fill( blktime - hodot - TWcorr );
 	    ht_ID->Fill( blkid, blktime );
 	    htDiff_ID->Fill( blkid, blktime - hodot );
-	    htCorr_ID->Fill( blkid, blktime - hodot - TDCcorr );
+	    htCorr_ID->Fill( blkid, blktime - hodot - TWcorr );
 	    htdcVe[blkid]->Fill( blke*1000, blktime ); //Convert to MeV for clarity in plots
+	    
+	    //Get self timing histograms (no recovery on bad tdc pblks yet)
+	    if( blk==0 ){ //Just set the reference time with the time of the primary block
+	      blkseed = blktime;
+	    }else if( blkseed != 0. ){
+	      
+	      Double_t tcdiff = blktime-blkseed;
+	      
+	      tavg += tcdiff;
+	      hclusdiffID->Fill( blkid, tcdiff );
+	      hclusdiff->Fill( tcdiff );
+	    }
 	  }
 	}
-
+	
 	NEV[blkid]++;
 	TNEV_h++;
+
       } //loop over blocks in primary cluster
+
+      //Finish getting self timing mean time
+      if( nblk<2 ) continue;
+      tavg /= (nblk-1);
+      if( tavg!=0 ){
+	hclusmeanID->Fill( pblkid, tavg );
+	hclusmean->Fill( tavg );
+      }
+      
     } //loop over hydrogen events
   } //loop for lh2
 
@@ -1437,7 +1526,8 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 
       Double_t pel = E_corr/(1.+E_corr/M_p*(1.-cos(etheta)));
       Double_t nu = E_corr - BBtr_p_d[f][0];
-      Double_t pp = sqrt(pow(nu,2)+2.*M_p*nu);
+      Double_t pp = sqrt(pow(nu,2)+2.*M_p*nu); //momentum of proton
+      Double_t pn = sqrt(pow(nu,2)+2.*M_n*nu); //momentum of neutron
       Double_t phinucleon = ephi + PI; //assume coplanarity
       Double_t thetanucleon = acos( (E_corr - BBtr_pz_d[f][0])/pp ); //use elastic constraint on nucleon kinematics
 	
@@ -1489,8 +1579,13 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
       if( !pass_y ) continue;
       bool pass_p = abs(dx-dx0_p_d[f])<ifac*dx_sig_p_d[f];
       bool pass_n = abs(dx-dx0_n_d[f])<ifac*dx_sig_n_d[f];
+      bool isproton = pass_p && !pass_n;
+      bool isneutron = pass_n && !pass_p;
+      bool isamb = pass_p && pass_n;
       if( !pass_p && !pass_n ) continue; //Cut on both n and p spots for each event, cannot know which apriori      
       //////////////////////////////////////////////////////////////////
+      if( isproton ) hpp_p->Fill( pp );
+      if( isneutron ) hpp_n->Fill( pn );
 
       //Hodo cluster mean time
       Double_t hodot = HODOtmean_d[f];
@@ -1499,7 +1594,7 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
       Int_t pblkid = int(cblkid_d[f][0])-1;
       Double_t pTDC = cblktime_d[f][0];
       Double_t pADCt = cblkatime_d[f][0];
-      Double_t pTDCcorr = 0.;
+      Double_t pTWcorr = 0.;
       Double_t pADCtcorr = 0.;
       Double_t pblke = 0.;
       if( pass0 ){
@@ -1508,12 +1603,12 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 	pblke = cblke_d[f][0]/cblkagain_d[f][0]*gConst_iter1[pblkid];
       }
       if( qreplay ){
-	pTDCcorr = otdcP0[pblkid]*exp(-otdcP1[pblkid]*pblke);
+	pTWcorr = otdcP0[pblkid]*exp(-otdcP1[pblkid]*pblke);
 	pTDC = cblktime_d[f][0] + oldTDCoffsets[pblkid]*TDCCalib - calTDCoffsets[pblkid]*TDCCalib;
       }
       htp_ID->Fill( pblkid, pTDC );
       htpDiff_ID->Fill( pblkid, pTDC-hodot );
-      htpCorr_ID->Fill( pblkid, pTDC-hodot-pTDCcorr );
+      htpCorr_ID->Fill( pblkid, pTDC-hodot-pTWcorr );
       
       if( qreplay ){
 	pADCtcorr = oadctP0[pblkid]*exp(-oadctP1[pblkid]*pblke);
@@ -1524,7 +1619,10 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
       hapCorr_ID->Fill( pblkid, pADCt-hodot-pADCtcorr );
 
       //Loop over primary cluster
-      for( Int_t blk = 0; blk<(int)nblk_d[f]; blk++ ){
+      Double_t blkseed = 0.;
+      Double_t tavg = 0;
+      Int_t nblk = (int)nblk_d[f];
+      for( Int_t blk = 0; blk<nblk; blk++ ){
 	Int_t blkid = int(cblkid_d[f][blk])-1; //-1 necessary since sbs.hcal.clus_blk.id ranges from 1 to 288 (different than just about everything else)
 	Double_t blkatime = cblkatime_d[f][blk];
 	Double_t blktime = cblktime_d[f][blk];
@@ -1535,10 +1633,21 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 	  blke = cblke_d[f][blk]/cblkagain_d[f][blk]*gConst_iter1[blkid];
 	}
 
-	Double_t TDCcorr = 0.;
+	Double_t TOFcorr = 0.; //time of flight correction
+	Double_t TWcorr = 0.; //timewalk correction
 	Double_t ADCtcorr = 0.;
 	if( qreplay ){
-	  TDCcorr = otdcP0[blkid]*exp(-otdcP1[blkid]*blke);
+	  TWcorr = otdcP0[blkid]*exp(-otdcP1[blkid]*blke);
+	  if( isproton && tofready){ //Check if tofreplay, in proton dxdy, not ambiguous, if field set matches current MC fits
+	    Double_t protmom = pp;
+	    if( pp>pulim[kIdx] ) protmom = pulim[kIdx]; //do not pass corrections for momenta > fit limit in MC
+	    TOFcorr = TOFfitp_p[kIdx][0]+TOFfitp_p[kIdx][1]*protmom+TOFfitp_p[kIdx][2]*pow(protmom,2)+TOFfitp_p[kIdx][3]*pow(protmom,3); //proton correction, only overwrite if data matches currently available MC fit results
+	  }
+	  if( isneutron && tofready){ //Check if tofreplay, in neutron dxdy, not ambiguous, if field set matches current MC fits
+	    Double neutmom = pn;
+	    if( pn>pulim[kIdx] ) neutmom = pulim[kIdx]; //do not pass corrections for momenta > fit limit in MC
+	    TOFcorr = TOFfitp_n[kIdx][0]+TOFfitp_n[kIdx][1]*neutmom+TOFfitp_n[kIdx][2]*pow(neutmom,2)+TOFfitp_n[kIdx][3]*pow(neutmom,3); //proton correction, only overwrite if data matches currently available MC fit results
+	  }
 	  ADCtcorr = oadctP0[blkid]*exp(-oadctP1[blkid]*blke);
 	  Double_t blkatime_new = blkatime + oldADCtoffsets[blkid] - calADCtoffsets[blkid]; //reverse replay "+", then qreplay "-"
 	  Double_t blktime_new = blktime + oldTDCoffsets[blkid]*TDCCalib - calTDCoffsets[blkid]*TDCCalib; //reverse replay "+", then qreplay "-", but first note that both offset values are in tdc units and need conversion to ns with tdccalib
@@ -1552,12 +1661,28 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 	  }
 	  if( blktime_new<10000 && blktime_new>-500){ //ensure that good tdc times exist on tree
 	    htdc->Fill( blktime_new );
-	    htdc_corr->Fill( blktime_new - hodot - TDCcorr );
+	    htdc_corr->Fill( blktime_new - hodot - TWcorr );
 	    ht_ID->Fill( blkid, blktime_new );
 	    htDiff_ID->Fill( blkid, blktime_new - hodot );
-	    htCorr_ID->Fill( blkid, blktime_new - hodot - TDCcorr );
+	    htCorr_ID->Fill( blkid, blktime_new - hodot - TWcorr );
 	    htdcVe[blkid]->Fill( blke*1000, blktime_new ); //Convert to MeV for clarity in plots
-	  }
+	    if( tofready ){
+	      htdc_allcorr->Fill( blktime_new - hodot - TWcorr - TOFcorr );
+	      htAllCorr_ID->Fill( blkid, blktime_new - hodot - TWcorr - TOFcorr);
+	    }
+
+	    //Get self timing histograms
+	    if( blk==0 ){ //Just set the reference time with the time of the primary block
+	      blkseed = blktime_new;
+	    }else if( blkseed != 0.){
+	      Double_t tcdiff = blktime_new-blkseed;
+	      
+	      tavg += tcdiff;
+	      hclusdiffID->Fill( blkid, tcdiff );
+	      hclusdiff->Fill( tcdiff );
+	    }
+
+	  }	  
 	}else{
 	  if( blkatime>0 ){
 	    hadct->Fill( blkatime );
@@ -1569,16 +1694,39 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 	  }
 	  if( blktime<10000 && blktime>-500){ //ensure that good tdc times exist on tree
 	    htdc->Fill( blktime );
-	    htdc_corr->Fill( blktime - hodot - TDCcorr );
+	    htdc_corr->Fill( blktime - hodot - TWcorr );
 	    ht_ID->Fill( blkid, blktime );
 	    htDiff_ID->Fill( blkid, blktime - hodot );
-	    htCorr_ID->Fill( blkid, blktime - hodot - TDCcorr );
+	    htCorr_ID->Fill( blkid, blktime - hodot - TWcorr );
 	    htdcVe[blkid]->Fill( blke, blktime ); //Convert to MeV for clarity in plots
+	  
+	    //Get self timing histograms
+	    if( blk==0 ){ //Just set the reference time with the time of the primary block
+	      blkseed = blktime;
+	    }else if( blkseed != 0. ){
+	      
+	      Double_t tcdiff = blktime-blkseed;
+
+	      tavg += tcdiff;
+	      hclusdiffID->Fill( blkid, tcdiff );
+	      hclusdiff->Fill( tcdiff );
+	    }
 	  }
 	}
+
 	NEV[blkid]++;
 	TNEV_d++;
+	
       } //loop over blocks in primary cluster
+
+      //Finish getting self timing mean time
+      if( nblk<2 ) continue;
+      tavg /= (nblk-1);
+      if( tavg!=0 ){
+	hclusmeanID->Fill( pblkid, tavg );
+	hclusmean->Fill( tavg );
+      }
+
     } //loop over deuterium events
   } //loop for ld2
 
@@ -1641,7 +1789,7 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
     htdcP2->Fill(TDCvseP2[c]);
   }
 
-  //Separate loops to improve fits (parameter recall)
+  //Separate loops to improve fits (avoid parameter recall)
   for(Int_t c=0; c<kNcell; c++){
     //Fit the ADCt vs E plots
     TF1 *fitadctTW = new TF1( "fitadctTW", TW_fit, 0, 300, 3 );
