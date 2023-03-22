@@ -1,5 +1,463 @@
-#Error and performance report from SBS-4 obtained 3_8_2023
+#Error and performance report from SBS-4 obtained 3_21_2023
 
+0.00175 0.00058443 0.00222432 0.00278781 0.00141687 0.00266948 0.0045079 0.00656102 0.00403126 0.00181321 0.0053662 0.00374568 
+0.00175 0.00415292 0.00178169 0.00218451 0.00293315 0.00352876 0.00183794 0.000292827 0.00125121 0.00198036 0.00141854 0.00293469 
+0.00175 0.000233265 0.000485955 0.00208958 0.00166011 0.00237296 0.000346052 0.00109383 0.00156211 0.00232935 0.000393767 0.00460803 
+0.00171632 0.00161084 0.00188763 0.00131612 0.001734 0.00186817 0.00272668 0.00278058 0.0027778 0.00303633 0.0025406 0.00180093 
+0.00424028 0.00122283 0.0019645 0.00207111 0.00229427 0.00178025 0.00243345 0.00231105 0.00283464 0.00306179 0.00241806 0.00214807 
+0.00107737 0.00264584 0.00208716 0.00216252 0.00234726 0.00274798 0.0017399 0.00266387 0.00247032 0.00149258 0.00218826 0.00292072 
+0.00169044 0.000146492 0.000122449 0.000423724 0.00114852 0.000978303 0.00274055 0.00230618 0.00291143 0.00301026 0.00212902 0.00199859 
+0.00394754 0.00161013 0.00179143 0.00216903 0.00233855 0.00205251 0.00290763 0.00299693 0.00329358 0.00308902 0.00273149 0.0036574 
+0.00157529 0.00153591 0.0010162 0.00160671 0.0025658 0.00242871 0.00200471 0.00237503 0.00260674 0.00276104 0.00263548 0.00224541 
+0.00152819 0.0013803 0.0018411 0.00251417 0.00257329 0.00241445 0.00306474 0.00284077 0.00279835 0.00296688 0.00227622 0.00276503 
+0.00238312 0.00170587 0.00171539 0.00227919 0.00273302 0.00283051 0.0028265 0.00296962 0.00286057 0.00311663 0.00149511 0.00263428 
+0.00167333 0.00191283 0.00172338 0.00245347 0.00325804 0.00348356 0.00270787 0.00292857 0.00247412 0.0033094 0.00346494 0.00210758 
+0.000454098 0.000164011 0.000506105 0.000465518 0.000682307 0.00137297 0.00324259 0.00275144 0.00263848 0.0016675 0.00220947 0.00204441 
+0.00518418 0.00116801 0.00189619 0.00175844 0.00164001 0.00270178 0.0022854 0.00288629 0.00218583 0.00283408 0.00296493 0.00149495 
+0.00176668 0.00187477 0.00151959 0.00213283 0.00271368 0.00257735 0.00263606 0.00277226 0.00259295 0.000221688 0.00254536 0.00191721 
+0.0031097 0.00108819 0.00212793 0.00205705 0.0024154 0.00205947 0.00287378 0.00306613 0.0022908 0.00249895 0.00299943 0.00221331 
+0.00272451 0.000644929 0.00195507 0.00213211 0.00153696 0.00264401 0.00223753 0.00133787 0.00159179 0.00168377 0.00219853 0.00120276 
+0.00190742 0.00133878 0.0017975 0.00150099 0.00262624 0.00222908 0.00297746 0.00317343 0.00248509 0.00194684 0.00300264 0.00265739 
+0.0030871 0.00356052 0.00240331 0.00205278 0.00314367 0.00227937 0.00248241 0.00284585 0.00186643 0.00198175 0.00215359 0.00179671 
+0.00213073 0.00187365 0.00196725 0.00226806 0.00366394 0.00214717 0.00244841 0.00168324 0.00244195 0.00214929 0.00191171 0.00221909 
+0.00427955 0.00178582 0.000382063 0.00216874 0.00151805 0.00255156 0.00139318 0.00282379 0.00246142 0.00173615 0.00163429 0.00254632 
+0.0043351 0.00123934 0.00301644 0.00291798 0.00333166 0.0035661 0.00302282 0.00267667 0.00254519 0.00136217 0.00218136 0.00200217 
+0.00175 0.00416375 0.00254263 0.00275994 0.00295191 0.0032552 0.00261428 0.00228991 0.00275103 0.0021696 0.00343656 0.00314327 
+0.00731553 0.00100861 0.00156825 0.00239794 0.00258004 0.00255047 0.00397189 0.00203885 0.00275821 0.00246508 0.00215367 0.00254222 
+
+Loading previous gain coefficients from file for pass0 kinematics: /u/home/sbs-gmn/pass0/SBS_REPLAY/SBS-replay/DB/db_sbs.hcal.dat..
+pass0 is 1
+
+
+Old ADC gain params from pass0 db file: 
+0.00175 0.00266867 0.00263163 0.00180382 0.00263728 0.00185798 0.0024062 0.00332779 0.00145959 0.00145491 0.00222524 0.00374568 
+0.00175 0.0028114 0.00168388 0.00165362 0.00176223 0.00191629 0.00127553 0.00033258 0.000987108 0.00208857 0.00104803 0.00256277 
+0.00175 0.000549083 0.000775478 0.00143323 0.00133923 0.00150582 0.000878316 0.00116677 0.00122135 0.00180183 0.000868816 0.0031688 
+0.00175 0.00165191 0.00138037 0.00117046 0.00117154 0.00130065 0.00149967 0.00168174 0.00171157 0.00208062 0.00191594 0.00296845 
+0.00175 0.00131023 0.0015652 0.00146996 0.00149789 0.00122581 0.0015918 0.0015631 0.00183514 0.00202092 0.00184944 0.00272894 
+0.00539881 0.00224432 0.00157432 0.00144749 0.00150163 0.00162213 0.00117414 0.00165062 0.00156161 0.00147743 0.00173477 0.00254265 
+0.00169373 0.000275533 0.000298944 0.000599265 0.00105645 0.00086871 0.00160354 0.00151191 0.00183094 0.00200068 0.00173649 0.00311957 
+0.0030827 0.00186074 0.00144928 0.00160785 0.00141713 0.00129993 0.00175116 0.00180068 0.00199998 0.00208202 0.00197725 0.00326762 
+0.00512732 0.00154451 0.000979505 0.00125333 0.00154216 0.00139283 0.00116208 0.00143264 0.00162997 0.00190801 0.00176975 0.00300717 
+0.00260136 0.00148176 0.00146341 0.00166698 0.0014947 0.00141715 0.00175344 0.00170741 0.00169573 0.00209187 0.00155949 0.00305697 
+0.00607633 0.00171058 0.00137975 0.00161664 0.00163906 0.00177731 0.00175405 0.00177746 0.00180745 0.00197599 0.00126722 0.00216883 
+0.0072298 0.00174206 0.00140851 0.00154404 0.00161964 0.00169163 0.00147921 0.00176682 0.00154032 0.00213906 0.00240923 0.00372126 
+0.000449533 0.000488912 0.000590922 0.000582451 0.000745794 0.00101917 0.00161642 0.00168821 0.00159181 0.00142471 0.00228241 0.0035386 
+0.00660769 0.00120219 0.00137378 0.00110814 0.00108169 0.00150119 0.00135809 0.00178457 0.00133372 0.00214296 0.00270455 0.00379699 
+0.00212358 0.0017905 0.00117037 0.00140173 0.00156192 0.00156128 0.00162737 0.00171791 0.00172918 0.000244951 0.00250264 0.00341337 
+0.00335189 0.00127896 0.00148071 0.00133853 0.00136398 0.00118429 0.00160078 0.00182872 0.00147448 0.00191438 0.00274045 0.00356526 
+0.00349821 0.000794794 0.00150729 0.00127622 0.00111391 0.00139497 0.00137369 0.000975249 0.00109081 0.00155438 0.00195526 0.00340549 
+0.00274887 0.00140077 0.00135238 0.00107242 0.0015003 0.00127913 0.00167818 0.00187533 0.0015864 0.0015361 0.00244788 0.00366691 
+0.0050249 0.00292725 0.00159332 0.00131823 0.00154002 0.00129025 0.00152842 0.00172602 0.00125051 0.00149605 0.0020386 0.0037875 
+0.00432152 0.00164664 0.00152238 0.00133137 0.0018508 0.00123938 0.00137083 0.00119434 0.0016172 0.00155701 0.00168128 0.00372496 
+0.0045194 0.00171242 0.000476805 0.001309 0.00130803 0.00128104 0.00124791 0.00160076 0.00154403 0.00131706 0.00138985 0.00410904 
+0.00265122 0.00116889 0.00190811 0.00166903 0.00179654 0.00185825 0.00169268 0.00158463 0.00158704 0.00105741 0.00183152 0.00338812 
+0.00175 0.00403728 0.00184311 0.00188862 0.00164165 0.00163744 0.00149042 0.00142973 0.00163888 0.00171401 0.00262937 0.00308539 
+0.00731553 0.00733844 0.00269888 0.00236267 0.00204097 0.00246712 0.00241754 0.00240661 0.00195007 0.00151657 0.00263376 0.00416878 
+
+
+Loading previous offsets from database file: /u/home/sbs-gmn/pass0/SBS_REPLAY/SBS-replay/DB/db_sbs.hcal.dat..
+
+
+Old TDC offsets: 
+-255.089 -255.089 -250.535 -259.775 -386.477 -364.1 -343.428 -364.037 -255.874 -252.395 -220.988 -289.242 
+-243.437 -243.437 -250.911 -243.808 -375.31 -360.431 -379.559 -400.384 -241.362 -240.974 -276.665 -229.736 
+-255.089 -284.963 -259.357 -247.516 -378.584 -373.604 -395.499 -397.977 -248.856 -254.643 -279.421 -264.133 
+-255.089 -216.016 -227.08 -244.022 -350.336 -353.952 -342.654 -343.453 -238.106 -224.379 -237.17 -263.794 
+37.7369 37.7369 40.3112 43.5753 -36.3856 -61.0728 -66.9188 -75.9449 39.2759 50.8825 51.7579 66.7426 
+-235.554 -298.324 -233.242 -247.888 -65.1417 -45.152 -353.454 -366.494 -241.243 -242.657 57.5117 91.9988 
+-296.553 -331.246 -286.985 -290.27 -386.729 -376.566 -361.896 -384.811 -244.393 -254.548 -251.982 -183.132 
+-237.403 -291.962 -252.092 -253.844 -350.22 -358.961 -364.679 -378.047 -273.672 -250.761 -264.984 -326.899 
+-228.23 -242.476 -247.633 -237.077 -346.857 -343.3 -360.446 -366.001 -246.143 -240.931 -255.493 -232.4 
+-264.492 -250.883 -250.203 -253.199 -337.027 -343.967 -354.094 -355.42 -244.227 -268.362 -257.663 -244.568 
+-244.469 -259.683 -248.562 -254.717 -322.973 -345.616 -345.68 -349.216 -246.473 -251.62 -292.396 -248.13 
+-279.31 -243.096 -253.365 -255.068 -346.945 -351.476 -357.24 -368.53 -244.766 -247.207 -239.469 -276.768 
+45.8183 29.01 26.7106 24.0498 -103.278 -80.1684 -82.3606 -78.0702 50.8769 41.7307 44.415 60.1981 
+-162.826 -226.044 -208.193 -229.678 -300.926 -327.928 -311.305 -330.308 -218.291 -220.186 -195.045 -216.164 
+-284.253 -234.103 -205.51 -228.336 -317.808 -308.613 -324.64 -333.398 -224.526 -267.366 -221.334 -216.166 
+71.9046 53.9639 -204.36 -199.225 -326.802 -336.215 -40.7253 -49.0955 -216.347 -200.225 -215.576 -241.188 
+-173.474 -209.001 -225.315 -226.887 -347.135 -310.068 -333.326 -357.196 -214.926 -228.034 -210.951 -225.717 
+-378.623 -412.626 -356.16 -397.236 -292.038 -295.476 -463.996 -480.703 -363.358 -387.909 -186.327 -210.972 
+-231.297 -224.988 -163.129 -218.929 -469.619 -458.081 -304.536 -306.394 -205.824 -212.288 -361.522 -410.784 
+-192.577 -225.169 -219.227 -204.231 -478.447 -481.64 -306.074 -333.219 -210.631 -199.726 -383.486 -359.42 
+-215 -249.078 181.426 -219.589 -0 -468.097 -331.377 -337.313 -227.982 -231.655 -384.786 -387.174 
+-283.694 -244.419 -207.656 -213.774 -320.407 -308.071 -306.131 -351.403 -231.559 -238.083 -234.277 -210.567 
+-177.125 -177.125 -193.566 -209.582 -320.489 -300.679 -333.885 -336.691 -215.871 -219.192 -215.207 -169.668 
+-261.816 -362.358 -243.51 -266.164 -301.64 -330.134 -472.425 -497.567 -207.427 -216.548 -232.161 -212.978 
+
+
+Old ADC time offsets: 
+-20.4649 -19.5384 -20.6772 -20.7928 -4.65864 -7.47262 -8.1121 -5.05684 -17.6004 -20.0466 -24.7217 -19.6783 
+-19.9502 -21.5213 -1.14663 -2.39055 -5.60107 -7.64476 -5.82366 -4.01665 -1.22661 -0.331756 -13.7345 -18.3618 
+-14.7631 0.802762 -0.771412 -4.59619 14.4984 11.785 15.804 15.0729 -0.774618 -0.0269941 0.687648 -0.556642 
+-3.06751 -1.25848 -2.64624 -0.713689 12.4276 11.4516 12.1901 12.1747 -0.379139 -1.5871 -0.409652 -0.106859 
+-0.497565 -1.82517 1.12742 -0.601431 -8.24647 -7.5571 13.5816 14.66 0.878802 -0.137403 -18.8867 -19.8985 
+-2.44491 -2.39288 -1.60786 -0.517088 -5.5958 -8.97355 10.7787 13.8027 -0.633928 0.801172 -20.0351 -20.7975 
+1.5258 1.33348 1.8295 3.45433 13.4532 16.6256 12.304 14.5475 -1.11821 0.636825 -1.50875 -3.19349 
+-21.8962 -21.372 -20.4724 -20.3605 -7.06647 -8.12335 -7.54935 -6.24695 -16.9353 -18.4995 -18.0889 -20.1735 
+-0.52712 -2.41217 0.0481486 -0.958024 -6.04369 -8.11147 14.4621 14.6745 0.37615 0.321159 -18.9314 -20.4321 
+0.856632 -0.461324 -19.831 -19.1582 -8.05309 -6.60605 12.1439 12.6343 -18.6659 -17.2439 -19.9599 -20.0152 
+-3.51906 -1.60806 -0.436322 -0.659721 -8.94818 -7.20939 11.2465 11.3293 -0.694388 -0.695817 -18.2025 -19.6023 
+-21.0015 -22.4179 -19.451 -18.055 11.5068 11.8501 -5.98793 -5.60125 -18.9419 -18.5803 -1.87783 -2.06332 
+1.27741 1.56281 2.52408 4.24872 16.7665 12.2822 16.6027 16.9201 1.49026 2.61748 -1.97999 -2.77239 
+-3.62297 -0.581917 -1.20553 0.373987 9.7643 12.1646 9.44601 11.8346 -1.01421 0.650285 -2.73989 -2.10527 
+-20.3101 -21.1396 -19.846 -18.2351 10.709 8.98821 -6.81806 -6.1291 -19.2179 -15.857 -2.49591 -3.21262 
+-5.09212 -2.16266 -2.19777 -1.8176 10.77 10.9909 9.2252 11.1403 -0.212425 -1.14517 -1.35833 -3.51819 
+-2.45182 -2.19328 -0.381136 -0.497967 14.5018 8.02611 14.0993 15.7527 -0.671881 1.81308 -1.46877 -1.08301 
+-3.83124 -0.987306 -7.54784 -0.557138 8.94339 7.9091 9.26019 12.0643 -2.25748 -1.34268 -3.87658 -1.61392 
+-1.79281 1.20509 -2.69672 0.524087 10.4776 11.8139 11.5414 10.5887 -0.954809 -0.104326 -3.43585 -0.953243 
+-2.85637 -4.07503 -2.79192 -2.31443 12.6618 11.4648 10.0945 13.7026 -1.75668 -3.22044 -0.55541 -0.661376 
+-1.14105 -0.011887 -2.0092 0.102029 -3.81702 -8.82908 12.5838 13.5548 -0.321434 1.39309 -18.5185 -17.5352 
+-1.32701 -1.31781 -4.33035 -2.84324 -9.44342 -12.2366 7.93271 10.0696 -1.80185 -2.078 -20.6214 -23.0127 
+-339.997 -4.03246 -3.44082 -3.15738 -8.86355 -11.4005 12.1745 10.8489 -3.21208 -2.29835 -20.2079 -23.2667 
+-20.2397 -19.1979 -20.9791 -21.4844 -9.54202 -10.3684 -7.24628 -4.21005 -21.8314 -20.8838 -19.8203 -20.766 
+
+
+Database parameters loaded.
+
+Loading physics, data, and detector parameters from config files..
+Reading all relevant config files for lh2 and setting up chain for field 0 percent.
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11573_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11573_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11573_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11573_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11573_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11573_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11573_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11573_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11573_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11573_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11573_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11573_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11573_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11573_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11573_stream0_seg140_141.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11587_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11587_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11587_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11587_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11587_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11587_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11587_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11587_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11587_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11587_stream0_seg90_93.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11588_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11588_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11588_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11588_stream0_seg30_30.root..
+Loading beam energy: 3.7278
+Loading HCal distance: 11
+Loading HCal angle: 0.55676
+Loading BBCal angle: 0.628319
+Loading W2 mean cut: 0.837666
+Loading W2 sigma cut: 0.0948841
+Loading x position of neutron spot: 0.01914
+Loading y position of proton spot: 0.01914
+Loading y position of both hadron spots: -0.03618
+Loading x sigma of neutron spot: 0.05911
+Loading x sigma of proton spot: 0.05911
+Loading y sigma of both hadron spots: 0.07244
+Loading ADC time mean: 51.377
+Loading ADC time sigma: 3.47541
+Loading Aluminum absorber option: 0
+Reading all relevant config files for lh2 and setting up chain for field 30 percent.
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11436_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11436_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11436_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11436_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11436_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11436_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11436_stream0_seg60_63.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11500_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11500_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11500_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11500_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11500_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11500_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11500_stream0_seg60_61.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11547_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11547_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11547_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11547_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11547_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11547_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11547_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11547_stream0_seg70_76.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11548_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11548_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11548_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11548_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11548_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11548_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11548_stream0_seg60_68.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11616_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11616_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11616_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11616_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11616_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11616_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11616_stream0_seg60_61.root..
+Loading beam energy: 3.7278
+Loading HCal distance: 11
+Loading HCal angle: 0.55676
+Loading BBCal angle: 0.628319
+Loading W2 mean cut: 0.917994
+Loading W2 sigma cut: 0.167922
+Loading x position of neutron spot: -0.646099
+Loading y position of proton spot: -0.646099
+Loading y position of both hadron spots: -0.0245972
+Loading x sigma of neutron spot: 0.0738526
+Loading x sigma of proton spot: 0.0738526
+Loading y sigma of both hadron spots: 0.0706237
+Loading ADC time mean: 51.2032
+Loading ADC time sigma: 3.585
+Loading Aluminum absorber option: 0
+Reading all relevant config files for lh2 and setting up chain for field 50 percent.
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11589_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11589_stream0_seg10_13.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11590_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11590_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11590_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11590_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11590_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11590_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11590_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11590_stream0_seg70_72.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11592_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11592_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LH2/rootfiles/e1209019_fullreplay_11592_stream0_seg20_26.root..
+Loading beam energy: 3.7278
+Loading HCal distance: 11
+Loading HCal angle: 0.55676
+Loading BBCal angle: 0.628319
+Loading W2 mean cut: 0.949849
+Loading W2 sigma cut: 0.0912271
+Loading x position of neutron spot: -1.09359
+Loading y position of proton spot: -1.09359
+Loading y position of both hadron spots: -0.0134396
+Loading x sigma of neutron spot: 0.0879841
+Loading x sigma of proton spot: 0.0879841
+Loading y sigma of both hadron spots: 0.0661816
+Loading ADC time mean: 50.8383
+Loading ADC time sigma: 3.85395
+Loading Aluminum absorber option: 0
+Reading all relevant config files for ld2 and setting up chain for field 0 percent.
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11579_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11579_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11579_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11579_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11579_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11579_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11579_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11579_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11579_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11579_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11579_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11579_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11579_stream0_seg120_120.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11580_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11580_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11580_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11580_stream0_seg30_35.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11581_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11581_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11581_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11581_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11581_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11581_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11581_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11581_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11581_stream0_seg80_84.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11582_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11582_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11582_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11582_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11582_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11582_stream0_seg50_51.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11583_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11583_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11583_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11583_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11583_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11583_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11583_stream0_seg60_67.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11586_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11586_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11586_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11586_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11586_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11586_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11586_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11586_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11586_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11586_stream0_seg90_97.root..
+Loading beam energy: 3.7278
+Loading HCal distance: 11
+Loading HCal angle: 0.55676
+Loading BBCal angle: 0.628319
+Loading W2 mean cut: 0.9011
+Loading W2 sigma cut: 0.2295
+Loading x position of neutron spot: 0.007614
+Loading y position of proton spot: 0.007614
+Loading y position of both hadron spots: 0.04738
+Loading x sigma of neutron spot: 0.2137
+Loading x sigma of proton spot: 0.2137
+Loading y sigma of both hadron spots: 0.2858
+Loading ADC time mean: 51.05
+Loading ADC time sigma: 3.582
+Loading Aluminum absorber option: 0
+Reading all relevant config files for ld2 and setting up chain for field 30 percent.
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11449_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11449_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11449_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11451_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11451_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11451_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11451_stream0_seg30_30.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11452_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11452_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11452_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11452_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11452_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11452_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11452_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11452_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11452_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11452_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11452_stream0_seg100_106.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11456_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11456_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11456_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11456_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11456_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11456_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11456_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11456_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11456_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11456_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11456_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11456_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11456_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11456_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11456_stream0_seg140_149.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11456_stream0_seg150_159.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11456_stream0_seg160_169.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11493_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11493_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11493_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11493_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11493_stream0_seg40_42.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11494_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11494_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11494_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11494_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11494_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11494_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11495_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11495_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11495_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11495_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11495_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11495_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11495_stream0_seg60_61.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11496_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11496_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11496_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11496_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11496_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11496_stream0_seg50_54.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11551_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11551_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11551_stream0_seg20_28.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11554_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11554_stream0_seg10_18.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11562_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11562_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11562_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11562_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11562_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11562_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11562_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11562_stream0_seg70_77.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11563_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11563_stream0_seg10_17.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11564_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11564_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11564_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11564_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11564_stream0_seg40_44.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11565_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11565_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11565_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11565_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11565_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11565_stream0_seg50_58.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11568_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11568_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11568_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11568_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11568_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11568_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11568_stream0_seg60_62.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11570_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11570_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11570_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11570_stream0_seg30_33.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11571_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11571_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11571_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11571_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11571_stream0_seg40_47.root..
+Loading beam energy: 3.7278
+Loading HCal distance: 11
+Loading HCal angle: 0.55676
+Loading BBCal angle: 0.628319
+Loading W2 mean cut: 0.9677
+Loading W2 sigma cut: 0.2455
+Loading x position of neutron spot: -0.00632
+Loading y position of proton spot: -0.6449
+Loading y position of both hadron spots: -0.00831
+Loading x sigma of neutron spot: 0.2128
+Loading x sigma of proton spot: 0.1806
+Loading y sigma of both hadron spots: 0.2688
+Loading ADC time mean: 51.22
+Loading ADC time sigma: 3.618
+Loading Aluminum absorber option: 0
+Reading all relevant config files for ld2 and setting up chain for field 50 percent.
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11593_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11593_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11593_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11593_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11593_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11593_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11593_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11593_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11593_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11593_stream0_seg90_97.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11595_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11595_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11595_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11595_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS4/LD2/rootfiles/e1209019_fullreplay_11595_stream0_seg40_42.root..
+Loading beam energy: 3.7278
+Loading HCal distance: 11
+Loading HCal angle: 0.55676
+Loading BBCal angle: 0.628319
+Loading W2 mean cut: 1.02447
+Loading W2 sigma cut: 0.215229
+Loading x position of neutron spot: 0.0129126
+Loading y position of proton spot: -1.08927
+Loading y position of both hadron spots: 0.008
+Loading x sigma of neutron spot: 0.193991
+Loading x sigma of proton spot: 0.182977
+Loading y sigma of both hadron spots: 0.2808
+Loading ADC time mean: 50.7893
+Loading ADC time sigma: 3.89325
+Loading Aluminum absorber option: 0
+
+
+Setup parameters loaded and chains linked.
 Opened many trees with 1897289 LH2 events passing global cuts.
 Opened many trees with 4276972 LD2 events passing global cuts.
 
@@ -94,1759 +552,1759 @@ LD2 kinematic 4 at field 50%, entry: 100000/218535. Total events gathered for ca
 LD2 kinematic 4 at field 50%, entry: 200000/218535. Total events gathered for calibration: 1716579
 
 Fitting TDC/ADCt/TW distributions
-#HCal tdc vs E fit parameter P0 obtained 3_8_2023
+#HCal tdc vs E fit parameter P0 obtained 3_21_2023
 #Exponential fit for i PMTs -> y = P0_i*exp(-P1_i*x)+P2_i, P0_i = 
 0
-14
-2
-26
-12.5614
-18.763
-12.4403
-14.8642
-26
-9.56474
-2
-26
-0
-14
-11.5745
-7.97717
-20.3584
-9.63644
-9.06845
-4.50301
-8.46163
-13.453
-11.6251
-26
-0
-14
-14.765
-15.6919
-11.0034
-10.99
-6.43327
-8.84578
-12.5571
-12.7394
-10.703
-11.0882
-0
-2
-9.50052
-7.91587
-9.65818
-9.56932
-13.2728
-26
-26
-12.0468
-7.52232
-26
+14.5633
+8.95173
+17.3472
+12.7293
+12.2767
+25.4411
+17.9539
+22.3913
+9.90257
+10.7764
+16.7482
 0
 26
-26
-14.6415
-13.5973
-10.9822
-15.0091
-11.432
-11.7608
-20.1866
-4.59807
-26
-14
-26
-26
-23.1479
-10.132
-9.58681
-15.0785
-17.1232
-12.5187
-10.2227
-19.5138
-26
-14
-2
-8.38162
-9.33688
-10.2329
-26
-13.1605
-13.6039
-16.1027
-25.6484
-26
-7.52935
-14.0516
-26
-9.96263
-9.85562
-8.48363
-8.92768
-15.4209
-13.4845
-11.077
-10.649
-11.1413
-26
-14
-8.22677
-21.088
-11.9976
-10.2971
-7.49804
-12.0897
-15.5506
-13.198
-11.2379
-26
-7.42576
-2
-7.5888
-8.08205
-8.31718
-9.08795
-12.7796
-10.2764
-23.3043
-9.33214
-14.3859
-20.0802
-6.39061
-26
-26
-9.91263
-12.3151
-11.7438
-9.67242
-13.9711
-14.1996
-12.9065
-10.3309
-20.151
-26
-25.9918
-16.3551
-22.1979
-11.345
-13.3557
-14.4733
-12.2508
-10.386
-10.8661
-26
-26
-26
-26
-15.9284
-13.0815
-7.39907
-6.87948
-10.7718
-14.8524
-22.1841
-14.0445
-21.698
-26
-26
-26
-8.9006
-8.63369
-11.8045
-9.27036
-14.1744
-11.7573
-15.119
-11.6663
-9.20308
-12.183
-26
-14.6491
-22.4714
-12.037
-8.65341
-13.0609
-18.0436
-12.3142
-11.5663
-9.97198
-10.5832
-26
-26
-26
-26
-9.45562
-12.1709
-12.2742
-17.9475
-21.8598
-17.4583
-11.0239
-19.9765
-26
-20.1779
-24.8795
-2.14162
-11.0355
-11.9889
-8.61789
-26
-16.97
-9.44099
-11.833
-17.223
-11.1206
-26
-14.9576
-26
-14.7846
-12.9972
-21.9597
-18.0174
-11.4287
-12.2039
-25.5541
-18.5035
-11.7153
-26
-26
-14.5004
-9.3201
-18.4403
-9.84066
-12.1792
-23.8593
-15.263
-13.8006
-12.8588
-26
-2
-2.49606
-3.462
-11.4445
-11.7065
-18.7152
-18.082
-12.6116
-11.7932
-9.5082
-26
-4.75656
-26
-2
-26
-6.43409
-18.4608
+8.49953
+6.6391
+13.1903
+14.078
+8.23051
+4.38014
+9.98249
+15.1027
+8.88553
+11.6562
 0
-10.9014
-11.7999
-11.3117
-19.1503
-16.4808
-26
-23.6898
-17.8461
-26
-26
-6.94268
-7.29456
-8.52766
-14.914
-12.5224
-9.87012
-14.1806
-26
-11.3675
+2
+17.7223
+10.4393
+8.78211
+9.42778
+8.51011
+10.7919
+13.1797
+13.3277
+12.1034
+17.6097
 0
-22.2168
+15.6823
+11.0005
+9.57027
+9.23892
+10.768
+10.0198
+16.5583
+12.5917
+13.7025
+16.5115
+20.5197
+0
+17.4406
+12.7675
+12.7662
+11.4663
+9.99478
+13.476
+14.0953
+13.3551
+14.3855
+8.89152
+26
+23.1582
+14.8472
+13.924
+13.4985
+12.6652
+11.6367
+13.442
+12.4108
+13.0175
+11.3557
+22.4697
+25.9252
+12.9112
+11.9673
+9.32568
+11.117
+11.4044
+26
+12.4556
+12.4035
+12.8745
+16.1343
+16.2733
 26
 26
-7.33932
-9.7262
-13.5847
-12.717
-9.80173
-8.57231
-20.1855
+19.4939
+10.5434
+12.0471
+10.384
+9.8499
+12.835
+10.8929
+11.7081
+10.9371
+12.8021
+7.89632
 26
-14
 26
-9.75128
-14.4411
-11.6711
-9.61976
-9.99423
-15.3202
-9.40222
-9.8723
-8.11795
-2.59553
+14.1862
+12.0575
+10.048
+10.2486
+11.5288
+11.6521
+12.5492
+11.9265
+9.73937
+26
+25.1893
+22.7823
+13.0153
+10.9548
+10.0683
+12.0822
+12.1964
+13.4174
+11.5463
+13.6816
+19.4539
+12.9284
+23.3521
+21.3461
+11.4603
+13.3668
+13.6453
+11.533
+14.166
+10.9548
+12.7382
+10.8753
+19.9742
+11.5664
+15.2747
+9.52432
+17.2829
+10.8849
+13.8778
+12.5362
+9.81165
+11.8971
+10.5744
+24.3991
+12.8342
+23.9493
+16.817
+10.969
+14.0991
+7.18686
+8.41552
+9.4699
+14.4677
+15.4008
+15.7899
+17.0717
+26
+26
+26
+13.8897
+11.2161
+10.4231
+10.2777
+11.9377
+11.2731
+12.8804
+11.9609
+11.4285
+26
+26
+12.6621
+16.1927
+12.0785
+11.1308
+14.8735
+14.4555
+12.2344
+11.3231
+9.86784
+7.26707
+15.9324
+26
+26
+13.4468
+8.90534
+12.1662
+11.3315
+12.4657
+14.4261
+12.7237
+12.4014
+22.0236
+24.0915
+26
+26
+11.169
+12.3072
+14.3844
+8.64873
+16.4382
+12.9868
+8.77579
+13.8054
+21.8771
+26
+25.7659
+18.5095
+24.0056
+15.23
+11.3844
+12.3541
+11.4407
+12.6931
+11.8399
+14.7852
+14.1502
+14.5827
+26
+26
+15.596
+10.7033
+16.4516
+11.5903
+13.0589
+15.1552
+12.9708
+11.5633
+12.4247
+20.112
+26
+26
+19.6471
+16.6175
+12.4037
+12.2126
+11.2596
+11.3232
+11.0394
+14.9077
+15.5414
+14.4988
+24.273
+26
+26
+7.65848
+11.4571
+0
+10.7447
+14.7987
+12.0556
+16.8286
+16.3264
+26
+18.8243
+26
+19.8392
+16.035
+10.6142
+11.3503
+12.4971
+13.7176
+11.6595
+15.6459
+12.8527
+13.8038
+26
+0
+26
+12.7852
+14.5527
+8.52467
+12.5023
+10.3375
+10.4619
+12.0693
+10.8538
+20.4402
+26
+26
+26
+12.0047
+10.1467
+9.7809
+13.2203
+10.0372
+15.9923
+11.0301
+11.0498
+14.8016
+26
 
 
-#HCal tdc vs E fit parameter P1 obtained 3_8_2023
+#HCal tdc vs E fit parameter P1 obtained 3_21_2023
 #Exponential fit for i PMTs -> y = P0_i*exp(-P1_i*x)+P2_i, P1_i = 
 0
-0.04
-0.2
-0.0904666
-0.108762
-0.137109
-0.0544436
-0.0306226
-0.0641603
-0.039411
-0.2
-0.161322
-0
-0.04
-0.2
-0.0454076
-0.0889221
-0.0546909
-0.0394603
-0.0259066
-0.0568575
-0.0486158
-0.0398029
-0.101642
-0
-0.04
+0.0451835
 0.01
-0.069027
-0.12547
-0.0770331
-0.0569358
-0.0646992
-0.0583406
-0.0367733
-0.2
-0.0198387
+0.043861
+0.105995
+0.0557784
+0.0707201
+0.0311707
+0.041251
+0.0323707
+0.0197681
+0.0304801
+0
+0.0413911
+0.0354998
+0.01
+0.0465389
+0.0614282
+0.039047
+0.0203406
+0.0320994
+0.0388267
+0.0121507
+0.119464
 0
 0.01
-0.0726788
-0.0419045
-0.0551565
-0.0644675
-0.0712108
-0.121974
-0.120156
-0.0394955
-0.0456795
-0.084785
+0.0660583
+0.0263539
+0.0439409
+0.0417227
+0.0534964
+0.0475289
+0.0424347
+0.0304898
+0.0968088
+0.0119991
 0
-0.0860662
-0.130235
-0.0788591
-0.0614837
-0.0713219
-0.0737298
-0.0607983
-0.0552535
-0.0739692
-0.0107709
-0.161918
-0.04
-0.121608
-0.0717606
-0.121755
-0.0440109
-0.0453308
-0.082084
-0.0905293
-0.0519723
-0.0586792
-0.0941244
-0.0897403
-0.04
-0.01
-0.176673
-0.0443099
-0.0800778
-0.0291294
-0.0577945
-0.06896
-0.0530905
-0.0893268
-0.103863
-0.0187782
-0.0397116
-0.106967
-0.0368142
-0.0451561
-0.0346668
-0.0649124
-0.0978495
-0.07513
-0.0458151
-0.0416104
-0.0282362
-0.0755526
-0.04
-0.01
-0.149972
-0.0367597
-0.0474268
-0.0363149
-0.0717716
-0.0865045
-0.0562932
-0.038684
-0.114801
-0.0629735
-0.01
-0.0358098
-0.0693608
-0.0444523
-0.0457475
-0.0677129
-0.0387418
-0.0977239
-0.039007
-0.0910498
-0.0944388
-0.01
-0.2
-0.140733
-0.0691041
-0.0570887
-0.0788306
-0.0578553
-0.0618586
-0.0612829
-0.0494581
-0.0288079
-0.189263
-0.139756
-0.2
-0.192091
-0.154691
-0.0532001
-0.0675845
-0.0695907
-0.0617388
-0.047128
-0.0564442
-0.0970654
-0.0984867
-0.0195476
-0.096429
-0.2
-0.0493682
-0.0321948
-0.0337267
-0.0732164
-0.0575166
-0.102475
-0.0540134
-0.121857
-0.0862673
-0.115565
-0.0317614
-0.0797212
-0.0285333
-0.0715083
-0.0487762
-0.0774201
-0.0641346
-0.0680643
-0.0545961
-0.0187802
-0.0241419
-0.106165
-0.0209397
-0.0751623
-0.0698196
-0.0320834
-0.0685418
-0.0912106
-0.0581825
-0.0558544
-0.0313852
-0.01
-0.119521
-0.0844002
-0.0393247
-0.149123
-0.0323311
-0.0416455
-0.0659651
-0.0984116
-0.0910643
-0.0721565
-0.041959
-0.103362
-0.0840525
-0.01
-0.0994712
-0.01
-0.029984
-0.0568066
-0.0586882
-0.111972
-0.0989529
-0.0736996
-0.0574554
-0.0608053
-0.0346893
-0.0242152
-0.01
-0.12295
-0.0448842
-0.0725402
-0.118145
-0.120731
-0.0471573
-0.0427684
-0.103996
-0.0747217
-0.0113929
-0.0433355
-0.0496813
-0.01
-0.0338848
-0.0931535
-0.0412058
-0.0704733
-0.117829
-0.0785223
-0.0842774
-0.0505873
-0.124985
-0.01
-0.0323229
-0.0347951
-0.029109
-0.0415189
-0.0820079
-0.115975
-0.0631745
-0.0877576
-0.0466469
-0.125963
-0.0279079
-0.0864402
-0.01
-0.0581378
-0.01
-0.0811163
+0.0304592
+0.0230999
+0.0323878
+0.0295755
+0.0378549
+0.0276676
+0.0560466
+0.0362434
+0.0315627
+0.0446115
+0.0605064
 0
-0.0485233
-0.116311
-0.0587939
-0.0869304
-0.0765783
-0.122759
-0.0314226
-0.0316616
-0.0944392
-0.0813501
-0.0139415
-0.0373943
-0.0442539
-0.0551219
-0.0598511
-0.0266318
-0.0590549
-0.0717995
-0.0479405
+0.0120314
+0.0375895
+0.0405527
+0.0326129
+0.0381516
+0.0354498
+0.0414609
+0.037732
+0.0339033
+0.0280129
+0.11163
+0.0945314
+0.0294775
+0.0314855
+0.0337246
+0.0408617
+0.0441358
+0.0451058
+0.0325372
+0.0358765
+0.034344
+0.0958763
+0.073227
+0.01
+0.0157434
+0.0260053
+0.0458637
+0.047977
+0.020658
+0.0353415
+0.0340401
+0.0249558
+0.03743
+0.0516854
+0.063049
+0.0906523
+0.114635
+0.0349495
+0.0434781
+0.0430556
+0.045294
+0.0515305
+0.0412734
+0.0394951
+0.0328945
+0.0470148
+0.0305769
+0.11544
+0.0759814
+0.0396423
+0.0303904
+0.0292002
+0.0363698
+0.0547932
+0.0343079
+0.0271666
+0.0196313
+0.0104276
+0.0926571
+0.0649687
+0.0605949
+0.0681013
+0.0419026
+0.0414709
+0.0442072
+0.0348161
+0.036234
+0.0452919
+0.0514723
+0.0693777
+0.0260801
+0.0438263
+0.0519965
+0.0314075
+0.0433695
+0.0613079
+0.0538425
+0.0443337
+0.0304315
+0.0317445
+0.0167681
+0.139166
+0.0141772
+0.0451556
+0.0199261
+0.0743111
+0.0356162
+0.0555502
+0.03965
+0.0310326
+0.0456954
+0.0365469
+0.0687178
+0.0374112
+0.0461593
+0.0315446
+0.01
+0.0479116
+0.0295225
+0.0547086
+0.0480935
+0.0383795
+0.0474145
+0.0442838
+0.0546993
+0.0702107
+0.0625382
+0.0297113
+0.0414735
+0.0297559
+0.0328745
+0.0426591
+0.0410673
+0.039909
+0.033168
+0.0344467
+0.0168615
+0.0517063
+0.0779697
+0.0739791
+0.064778
+0.0528786
+0.0448661
+0.0546091
+0.0501871
+0.0413816
+0.0383064
+0.0286248
+0.0179925
+0.034685
+0.0566592
+0.0391748
+0.0308204
+0.0221705
+0.0291335
+0.0429368
+0.0461626
+0.0421732
+0.0348377
+0.0282509
+0.0667096
+0.0598418
+0.0516901
+0.0564164
+0.0338292
+0.0346777
+0.0429029
+0.0494623
+0.0576498
+0.0542117
+0.0409693
+0.0420593
+0.059455
+0.0574923
+0.0389875
+0.103896
+0.0799455
+0.043655
+0.0389387
+0.0421708
+0.0508789
+0.0412779
+0.0324296
+0.0461929
+0.0437271
+0.0194023
+0.0605453
+0.0489413
+0.0251682
+0.0233709
+0.0576224
+0.0346832
+0.0541537
+0.0533156
+0.041347
+0.0385014
+0.0241881
+0.0449617
+0.0925879
+0.0455709
+0.0360058
+0.0539729
+0.031858
+0.0356966
+0.0411549
+0.041315
+0.0461283
+0.0466279
+0.0467889
+0.0318032
+0.0600201
+0.0288762
+0.0585165
+0.01
+0.0300676
 0
-0.01
-0.0764489
-0.106352
-0.0283841
-0.0513587
-0.0751925
-0.0659108
-0.0319487
-0.0300603
-0.0645059
-0.10828
-0.04
-0.0674548
-0.0370069
-0.0517742
-0.0560714
-0.0509295
-0.0410139
-0.0769145
-0.0354993
-0.0260417
-0.0250406
-0.01
+0.0339246
+0.102734
+0.0411086
+0.0463254
+0.0451171
+0.12802
+0.0786642
+0.02472
+0.0519962
+0.0280417
+0.0178486
+0.0378839
+0.0467535
+0.0285676
+0.0318287
+0.0372499
+0.02897
+0.039233
+0.100222
+0
+0.0446129
+0.0350191
+0.038225
+0.0277999
+0.0478344
+0.0318161
+0.0331362
+0.0257086
+0.0191681
+0.0486309
+0.0674497
+0.034266
+0.184811
+0.0537863
+0.0227744
+0.0312812
+0.0502271
+0.0232522
+0.0477146
+0.0301882
+0.0327738
+0.0406673
+0.123576
 
 
-#HCal tdc vs E fit parameter P2 obtained 3_8_2023
+#HCal tdc vs E fit parameter P2 obtained 3_21_2023
 #Exponential fit for i PMTs -> y = P0_i*exp(-P1_i*x)+P2_i, P2_i = 
 0
--77
--77.5976
--74.6535
--74.7132
--73.6566
--74.8606
--76.3041
--76.0494
--79.5455
--75.8255
--72.8482
+-80.6803
+-77.9325
+-74.1676
+-73.6319
+-73.9272
+-73.9152
+-74.7145
+-75.8587
+-75.5714
+-77.2404
+-74.173
 0
--77
--74.9746
--75.3426
--73.7887
--73.7567
--75.6978
--77.3497
--75.4865
--77.9057
--78.8457
--77.9196
+-78.0695
+-72.0608
+-74.7709
+-72.878
+-72.9887
+-74.8818
+-76.7265
+-76.3141
+-75.7663
+-78.8474
+-77.6489
 0
--77
--84.3919
--73.7486
--72.3303
--72.7454
--77.6171
--75.2679
--75.4459
--78.1597
--76.1539
--76.3235
+-69.294
+-72.973
+-73.551
+-72.4882
+-72.5252
+-77.1573
+-74.8455
+-74.2996
+-75.5885
+-75.5048
+-76.6883
 0
--73.2392
--74.1015
--74.4398
--73.4543
--72.8373
--72.9445
--73.2055
--74.1626
--77.7069
--77.1955
--76.3324
+-74.3761
+-74.2569
+-73.5542
+-73.5923
+-73.1784
+-73.3943
+-72.9831
+-74.3049
+-75.3213
+-75.1332
+-72.5237
 0
--66.7858
--73.8346
--74.5842
--74.3306
--74.7015
--74.8603
--74.7105
--74.1999
--75.1535
--77.7443
--78.3655
--77
--68.8111
--77.3247
--74.4552
--75.7855
--75.8607
--75.2589
--75.1879
--75.9746
--77.0585
--77.4472
--79.6275
--77
--76.8804
--75.6764
--77.2535
--75.8243
--78.9894
--75.9746
--75.7195
--76.5929
--76.3413
--77.1104
--86.8043
--76.969
--75.1578
--76.8211
--76.2014
--75.7334
--74.6505
--75.3779
--76.7763
--77.6257
--79.3993
--80.686
--70.1994
--77
--78.6782
--73.0906
--76.0573
--75.1494
--75.7433
--76.6885
--76.2029
--76.4961
--77.9599
--76.6831
--78.2138
--38.99
--75.061
--73.2238
--74.0122
--74.566
--75.2667
--76.9672
--76.2161
--77.0301
--76.1139
--75.7893
--77.1591
--76.9335
--69.914
--71.3356
--72.6619
--73.2175
--74.2402
--75.7969
--76.1908
--77.0697
--77.7704
--73.5659
--75.8291
--111.586
--69.9809
--71.733
--73.1091
--73.2042
--73.3511
--75.12
--75.2244
--74.8053
--75.1269
--73.9691
--77.5109
--66.728
--77.0017
--74.1481
--77.6092
--76.1581
--75.0671
--74.4749
--73.0896
--73.4635
--73.4109
--74.831
--77.026
--84.1045
--69.5267
--73.1011
--72.5583
--73.2849
--73.661
--73.949
--74.1298
--74.9425
--77.5825
--77.7139
--73.9776
--75.9546
--72.2559
--75.3428
--74.9186
--73.8033
--73.9115
--75.0124
--75.1615
--75.997
--86.4983
--75.0996
--76.5012
--80.7224
--72.1435
--73.9793
--74.5045
--74.2912
--73.9776
--73.6197
--74.1575
--74.6
--74.7936
--76.9811
--82.1328
--77.4839
--75.3737
--74.3189
--72.9562
--74.3795
--73.637
--74.3377
--75.3181
--74.8157
--77.0607
--76.56
--87.8465
--84.8718
--71.7722
--75.5552
--72.2645
--72.3678
--72.958
--75.2817
--76.2194
--74.8506
--75.9715
--80.3632
--80.9244
--75.652
--82.729
--77.743
--73.2762
--73.8654
--73.8411
--74.0347
--74.305
--73.2927
--73.8666
--72.8973
--72.5891
--127.075
--70.4581
--75.6419
--76.0652
--74.9134
--73.1504
--73.7015
--73.3962
--72.8155
--71.6382
--73.2422
--76.6305
--72.7944
--73.1542
--118.805
--73.5652
+-79.4526
+-74.3036
+-74.0682
+-74.4068
+-74.9146
+-74.8031
+-74.1238
+-74.217
+-75.331
+-76.1809
+-77.2076
+-76.0374
+-67.1275
+-75.1663
+-74.7264
+-74.9629
+-74.8152
+-74.6691
+-74.9478
+-75.356
+-75.9304
+-75.7813
+-78.7033
+-65.216
+-71.1124
+-78.4693
+-75.389
+-76.0483
+-78.5682
+-75.1117
+-75.0485
+-76.0819
+-75.3868
+-75.0353
+-80.0279
+-76.1913
+-70.0441
+-75.551
+-75.8086
+-75.0108
+-74.8746
+-75.198
+-76.1155
+-76.5025
+-77.6467
+-76.8406
+-68.1653
+-73.4728
+-73.4756
+-76.5606
+-76.5152
+-76.1603
+-76.3834
+-76.7211
+-76.7075
+-77.2372
+-78.5682
+-80.6202
+-78.4808
+-72.5974
+-73.0815
+-73.8694
+-74.4728
+-75.1858
+-76.0255
+-75.627
+-75.8058
+-76.0789
+-76.1586
+-76.6538
+-78.1548
+-71.1339
+-73.1125
+-73.9137
+-73.8486
+-74.3019
+-74.7552
+-75.6402
+-75.9825
+-77.0015
+-77.5756
+-73.5403
+-81.2706
+-74.436
+-74.6399
+-73.1425
+-73.7492
+-72.9384
+-73.6323
+-75.0831
+-74.3335
+-75.0045
+-74.8024
+-73.3231
+-70.9478
+-65.5745
+-77.8939
+-72.5327
+-76.8066
+-74.1248
+-74.6106
+-73.815
+-72.9619
+-72.9787
+-73.4497
+-72.8293
+-72.6815
+-75.1902
+-71.527
+-72.8568
+-73.3378
+-72.928
+-73.8644
+-73.5487
+-74.0262
+-74.9187
+-75.7735
+-73.4841
+-72.0968
+-69.6336
+-71.8839
+-75.4406
+-73.9963
+-73.4524
+-73.613
+-74.7364
+-74.5757
+-75.2017
+-79.8295
+-73.8217
+-71.2499
+-73.1497
+-73.1292
+-72.6175
+-74.0641
+-73.714
+-73.6457
+-73.4677
+-73.76
+-74.2348
+-73.9628
+-73.849
+-72.2598
+-76.1485
+-75.8528
+-73.392
+-73.8541
+-74.2067
+-74.2792
+-74.775
+-75.7087
+-75.3616
+-75.1096
+-72.8377
+-78.3834
+-75.3958
+-71.307
+-74.9289
+-73.6534
+-73.9891
+-74.4063
+-75.1306
+-75.5592
+-74.9449
+-75.0731
+-76.6955
+-72.1173
+-66.0203
+-73.9555
+-76.3484
+-72.7852
+-73.5926
+-73.5462
+-74.0099
+-73.794
+-73.632
+-73.4921
+-72.8365
+-67.2397
+-75.6019
+-72.2762
+-72.2065
+-75.2848
+-74.6402
+-73.498
+-74.2652
+-74.1526
+-73.4451
+-72.8808
+-73.1421
+-72.8335
+-71.4151
+-68.4662
+-116.796
+-73.3186
 0
--73.9851
--73.0697
--72.3794
--71.8361
--71.9118
--74.5978
--82.9245
--104.198
--71.043
--70.9977
--73.8581
--72.3683
--72.0953
--71.5035
--71.7908
--73.7953
--73.2177
--74.8104
--80.2392
+-73.4687
+-72.2172
+-71.999
+-72.1266
+-71.0954
+-72.657
+-71.9931
+-64.6407
+-72.2608
+-73.1363
+-73.5839
+-72.6614
+-72.331
+-71.8953
+-71.6763
+-71.9404
+-72.2928
+-73.0605
+-75.9311
 0
--88.0372
--72.1406
--71.2485
--71.4821
--71.591
--71.8907
--72.1627
--71.9688
--73.651
--75.3047
--79.5937
--77
--83.3145
--71.2622
--70.122
--74.3248
--69.4283
--73.7252
--74.1208
--74.5737
--77.1663
--76.1293
--76.3539
+-72.3928
+-72.4457
+-71.9928
+-71.5859
+-71.6367
+-72.0531
+-71.9181
+-71.4468
+-73.1307
+-73.9356
+-77.6525
+-82.706
+-74.7641
+-71.0708
+-70.5242
+-74.2642
+-69.1238
+-73.7613
+-73.5417
+-74.4811
+-75.1714
+-73.917
+-73.4634
 
 
-#HCal adct vs E fit parameter P0 obtained 3_8_2023
+#HCal adct vs E fit parameter P0 obtained 3_21_2023
 #Exponential fit for i PMTs -> y = P0_i*exp(-P1_i*x)+P2_i, P0_i = 
 0
-9
+6.38943
 2
-3.60892
-5.01796
-3.18553
-4.25355
-6.257
-6.77147
-8.02946
+3.32998
+5.51046
+3.14372
+5.21581
+6.40877
+6.7508
+8.07892
 9
 9
 0
-6.28612
-3.76285
+6.33301
+2.9983
 2
-3.74723
-3.09258
-3.6522
+4.10644
+3.09094
+3.86006
 2
-2.46772
-6.10224
-3.41655
-2
+2.81005
+5.79675
+3.65351
+3.13751
 0
 2
-7.28239
-3.80724
-3.85678
-3.11455
-3.91025
-6.63928
-5.39573
-4.74374
-5.58033
+8.68922
+3.96951
+4.26425
+3.47754
+4.28744
+6.16658
+5.44107
+4.91441
+6.38081
 9
 0
-5.789
-7.13156
-4.60984
-3.87893
-4.84505
-4.12523
-5.62335
-3.71183
-5.85313
-6.43566
 9
-2.67808
-6.5936
-6.44631
-5.12666
-4.16078
-3.88452
-6.39288
-5.46835
-4.13395
-4.17021
-3.30917
-2.93835
+4.34943
+5.23492
+3.87603
+4.85458
+4.08777
+6.46221
+3.95034
+5.8402
+7.47709
 9
+3.56183
 9
-5.90892
-5.24822
-4.45034
-3.86204
-6.22764
-5.8504
-4.31715
-5.81889
-4.16889
-5.68783
+7.39928
+5.763
+4.09417
+3.73001
+5.97543
+5.88412
+4.09624
+4.56807
+3.19741
+2.9007
 9
 9
-6.32547
-5.66975
-5.74228
-6.29608
-5.61301
-5.40529
-4.27957
-5.84681
-4.87359
+6.46524
+5.23393
+4.39076
+4.35613
+7.2906
+6.86288
+5.06493
+5.7682
+4.05675
+7.19589
+8.57064
 9
-8.24094
-3.19186
-4.30944
-4.22039
-3.25624
-3.16407
-4.48486
-4.53205
-3.61514
-4.38035
-4.27338
-4.77402
-5.64951
-8.7878
-6.3802
-5.12004
-3.54937
-3.73978
-4.43843
-4.66652
-4.22822
-4.94971
-3.54798
-5.976
-9
-7.30365
-3.5934
-2.37167
-2.48795
-3.77636
-4.73583
-4.70867
-2.43333
-4.30807
-3.3726
-4.69779
+7.17566
+5.25101
+6.26096
+7.28269
+5.28573
+5.5449
+4.28078
+5.83986
+4.83701
 9
 9
-4.20285
-3.56654
-2.84231
-3.21995
-5.76964
-4.18688
-4.00626
-5.34806
-3.39057
-5.33113
-9
-4.269
-3.46631
-3.33734
-3.82161
-4.43739
-3.63412
-3.89902
-2.91463
-3.4319
-4.36029
+4.28274
+4.20929
+4.88029
+3.16588
+3.71329
+4.13635
+4.51038
+3.55613
+4.45204
+5.2604
+6.89911
 9
 9
-2.85438
-5.66647
-3.29369
-3.79661
-3.99456
-5.87444
-5.59352
-3.5673
-5.34504
-7.13628
+7.79911
+6.23096
+3.33157
+4.20505
+4.37326
+5.31935
+3.90411
+5.06356
+2.94592
+8.35731
+9
+7.97369
+4.22509
+2.2643
+2.47359
+4.56932
+4.7261
+4.66978
+2.32972
+4.19588
+3.67082
+7.94032
 9
 9
-3.9725
-4.68617
-3.18338
-3.7896
-4.19192
-4.95273
-6.44007
-4.18071
-6.76004
-8.45368
-9
-7.86187
-4.95618
-3.18456
-3.19693
-5.39017
-5.43325
-5.11684
-4.51171
-3.52124
-3.10479
-6.6178
-9
-9
-7.17877
-3.44998
-3.94244
-4.4525
-4.51069
-5.23477
-5.81451
-4.20058
-6.42262
-7.04185
+5.54216
+3.59015
+3.29271
+3.67298
+5.63885
+4.15315
+4.36152
+4.95847
+4.61593
+8.86988
+6
+6.1554
+3.40342
+3.27486
+3.87194
+4.30097
+4.05927
+4.72909
+3.25776
+3.44816
+5.10662
 9
 9
-5.50687
-3.56186
-3.96215
-4.31213
-4.98173
-5.23829
-4.59247
-4.62323
-7.03263
-6.9887
-9
-6.66409
-6.86906
-5.74243
-4.24218
-4.88051
-3.65941
-4.03242
-6.09835
-4.90348
-6.64418
-7.99182
+2
+6.64886
+3.43808
+4.40559
+3.88881
+5.88416
+5.77118
+4.08854
+6.14173
+8.5966
 9
 9
-7.91913
-3.64835
-3.312
-3.51593
-4.11255
-5.97412
-4.88325
-3.78155
-5.51195
+7.71668
+4.5407
+3.05277
+3.6801
+5.07901
+5.3107
+7.26144
+4.08133
+5.79426
+9
+9
+7.59523
+6.72928
+3.17373
+3.03192
+6.19984
+6.27202
+5.23169
+4.52581
+3.5177
+2.96283
 9
 9
 9
-8.50603
-4.8061
-4.56404
-4.82334
-4.64382
-4.5707
-4.772
-4.17092
-4.45295
-6.99823
+7.13187
+3.95322
+3.79573
+5.04826
+4.18767
+5.0518
+5.89006
+4.44892
+7.97328
 9
 9
-8.85175
-8.2307
-4.80343
-3.9491
-3.57389
-4.09388
-4.53007
-5.22158
-6.02019
-4.46153
-7.47542
 9
-8.9984
-5.15603
-4.60021
-3.59063
-2.39188
-4.48558
-5.1179
-4.7106
-5.18208
-3.91942
-6.14292
+5.63406
+4.505
+4.47932
+4.17055
+5.68842
+5.17143
+4.50389
+4.68649
+8.93668
+8.42726
+9
+6.41477
+8.40834
+6.62543
+4.64922
+5.5243
+3.69966
+4.92669
+5.97374
+5.51952
+7.44655
+9
+9
+9
+9
+4.04656
+3.74118
+3.01918
+4.12096
+6.79336
+4.81301
+3.60888
+6.58838
+9
+9
+9
+9
+5.7836
+4.41713
+4.59308
+5.15242
+4.53879
+5.29724
+4.03732
+4.98692
+8.29327
+9
+9
+9
+8.29362
+4.55655
+4.84629
+3.52861
+4.85311
+4.58562
+6.01134
+6.72344
+3.49866
+7.74652
+9
+7.75664
+5.2543
+4.53206
+4.09769
+2.76624
+4.15335
+5.6481
+4.98801
+5.20421
+4.25321
+6.01338
 0
-8.27691
-4.19153
-4.91582
-2.42046
-2.04165
-5.13001
-5.06303
-4.00409
-4.48602
-4.45912
-6.12568
 9
-8.91336
-5.04384
-4.20434
-4.02448
-4.96076
-4.05084
-6.26349
-3.55224
-3.10778
-5.33357
-7.07511
+4.66615
+3.09078
+2.29082
+2.11726
+4.78869
+4.83319
+3.84489
+4.6672
+5.06989
+8.49098
+9
+8.35083
+6.33898
+4.27149
+4.19301
+6.09552
+3.96446
+6.74101
+3.46808
+3.22915
+6.80652
+9
 
 
-#HCal adct vs E fit parameter P1 obtained 3_8_2023
+#HCal adct vs E fit parameter P1 obtained 3_21_2023
 #Exponential fit for i PMTs -> y = P0_i*exp(-P1_i*x)+P2_i, P1_i = 
 0
-0.0280877
 0.05
 0.05
+0.0226359
 0.05
+0.0152374
 0.05
-0.05
-0.0268761
-0.0215274
-0.0209465
-0.0463502
+0.0233483
+0.0147387
+0.016736
+0.0333646
 0.0307311
 0
-0.0312611
+0.0228874
 0.05
 0.05
-0.0184144
-0.0302279
 0.05
+0.0216519
 0.05
 0.05
-0.0299973
 0.05
-0.05
-0
-0.008
-0.05
-0.05
-0.05
-0.05
-0.05
-0.05
-0.05
-0.05
-0.05
-0.0163982
-0
-0.05
-0.008
-0.05
-0.0364519
-0.0458152
-0.0260513
-0.05
-0.05
-0.05
-0.05
-0.05
-0.05
-0.05
-0.05
-0.05
-0.0220902
-0.05
-0.05
-0.0343412
-0.0264099
-0.0205027
-0.05
-0.05
-0.05
-0.05
-0.05
-0.0445615
-0.0491857
-0.0488261
-0.0304661
-0.0478721
-0.0375014
-0.0206285
-0.0458287
-0.05
-0.05
-0.05
-0.0151124
-0.05
-0.0313969
-0.0375598
-0.0459009
-0.0459087
-0.0390151
-0.0231933
-0.0489849
-0.05
-0.05
-0.05
-0.05
-0.0289714
-0.0191211
-0.0288948
-0.0491956
-0.0276226
-0.0210794
-0.05
-0.05
-0.0494506
-0.05
-0.05
-0.05
-0.05
-0.05
-0.05
-0.0227358
-0.0220093
-0.020275
-0.0115059
-0.008
-0.0452704
-0.05
-0.05
-0.0256134
-0.0496358
-0.0275273
-0.0316543
-0.0294866
-0.0244183
-0.05
-0.0496844
-0.05
-0.0419555
-0.05
-0.05
-0.0451024
-0.0382925
-0.05
-0.05
-0.0498517
-0.0200961
-0.05
-0.00933195
-0.0489506
-0.05
-0.05
-0.05
-0.0498382
-0.05
-0.0368217
-0.0183811
-0.05
-0.0284004
-0.0491443
-0.0249579
-0.05
-0.05
-0.0308071
-0.05
-0.05
-0.0496729
-0.0496391
-0.0489018
-0.0401821
-0.05
-0.05
-0.05
-0.05
-0.05
-0.05
-0.05
-0.05
-0.0147747
-0.0216722
-0.0285818
-0.05
-0.05
-0.05
-0.008
-0.0396899
-0.05
-0.05
-0.05
-0.05
-0.0176951
-0.05
-0.05
-0.05
-0.0355203
-0.0146299
-0.05
-0.05
-0.05
-0.0150905
-0.05
-0.05
-0.0176237
-0.0197192
-0.0478808
-0.05
-0.05
-0.0174437
-0.0499587
-0.05
-0.05
-0.05
-0.05
-0.0201972
-0.05
-0.05
-0.05
-0.05
-0.05
-0.0295259
-0.05
-0.05
-0.0413949
-0.05
-0.05
-0.05
-0.05
-0.05
-0.0420246
-0.027336
-0.0498496
-0.05
-0.05
-0.05
-0.05
-0.05
-0.05
-0.0496823
-0.05
-0.0177175
-0.0379223
-0.05
-0.0260989
-0.0144788
-0.0279285
-0.05
-0.05
-0.05
-0.05
-0.05
-0.0170575
-0.0136647
-0.0492982
-0.0232913
-0.0391484
-0.0493635
-0.05
-0.05
-0.05
-0.0352837
-0.05
-0.05
-0.0210278
-0.05
-0.0208395
-0.05
-0.041706
-0.05
-0.05
-0.008
-0.0214709
-0.0188631
-0.0109673
-0.05
-0.0109236
-0.05
-0.05
-0.0482951
-0.0486438
-0.05
-0.0341593
+0.0215175
 0.05
 0.05
 0
 0.05
-0.049715
+0.0436431
+0.012969
+0.0470394
+0.05
+0.05
+0.05
+0.05
+0.0187453
+0.05
+0.0122268
+0
+0.05
+0.05
+0.05
+0.0276361
+0.0343243
+0.0206334
+0.05
+0.05
+0.0149896
+0.0499998
+0.05
+0.05
+0.05
+0.05
+0.05
+0.0174504
+0.0190047
+0.0230015
+0.0431422
+0.0208799
+0.05
+0.05
+0.05
+0.05
+0.0405175
+0.0485313
+0.0329202
+0.0445285
+0.0489438
+0.05
+0.05
+0.0487577
+0.0188021
+0.0316768
+0.0104556
+0.05
+0.017342
+0.00921122
+0.05
+0.05
+0.0487012
+0.0251706
+0.035282
+0.0285268
+0.0169229
+0.0333755
+0.0357538
+0.05
+0.0488665
+0.0332686
+0.05
+0.0155323
+0.05
+0.0276455
+0.0209403
+0.0161289
+0.0136432
+0.00846726
+0.05
+0.05
+0.05
+0.05
+0.05
+0.0160153
+0.05
+0.0174233
+0.0469569
+0.011838
 0.008
-0.0185607
-0.0415618
-0.0491333
-0.018177
-0.0153524
-0.0484797
-0.0450425
+0.008
+0.05
+0.0348032
+0.05
+0.0494941
+0.0314653
+0.0237323
+0.05
+0.0216365
+0.018723
+0.0147984
+0.0317365
 0.05
 0.05
-0.0499485
 0.05
-0.0163793
-0.0478597
-0.049892
-0.0176377
-0.0489834
-0.0150514
-0.0174716
+0.0484192
 0.05
+0.0295611
+0.05
+0.05
+0.0337804
+0.0150032
+0.05
+0.008
+0.05
+0.008
+0.05
+0.05
+0.0385818
+0.0356869
+0.0297272
+0.0152341
+0.05
+0.04814
+0.049351
+0.0180601
+0.05
+0.0432327
+0.0270634
+0.0339603
+0.028136
+0.05
+0.05
+0.0288244
+0.0295864
+0.0409908
+0.05
+0.0447113
+0.05
+0.0340449
+0.0401951
+0.05
+0.0321614
+0.0499992
+0.0182018
+0.0483261
+0.0445164
+0.05
+0.0163395
+0.00997133
+0.0360835
+0.048556
+0.05
+0.05
+0.0212925
+0.0156164
+0.05
+0.05
+0.0394372
+0.0289179
+0.05
+0.05
+0.05
+0.05
+0.014334
+0.0318952
+0.05
+0.0143788
+0.0484479
+0.0192163
+0.0337481
+0.038548
+0.0473242
+0.05
+0.05
+0.0455638
+0.049761
+0.0277967
+0.05
+0.0493005
+0.0280422
+0.0497364
+0.0355825
+0.0337584
+0.032705
+0.05
+0.05
+0.0347917
+0.05
+0.05
+0.05
+0.0497106
+0.0497021
+0.033919
+0.043913
+0.0349775
+0.05
+0.05
+0.05
+0.0464226
+0.05
+0.0468905
+0.05
+0.05
+0.0335324
+0.0288175
+0.05
+0.0213116
+0.0423372
+0.05
+0.0431398
+0.05
+0.0334203
+0.05
+0.05
+0.0136963
+0.0113159
+0.05
+0.0175664
+0.0487824
+0.0316456
+0.05
+0.05
+0.0467858
+0.0286851
+0.0412113
+0.05
+0.0266482
+0.05
+0.0160934
+0.05
+0.0339342
+0.05
+0.05
+0.05
+0.0226685
+0.0150164
+0.0253136
+0.0134708
+0.00821445
+0.0498269
+0.05
+0.018254
+0.0477287
+0.0427965
+0.023549
+0.0305883
+0.05
+0
+0.05
+0.05
+0.0216583
+0.0173055
+0.0147517
+0.027675
+0.0152656
+0.0126293
+0.0129803
+0.0102665
+0.05
+0.05
+0.05
+0.0341221
+0.0143401
+0.0257605
+0.05
+0.0143279
+0.0412175
+0.05
+0.05
+0.0117529
 0.05
 
 
-#HCal adct vs E fit parameter P2 obtained 3_8_2023
+#HCal adct vs E fit parameter P2 obtained 3_21_2023
 #Exponential fit for i PMTs -> y = P0_i*exp(-P1_i*x)+P2_i, P2_i = 
 0
-45.1838
-49.9878
-50.3926
-50.1078
-50.4585
-50.4255
-50.1104
-48.9238
-46.6306
-47.2642
+48.3615
+50.2893
+50.0863
+50.3925
+49.7471
+50.5795
+50.3881
+48.8189
+46.8494
+47.2451
 50.2496
 0
-48.923
-51.2897
-50.6697
-50.0934
-50.0156
-49.8128
-49.4714
-49.832
-48.9831
-52.9061
-53.5437
+48.9211
+51.6364
+50.8413
+51.3303
+50.0061
+50.0635
+49.6212
+49.9706
+49.0934
+53.0932
+53.8179
 0
-51.6368
-49.1847
-50.9484
-51.1293
-51.4208
-48.7802
-48.7817
-49.3304
-48.9298
-47.6379
-49.3226
+52.6155
+49.2287
+49.8125
+51.3539
+51.5811
+49.0366
+49.4241
+49.7235
+48.0426
+47.9058
+49.4206
 0
-50.6486
-45.9129
-50.2514
-50.579
-50.7441
-50.2087
-50.254
-49.3401
-48.4419
-48.5444
-49.1123
-51.9595
-49.7246
-49.8983
-49.9203
-49.5228
-49.9736
-50.1656
-50.0312
-49.2953
-48.2179
-49.1913
-47.8293
-48.3773
-50.6966
-49.9076
-50.4407
-50.0376
-49.6879
-48.6063
-50.1446
-49.3834
-47.7142
-48.348
-48.2086
-61.0802
-50.1903
-46.38
-49.7253
-48.8973
-49.5302
-49.615
-49.8117
-49.2127
-47.6603
-49.12
-50.6028
-50.1339
-50.3553
-50.0744
-49.3777
-49.8768
-50.0846
-49.7623
-48.5501
-47.9853
-48.2473
-48.2562
-48.842
-53.6851
-51.1347
-50.3719
-50.7574
-51.3575
-50.7567
-49.182
-49.49
-48.8114
-47.3576
-47.1135
-47.8372
-54.4712
-51.9603
-50.9576
-51.6949
-51.5885
-50.7529
-50.5777
-49.9157
-50.0929
-49.4954
-49.2262
-48.5595
-53.3481
-51.9371
-51.8133
-51.9084
-52.0018
-51.6973
-51.0269
-50.2175
-50.3376
-47.3708
-48.737
-49.9537
-47.6291
-50.7644
-51.4721
-52.1141
-52.0471
-50.9767
-51.0157
-50.3514
-50.5604
-49.4561
-50.6493
-51.1438
-58.9757
-52.7819
-51.9499
-51.21
-51.8838
-51.3868
-51.4428
-51.7994
-51.6916
-50.9521
-50.354
-53.2051
-54.7169
-53.1649
-52.2093
-51.0813
-51.4559
-51.366
-51.662
-51.5977
-51.1319
-47.8925
-50.8787
-51.2398
-48.5853
-51.1759
-51.4088
-50.9144
-51.9818
-51.9508
-51.2246
-50.9179
-49.8019
-49.7936
-51.9033
-52.8503
-49.8805
-52.7686
-52.5538
-50.5392
-50.7324
-51.5372
-51.7476
-51.9184
-50.525
-51.3794
-51.8937
-52.9843
-52.624
-52.4648
-52.0179
-52.2298
-52.05
-51.7334
-51.6156
-51.4091
-50.5035
-51.6399
-52.5579
-53.1939
-49.6301
-52.5912
-51.5074
-52.3947
-52.662
-52.0424
-51.5874
-51.7557
-51.7958
-51.6449
-52.1524
-54.2707
-57.0018
-53.4508
-53.2619
-52.7783
-51.8895
-52.4531
-52.0296
-51.3398
-50.7456
-51.5287
-52.0516
-53.1562
-55.1541
-52.069
-52.5927
-50.8198
-50.902
-52.5044
-51.4192
-52.3873
-52.4837
-52.4466
-52.2331
-54.6372
-57.6335
-51.8299
-52.2268
-51.2381
-53.3872
-51.6253
-52.1276
-52.625
-52.1347
-52.2673
-49.3564
-50.2687
-54.6235
-49.2815
-53.0644
-51.2568
-53.0624
-52.443
-52.6164
-52.4301
-51.8915
-51.3279
-51.1216
-50.1004
+50.632
+50.3215
+50.4924
+50.6299
+50.7867
+50.3316
+50.507
+49.5735
+47.0838
+48.8291
+50.0941
+52.0049
+49.8641
+50.1392
+50.1698
+49.656
+49.3829
+49.5761
+50.6466
+49.4129
+49.4308
+49.4375
+48.0862
+48.7575
+50.845
+50.2111
+50.4753
+50.3186
+49.8765
+49.6581
+50.4032
+49.86
+48.1322
+48.332
+45.378
+61.5815
+48.2994
+45.5438
+50.2719
+49.9922
+50.2703
+49.3624
+49.8671
+49.2228
+47.6737
+49.0559
+50.5645
+50.5472
+50.429
+50.0229
+50.1604
+50.0263
+50.6696
+49.5854
+48.6182
+48.0715
+47.0711
+46.0061
+48.8558
+53.2853
+51.6744
+50.5966
+50.9612
+50.6956
+50.9475
+49.2859
+50.7179
+48.7843
+47.2314
+47.7613
+48.0144
+54.0902
+52.383
+51.7407
+51.6466
+51.7178
+51.325
+50.5985
+50.0094
+49.5706
+49.3854
+49.4153
+48.5541
+54.93
+52.6908
+52.0194
+51.961
+52.1204
+51.8419
+50.9742
+50.2696
+50.5574
+47.8299
+48.777
+45.5408
+48.9872
+50.7931
+51.5499
+52.1299
+52.1484
+51.2137
+51.2112
+51.044
+50.7116
+49.4458
+50.8214
+52.0495
+59.6188
+53.2916
+51.2884
+51.4064
+52.0779
+51.1963
+51.4661
+51.9305
+51.8531
+51.0743
+50.637
+52.7075
+55.1815
+52.877
+52.1256
+52.3812
+51.6639
+52.1355
+51.8289
+51.8979
+50.291
+49.3947
+51.4011
+52.3571
+49.1555
+51.2692
+50.979
+51.1712
+52.2247
+52.1784
+51.3032
+51.062
+51.1843
+50.0868
+52.1949
+53.525
+50.6965
+52.5701
+52.6935
+50.7455
+52.0835
+50.9223
+51.7192
+51.9914
+51.9495
+51.6015
+52.318
+54.0696
+53.4939
+52.0573
+52.9628
+52.4256
+51.8132
+51.977
+51.6182
+51.3634
+51.0942
+51.8314
+52.8391
+53.911
+50.2045
+52.8408
+51.7784
+52.6348
+52.905
+52.1411
+52.2936
+51.7531
+52.0334
+51.9605
+52.6372
+55.6454
+59.0471
+53.7932
+53.4502
+52.9339
+52.8246
+52.5069
+52.3057
+51.5376
+52.2552
+52.5572
+52.7224
+54.9326
+54.8535
+52.6422
+52.7647
+51.0276
+51.206
+52.7638
+51.4866
+52.9568
+52.3866
+52.6655
+52.5205
+55.5285
+58.3515
+52.2218
+52.7899
+52.2001
+53.5393
+51.7131
+52.3416
+52.7549
+52.3556
+52.5428
+51.9597
+50.9703
+54.9554
+52.5386
+51.6511
+51.3413
+53.2429
+52.5561
+52.0362
+52.7102
+52.0123
+51.2437
+50.927
+50.5522
 0
-54.5693
-53.6138
-50.9614
-52.4757
-53.0276
-52.7018
-50.7365
-50.9089
-51.9929
-51.3659
-50.1567
+55.2101
+53.8034
+53.3785
+52.7095
+52.5607
+52.4674
+51.0641
+51.1326
+50.7293
+49.5895
+50.2197
 57.0936
-49.5507
-52.0129
-51.4462
-52.8114
-52.3862
-51.2636
-51.561
-50.2909
-50.6638
-50.684
-49.6288
+50.5579
+51.6287
+51.6555
+52.4422
+52.5655
+51.4352
+51.6898
+51.6815
+51.7332
+48.2603
+49.9055
 
 
-#HCal TDC offsets obtained 3_8_2023
+#HCal TDC offsets obtained 3_21_2023
 #Offsets obtained from fits over TDC distributions = 
 -1863.03
 -1863.03
@@ -1896,7 +2354,7 @@ Fitting TDC/ADCt/TW distributions
 -219.082
 -238.099
 -248.343
-1044.32
+-75.1348 with adjustment
 50.1237
 35.4673
 42.0701
@@ -2138,7 +2596,7 @@ Fitting TDC/ADCt/TW distributions
 -207.465
 
 
-#HCal ADCT offsets obtained 3_8_2023
+#HCal ADCT offsets obtained 3_21_2023
 #Offsets obtained from fits over ADCT distributions = 
 -90.9298
 -19.8471
@@ -2434,4 +2892,4 @@ Elastic yield for analyzed runs: 1453050. Total event bins available for calibra
 
 Timing analysis complete. Constants and histograms written to file.
 
-CPU time elapsed = 176.42 s = 2.94033 min. Real time = 186.34 s = 3.10567 min.
+CPU time elapsed = 308.38 s = 5.13967 min. Real time = 877.434 s = 14.6239 min.

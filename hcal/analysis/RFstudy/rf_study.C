@@ -156,8 +156,8 @@ void rf_study( Int_t kine = 4 ){
 
   // HCal params
   Double_t HCALx, HCALy, HCALe;
-  Double_t HCALblktdc[kNcell], HCALblka[kNcell];
-  Double_t HCALtdc[kNcell], HCALatime[kNcell], HCALa_p[kNcell];
+  Double_t HCALblktdc[kNcell], HCALblka[kNcell], HCALtdc[kNcell], HCALamp_p[kNcell], HCALtdcid[kNcell];
+  Double_t HCALatime[kNcell], HCALa_p[kNcell];
   Double_t crow, ccol, nblk;
   Double_t cblkid[kNcell], cblke[kNcell];
   Double_t ce[kNcell], catime[kNcell], cid[kNcell], cnblk[kNcell], ctdc[kNcell];
@@ -200,6 +200,9 @@ void rf_study( Int_t kine = 4 ){
   C->SetBranchStatus( "sbs.hcal.clus.nblk", 1 );
   C->SetBranchStatus( "sbs.hcal.clus.tdctime", 1 );
   C->SetBranchStatus( "sbs.hcal.nclus", 1 );  
+  C->SetBranchStatus( "sbs.hcal.tdc", 1 );  
+  C->SetBranchStatus( "sbs.hcal.a_amp_p", 1 );  
+  C->SetBranchStatus( "sbs.hcal.tdcelemID", 1 );  
   C->SetBranchStatus( "bb.tr.chi2", 1 );
   C->SetBranchStatus( "bb.tr.n", 1 );
   C->SetBranchStatus( "bb.tr.x", 1 );
@@ -260,7 +263,9 @@ void rf_study( Int_t kine = 4 ){
   C->SetBranchAddress( "sbs.hcal.clus.id", cid );
   C->SetBranchAddress( "sbs.hcal.clus.nblk", cnblk );
   C->SetBranchAddress( "sbs.hcal.clus.tdctime", ctdc );
-  C->SetBranchAddress( "sbs.hcal.nclus", &nclus );
+  C->SetBranchAddress( "sbs.hcal.tdc", HCALtdc );
+  C->SetBranchAddress( "sbs.hcal.a_amp_p", HCALamp_p );
+  C->SetBranchAddress( "sbs.hcal.tdcelemID", HCALtdcid );
   C->SetBranchAddress( "bb.tr.chi2", BBtr_chi2 );
   C->SetBranchAddress( "bb.tr.n", &BBtr_n );
   C->SetBranchAddress( "bb.tr.x", BBtr_x );
@@ -318,13 +323,19 @@ void rf_study( Int_t kine = 4 ){
   TH1D *hrawB1B3 = new TH1D( "hrawB1B3", "Hodoscope raw signal high tot block - high tot block - 2", 400, -20, 20 ); 
   TH1D *hrawB1B4 = new TH1D( "hrawB1B4", "Hodoscope raw signal high tot block - high tot block - 3", 400, -20, 20 ); 
   TH1D *hrawB1B5 = new TH1D( "hrawB1B5", "Hodoscope raw signal high tot block - high tot block - 4", 400, -20, 20 );  
-  TH2D *hclusdiffID = new TH2D( "hclusdiffID", "Hodo Cluster Seed - Block Diff, (Primary Block Reftime, nblk>1), vs ID", 100, -10, 90, 400, -2, 2 );
-  TH1D *hclusdiff = new TH1D( "hclusdiff", "Hodo Cluster Seed - Block Diff, (Primary Block Reftime, nblk>1)", 400, -2, 2 );
-  TH2D *hclusmeanID = new TH2D( "hclusmeanID", "Hodo Cluster Mean Time, (Primary Block Reftime/ID, nblk>1), vs ID", 100, -10, 90, 400, -2, 2 );
+  TH2D *hclusdiffID = new TH2D( "hclusdiffID", "Hodo Cluster Seed - Block Diff, (Primary Block Reftime, nblk>1), vs ID", 100, -10, 90, 400, -10, 10 );
+  TH2D *hB1B2diffID = new TH2D( "hB1B2diffID", "Hodo Cluster Bar Seed - Next Highest ToT Bar Diff vs ID (uncorrected)", 100, -10, 90, 400, -10, 10 );
+  TH1D *hpvabardiff = new TH1D( "hpvabardiff", "Hodo Cluster Bar Seed - Adjacent Bar Diff (uncorrected)", 400, -10, 10 );
+  TH2D *hpvabardiffID = new TH2D( "hpvabardiffID", "Hodo Cluster Bar Seed - Adjacent Bar Diff vs ID (uncorrected)", 100, -10, 90, 400, -10, 10 );
+  TH1D *hclusdiff = new TH1D( "hclusdiff", "Hodo Cluster Seed - Block Diff, (Primary Block Reftime, nblk>1)", 400, -10, 10 );
+  TH2D *hclusmeanID = new TH2D( "hclusmeanID", "Hodo Cluster Mean Time, (Primary Block Reftime/ID, nblk>1), vs ID", 100, -10, 90, 400, -10, 10 );
   TH1D *hclusmean = new TH1D( "hclusmean", "Hodo Cluster Mean Time, (Primary Block Reftime/ID, nblk>1)", 400, -2, 2 );
-  TH2D *hclusbardiffID = new TH2D( "hclusbardiffID", "Hodo Cluster Bar Seed - Block Diff, (Primary Block Reftime, nblk>1, no corrections), vs ID", 100, -10, 90, 400, -2, 2 );
-  TH2D *hclusbarmeanID = new TH2D( "hclusbarmeanID", "Hodo Cluster Bar Mean Time, (Primary Block Reftime/ID, nblk>1, no corrections), vs ID", 100, -10, 90, 400, -2, 2 );
-  TH1D *hclusbarmean = new TH1D( "hclusbarmean", "Hodo Cluster Bar Mean Time, (Primary Block Reftime/ID, nblk>1, no corrections)", 400, -2, 2 );
+  TH2D *hclusbardiffID = new TH2D( "hclusbardiffID", "Hodo Cluster Bar Seed - Block Diff, (Primary Block Reftime, nblk>1, no corrections), vs ID", 100, -10, 90, 400, -10, 10 );
+  TH2D *hclusbarmeanID = new TH2D( "hclusbarmeanID", "Hodo Cluster Bar Mean Time, (Primary Block Reftime/ID, nblk>1, no corrections), vs ID", 100, -10, 90, 400, -10, 10 );
+  TH1D *hclusbarmean = new TH1D( "hclusbarmean", "Hodo Cluster Bar Mean Time, (Primary Block Reftime/ID, nblk>1, no corrections)", 400, -10, 10 );
+  TH2D *hclusbarB1vB2 = new TH2D( "hclusbarB1vB2", "Hodo Cluster Bar 1 vs Bar 2, (no corrections)", 400, -20, 20, 400, -20, 20 );
+  TH2D *hbarB40vB41 = new TH2D( "hbarB40vB41", "Hodo Bar 40 vs Bar 41, (no corrections); bar40 (ns); bar41 (ns)", 400, -20, 20, 400, -20, 20 );
+
 
 
   //TDCTRIG histos
@@ -336,6 +347,15 @@ void rf_study( Int_t kine = 4 ){
   TH2D *hhclusmeanID = new TH2D( "hhclusmeanID", "HCal Cluster Mean Time, (Primary Block Reftime/ID, nblk>1), vs ID", 288, 0, 288, 400, -20, 20 );
   TH1D *hhclusdiff = new TH1D( "hhclusdiff", "HCal Cluster Seed - Block Diff, (Primary Block Reftime, nblk>1)", 400, -20, 20 );  
   TH2D *hhclusdiffID = new TH2D( "hhclusdiffID", "HCal Cluster Seed - Block Diff, (Primary Block Reftime, nblk>1), vs ID", 288, 0, 288, 400, -20, 20 );
+  TH2D *hhB1B2diffID = new TH2D( "hhB1B2diffID", "HCal Cluster Seed - Next Highest E Block Diff vs ID", 288, 0, 288, 400, -20, 20 );
+  TH2D *hhpvablkdiffID = new TH2D( "hhpvablkdiffID", "HCal Cluster Seed - Adjacent Block Diff vs ID", 288, 0, 288, 400, -20, 20 );
+  TH1D *hhpvadiff = new TH1D( "hhpvadiff", "HCal Block - Adjacent Block Diff", 400, -40, 40 );
+  TH2D *hhpvadiffID = new TH2D( "hhpvadiffID", "HCal Block - Adjacent Block Diff vs ID", 288, 0, 288, 400, -40, 40 );
+  TH2D *hhpvadiffcol = new TH2D( "hhpvadiffcol", "HCal Block - Adjacent Block Diff vs Column", kNcols, 0, kNcols, 400, -40, 40 );
+  TH2D *hhpvadiffrow = new TH2D( "hhpvadiffrow", "HCal Block - Adjacent Block Diff vs Row", kNrows, 0, kNrows, 400, -40, 40 );
+  TH2D *hhclusB1vB2 = new TH2D( "hhclusB1vB2", "HCal Cluster Block1 vs Block2", 1000, -300, 50, 1000, -300, 50 );
+  TH2D *hhB127vB128 = new TH2D( "hhB127vB128", "HCal block 127 vs block 128; block 127 (ns); block 128 (ns)", 1000, -300, 50, 1000, -300, 50 );
+  TH2D *hhampB127vB128 = new TH2D( "hhampB127vB128", "HCal block 127 vs block 128; block 127 (mV); block 128 (ns)", 500, 0, 100, 500, 0, 100 );
 
   cout << "Variables and histograms defined." << endl;
 
@@ -364,11 +384,17 @@ void rf_study( Int_t kine = 4 ){
       
     //Basic checks, only global/W2 cuts.
     
+    //Cut on single bigbite tracks
     bool trn1 = BBtr_n==1;
     //if( !trn1 ) continue;
 
+    //Cut on elastic peak in W2
     bool elastic = fabs( kineW2-W2_mean )<W2_sig;
-    if( !elastic ) continue;
+    //if( !elastic ) continue;
+
+    //Cut on hcal energy
+    bool hcale = HCALe>0.025;
+    if( !hcale ) continue;
 
     //Add slice on bb.tr.y
     bool inY = fabs(BBtr_y[0])<0.02;
@@ -407,7 +433,9 @@ void rf_study( Int_t kine = 4 ){
 	hblkseed = hcblktime;
       }else{
 	htavg += htcdiff;
-	hclusdiffID->Fill( hcblkid, htcdiff );
+	//if( b==1 ) hB1B2diffID->Fill( hpblkid, htcdiff );
+	//if( hcblkid == hpblkid+1 ) hpvabardiffID->Fill( hpblkid, htcdiff );
+	hclusdiffID->Fill( hpblkid, htcdiff );
 	hclusdiff->Fill( htcdiff );
       }
     }
@@ -423,16 +451,22 @@ void rf_study( Int_t kine = 4 ){
     //cout << "bar tdc id, time, tot" << endl;
     Double_t hbarseed = 0.;
     Double_t htbavg = 0;
-    for( Int_t b=0; b<HODOndata_id; b++ ){
+    Double_t hbar40 = -100.;
+    Double_t hbar41 = -100.;
+    for( Int_t b=0; b<HODOndata_id; b++ ){ //loop over all bar.tdc data (larger set)
       Double_t hbartime = HODORle[b];
       Double_t hbarid = HODObarid[b];
       Double_t hbartot = HODORtot[b];
 
       //cout << "hbarid " << hbarid << endl;
 
+      if(hbarid==40) hbar40 = hbartime;
+      if(hbarid==41) hbar41 = hbartime;
+
       //cout << hbarid << " " << hbartime << " " << hbartot << endl;
-      for( Int_t i=0; i<hpnblk; i++ ){
+      for( Int_t i=0; i<hpnblk; i++ ){ //loop over clus.bar.tdc data (smaller set)
 	Double_t hcblkid = HODOcbid[i];
+	Double_t hpblkid = HODOcbid[0];
 	Double_t htcbdiff = hbartime-hbarseed;
 	
 	//cout << "!!hcblkid " << hcblkid << endl;
@@ -445,7 +479,16 @@ void rf_study( Int_t kine = 4 ){
 
 	  if( i==0 ){ //the hodo cluster elements are ranked by tot, the bar elements are not
 	    hbarseed = hbartime;
+	    //cout << hbarseed << endl;
 	  }else{
+	    if( i==1 ){
+	      hclusbarB1vB2->Fill(hbarseed,hbartime);
+	      hB1B2diffID->Fill(hpblkid,htcbdiff);
+	    }
+	    if( hcblkid == hpblkid+1 ){
+	      hpvabardiff->Fill( htcbdiff );
+	      hpvabardiffID->Fill( hpblkid, htcbdiff );
+	    }
 	    htbavg += htcbdiff;
 	    hclusbardiffID->Fill( hcblkid, htcbdiff );
 	    //cout << htcbdiff << endl;
@@ -457,11 +500,16 @@ void rf_study( Int_t kine = 4 ){
       }
     }
 
+    if(hbar40!=-100.&&hbar41!=-100.) hbarB40vB41->Fill(hbar40,hbar41);
+
     htbavg /= (hpnblk-1);
     if( htbavg!=0 ){
       hclusbarmeanID->Fill( hpblkid, htbavg );
       hclusbarmean->Fill(htbavg);
     }
+
+
+    //cout << HCALtdc[128] << endl;
 
 
     //cout << endl;
@@ -517,21 +565,48 @@ void rf_study( Int_t kine = 4 ){
     Int_t pblkid = cblkid[0];
     Double_t blkseed = 0.;
     Double_t tavg = 0;
+
+    //get block/adjacent block time without any clustering. sbs.hcal.tdc is a static array with 288 elements
+    for( Int_t b=0; b<kNcell; b++ ){
+      Int_t row = b/kNcols;
+      Int_t col = b%kNcols;
+      if( HCALtdc[b]< -900 || HCALblktdc[b] > 1000 ) continue; //check if data exists on block
+      if( HCALtdc[b+1]< -900 || HCALblktdc[b+1] > 1000 ) continue; //check if data exists on adj. block
+      Double_t tdiff = HCALtdc[b]-HCALtdc[b+1];
+      if( tdiff==0. ) continue;
+      hhpvadiff->Fill( tdiff );
+      hhpvadiffID->Fill( b, tdiff );
+      hhpvadiffcol->Fill( col, tdiff );
+      hhpvadiffrow->Fill( row, tdiff );
+      
+    }
+
+
     if( nblk<2 || HCALblktdc[0]< -900 || HCALblktdc[0] > 1000 ) continue; //for diagnostics at first
+
+    if( HCALtdc[128]<500&&HCALtdc[128]>-500&&HCALtdc[129]<500&&HCALtdc[129]>-500 ){
+      hhB127vB128->Fill(HCALtdc[128],HCALtdc[129]);
+      hhampB127vB128->Fill(HCALamp_p[128],HCALamp_p[129]);
+    }
+
     for( Int_t b=0; b<nblk; b++ ){
       Double_t blktime = HCALblktdc[b];
       Double_t blkid = cblkid[b];
 
       if( b==0 ){
 	blkseed = blktime;
-	continue;
+      }else{
+	Double_t tcdiff = blktime-blkseed;
+
+	if( b==1 ){
+	  hhclusB1vB2->Fill(blkseed,blktime);
+	  hhB1B2diffID->Fill(pblkid,tcdiff);
+	}
+	if( blkid == pblkid+1 ) hhpvablkdiffID->Fill( pblkid, tcdiff );
+	tavg += tcdiff;
+	hhclusdiffID->Fill( blkid, tcdiff );
+	hhclusdiff->Fill( tcdiff );
       }
-      Double_t tcdiff = blktime-blkseed;
-
-      tavg += tcdiff;
-      hhclusdiffID->Fill( blkid, tcdiff );
-      hhclusdiff->Fill( tcdiff );
-
     }
 
     tavg /= (nblk-1);
@@ -539,6 +614,7 @@ void rf_study( Int_t kine = 4 ){
       hhclusmeanID->Fill( pblkid, tavg );
       hhclusmean->Fill( tavg );
     }
+
   }
   
   cout << endl << endl;

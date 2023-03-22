@@ -1,0 +1,2687 @@
+#HCal energy calibration error and performance report from SBS-7 obtained 3_17_2023
+
+Quasi-replay is 0
+
+Loading previous gain coefficients from file for pass0 kinematics: /u/home/sbs-gmn/pass0/SBS_REPLAY/SBS-replay/DB/db_sbs.hcal.dat..
+
+
+Old ADC gain params from pass0 db file: 
+0.00175 0.00266867 0.00263163 0.00180382 0.00263728 0.00185798 0.0024062 0.00332779 0.00145959 0.00145491 0.00222524 0.00374568 
+0.00175 0.0028114 0.00168388 0.00165362 0.00176223 0.00191629 0.00127553 0.00033258 0.000987108 0.00208857 0.00104803 0.00256277 
+0.00175 0.000549083 0.000775478 0.00143323 0.00133923 0.00150582 0.000878316 0.00116677 0.00122135 0.00180183 0.000868816 0.0031688 
+0.00175 0.00165191 0.00138037 0.00117046 0.00117154 0.00130065 0.00149967 0.00168174 0.00171157 0.00208062 0.00191594 0.00296845 
+0.00175 0.00131023 0.0015652 0.00146996 0.00149789 0.00122581 0.0015918 0.0015631 0.00183514 0.00202092 0.00184944 0.00272894 
+0.00539881 0.00224432 0.00157432 0.00144749 0.00150163 0.00162213 0.00117414 0.00165062 0.00156161 0.00147743 0.00173477 0.00254265 
+0.00169373 0.000275533 0.000298944 0.000599265 0.00105645 0.00086871 0.00160354 0.00151191 0.00183094 0.00200068 0.00173649 0.00311957 
+0.0030827 0.00186074 0.00144928 0.00160785 0.00141713 0.00129993 0.00175116 0.00180068 0.00199998 0.00208202 0.00197725 0.00326762 
+0.00512732 0.00154451 0.000979505 0.00125333 0.00154216 0.00139283 0.00116208 0.00143264 0.00162997 0.00190801 0.00176975 0.00300717 
+0.00260136 0.00148176 0.00146341 0.00166698 0.0014947 0.00141715 0.00175344 0.00170741 0.00169573 0.00209187 0.00155949 0.00305697 
+0.00607633 0.00171058 0.00137975 0.00161664 0.00163906 0.00177731 0.00175405 0.00177746 0.00180745 0.00197599 0.00126722 0.00216883 
+0.0072298 0.00174206 0.00140851 0.00154404 0.00161964 0.00169163 0.00147921 0.00176682 0.00154032 0.00213906 0.00240923 0.00372126 
+0.000449533 0.000488912 0.000590922 0.000582451 0.000745794 0.00101917 0.00161642 0.00168821 0.00159181 0.00142471 0.00228241 0.0035386 
+0.00660769 0.00120219 0.00137378 0.00110814 0.00108169 0.00150119 0.00135809 0.00178457 0.00133372 0.00214296 0.00270455 0.00379699 
+0.00212358 0.0017905 0.00117037 0.00140173 0.00156192 0.00156128 0.00162737 0.00171791 0.00172918 0.000244951 0.00250264 0.00341337 
+0.00335189 0.00127896 0.00148071 0.00133853 0.00136398 0.00118429 0.00160078 0.00182872 0.00147448 0.00191438 0.00274045 0.00356526 
+0.00349821 0.000794794 0.00150729 0.00127622 0.00111391 0.00139497 0.00137369 0.000975249 0.00109081 0.00155438 0.00195526 0.00340549 
+0.00274887 0.00140077 0.00135238 0.00107242 0.0015003 0.00127913 0.00167818 0.00187533 0.0015864 0.0015361 0.00244788 0.00366691 
+0.0050249 0.00292725 0.00159332 0.00131823 0.00154002 0.00129025 0.00152842 0.00172602 0.00125051 0.00149605 0.0020386 0.0037875 
+0.00432152 0.00164664 0.00152238 0.00133137 0.0018508 0.00123938 0.00137083 0.00119434 0.0016172 0.00155701 0.00168128 0.00372496 
+0.0045194 0.00171242 0.000476805 0.001309 0.00130803 0.00128104 0.00124791 0.00160076 0.00154403 0.00131706 0.00138985 0.00410904 
+0.00265122 0.00116889 0.00190811 0.00166903 0.00179654 0.00185825 0.00169268 0.00158463 0.00158704 0.00105741 0.00183152 0.00338812 
+0.00175 0.00403728 0.00184311 0.00188862 0.00164165 0.00163744 0.00149042 0.00142973 0.00163888 0.00171401 0.00262937 0.00308539 
+0.00731553 0.00733844 0.00269888 0.00236267 0.00204097 0.00246712 0.00241754 0.00240661 0.00195007 0.00151657 0.00263376 0.00416878 
+
+
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_11989_stream0_seg0_2.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_11990_stream0_seg0_4.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_11991_stream0_seg0_8.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_11992_stream0_seg0_6.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_11993_stream0_seg0_5.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_11994_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_11994_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_11994_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_11994_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_11994_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_11994_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_11994_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_11994_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_11994_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_11994_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_11994_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_11994_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_11994_stream0_seg120_122.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12000_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12000_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12000_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12000_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12000_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12000_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12000_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12000_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12000_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12000_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12000_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12000_stream0_seg110_117.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12008_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12008_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12008_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12008_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12008_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12008_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12008_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12008_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12008_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12008_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12008_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12008_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12008_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12008_stream0_seg130_130.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12022_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12022_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12022_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12022_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12022_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12022_stream0_seg50_51.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12035_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12035_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12035_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12035_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12035_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12049_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12049_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12049_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12049_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12049_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12049_stream0_seg50_50.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12052_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12052_stream0_seg10_12.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12053_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12053_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12053_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12053_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12053_stream0_seg40_47.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12058_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12058_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12058_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12058_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12064_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12064_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12064_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12064_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12064_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12072_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12072_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12072_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12072_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LH2/rootfiles/e1209019_fullreplay_12072_stream0_seg40_48.root..
+Loading beam energy: 7.9072
+Loading HCal distance: 14
+Loading HCal angle: 0.280998
+Loading BBCal angle: 0.698132
+Loading W2 mean cut: 0.898887
+Loading W2 sigma cut: 0.200681
+Loading x position of neutron spot: -0.691916
+Loading y position of proton spot: -0.691916
+Loading y position of both hadron spots: -0.00411589
+Loading x sigma of neutron spot: 0.0636087
+Loading x sigma of proton spot: 0.0636087
+Loading y sigma of both hadron spots: 0.0852656
+Loading ADC time mean: 62.8798
+Loading ADC time sigma: 3.65363
+Loading Aluminum absorber option: 0
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11996_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11996_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11996_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11996_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11996_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11996_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11996_stream0_seg60_63.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11997_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11997_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11997_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11997_stream0_seg30_33.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11998_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11998_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11998_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11998_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11998_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11998_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11998_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11998_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11998_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11998_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11998_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11998_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11998_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11998_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11998_stream0_seg140_149.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11998_stream0_seg150_151.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11999_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11999_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11999_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11999_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11999_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11999_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11999_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11999_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11999_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11999_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11999_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11999_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11999_stream0_seg120_129.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11999_stream0_seg130_139.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11999_stream0_seg140_149.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11999_stream0_seg150_159.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_11999_stream0_seg160_160.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12001_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12001_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12001_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12001_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12001_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12001_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12001_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12001_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12001_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12001_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12001_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12001_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12001_stream0_seg120_126.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12002_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12002_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12002_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12002_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12002_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12002_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12002_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12002_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12002_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12002_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12002_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12002_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12002_stream0_seg120_125.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12004_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12004_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12004_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12004_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12004_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12004_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12004_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12004_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12004_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12004_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12004_stream0_seg100_105.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12006_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12006_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12006_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12006_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12006_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12006_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12006_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12006_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12006_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12006_stream0_seg90_99.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12006_stream0_seg100_109.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12006_stream0_seg110_119.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12006_stream0_seg120_121.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12013_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12013_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12013_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12013_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12013_stream0_seg40_43.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12014_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12014_stream0_seg10_10.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12017_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12017_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12017_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12017_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12017_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12017_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12017_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12017_stream0_seg70_73.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12019_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12019_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12019_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12019_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12019_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12019_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12019_stream0_seg60_60.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12021_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12021_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12021_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12021_stream0_seg30_37.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12029_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12029_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12029_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12029_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12029_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12029_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12029_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12029_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12029_stream0_seg80_85.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12030_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12030_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12030_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12030_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12030_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12030_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12030_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12030_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12030_stream0_seg80_83.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12038_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12038_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12038_stream0_seg20_20.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12039_stream0_seg0_4.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12040_stream0_seg0_1.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12041_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12041_stream0_seg10_18.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12042_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12042_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12043_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12043_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12043_stream0_seg20_25.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12044_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12044_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12045_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12045_stream0_seg10_15.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12046_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12046_stream0_seg10_14.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12047_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12047_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12048_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12048_stream0_seg10_10.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12050_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12050_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12050_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12050_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12050_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12050_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12050_stream0_seg60_69.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12050_stream0_seg70_79.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12050_stream0_seg80_89.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12050_stream0_seg90_91.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12051_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12051_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12051_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12051_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12051_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12051_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12051_stream0_seg60_66.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12055_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12055_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12055_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12055_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12055_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12055_stream0_seg50_56.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12056_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12056_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12056_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12056_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12056_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12056_stream0_seg50_50.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12057_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12057_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12057_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12057_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12057_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12057_stream0_seg50_59.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12059_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12059_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12059_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12059_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12059_stream0_seg40_44.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12060_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12060_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12060_stream0_seg20_23.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12062_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12062_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12062_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12062_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12062_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12062_stream0_seg50_53.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12063_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12063_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12063_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12063_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12063_stream0_seg40_44.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12065_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12065_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12065_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12065_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12065_stream0_seg40_49.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12065_stream0_seg50_54.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12066_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12066_stream0_seg10_11.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12068_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12068_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12068_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12068_stream0_seg30_39.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12068_stream0_seg40_43.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12069_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12069_stream0_seg10_11.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12070_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12070_stream0_seg10_11.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12071_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12071_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12071_stream0_seg20_29.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12071_stream0_seg30_33.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12073_stream0_seg0_9.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12073_stream0_seg10_19.root..
+Loading file: /w/halla-scshelf2102/sbs/sbs-gmn/pass0/SBS7/LD2/rootfiles/e1209019_fullreplay_12073_stream0_seg20_25.root..
+Loading beam energy: 7.9072
+Loading HCal distance: 14
+Loading HCal angle: 0.280998
+Loading BBCal angle: 0.698132
+Loading W2 mean cut: 0.88
+Loading W2 sigma cut: 0.25
+Loading x position of neutron spot: 0.02437
+Loading y position of proton spot: -0.6914
+Loading y position of both hadron spots: 0.01075
+Loading x sigma of neutron spot: 0.107
+Loading x sigma of proton spot: 0.1246
+Loading y sigma of both hadron spots: 0.1828
+Loading ADC time mean: 62.3849
+Loading ADC time sigma: 4.08414
+Loading Aluminum absorber option: 0
+
+
+Setup parameters loaded and chains linked.
+Output file located here: reporting/qreplay_sbs7.root
+Opened many trees with 503378 LH2 events passing global cuts.
+Opened many trees with 1893940 LD2 events passing global cuts.
+
+Total available events to calibrate = 2397318.
+
+Looping over hydrogen data..
+LH2 kinematic 7 at field 85% , entry: 100000/503378. Block atime cut dead clusters: 0. Total events gathered for calibration: 2412
+LH2 kinematic 7 at field 85% , entry: 200000/503378. Block atime cut dead clusters: 0. Total events gathered for calibration: 4636
+LH2 kinematic 7 at field 85% , entry: 300000/503378. Block atime cut dead clusters: 0. Total events gathered for calibration: 7465
+LH2 kinematic 7 at field 85% , entry: 400000/503378. Block atime cut dead clusters: 0. Total events gathered for calibration: 10184
+LH2 kinematic 7 at field 85% , entry: 500000/503378. Block atime cut dead clusters: 0. Total events gathered for calibration: 13164
+Hydrogen loop complete.
+
+Number of events available for calibration from hydrogen alone: 
+
+0  0  0  0  0  0  0  0  0  0  0  0  
+0  0  0  0  0  0  0  0  0  0  0  0  
+0  0  0  1  0  2  0  0  0  0  0  0  
+0  0  0  1  9  9  3  1  0  0  0  0  
+0  0  1  5  29  34  23  4  2  0  0  0  
+0  0  1  18  63  86  55  29  16  4  1  0  
+0  0  3  35  115  164  122  65  38  11  3  0  
+0  2  9  61  165  218  157  107  61  13  3  0  
+0  2  9  75  175  256  192  149  70  16  3  0  
+0  0  21  77  172  228  228  162  62  17  0  0  
+0  2  20  106  204  245  223  144  52  8  2  0  
+0  1  30  127  252  299  243  161  62  7  1  0  
+0  0  20  95  233  289  285  185  55  8  1  0  
+0  0  15  105  241  310  278  199  59  8  0  0  
+0  1  9  89  227  284  291  234  111  3  2  0  
+0  0  10  62  195  268  288  233  103  31  2  0  
+0  0  2  34  118  193  207  185  87  31  7  0  
+0  0  0  7  61  131  197  189  119  55  9  0  
+0  0  0  1  28  94  153  153  104  43  8  1  
+0  0  0  0  8  36  65  60  39  14  2  0  
+0  0  0  0  2  5  20  29  9  5  1  0  
+0  0  0  0  0  3  9  7  4  1  0  0  
+0  0  0  0  0  0  1  1  1  0  0  0  
+0  0  0  0  0  0  0  0  0  0  0  0  
+
+Looping over deuterium data..
+
+LD2 kinematic 7 at field 85% , entry: 100000/1893940. Block atime cut dead clusters: 0. Total events gathered for calibration: 1572
+Warning: Cluster block cut on atime killed cluster.
+LD2 kinematic 7 at field 85% , entry: 200000/1893940. Block atime cut dead clusters: 1. Total events gathered for calibration: 2999
+LD2 kinematic 7 at field 85% , entry: 300000/1893940. Block atime cut dead clusters: 1. Total events gathered for calibration: 4687
+LD2 kinematic 7 at field 85% , entry: 400000/1893940. Block atime cut dead clusters: 1. Total events gathered for calibration: 6255
+LD2 kinematic 7 at field 85% , entry: 500000/1893940. Block atime cut dead clusters: 1. Total events gathered for calibration: 8117
+LD2 kinematic 7 at field 85% , entry: 600000/1893940. Block atime cut dead clusters: 1. Total events gathered for calibration: 10120
+Warning: Cluster block cut on atime killed cluster.
+LD2 kinematic 7 at field 85% , entry: 700000/1893940. Block atime cut dead clusters: 2. Total events gathered for calibration: 11835
+LD2 kinematic 7 at field 85% , entry: 800000/1893940. Block atime cut dead clusters: 2. Total events gathered for calibration: 13564
+LD2 kinematic 7 at field 85% , entry: 900000/1893940. Block atime cut dead clusters: 2. Total events gathered for calibration: 15437
+LD2 kinematic 7 at field 85% , entry: 1000000/1893940. Block atime cut dead clusters: 2. Total events gathered for calibration: 17218
+Warning: Cluster block cut on atime killed cluster.
+LD2 kinematic 7 at field 85% , entry: 1100000/1893940. Block atime cut dead clusters: 3. Total events gathered for calibration: 19242
+Warning: Cluster block cut on atime killed cluster.
+Warning: Cluster block cut on atime killed cluster.
+LD2 kinematic 7 at field 85% , entry: 1200000/1893940. Block atime cut dead clusters: 5. Total events gathered for calibration: 21069
+LD2 kinematic 7 at field 85% , entry: 1300000/1893940. Block atime cut dead clusters: 5. Total events gathered for calibration: 22990
+Warning: Cluster block cut on atime killed cluster.
+LD2 kinematic 7 at field 85% , entry: 1400000/1893940. Block atime cut dead clusters: 6. Total events gathered for calibration: 24966
+Warning: Cluster block cut on atime killed cluster.
+Warning: Cluster block cut on atime killed cluster.
+LD2 kinematic 7 at field 85% , entry: 1500000/1893940. Block atime cut dead clusters: 8. Total events gathered for calibration: 26885
+Warning: Cluster block cut on atime killed cluster.
+LD2 kinematic 7 at field 85% , entry: 1600000/1893940. Block atime cut dead clusters: 9. Total events gathered for calibration: 29107
+LD2 kinematic 7 at field 85% , entry: 1700000/1893940. Block atime cut dead clusters: 9. Total events gathered for calibration: 31093
+Warning: Cluster block cut on atime killed cluster.
+LD2 kinematic 7 at field 85% , entry: 1800000/1893940. Block atime cut dead clusters: 10. Total events gathered for calibration: 32990
+Deuterium loop complete.
+
+
+Checking data, inverting matrix, and solving for coefficients..
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 0 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+
+Oneblock: cell0 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 1 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+
+Oneblock: cell1 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 2 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+
+Oneblock: cell2 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 3 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+
+Oneblock: cell3 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 4 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+
+Oneblock: cell4 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 5 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+
+Oneblock: cell5 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 6 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+
+Oneblock: cell6 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 7 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+
+Oneblock: cell7 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 8 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+
+Oneblock: cell8 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 9 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+
+Oneblock: cell9 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 10 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+
+Oneblock: cell10 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 11 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+
+Oneblock: cell11 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 12 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+
+Oneblock: cell12 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 13 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+
+Oneblock: cell13 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 14 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =8.02349
+
+Oneblock: cell14 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 15 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+
+Oneblock: cell15 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 16 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =45.1386
+
+Oneblock: cell16 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 17 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =41.5807
+
+Oneblock: cell17 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 18 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =170.042
+
+Oneblock: cell18 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 19 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+
+Oneblock: cell19 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 20 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+
+Oneblock: cell20 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 21 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =14.3261
+
+Oneblock: cell21 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 22 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+
+Oneblock: cell22 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 23 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+
+Oneblock: cell23 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 24 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+
+Oneblock: cell24 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 25 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+
+Oneblock: cell25 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 26 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+
+Oneblock: cell26 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 27 bad
+Number of events in bad cell =3
+Matrix element/vector element ratio =140.407
+
+Oneblock: cell27 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 28 bad
+Number of events in bad cell =5
+Matrix element/vector element ratio =168.548
+
+Oneblock: cell28 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 29 bad
+Number of events in bad cell =8
+Matrix element/vector element ratio =77.9353
+
+Oneblock: cell29 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 30 bad
+Number of events in bad cell =5
+Matrix element/vector element ratio =226.002
+
+Oneblock: cell30 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 31 bad
+Number of events in bad cell =8
+Matrix element/vector element ratio =115.454
+
+Oneblock: cell31 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 32 bad
+Number of events in bad cell =5
+Matrix element/vector element ratio =43.6985
+
+Oneblock: cell32 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 33 bad
+Number of events in bad cell =5
+Matrix element/vector element ratio =58.5547
+
+Oneblock: cell33 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 34 bad
+Number of events in bad cell =3
+Matrix element/vector element ratio =115.87
+
+Oneblock: cell34 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 35 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+
+Oneblock: cell35 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 36 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+
+Oneblock: cell36 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 37 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =12.3978
+
+Oneblock: cell37 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 38 bad
+Number of events in bad cell =6
+Matrix element/vector element ratio =81.5113
+
+Oneblock: cell38 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 39 bad
+Number of events in bad cell =20
+Matrix element/vector element ratio =132.54
+
+Oneblock: cell39 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell40 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell41 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 42 bad
+Number of events in bad cell =28
+Matrix element/vector element ratio =130.625
+
+Oneblock: cell42 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 43 bad
+Number of events in bad cell =26
+Matrix element/vector element ratio =115.401
+
+Oneblock: cell43 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 44 bad
+Number of events in bad cell =15
+Matrix element/vector element ratio =86.9291
+
+Oneblock: cell44 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 45 bad
+Number of events in bad cell =17
+Matrix element/vector element ratio =134.898
+
+Oneblock: cell45 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 46 bad
+Number of events in bad cell =12
+Matrix element/vector element ratio =220.696
+
+Oneblock: cell46 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 47 bad
+Number of events in bad cell =3
+Matrix element/vector element ratio =22.0542
+
+Oneblock: cell47 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 48 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+
+Oneblock: cell48 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 49 bad
+Number of events in bad cell =3
+Matrix element/vector element ratio =33.9098
+
+Oneblock: cell49 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 50 bad
+Number of events in bad cell =20
+Matrix element/vector element ratio =166.31
+
+Oneblock: cell50 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell51 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =287.644
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell52 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell53 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell54 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell55 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell56 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell57 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =127.088
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 58 bad
+Number of events in bad cell =21
+Matrix element/vector element ratio =89.215
+
+Oneblock: cell58 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 59 bad
+Number of events in bad cell =6
+Matrix element/vector element ratio =56.9632
+
+Oneblock: cell59 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 60 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =11.6469
+
+Oneblock: cell60 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 61 bad
+Number of events in bad cell =5
+Matrix element/vector element ratio =80.479
+
+Oneblock: cell61 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 62 bad
+Number of events in bad cell =19
+Matrix element/vector element ratio =141.852
+
+Oneblock: cell62 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =133.571
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell63 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell64 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell65 bad
+Oneblock: number of events in bad cell =3
+Oneblock: matrix element/vector element ratio =244.134
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell66 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =93.3034
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell67 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =131.501
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell68 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =279.657
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell69 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell70 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 71 bad
+Number of events in bad cell =12
+Matrix element/vector element ratio =39.0538
+
+Oneblock: cell71 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 72 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =30.5743
+
+Oneblock: cell72 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 73 bad
+Number of events in bad cell =4
+Matrix element/vector element ratio =320.248
+
+Oneblock: cell73 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 74 bad
+Number of events in bad cell =22
+Matrix element/vector element ratio =565.652
+
+Oneblock: cell74 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell75 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell76 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =163.384
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell77 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =346.865
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell78 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =108.475
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell79 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell80 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =66.1802
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell81 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell82 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 83 bad
+Number of events in bad cell =17
+Matrix element/vector element ratio =52.8813
+
+Oneblock: cell83 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 84 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =19.7047
+
+Oneblock: cell84 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 85 bad
+Number of events in bad cell =13
+Matrix element/vector element ratio =82.5735
+
+Oneblock: cell85 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell86 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell87 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =50.7633
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell88 bad
+Oneblock: number of events in bad cell =4
+Oneblock: matrix element/vector element ratio =191.822
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell89 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =522.435
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell90 bad
+Oneblock: number of events in bad cell =3
+Oneblock: matrix element/vector element ratio =171.566
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell91 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =158.025
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell92 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =36.1469
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell93 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell94 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 95 bad
+Number of events in bad cell =11
+Matrix element/vector element ratio =48.2214
+
+Oneblock: cell95 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 96 bad
+Number of events in bad cell =5
+Matrix element/vector element ratio =10.4549
+
+Oneblock: cell96 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 97 bad
+Number of events in bad cell =25
+Matrix element/vector element ratio =91.4677
+
+Oneblock: cell97 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell98 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell99 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =255.375
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell100 bad
+Oneblock: number of events in bad cell =4
+Oneblock: matrix element/vector element ratio =209.105
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell101 bad
+Oneblock: number of events in bad cell =4
+Oneblock: matrix element/vector element ratio =253.067
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell102 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell103 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell104 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =52.06
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell105 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =65.1705
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell106 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 107 bad
+Number of events in bad cell =6
+Matrix element/vector element ratio =20.1986
+
+Oneblock: cell107 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 108 bad
+Number of events in bad cell =6
+Matrix element/vector element ratio =97.1658
+
+Oneblock: cell108 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell109 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell110 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell111 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell112 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =242.791
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell113 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =337.67
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell114 bad
+Oneblock: number of events in bad cell =3
+Oneblock: matrix element/vector element ratio =97.0736
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell115 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =67.8265
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell116 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell117 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =404.514
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell118 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 119 bad
+Number of events in bad cell =4
+Matrix element/vector element ratio =41.271
+
+Oneblock: cell119 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 120 bad
+Number of events in bad cell =7
+Matrix element/vector element ratio =21.0742
+
+Oneblock: cell120 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell121 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell122 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell123 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell124 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell125 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =500.56
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell126 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =157.416
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell127 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =174.874
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell128 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell129 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 130 bad
+Number of events in bad cell =26
+Matrix element/vector element ratio =79.2608
+
+Oneblock: cell130 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 131 bad
+Number of events in bad cell =6
+Matrix element/vector element ratio =44.5392
+
+Oneblock: cell131 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 132 bad
+Number of events in bad cell =6
+Matrix element/vector element ratio =32.2311
+
+Oneblock: cell132 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell133 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =154.473
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell134 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =211.776
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell135 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =337.07
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell136 bad
+Oneblock: number of events in bad cell =5
+Oneblock: matrix element/vector element ratio =110.634
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell137 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =316.046
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell138 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =614.046
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell139 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =61.716
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell140 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell141 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell142 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 143 bad
+Number of events in bad cell =11
+Matrix element/vector element ratio =63.4011
+
+Oneblock: cell143 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 144 bad
+Number of events in bad cell =3
+Matrix element/vector element ratio =57.3383
+
+Oneblock: cell144 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell145 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell146 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell147 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =558.511
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell148 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =251.934
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell149 bad
+Oneblock: number of events in bad cell =4
+Oneblock: matrix element/vector element ratio =475.444
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell150 bad
+Oneblock: number of events in bad cell =3
+Oneblock: matrix element/vector element ratio =600.377
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell151 bad
+Oneblock: number of events in bad cell =3
+Oneblock: matrix element/vector element ratio =139.224
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell152 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell153 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell154 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =156.096
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 155 bad
+Number of events in bad cell =14
+Matrix element/vector element ratio =112.877
+
+Oneblock: cell155 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 156 bad
+Number of events in bad cell =6
+Matrix element/vector element ratio =26.8815
+
+Oneblock: cell156 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell157 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =63.5624
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell158 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =243.366
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell159 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =237.855
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell160 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =214.469
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell161 bad
+Oneblock: number of events in bad cell =7
+Oneblock: matrix element/vector element ratio =297.91
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell162 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =205.463
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell163 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =542.108
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell164 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =163.906
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell165 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell166 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 167 bad
+Number of events in bad cell =11
+Matrix element/vector element ratio =27.9241
+
+Oneblock: cell167 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 168 bad
+Number of events in bad cell =14
+Matrix element/vector element ratio =72.8084
+
+Oneblock: cell168 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell169 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell170 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =216.586
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell171 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =137.211
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell172 bad
+Oneblock: number of events in bad cell =5
+Oneblock: matrix element/vector element ratio =344.036
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell173 bad
+Oneblock: number of events in bad cell =5
+Oneblock: matrix element/vector element ratio =304.356
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell174 bad
+Oneblock: number of events in bad cell =4
+Oneblock: matrix element/vector element ratio =240.985
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell175 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =151.392
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell176 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =57.3323
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell177 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell178 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =151.035
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 179 bad
+Number of events in bad cell =6
+Matrix element/vector element ratio =19.8966
+
+Oneblock: cell179 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 180 bad
+Number of events in bad cell =7
+Matrix element/vector element ratio =17.5692
+
+Oneblock: cell180 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell181 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell182 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =149.071
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell183 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =75.9916
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell184 bad
+Oneblock: number of events in bad cell =4
+Oneblock: matrix element/vector element ratio =675.752
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell185 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =1377.86
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell186 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =170.446
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell187 bad
+Oneblock: number of events in bad cell =4
+Oneblock: matrix element/vector element ratio =186.254
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell188 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =158.083
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell189 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =186.79
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell190 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =347.711
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 191 bad
+Number of events in bad cell =11
+Matrix element/vector element ratio =49.137
+
+Oneblock: cell191 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 192 bad
+Number of events in bad cell =5
+Matrix element/vector element ratio =27.9506
+
+Oneblock: cell192 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell193 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell194 bad
+Oneblock: number of events in bad cell =4
+Oneblock: matrix element/vector element ratio =249.081
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell195 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =161.472
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell196 bad
+Oneblock: number of events in bad cell =3
+Oneblock: matrix element/vector element ratio =316.136
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell197 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =82.7246
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell198 bad
+Oneblock: number of events in bad cell =4
+Oneblock: matrix element/vector element ratio =329.661
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell199 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell200 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =325.365
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell201 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell202 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 203 bad
+Number of events in bad cell =21
+Matrix element/vector element ratio =31.9713
+
+Oneblock: cell203 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 204 bad
+Number of events in bad cell =7
+Matrix element/vector element ratio =26.8293
+
+Oneblock: cell204 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell205 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell206 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =279.551
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell207 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =186.921
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell208 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =299.481
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell209 bad
+Oneblock: number of events in bad cell =5
+Oneblock: matrix element/vector element ratio =146.638
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell210 bad
+Oneblock: number of events in bad cell =3
+Oneblock: matrix element/vector element ratio =159.805
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell211 bad
+Oneblock: number of events in bad cell =5
+Oneblock: matrix element/vector element ratio =238.677
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell212 bad
+Oneblock: number of events in bad cell =3
+Oneblock: matrix element/vector element ratio =283.369
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell213 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell214 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell215 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 216 bad
+Number of events in bad cell =5
+Matrix element/vector element ratio =10.3724
+
+Oneblock: cell216 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 217 bad
+Number of events in bad cell =23
+Matrix element/vector element ratio =145.504
+
+Oneblock: cell217 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell218 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell219 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell220 bad
+Oneblock: number of events in bad cell =3
+Oneblock: matrix element/vector element ratio =207.009
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell221 bad
+Oneblock: number of events in bad cell =3
+Oneblock: matrix element/vector element ratio =265.639
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell222 bad
+Oneblock: number of events in bad cell =7
+Oneblock: matrix element/vector element ratio =296.047
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell223 bad
+Oneblock: number of events in bad cell =5
+Oneblock: matrix element/vector element ratio =327.076
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell224 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =216.656
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell225 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell226 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =90.4515
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell227 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 228 bad
+Number of events in bad cell =3
+Matrix element/vector element ratio =56.0371
+
+Oneblock: cell228 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 229 bad
+Number of events in bad cell =13
+Matrix element/vector element ratio =100.008
+
+Oneblock: cell229 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell230 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell231 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =866.387
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell232 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =129.627
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell233 bad
+Oneblock: number of events in bad cell =3
+Oneblock: matrix element/vector element ratio =193.015
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell234 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell235 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell236 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =145.318
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell237 bad
+Oneblock: number of events in bad cell =4
+Oneblock: matrix element/vector element ratio =91.4782
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell238 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 239 bad
+Number of events in bad cell =21
+Matrix element/vector element ratio =33.1122
+
+Oneblock: cell239 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 240 bad
+Number of events in bad cell =4
+Matrix element/vector element ratio =42.7546
+
+Oneblock: cell240 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 241 bad
+Number of events in bad cell =11
+Matrix element/vector element ratio =92.9897
+
+Oneblock: cell241 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 242 bad
+Number of events in bad cell =18
+Matrix element/vector element ratio =482.15
+
+Oneblock: cell242 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell243 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell244 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =142.32
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell245 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =139.174
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell246 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =100.879
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell247 bad
+Oneblock: number of events in bad cell =2
+Oneblock: matrix element/vector element ratio =107.71
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell248 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =214.559
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell249 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell250 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =717.534
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 251 bad
+Number of events in bad cell =20
+Matrix element/vector element ratio =32.462
+
+Oneblock: cell251 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 252 bad
+Number of events in bad cell =5
+Matrix element/vector element ratio =62.2457
+
+Oneblock: cell252 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 253 bad
+Number of events in bad cell =9
+Matrix element/vector element ratio =260.263
+
+Oneblock: cell253 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 254 bad
+Number of events in bad cell =25
+Matrix element/vector element ratio =83.5144
+
+Oneblock: cell254 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell255 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =71.0624
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell256 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =332.822
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell257 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell258 bad
+Oneblock: number of events in bad cell =4
+Oneblock: matrix element/vector element ratio =300.016
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell259 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =239.723
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell260 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell261 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell262 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 263 bad
+Number of events in bad cell =14
+Matrix element/vector element ratio =50.6464
+
+Oneblock: cell263 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 264 bad
+Number of events in bad cell =0
+Matrix element/vector element ratio =-nan
+
+Oneblock: cell264 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 265 bad
+Number of events in bad cell =7
+Matrix element/vector element ratio =67.3336
+
+Oneblock: cell265 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =39.0544
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 266 bad
+Number of events in bad cell =14
+Matrix element/vector element ratio =230.383
+
+Oneblock: cell266 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =91.5865
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell267 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell268 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell269 bad
+Oneblock: number of events in bad cell =3
+Oneblock: matrix element/vector element ratio =249.387
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell270 bad
+Oneblock: number of events in bad cell =3
+Oneblock: matrix element/vector element ratio =131.444
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell271 bad
+Oneblock: number of events in bad cell =3
+Oneblock: matrix element/vector element ratio =193.594
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell272 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell273 bad
+Oneblock: number of events in bad cell =1
+Oneblock: matrix element/vector element ratio =66.1375
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell274 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 275 bad
+Number of events in bad cell =16
+Matrix element/vector element ratio =27.2598
+
+Oneblock: cell275 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 276 bad
+Number of events in bad cell =1
+Matrix element/vector element ratio =20.5522
+
+Oneblock: cell276 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 277 bad
+Number of events in bad cell =2
+Matrix element/vector element ratio =33.0883
+
+Oneblock: cell277 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 278 bad
+Number of events in bad cell =5
+Matrix element/vector element ratio =64.6476
+
+Oneblock: cell278 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 279 bad
+Number of events in bad cell =17
+Matrix element/vector element ratio =42.9725
+
+Oneblock: cell279 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 280 bad
+Number of events in bad cell =24
+Matrix element/vector element ratio =56.3406
+
+Oneblock: cell280 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell281 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell282 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell283 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Oneblock: cell284 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 285 bad
+Number of events in bad cell =26
+Matrix element/vector element ratio =59.278
+
+Oneblock: cell285 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 286 bad
+Number of events in bad cell =25
+Matrix element/vector element ratio =53.0863
+
+Oneblock: cell286 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Proceeding to energy matrix quality check analysis..
+
+Cell 287 bad
+Number of events in bad cell =6
+Matrix element/vector element ratio =29.8403
+
+Oneblock: cell287 bad
+Oneblock: number of events in bad cell =0
+Oneblock: matrix element/vector element ratio =-nan
+
+Gain Coefficients
+0.00175  0.00266867  0.00263163  0.00180382  0.00263728  0.00185798  0.0024062  0.00332779  0.00145959  0.00145491  0.00222524  0.00374568  
+0.00175  0.0028114  0.00168388  0.00165362  0.00176223  0.00191629  0.00127553  0.00033258  0.000987108  0.00208857  0.00104803  0.00256277  
+0.00175  0.000549083  0.000775478  0.00143323  0.00133923  0.00150582  0.000878316  0.00116677  0.00122135  0.00180183  0.000868816  0.0031688  
+0.00175  0.00165191  0.00138037  0.00117046  0.00431228  0.00539988  0.00149967  0.00168174  0.00171157  0.00208062  0.00191594  0.00296845  
+0.00175  0.00131023  0.0015652  0.00307501  0.00206856  0.00187159  0.00274829  0.00409714  0.00320662  0.00718196  0.00184944  0.00272894  
+0.00539881  0.00224432  0.00157432  0.00335002  0.0025847  0.00259352  0.00281357  0.00294212  0.00182613  0.0016925  0.00489416  0.00254265  
+0.00169373  0.000275533  0.000298944  0.00104396  0.00183536  0.00155793  0.00251726  0.00215749  0.00267636  0.00302262  0.00320901  0.00311957  
+0.0030827  0.00186074  0.00224689  0.00280508  0.00232815  0.00230729  0.0026887  0.00261568  0.00263684  0.00236357  0.00307503  0.00326762  
+0.00512732  0.00154451  0.0034378  0.0024853  0.00273482  0.00222646  0.00234571  0.00266081  0.0023146  0.00307052  0.00497435  0.00300717  
+0.00260136  0.00351141  0.00222668  0.00301817  0.00283958  0.00231322  0.00252786  0.0023466  0.00307723  0.00218403  0.00372384  0.00305697  
+0.00607633  0.00281607  0.0025683  0.00255227  0.00272623  0.0023399  0.00263525  0.00272727  0.00287195  0.00337762  0.00126722  0.00216883  
+0.0072298  0.00333107  0.0026274  0.00273672  0.00257554  0.00276137  0.00243531  0.00201471  0.00274655  0.00336052  0.00372077  0.00372126  
+0.000449533  0.000739011  0.000262695  0.000511107  0.000883642  0.00172063  0.00263884  0.002405  0.00285315  0.00219896  0.00280235  0.0035386  
+0.00660769  0.00281244  0.00238116  0.00201605  0.00178021  0.00245412  0.00209698  0.0026678  0.0019238  0.00420028  0.00625211  0.00379699  
+0.00212358  0.00376131  0.00206062  0.00240169  0.00266566  0.00243115  0.00229985  0.00241757  0.00250337  0.000249395  0.0013337  0.00341337  
+0.00335189  0.00280443  0.00335358  0.00297362  0.00202744  0.00163988  0.00265112  0.00262602  0.00276764  0.00271902  0.0036642  0.00356526  
+0.00349821  0.000721554  0.00262248  0.00326829  0.00155753  0.00265758  0.00192736  0.00140452  0.00192733  0.00193201  0.00235239  0.00340549  
+0.00274887  0.00341251  0.00321535  0.0020633  0.00229553  0.00238106  0.00278451  0.00265481  0.00261573  0.00237016  0.00367688  0.00534119  
+0.0050249  0.00292725  0.00279679  0.00295388  0.00294169  0.00218871  0.00241801  0.00263205  0.00198309  0.00253778  0.00241385  0.00534245  
+0.00432152  0.00164664  0.00316336  0.00203728  0.00360837  0.00225993  0.00219345  0.00172604  0.00256187  0.00276297  0.00369391  0.00372496  
+0.0045194  0.00171242  0.000476805  0.00362154  0.00191929  0.00332668  0.00192913  0.00320868  0.00286725  0.00255268  0.00257378  0.00410904  
+0.00265122  0.00116889  0.00190811  0.00412522  0.00424266  0.00230703  0.00305885  0.00232582  0.00279655  0.00202897  0.00436417  0.00338812  
+0.00175  0.00403728  0.00184311  0.00360777  0.00171599  0.00382289  0.00260693  0.00234487  0.0033208  0.00291607  0.00399183  0.00308539  
+0.00731553  0.00733844  0.00269888  0.00236267  0.00204097  0.00402017  0.00162487  0.000460167  0.00157057  0.00151657  0.00263376  0.00416878  
+
+One Block Std:
+0.00175  0.00266867  0.00263163  0.00180382  0.00263728  0.00185798  0.0024062  0.00332779  0.00145959  0.00145491  0.00222524  0.00374568  0.00175  0.0028114  0.00168388  0.00165362  0.00176223  0.00191629  0.00127553  0.00033258  0.000987108  0.00208857  0.00104803  0.00256277  0.00175  0.000549083  0.000775478  0.00143323  0.00133923  0.00150582  0.000878316  0.00116677  0.00122135  0.00180183  0.000868816  0.0031688  0.00175  0.00165191  0.00138037  0.00117046  0.00117154  0.00130065  0.00149967  0.00168174  0.00171157  0.00208062  0.00191594  0.00296845  0.00175  0.00131023  0.0015652  0.00146996  0.00149789  0.00122581  0.0015918  0.0015631  0.00183514  0.00202092  0.00184944  0.00272894  0.00539881  0.00224432  0.00157432  0.00144749  0.00150163  0.00162213  0.00117414  0.00165062  0.00156161  0.00147743  0.00173477  0.00254265  0.00169373  0.000275533  0.000298944  0.000599265  0.00105645  0.00086871  0.00160354  0.00151191  0.00183094  0.00200068  0.00173649  0.00311957  0.0030827  0.00186074  0.00144928  0.00160785  0.00141713  0.00129993  0.00175116  0.00180068  0.00199998  0.00208202  0.00197725  0.00326762  0.00512732  0.00154451  0.000979505  0.00125333  0.00154216  0.00139283  0.00116208  0.00143264  0.00162997  0.00190801  0.00176975  0.00300717  0.00260136  0.00148176  0.00146341  0.00166698  0.0014947  0.00141715  0.00175344  0.00170741  0.00169573  0.00209187  0.00155949  0.00305697  0.00607633  0.00171058  0.00137975  0.00161664  0.00163906  0.00177731  0.00175405  0.00177746  0.00180745  0.00197599  0.00126722  0.00216883  0.0072298  0.00174206  0.00140851  0.00154404  0.00161964  0.00169163  0.00147921  0.00176682  0.00154032  0.00213906  0.00240923  0.00372126  0.000449533  0.000488912  0.000590922  0.000582451  0.000745794  0.00101917  0.00161642  0.00168821  0.00159181  0.00142471  0.00228241  0.0035386  0.00660769  0.00120219  0.00137378  0.00110814  0.00108169  0.00150119  0.00135809  0.00178457  0.00133372  0.00214296  0.00270455  0.00379699  0.00212358  0.0017905  0.00117037  0.00140173  0.00156192  0.00156128  0.00162737  0.00171791  0.00172918  0.000244951  0.00250264  0.00341337  0.00335189  0.00127896  0.00148071  0.00133853  0.00136398  0.00118429  0.00160078  0.00182872  0.00147448  0.00191438  0.00274045  0.00356526  0.00349821  0.000794794  0.00150729  0.00127622  0.00111391  0.00139497  0.00137369  0.000975249  0.00109081  0.00155438  0.00195526  0.00340549  0.00274887  0.00140077  0.00135238  0.00107242  0.0015003  0.00127913  0.00167818  0.00187533  0.0015864  0.0015361  0.00244788  0.00366691  0.0050249  0.00292725  0.00159332  0.00131823  0.00154002  0.00129025  0.00152842  0.00172602  0.00125051  0.00149605  0.0020386  0.0037875  0.00432152  0.00164664  0.00152238  0.00133137  0.0018508  0.00123938  0.00137083  0.00119434  0.0016172  0.00155701  0.00168128  0.00372496  0.0045194  0.00171242  0.000476805  0.001309  0.00130803  0.00128104  0.00124791  0.00160076  0.00154403  0.00131706  0.00138985  0.00410904  0.00265122  0.00116889  0.00190811  0.00166903  0.00179654  0.00185825  0.00169268  0.00158463  0.00158704  0.00105741  0.00183152  0.00338812  0.00175  0.00403728  0.00184311  0.00188862  0.00164165  0.00163744  0.00149042  0.00142973  0.00163888  0.00171401  0.00262937  0.00308539  0.00731553  0.00733844  0.00269888  0.00236267  0.00204097  0.00246712  0.00241754  0.00240661  0.00195007  0.00151657  0.00263376  0.00416878  
+Total Number of events available for calibration: 
+
+0  0  0  0  0  0  0  0  0  0  0  0  
+0  0  1  0  2  1  1  0  0  1  0  0  
+0  0  0  3  5  8  5  8  5  5  3  0  
+0  1  6  20  45  43  28  26  15  17  12  3  
+0  3  20  53  89  114  93  55  38  37  21  6  
+1  5  19  70  151  217  188  141  98  65  32  12  
+2  4  22  99  262  378  349  273  188  87  43  17  
+1  13  50  181  392  520  499  360  233  102  48  11  
+5  25  67  209  438  577  473  422  261  105  41  6  
+6  37  112  261  441  572  605  471  239  116  32  4  
+7  45  124  334  560  697  655  468  246  101  26  6  
+6  46  166  375  619  832  703  520  271  101  48  11  
+3  30  103  253  572  761  814  582  253  89  49  14  
+6  39  118  331  666  891  823  621  265  103  31  11  
+14  36  120  322  668  882  840  645  330  69  33  6  
+7  36  107  272  604  779  779  637  337  143  49  11  
+5  30  100  234  479  620  678  572  342  180  66  21  
+7  31  86  162  384  539  656  645  434  244  95  32  
+5  23  72  155  285  436  554  554  370  190  93  30  
+3  13  46  113  215  299  364  362  245  144  66  21  
+4  11  18  85  159  197  248  267  177  112  56  20  
+5  9  25  56  108  160  188  188  150  96  42  14  
+0  7  14  35  53  90  109  109  108  65  43  16  
+1  2  5  17  24  37  45  45  35  26  25  6  
+
+
+Total blocks out of time with primary block / Multi-block clusters: 4656/10455
+
+
+Elastic yield for analyzed runs: 15785. Total event bins available for calibration = LH2 + LD2: 13220 + 34964 = 48184. Total number of events analyzed: 2397318.
+
+Calibration complete. Constants and histograms written to file.
+
+CPU time elapsed = 131.96 s = 2.19933 min. Real time = 450.859 s = 7.51431 min.

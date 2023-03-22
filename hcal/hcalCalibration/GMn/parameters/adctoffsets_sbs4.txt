@@ -1,4 +1,4 @@
-#HCal ADCT offsets obtained 3_8_2023
+#HCal ADCT offsets obtained 3_21_2023
 #Offsets obtained from fits over ADCT distributions = 
 -90.9298
 -19.8471

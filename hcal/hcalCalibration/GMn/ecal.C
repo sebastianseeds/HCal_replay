@@ -1363,11 +1363,11 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
 	GCoeff_oneblock[i]=gOldConst[i];
       }
 
-      if(badcell[i]==0){
+      if(badcell[i]==0&&Coeff[i]>0){ //Only update the coefficent if coefficient passes quality checks
 	GCoeff[i]=Coeff[i];
 	GCoeff_divide[i]=GCoeff[i]/GCoeff_oneblock[i];
       }else{
-	GCoeff[i]=gOldConst[i]; // If the cell is bad, use the old coefficient
+	GCoeff[i]=gOldConst[i]; // If the cell calibration is bad, use the old coefficient
 	GCoeff_divide[i]=-1.0;
       }
     }

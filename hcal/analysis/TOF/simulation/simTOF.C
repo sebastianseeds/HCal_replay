@@ -91,7 +91,7 @@ string getDate(){
 }
 
 //Main, kine->kinematic, iter->0:no fitting 1:fitting
-void simTOF( Int_t kine = 4, Int_t iter = 0 ){
+void simTOF( Int_t kine = 4, Int_t field = 0, Int_t iter = 0 ){
   
   // Define a clock to check overall time
   TStopwatch *st = new TStopwatch();
@@ -111,10 +111,13 @@ void simTOF( Int_t kine = 4, Int_t iter = 0 ){
 
   //Set processing params
   TChain *C = new TChain("T");
-  TFile *fout = new TFile( Form("output/simTOFout_sbs%d.root",kine), "RECREATE" );
+  TFile *fout = new TFile( Form("output/simTOFout_sbs%d_field%d.root",kine,field), "RECREATE" );
   Int_t nevent=1;
 
-  C->Add(Form("/lustre19/expphy/volatile/halla/sbs/seeds/simulation/gmn_sbs%d_v2_job*",kine));
+  //C->Add(Form("/lustre19/expphy/volatile/halla/sbs/seeds/simulation/gmn_sbs%d_ld2_%dp_job*",kine,field)); //Get LH2 offsets from proton in ld2 where fermi smearing won't shift the peak TOF location
+
+  C->Add(Form("/lustre19/expphy/volatile/halla/sbs/seeds/simulation/gmn_sbs%d_v2_job*",kine)); //Use old files while new ones are generated with fields {30,85,100,70,70,70}
+
 
   //Use root makeclass() functionality, no rush
   gmn_tree *T = new gmn_tree(C);
@@ -173,6 +176,10 @@ void simTOF( Int_t kine = 4, Int_t iter = 0 ){
   TH2D *TOF_vs_pz_cent = new TH2D("TOF_vs_pz_cent","Time of Flight vs Hadron z Momentum, Central px/py", 100, -pcompr, pcompr, Ntbins[kIdx], tllim[kIdx], tulim[kIdx]);
 
 
+  //Holy crap this is going to suck.
+  
+
+
   //Define supplementary histograms
   TH1D *hpX = new TH1D("hpX","Hadron px; GeV",100,-pcompr,pcompr);
   TH1D *hpY = new TH1D("hpY","Hadron py; GeV",100,-pcompr,pcompr);
@@ -227,6 +234,12 @@ void simTOF( Int_t kine = 4, Int_t iter = 0 ){
       TOF_vs_px->Fill( hadpx, BCtime );
       TOF_vs_py->Fill( hadpy, BCtime );
       TOF_vs_pz->Fill( hadpz, BCtime );
+
+      //Write px/py/pz slice histos with ranges designed to constrain variation dependent on other p dof
+      if( abs(hadpy-0.)<0.1 && abs(hadpz-2.0)<0.1 ) TOF_vs_px_cent->Fill(hadpx, BCtime);
+      if( abs(hadpx+1.22)<0.04 && abs(hadpz-2.0)<0.1 ) TOF_vs_py_cent->Fill(hadpy, BCtime);
+      if( abs(hadpx+1.22)<0.04 && abs(hadpy-0.)<0.1 ) TOF_vs_pz_cent->Fill(hadpz, BCtime);
+
       if( PID == prot ){
 	pvY->Fill( hadPosY );
 	pvX->Fill( hadPosX );
@@ -266,13 +279,20 @@ void simTOF( Int_t kine = 4, Int_t iter = 0 ){
     cout << "CPU time elapsed = " << st->CpuTime() << " s = " << st->CpuTime()/60.0 << " min. Real time = " << st->RealTime() << " s = " << st->RealTime()/60.0 << " min." << endl;
     return;
   }
-    
 
-  //Construct graphs
-  Double_t posErr[Npbins[kIdx]];
+  //Make file for proton corrections
+  string tofcorrpath_p = Form("corrections/tofcorr_p_sbs%d_field%d.txt",kine,field);
+  ofstream tofcorr_p;
+
+  //Make file for neutron corrections
+  string tofcorrpath_n = Form("corrections/tofcorr_n_sbs%d_field%d.txt",kine,field);
+  ofstream tofcorr_n;
+
+  //Construct momentum graphs
+  Double_t momErr[Npbins[kIdx]];
   TF1 *f1;
   Double_t alin_div = (alin_l[kIdx]-alin_h[kIdx])/Npbins[kIdx];
-  Double_t corrErr[Npbins[kIdx]];
+  Double_t corrMomErr[Npbins[kIdx]];
   Int_t lNsig = 17;
   Int_t uNsig = 2;
 
@@ -283,8 +303,8 @@ void simTOF( Int_t kine = 4, Int_t iter = 0 ){
   TH1D *slice_p[Npbins[kIdx]];
   Double_t TOFmin_p = 100;
   for( Int_t x=0; x<=Npbins[kIdx]; x++ ){
-    posErr[x] = 0.;
-    corrErr[x] = 0.;
+    momErr[x] = 0.;
+    corrMomErr[x] = 0.;
     Double_t afitm = alin_l[kIdx]-x*alin_div;
     Double_t afitl = afitm-lNsig*TOF_sig[kIdx];
     Double_t afith = afitm+uNsig*TOF_sig[kIdx];
@@ -298,7 +318,7 @@ void simTOF( Int_t kine = 4, Int_t iter = 0 ){
       if( Xval[x]>38&&Xval[x]<TOFmin_p ) TOFmin_p=Xval[x];
     }
   }
-  TGraphErrors *cTOF_X = new TGraphErrors( Npbins[kIdx], X, Xval, posErr, Xerr );
+  TGraphErrors *cTOF_X = new TGraphErrors( Npbins[kIdx], X, Xval, momErr, Xerr );
   cTOF_X->GetXaxis()->SetLimits(0,Npbins[kIdx]);  
   cTOF_X->GetYaxis()->SetLimits(pllim[kIdx],pulim[kIdx]);
   cTOF_X->SetTitle("Time of Flight vs Proton Momentum");
@@ -307,13 +327,13 @@ void simTOF( Int_t kine = 4, Int_t iter = 0 ){
   cTOF_X->SetMarkerStyle(20); // idx 20 Circles, idx 21 Boxes
   cTOF_X->Write("cTOF_P");
 
-  cout << TOFmin_p << endl << endl;
+  //cout << TOFmin_p << endl << endl;
   for( Int_t v=0; v<Npbins[kIdx]; v++ ){
     Xval[v]-=TOFmin_p;
-    cout << Xval[v] << endl;
+    //cout << Xval[v] << endl;
   }
 
-  TGraphErrors *cTOF_X_corr = new TGraphErrors( Npbins[kIdx], X, Xval, posErr, corrErr );
+  TGraphErrors *cTOF_X_corr = new TGraphErrors( Npbins[kIdx], X, Xval, momErr, corrMomErr );
   cTOF_X_corr->GetXaxis()->SetLimits(0,Npbins[kIdx]);  
   cTOF_X_corr->GetYaxis()->SetLimits(pllim[kIdx],pulim[kIdx]);
   cTOF_X_corr->SetTitle("TOF vs P Corrections Proton");
@@ -342,7 +362,7 @@ void simTOF( Int_t kine = 4, Int_t iter = 0 ){
       if( Yval[x]>5&&Yval[x]<TOFmin_n ) TOFmin_n=Yval[x];
     }
   }
-  TGraphErrors *cTOF_Y = new TGraphErrors( Npbins[kIdx], Y, Yval, posErr, Yerr );
+  TGraphErrors *cTOF_Y = new TGraphErrors( Npbins[kIdx], Y, Yval, momErr, Yerr );
   cTOF_Y->GetXaxis()->SetLimits(0,Npbins[kIdx]);  
   cTOF_Y->GetYaxis()->SetLimits(pllim[kIdx],pulim[kIdx]);
   cTOF_Y->SetTitle("Time of Flight vs Neutron Momentum");
@@ -351,13 +371,13 @@ void simTOF( Int_t kine = 4, Int_t iter = 0 ){
   cTOF_Y->SetMarkerStyle(20); // idx 20 Circles, idx 21 Boxes
   cTOF_Y->Write("cTOF_N");
 
-  cout << TOFmin_n << endl << endl;
+  //cout << TOFmin_n << endl << endl;
   for( Int_t v=0; v<Npbins[kIdx]; v++ ){ 
     Yval[v]-=TOFmin_n;
-    cout << Yval[v] << endl;
+    //cout << Yval[v] << endl;
   }
 
-  TGraphErrors *cTOF_Y_corr = new TGraphErrors( Npbins[kIdx], Y, Yval, posErr, corrErr );
+  TGraphErrors *cTOF_Y_corr = new TGraphErrors( Npbins[kIdx], Y, Yval, momErr, corrMomErr );
   cTOF_Y_corr->GetXaxis()->SetLimits(0,Npbins[kIdx]);  
   cTOF_Y_corr->GetYaxis()->SetLimits(pllim[kIdx],pulim[kIdx]);
   cTOF_Y_corr->SetTitle("TOF vs P Corrections Neutron");
@@ -365,6 +385,120 @@ void simTOF( Int_t kine = 4, Int_t iter = 0 ){
   cTOF_Y_corr->GetYaxis()->SetTitle("Correction (ns)");
   cTOF_Y_corr->SetMarkerStyle(20); // idx 20 Circles, idx 21 Boxes
   cTOF_Y_corr->Write("cTOF_N_corr");  
+
+
+  ////////////////////////////
+  //construct position graphs
+  Double_t posErr[Nchan];
+  TF1 *f2;
+  Double_t corrErr[Nchan];
+
+  //For Proton Position
+  tofcorr_p.open( tofcorrpath_p );
+  tofcorr_p << "#Proton TOF (ns) vs HCal ID (12col x 24row) offset corrections from MC located here:" << endl;
+  tofcorr_p << "#/lustre19/expphy/volatile/halla/sbs/seeds/simulation/gmn_sbs" << kine << "_ld2_" << field << "p_job*" << endl;
+  tofcorr_p << "#Date generated: " << date.c_str() << endl;
+
+  Double_t XX[Nchan];
+  Double_t XXval[Nchan];
+  Double_t XXerr[Nchan];
+  TH1D *slice_pp[Nchan];
+  Double_t TOFmin_pp = 100;
+  for( Int_t x=0; x<=Nchan; x++ ){
+    posErr[x] = 0.;
+    corrErr[x] = 0.;
+    XX[x] = x;
+    slice_pp[x] = TOF_vs_ID_p->ProjectionY(Form("slice_pp_%d",x+1),x+1,x+1);
+    slice_pp[x]->Fit("gaus","Q","",tllim[kIdx],tulim[kIdx]);
+    f2=slice_pp[x]->GetFunction("gaus");
+    if(slice_pp[x]->GetEntries()>10){
+      XXval[x] = f2->GetParameter(1);
+      XXerr[x] = f2->GetParameter(2);
+      if( XXval[x]<tllim[kIdx] || XXval[x]>tulim[kIdx] ){
+	XXval[x]=XXval[x-1];
+	XXerr[x]=1.;
+      }
+      tofcorr_p << XXval[x] << endl;
+      if( XXval[x]<TOFmin_pp ) TOFmin_pp=XXval[x];
+    }
+  }
+
+  tofcorr_p.close();
+
+  TGraphErrors *cTOF_XX = new TGraphErrors( Nchan, XX, XXval, posErr, XXerr );
+  cTOF_XX->GetXaxis()->SetLimits(0,Nchan);  
+  cTOF_XX->GetYaxis()->SetLimits(tllim[kIdx],tulim[kIdx]);
+  cTOF_XX->SetTitle("Time of Flight Proton vs ID");
+  cTOF_XX->GetXaxis()->SetTitle("channel");
+  cTOF_XX->GetYaxis()->SetTitle("Time of Flight (ns)");
+  cTOF_XX->SetMarkerStyle(20); // idx 20 Circles, idx 21 Boxes
+  cTOF_XX->Write("cTOF_Ppos");
+
+  for( Int_t v=0; v<Nchan; v++ ){
+    //XXval[v]-=TOFmin_pp;
+  }
+
+  TGraphErrors *cTOF_XX_corr = new TGraphErrors( Nchan, XX, XXval, posErr, corrErr );
+  cTOF_XX_corr->GetXaxis()->SetLimits(0,Nchan);  
+  cTOF_XX_corr->GetYaxis()->SetLimits(tllim[kIdx],tulim[kIdx]);
+  cTOF_XX_corr->SetTitle("TOF vs ID Corrections Proton");
+  cTOF_XX_corr->GetXaxis()->SetTitle("channel");
+  cTOF_XX_corr->GetYaxis()->SetTitle("Correction (ns)");
+  cTOF_XX_corr->SetMarkerStyle(21); // idx 20 Circles, idx 21 Boxes
+  cTOF_XX_corr->Write("cTOF_Ppos_corr");
+  
+  //For Neutron
+  tofcorr_n.open( tofcorrpath_n );
+  tofcorr_n << "#Neutron TOF (ns)vs HCal ID (12col x 24row) offset corrections from MC located here:" << endl;
+  tofcorr_n << "#/lustre19/expphy/volatile/halla/sbs/seeds/simulation/gmn_sbs" << kine << "_ld2_" << field << "p_job*" << endl;
+  tofcorr_n << "#Date generated: " << date.c_str() << endl;
+
+  Double_t YY[Nchan];
+  Double_t YYval[Nchan];
+  Double_t YYerr[Nchan];
+  TH1D *slice_np[Nchan];
+  Double_t TOFmin_np=100;
+  for( Int_t x=0; x<Nchan; x++ ){
+    YY[x] = x;
+    slice_np[x] = TOF_vs_ID_n->ProjectionY(Form("slice_np_%d",x+1),x+1,x+1);
+    slice_np[x]->Fit("gaus","Q","",tllim[kIdx],tulim[kIdx]);
+    f2=slice_np[x]->GetFunction("gaus");
+    if(slice_np[x]->GetEntries()>10){
+      YYval[x] = f2->GetParameter(1);
+      YYerr[x] = f2->GetParameter(2);
+      if( YYval[x]<tllim[kIdx] || YYval[x]>tulim[kIdx] ){
+	YYval[x]=YYval[x-1];
+	YYerr[x]=1.;
+      }
+      tofcorr_n << YYval[x] << endl;
+      if( YYval[x]<TOFmin_n ) TOFmin_np=YYval[x];
+    }
+  }
+
+  tofcorr_n.close();
+
+  TGraphErrors *cTOF_YY = new TGraphErrors( Nchan, YY, YYval, posErr, YYerr );
+  cTOF_YY->GetXaxis()->SetLimits(0,Nchan);  
+  cTOF_YY->GetYaxis()->SetLimits(tllim[kIdx],tulim[kIdx]);
+  cTOF_YY->SetTitle("Time of Flight Neutron vs ID");
+  cTOF_YY->GetXaxis()->SetTitle("channel");
+  cTOF_YY->GetYaxis()->SetTitle("Time of Flight (ns)");
+  cTOF_YY->SetMarkerStyle(20); // idx 20 Circles, idx 21 Boxes
+  cTOF_YY->Write("cTOF_Npos");
+
+  for( Int_t v=0; v<Nchan; v++ ){ 
+    //YYval[v]-=TOFmin_np;
+  }
+
+  TGraphErrors *cTOF_YY_corr = new TGraphErrors( Nchan, YY, YYval, posErr, corrErr );
+  cTOF_YY_corr->GetXaxis()->SetLimits(0,Nchan);  
+  cTOF_YY_corr->GetYaxis()->SetLimits(tllim[kIdx],tulim[kIdx]);
+  cTOF_YY_corr->SetTitle("TOF vs ID Corrections Neutron");
+  cTOF_YY_corr->GetXaxis()->SetTitle("channel");
+  cTOF_YY_corr->GetYaxis()->SetTitle("Correction (ns)");
+  cTOF_YY_corr->SetMarkerStyle(20); // idx 20 Circles, idx 21 Boxes
+  cTOF_YY_corr->Write("cTOF_Npos_corr");  
+
 
   fout->Write();
 

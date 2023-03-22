@@ -1,6 +1,7 @@
 //SSeeds 2.27.23 - Pass2 Update - Calibration code which employs best current cuts on elastic events to obtain ADC time and TDC offset parameters (ns). Applies timewalk corrections. Now loops over all data and cuts on both dx and dy with array of chains.
 //NOTE: should be used only after gain parameters are available from ecal.C
 //3.13.23 Update - added iteration 2 fuctionality which enables TOF corrections and internal cluster timing to output files, otherwise identical to iteration 1. Note that MC fits for TOF extrapolate well to low momentum, but NOT for high momentum.
+//3.21.23 Update - added iteration 3 to qreplay alignment after all corrections (TW/TOF/Hodo)
 
 #include <ctime>
 #include <iostream>
@@ -60,7 +61,7 @@ const Double_t Atgt = 1.0;
 const Double_t Mmol_tgt = 1.008; //g/mol
 const UInt_t second = 1000000; 
 const Int_t nkine = 6; // Total number of kinematic points
-const Int_t maxfset = 5;
+const Int_t maxfset = 5; // One greater than the maximum number of field settings
 const Int_t nfset_lh2[6] = {3,1,2,2,4,1}; //Number of LH2 magnetic field settings in order SBS{4,7,11,14,8,9}
 const Int_t nfset_ld2[6] = {3,1,2,1,4,1}; //Number of LD2 magnetic field settings in order SBS{4,7,11,14,8,9}
 const Int_t fset_lh2[6][4] = {{0,30,50,-1},
@@ -87,8 +88,8 @@ const Double_t TOFfitp_n[6][4] = {{62.1158, -20.8086, 6.464510, -0.71342},
 				  {64.1014, -9.30317, 1.818670, -0.12324},
 				  {56.1597, -13.4154, 3.449660, -0.30995},
 				  {63.9328, -22.3211, 6.673740, -0.68472}}; //Pol3 TOF fit params from neutron MC data with SBS fields {30,85,100,70,70,70} 
-const Double_t pulim[6] = {2.8,6.7,8.9,5.4,3.9,3.7}; //p upper limit on fits, beyond this fits diverge
-const Int_t tofB[6] = {30,85,100,70,70,70};
+const Double_t pulim[6] = {2.8,6.7,8.9,5.4,3.9,3.7}; //p (momentum) upper limit on fits, beyond this fits diverge
+const Int_t tofB[6] = {30,85,100,70,70,70}; //Current field setting for which TOF fit parameters exist (above)
 
 //Math/other
 const Double_t PI = TMath::Pi();
@@ -149,13 +150,15 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
   //Declare bool indicating iteration
   bool qreplay = iter>0;
 
-  bool tofreplay = iter==2;
+  bool tofreplay = iter>1;
+
+  bool tofqreplay = iter==3;
 
   //Set up arrays to hold gain parameters for energy corrections
   Double_t gOldConst_pass0[kNcell] = {0.};
   Double_t gConst_iter1[kNcell] = {0.}; 
 
-  // Declare arrays to hold old offset parameters
+  // Declare arrays to hold old-offset/correction parameters
   Double_t oldADCtoffsets[kNcell]={0.};
   Double_t oldTDCoffsets[kNcell]={0.};
   Double_t otdcP0[kNcell]={0.};
@@ -166,6 +169,51 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
   Double_t oadctP2[kNcell]={0.};
   Double_t calADCtoffsets[kNcell]={0.};
   Double_t calTDCoffsets[kNcell]={0.};
+  Double_t tofcorr_n[nfset_lh2[kIdx]][kNcell];
+  Double_t tofcorr_p[nfset_lh2[kIdx]][kNcell];
+
+  // Declare file name paths for writing constants
+  string tdcconstPath;
+  string adctconstPath;
+  string tdctwP0path;
+  string tdctwP1path;
+  string tdctwP2path;
+  string adcttwP0path;
+  string adcttwP1path;
+  string adcttwP2path;
+  string errPath;
+  string tdcfinalconstPath;
+
+  if( tofreplay ){
+    tdcfinalconstPath = Form("parameters/tdcfinaloffsets_sbs%d.txt",kine);
+  }else if( qreplay ){
+    tdcconstPath = Form("parameters/tdcoffsets_sbs%d_qreplay.txt",kine);
+    adctconstPath = Form("parameters/adctoffsets_sbs%d_qreplay.txt",kine);
+    tdctwP0path = Form("parameters/tdctwP0_sbs%d_qreplay.txt",kine);
+    tdctwP1path = Form("parameters/tdctwP1_sbs%d_qreplay.txt",kine);
+    tdctwP2path = Form("parameters/tdctwP2_sbs%d_qreplay.txt",kine);
+    adcttwP0path = Form("parameters/adcttwP0_sbs%d_qreplay.txt",kine);
+    adcttwP1path = Form("parameters/adcttwP1_sbs%d_qreplay.txt",kine);
+    adcttwP2path = Form("parameters/adcttwP2_sbs%d_qreplay.txt",kine);
+    errPath = Form("reporting/term/tcalReport_sbs%d_qreplay.txt",kine);
+  }else{
+    tdcconstPath = Form("parameters/tdcoffsets_sbs%d.txt",kine);
+    adctconstPath = Form("parameters/adctoffsets_sbs%d.txt",kine);
+    tdctwP0path = Form("parameters/tdctwP0_sbs%d.txt",kine);
+    tdctwP1path = Form("parameters/tdctwP1_sbs%d.txt",kine);
+    tdctwP2path = Form("parameters/tdctwP2_sbs%d.txt",kine);
+    adcttwP0path = Form("parameters/adcttwP0_sbs%d.txt",kine);
+    adcttwP1path = Form("parameters/adcttwP1_sbs%d.txt",kine);
+    adcttwP2path = Form("parameters/adcttwP2_sbs%d.txt",kine);
+    errPath = Form("reporting/term/tcalReport_sbs%d.txt",kine);
+  }
+
+  //Declare report outfile
+  ofstream report;
+
+  report.open( errPath );
+  report << "#Error and performance report from SBS-" << kine << " obtained " << date.c_str() << endl << endl;
+
   bool pass0 = false;
 
   //Get gain parameters from ecal.C for use with timewalk corrections
@@ -210,22 +258,26 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
     for( Int_t c=0; c<kNcols; c++){
       Int_t i = r*kNcols+c;
       cout << gConst_iter1[i] << " ";
+      report << gConst_iter1[i] << " ";
     }
     cout << endl;
+    report << endl;
   }
 
   usleep( 3*second ); //Give some time for review of step 
   
   cout << endl;
+  report << endl;
   
   if( kine==4 || kine==7 ){ //end if iteration 1 (quasi-replay)
     
     pass0=true;
-    
+
     // Reading ADC gain parameters from database 
     string inOldGainConstPath = "/u/home/sbs-gmn/pass0/SBS_REPLAY/SBS-replay/DB/db_sbs.hcal.dat";
     
     cout << "Loading previous gain coefficients from file for pass0 kinematics: " << inOldGainConstPath << ".." << endl;
+    report << "Loading previous gain coefficients from file for pass0 kinematics: " << inOldGainConstPath << ".." << endl;
     ifstream inOldGainConstFile( inOldGainConstPath );
     if( !inOldGainConstFile ){
       cerr << endl << "ERROR: No input constant file present -> path to db_sbs.hcal.dat expected." << endl;
@@ -266,17 +318,23 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
       }
     }
     
+    report << "pass0 is " << pass0 << endl << endl;
+
     cout << endl << "Old ADC gain params from pass0 db file: " << endl;
+    report << endl << "Old ADC gain params from pass0 db file: " << endl;
     
     for( Int_t r=0; r<kNrows; r++){
       for( Int_t c=0; c<kNcols; c++){
 	Int_t i = r*kNcols+c;
 	cout << gOldConst_pass0[i] << " ";
+	report << gOldConst_pass0[i] << " ";
       }
       cout << endl;
+      report << endl;
     }
     
     cout << endl;
+    report << endl;
   }//end if pass0
 
   // Paths to read constants
@@ -286,13 +344,23 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
   string RadcttwP0path = Form("parameters/adcttwP0_sbs%d.txt",kine);
   string RadcttwP1path = Form("parameters/adcttwP1_sbs%d.txt",kine);
   string RadcttwP2path = Form("parameters/adcttwP2_sbs%d.txt",kine);
-  string tdcoffpath = Form("parameters/tdcoffsets_sbs%d.txt",kine);
-  string adctoffpath = Form("parameters/adctoffsets_sbs%d.txt",kine);
+  string tdcoffpath;
+  string adctoffpath;
+
+  //Only load final offsets if all-correction-applied offsets have been extracted
+  if( tofqreplay ){
+    tdcoffpath = Form("parameters/tdcfinaloffsets_sbs%d.txt",kine);
+    adctoffpath = Form("parameters/adctoffsets_sbs%d.txt",kine);
+  }else{
+    tdcoffpath = Form("parameters/tdcoffsets_sbs%d.txt",kine);
+    adctoffpath = Form("parameters/adctoffsets_sbs%d.txt",kine);
+  }
+    
 
   if( qreplay ){
-
     // Reading fit parameters if quasi-replay iteration (1)
     cout << "Loading fit parameters.." << endl;
+    report << "Loading fit parameters.." << endl;
 
     //Get first parameter (all channels)
     ifstream tdctwP0file( RtdctwP0path );
@@ -470,100 +538,124 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
       for( Int_t c=0; c<kNcols; c++){
 	Int_t i = r*kNcols+c;
 	cout << otdcP0[i] << " ";
+	report << otdcP0[i] << " ";
       }
       cout << endl;
+      report << endl;
     }
     
     usleep( 2*second ); //Give some time for review of step
 
     cout << endl << endl << "TDC Timewalk Fit P1 vs Channels: " << endl;
+    report << endl << endl << "TDC Timewalk Fit P1 vs Channels: " << endl;
     
     for( Int_t r=0; r<kNrows; r++){
       for( Int_t c=0; c<kNcols; c++){
 	Int_t i = r*kNcols+c;
 	cout << otdcP1[i] << " ";
+	report << otdcP1[i] << " ";
       }
       cout << endl;
+      report << endl;
     }
     
     usleep( 2*second ); //Give some time for review of step
 
     cout << endl << endl << "TDC Timewalk Fit P2 vs Channels: " << endl;
+    report << endl << endl << "TDC Timewalk Fit P2 vs Channels: " << endl;
     
     for( Int_t r=0; r<kNrows; r++){
       for( Int_t c=0; c<kNcols; c++){
 	Int_t i = r*kNcols+c;
 	cout << otdcP2[i] << " ";
+	report << otdcP2[i] << " ";
       }
       cout << endl;
+      report << endl;
     }
 
     //Print loaded fit parameters to console
     cout << endl << endl << "ADCt Timewalk Fit P0 vs Channels: " << endl;
+    report << endl << endl << "ADCt Timewalk Fit P0 vs Channels: " << endl;
     
     for( Int_t r=0; r<kNrows; r++){
       for( Int_t c=0; c<kNcols; c++){
 	Int_t i = r*kNcols+c;
 	cout << oadctP0[i] << " ";
+	report << oadctP0[i] << " ";
       }
       cout << endl;
+      report << endl;
     }
     
     usleep( 2*second ); //Give some time for review of step
 
     cout << endl << endl << "ADCt Timewalk Fit P1 vs Channels: " << endl;
+    report << endl << endl << "ADCt Timewalk Fit P1 vs Channels: " << endl;
     
     for( Int_t r=0; r<kNrows; r++){
       for( Int_t c=0; c<kNcols; c++){
 	Int_t i = r*kNcols+c;
 	cout << oadctP1[i] << " ";
+	report << oadctP1[i] << " ";
       }
       cout << endl;
+      report << endl;
     }
     
     usleep( 2*second ); //Give some time for review of step
 
     cout << endl << endl << "ADCt Timewalk Fit P2 vs Channels: " << endl;
+    report << endl << endl << "ADCt Timewalk Fit P2 vs Channels: " << endl;
     
     for( Int_t r=0; r<kNrows; r++){
       for( Int_t c=0; c<kNcols; c++){
 	Int_t i = r*kNcols+c;
 	cout << oadctP2[i] << " ";
+	report << oadctP2[i] << " ";
       }
       cout << endl;
+      report << endl;
     }
     
     usleep( 2*second ); //Give some time for review of step
 
     cout << endl << endl << "TDC offsets vs Channels: " << endl;
+    report << endl << endl << "TDC offsets vs Channels: " << endl;
     
     for( Int_t r=0; r<kNrows; r++){
       for( Int_t c=0; c<kNcols; c++){
 	Int_t i = r*kNcols+c;
 	cout << calTDCoffsets[i] << " ";
+	report << calTDCoffsets[i] << " ";
       }
       cout << endl;
+      report << endl;
     }
    
     usleep( 2*second ); //Give some time for review of step
 
     cout << endl << endl << "ADCt offsets vs Channels: " << endl;
+    report << endl << endl << "ADCt offsets vs Channels: " << endl;
     
     for( Int_t r=0; r<kNrows; r++){
       for( Int_t c=0; c<kNcols; c++){
 	Int_t i = r*kNcols+c;
 	cout << calADCtoffsets[i] << " ";
+	report << calADCtoffsets[i] << " ";
       }
       cout << endl;
+      report << endl;
     }
   }
 
   // Path for previous ADCt and TDC constants
   string inOldConstPath = "/u/home/sbs-gmn/pass0/SBS_REPLAY/SBS-replay/DB/db_sbs.hcal.dat";
-  if( kine==11 ) inOldConstPath = "../config/GMn/SBS11/db_sbs.hcal.sbs11alttiming.dat";
+  if( kine==11 ) inOldConstPath = "../config/GMn/SBS11/db_sbs.hcal.sbs11alttiming.dat"; //This is required because the database file for hcal was changed within the pass1 replay period
 
   // Reading ADC and TDC timing offsets from database
   cout << endl << "Loading previous offsets from database file: " << inOldConstPath << ".." << endl;
+  report << endl << "Loading previous offsets from database file: " << inOldConstPath << ".." << endl;
   ifstream inOldConstFile2( inOldConstPath );
   if( !inOldConstFile2 ){
     cerr << endl << "ERROR: No input constant file present -> path to db_sbs.hcal.dat expected." << endl;
@@ -613,26 +705,33 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
   }
 
   cout << endl << endl << "Old TDC offsets: " << endl;
+  report << endl << endl << "Old TDC offsets: " << endl;
 
   for( Int_t r=0; r<kNrows; r++){
     for( Int_t c=0; c<kNcols; c++){
       Int_t i = r*kNcols+c;
       cout << oldTDCoffsets[i] << " ";
+      report << oldTDCoffsets[i] << " ";
     }
     cout << endl;
+    report << endl;
   }
 
   cout << endl << endl << "Old ADC time offsets: " << endl;
+  report << endl << endl << "Old ADC time offsets: " << endl;
 
   for( Int_t r=0; r<kNrows; r++){
     for( Int_t c=0; c<kNcols; c++){
       Int_t i = r*kNcols+c;
       cout << oldADCtoffsets[i] << " ";
+      report << oldADCtoffsets[i] << " ";
     }
     cout << endl;
+    report << endl;
   }
 
   cout << endl << endl << "Database parameters loaded." << endl;
+  report << endl << endl << "Database parameters loaded." << endl;
 
   usleep( 3*second ); //Give some time for review of step
 
@@ -675,49 +774,18 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
   Double_t ekineW2_d[nfset_ld2[kIdx]];
   Double_t HODOtmean_d[nfset_ld2[kIdx]];
 
-  // Declare file name paths for writing constants
-  string tdcconstPath;
-  string adctconstPath;
-  string tdctwP0path;
-  string tdctwP1path;
-  string tdctwP2path;
-  string adcttwP0path;
-  string adcttwP1path;
-  string adcttwP2path;
-  string errPath;
-  if( qreplay ){
-    tdcconstPath = Form("parameters/tdcoffsets_sbs%d_qreplay.txt",kine);
-    adctconstPath = Form("parameters/adctoffsets_sbs%d_qreplay.txt",kine);
-    tdctwP0path = Form("parameters/tdctwP0_sbs%d_qreplay.txt",kine);
-    tdctwP1path = Form("parameters/tdctwP1_sbs%d_qreplay.txt",kine);
-    tdctwP2path = Form("parameters/tdctwP2_sbs%d_qreplay.txt",kine);
-    adcttwP0path = Form("parameters/adcttwP0_sbs%d_qreplay.txt",kine);
-    adcttwP1path = Form("parameters/adcttwP1_sbs%d_qreplay.txt",kine);
-    adcttwP2path = Form("parameters/adcttwP2_sbs%d_qreplay.txt",kine);
-    errPath = Form("reporting/term/tcalReport_sbs%d_qreplay.txt",kine);
-  }else{
-    tdcconstPath = Form("parameters/tdcoffsets_sbs%d.txt",kine);
-    adctconstPath = Form("parameters/adctoffsets_sbs%d.txt",kine);
-    tdctwP0path = Form("parameters/tdctwP0_sbs%d.txt",kine);
-    tdctwP1path = Form("parameters/tdctwP1_sbs%d.txt",kine);
-    tdctwP2path = Form("parameters/tdctwP2_sbs%d.txt",kine);
-    adcttwP0path = Form("parameters/adcttwP0_sbs%d.txt",kine);
-    adcttwP1path = Form("parameters/adcttwP1_sbs%d.txt",kine);
-    adcttwP2path = Form("parameters/adcttwP2_sbs%d.txt",kine);
-    errPath = Form("reporting/term/tcalReport_sbs%d.txt",kine);
-  }
 
-  //Declare report outfile
-  ofstream report;
+  string configfilename_h[nfset_lh2[kIdx]]; //Get configuration file path to ecal settings
+  string tofcorrfname_p[nfset_lh2[kIdx]]; //Get all corrections from hydrogen field set loop where p/n from ld2 and nfset_ld2+1=nfset_lh2
+  string tofcorrfname_n[nfset_lh2[kIdx]];
 
-  report.open( errPath );
-  report << "#Error and performance report from SBS-" << kine << " obtained " << date.c_str() << endl << endl;
-
-  string configfilename_h[nfset_lh2[kIdx]];
   for( Int_t h=0; h<nfset_lh2[kIdx]; h++){
     Int_t field = fset_lh2[kIdx][h];
     if(field==-1) cout << "Error. configfilename array out of bounds." << endl;
     configfilename_h[h] = Form("../config/GMn/SBS%d/secal_lh2_sbs%d_f%d.cfg",kine,kine,field);
+
+    tofcorrfname_p[h] = Form("tofcorr/tofcorr_p_sbs%d_field%d.txt",kine,field);
+    tofcorrfname_n[h] = Form("tofcorr/tofcorr_n_sbs%d_field%d.txt",kine,field);
   }
   string configfilename_d[nfset_ld2[kIdx]];
   for( Int_t d=0; d<nfset_ld2[kIdx]; d++){
@@ -725,6 +793,86 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
     if(field==-1) cout << "Error. configfilename array out of bounds." << endl;
     configfilename_d[d] = Form("../config/GMn/SBS%d/secal_ld2_sbs%d_f%d.cfg",kine,kine,field);
   }
+
+  if( tofreplay ){
+    for( Int_t h=0; h<nfset_lh2[kIdx]; h++){
+      Int_t field = fset_lh2[kIdx][h];
+
+      // Reading fit parameters if tof-replay iteration (2)
+
+      //Get neutron corrections (all channels)
+      cout << "Loading neutron time of flight parameters for field = " << field << " percent.." << endl;
+      report << "Loading neutron time of flight parameters for field = " << field << " percent.." << endl;
+
+      //cout << tofcorrfname_n[h] << endl;
+
+      ifstream tofcorr_nfile( tofcorrfname_n[h] );
+  
+      Int_t n1=0;
+      Double_t d1=0;
+      string line1;
+    
+      while( getline( tofcorr_nfile, line1 ) ){
+	if( line1.at(0) == '#' ) {
+	  continue;
+	}
+	stringstream ss( line1 );
+	ss >> d1;     
+	tofcorr_n[h][n1] = d1;      
+	n1++;
+      }
+
+      //Get proton corrections (all channels)
+      cout << endl << "Loading proton time of flight parameters for field = " << field << " percent.." << endl;
+      report << endl << "Loading proton time of flight parameters for field = " << field << " percent.." << endl;
+
+      ifstream tofcorr_pfile( tofcorrfname_p[h] );
+  
+      n1=0;
+      d1=0;
+      string line2;
+    
+      while( getline( tofcorr_pfile, line2 ) ){
+	if( line2.at(0) == '#' ) {
+	  continue;
+	}
+	stringstream ss( line2 );
+	ss >> d1;     
+	tofcorr_p[h][n1] = d1;      
+	n1++;
+      }
+
+      //Print loaded corrections to console
+      cout << endl << endl << "Proton TOF Corrections vs Channels: " << endl;
+      report << endl << endl << "Proton TOF Corrections vs Channels: " << endl;
+    
+      for( Int_t r=0; r<kNrows; r++){
+	for( Int_t c=0; c<kNcols; c++){
+	  Int_t i = r*kNcols+c;
+	  cout << tofcorr_p[h][i] << " ";
+	  report << tofcorr_p[h][i] << " ";
+	}
+	cout << endl;
+	report << endl;
+      }
+
+      cout << endl << endl << "Neutron TOF Corrections vs Channels: " << endl;
+      report << endl << endl << "Neutron TOF Corrections vs Channels: " << endl;
+    
+      for( Int_t r=0; r<kNrows; r++){
+	for( Int_t c=0; c<kNcols; c++){
+	  Int_t i = r*kNcols+c;
+	  cout << tofcorr_p[h][i] << " ";
+	  report << tofcorr_p[h][i] << " ";
+	}
+	cout << endl;
+	report << endl;
+      }
+
+    }
+  }
+
+  usleep( 3*second ); //Give some time for review of step 
 
   // Declare general physics/fit parameters
   Int_t minEventPerCell = 30; // Minimum number of scattered p in cell required to calibrate
@@ -737,7 +885,6 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
   Double_t HCal_Yf = 0.92964;
   Double_t aTDCsig = 3.0; //approximate TDC sigma until proven otherwise (ns)
   Double_t aADCtsig = 3.0; //approximate TDC sigma until proven otherwise (ns)
-  //Double_t highDelta = 0.1; // Minimum M(i,j)/b(i) factor allowed 
 
   // Declare general physics parameters to be modified by input config file - LH2
   //Double_t E_e_h[nfset_lh2[kIdx]] = {0.}; // Energy of beam (incoming electrons from accelerator)  
@@ -785,8 +932,16 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
   Double_t HCal_Ymin = HCal_Yi-HCal_divy/2;
   Double_t HCal_Ymax = HCal_Yf+HCal_divy/2;
 
+  cout << endl << "Loading physics, data, and detector parameters from config files.." << endl;
+  report << endl << "Loading physics, data, and detector parameters from config files.." << endl;
+
   // Reading all relevant config files for lh2 and setting up chain
   for( Int_t f=0; f<nfset_lh2[kIdx]; f++ ){
+    Int_t field = fset_lh2[kIdx][f];
+
+    cout << "Reading all relevant config files for lh2 and setting up chain for field " << field << " percent." << endl;
+    report << "Reading all relevant config files for lh2 and setting up chain for field " << field << " percent." << endl;
+
     Ch[f] = new TChain("T");
 
     ifstream configfile(configfilename_h[f]);
@@ -796,6 +951,7 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
       if( !currentline.BeginsWith("#") ){
 	Ch[f]->Add(currentline);
 	cout << "Loading file: " << currentline << ".." << endl;
+	report << "Loading file: " << currentline << ".." << endl;
       }    
     }
     //TCut globalcut = "";
@@ -813,76 +969,91 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  E_e_h[f] = sval.Atof();
 	  cout << "Loading beam energy: " << E_e_h[f] << endl;
+	  report << "Loading beam energy: " << E_e_h[f] << endl;
 	}
 	if( skey == "HCal_d" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  HCal_d_h[f] = sval.Atof();
 	  cout << "Loading HCal distance: " << HCal_d_h[f] << endl;
+	  report << "Loading HCal distance: " << HCal_d_h[f] << endl;
 	}
 	if( skey == "HCal_th" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  HCal_th_h[f] = sval.Atof() * TMath::DegToRad();	
 	  cout << "Loading HCal angle: " << HCal_th_h[f] << endl;
+	  report << "Loading HCal angle: " << HCal_th_h[f] << endl;
 	}
 	if( skey == "BB_th" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  BB_th_h[f] = sval.Atof() * TMath::DegToRad();	
 	  cout << "Loading BBCal angle: " << BB_th_h[f] << endl;
+	  report << "Loading BBCal angle: " << BB_th_h[f] << endl;
 	}
 	if( skey == "W2_mean" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  W2_mean_h[f] = sval.Atof();
 	  cout << "Loading W2 mean cut: " << W2_mean_h[f] << endl;
+	  report << "Loading W2 mean cut: " << W2_mean_h[f] << endl;
 	}
 	if( skey == "W2_sig" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  W2_sig_h[f] = sval.Atof();
 	  cout << "Loading W2 sigma cut: " << W2_sig_h[f] << endl;
+	  report << "Loading W2 sigma cut: " << W2_sig_h[f] << endl;
 	}
 	if( skey == "dx0_n" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dx0_n_h[f] = sval.Atof();
 	  cout << "Loading x position of neutron spot: " << dx0_n_h[f] << endl;
+	  report << "Loading x position of neutron spot: " << dx0_n_h[f] << endl;
 	}
 	if( skey == "dx0_p" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dx0_p_h[f] = sval.Atof();
 	  cout << "Loading y position of proton spot: " << dx0_p_h[f] << endl;
+	  report << "Loading y position of proton spot: " << dx0_p_h[f] << endl;
 	}
 	if( skey == "dy0" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dy0_h[f] = sval.Atof();
 	  cout << "Loading y position of both hadron spots: " << dy0_h[f] << endl;
+	  report << "Loading y position of both hadron spots: " << dy0_h[f] << endl;
 	}
 	if( skey == "dx_sig_n" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dx_sig_n_h[f] = sval.Atof();
 	  cout << "Loading x sigma of neutron spot: " << dx_sig_n_h[f] << endl;
+	  report << "Loading x sigma of neutron spot: " << dx_sig_n_h[f] << endl;
 	}
 	if( skey == "dx_sig_p" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dx_sig_p_h[f] = sval.Atof();
 	  cout << "Loading x sigma of proton spot: " << dx_sig_p_h[f] << endl;
+	  report << "Loading x sigma of proton spot: " << dx_sig_p_h[f] << endl;
 	}
 	if( skey == "dy_sig" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dy_sig_h[f] = sval.Atof();
 	  cout << "Loading y sigma of both hadron spots: " << dy_sig_h[f] << endl;
+	  report << "Loading y sigma of both hadron spots: " << dy_sig_h[f] << endl;
 	}
 	if( skey == "atime0" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  atime0_h[f] = sval.Atof();
 	  cout << "Loading ADC time mean: " << atime0_h[f] << endl;
+	  report << "Loading ADC time mean: " << atime0_h[f] << endl;
 	}
 	if( skey == "atime_sig" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  atime_sig_h[f] = sval.Atof();
 	  cout << "Loading ADC time sigma: " << atime_sig_h[f] << endl;
+	  report << "Loading ADC time sigma: " << atime_sig_h[f] << endl;
 	}
 	if( skey == "useAlshield" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  useAlshield_h[f] = sval.Atoi();
 	  cout << "Loading Aluminum absorber option: " << useAlshield_h[f] << endl;
+	  report << "Loading Aluminum absorber option: " << useAlshield_h[f] << endl;
 	}
       }
       delete tokens;
@@ -953,6 +1124,11 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 
  // Reading all relevant config files for ld2
   for( Int_t f=0; f<nfset_ld2[kIdx]; f++ ){
+    Int_t field = fset_ld2[kIdx][f];
+
+    cout << "Reading all relevant config files for ld2 and setting up chain for field " << field << " percent." << endl;
+    report << "Reading all relevant config files for ld2 and setting up chain for field " << field << " percent." << endl;
+
     Cd[f] = new TChain("T");
 
     ifstream configfile(configfilename_d[f]);
@@ -961,9 +1137,9 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
       if( !currentline.BeginsWith("#") ){
 	Cd[f]->Add(currentline);
 	cout << "Loading file: " << currentline << ".." << endl;
+	report << "Loading file: " << currentline << ".." << endl;
       }    
     }
-    //TCut globalcut = "";
     while( currentline.ReadLine( configfile ) && !currentline.BeginsWith("endcut") ){
       if( !currentline.BeginsWith("#") ){
 	globalcut_d[f] += currentline;
@@ -978,76 +1154,91 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  E_e_d[f] = sval.Atof();
 	  cout << "Loading beam energy: " << E_e_d[f] << endl;
+	  report << "Loading beam energy: " << E_e_d[f] << endl;
 	}
 	if( skey == "HCal_d" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  HCal_d_d[f] = sval.Atof();
 	  cout << "Loading HCal distance: " << HCal_d_d[f] << endl;
+	  report << "Loading HCal distance: " << HCal_d_d[f] << endl;
 	}
 	if( skey == "HCal_th" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  HCal_th_d[f] = sval.Atof() * TMath::DegToRad();	
 	  cout << "Loading HCal angle: " << HCal_th_d[f] << endl;
+	  report << "Loading HCal angle: " << HCal_th_d[f] << endl;
 	}
 	if( skey == "BB_th" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  BB_th_d[f] = sval.Atof() * TMath::DegToRad();	
 	  cout << "Loading BBCal angle: " << BB_th_d[f] << endl;
+	  report << "Loading BBCal angle: " << BB_th_d[f] << endl;
 	}
 	if( skey == "W2_mean" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  W2_mean_d[f] = sval.Atof();
 	  cout << "Loading W2 mean cut: " << W2_mean_d[f] << endl;
+	  report << "Loading W2 mean cut: " << W2_mean_d[f] << endl;
 	}
 	if( skey == "W2_sig" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  W2_sig_d[f] = sval.Atof();
 	  cout << "Loading W2 sigma cut: " << W2_sig_d[f] << endl;
+	  report << "Loading W2 sigma cut: " << W2_sig_d[f] << endl;
 	}
 	if( skey == "dx0_n" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dx0_n_d[f] = sval.Atof();
 	  cout << "Loading x position of neutron spot: " << dx0_n_d[f] << endl;
+	  report << "Loading x position of neutron spot: " << dx0_n_d[f] << endl;
 	}
 	if( skey == "dx0_p" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dx0_p_d[f] = sval.Atof();
 	  cout << "Loading y position of proton spot: " << dx0_p_d[f] << endl;
+	  report << "Loading y position of proton spot: " << dx0_p_d[f] << endl;
 	}
 	if( skey == "dy0" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dy0_d[f] = sval.Atof();
 	  cout << "Loading y position of both hadron spots: " << dy0_d[f] << endl;
+	  report << "Loading y position of both hadron spots: " << dy0_d[f] << endl;
 	}
 	if( skey == "dx_sig_n" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dx_sig_n_d[f] = sval.Atof();
 	  cout << "Loading x sigma of neutron spot: " << dx_sig_n_d[f] << endl;
+	  report << "Loading x sigma of neutron spot: " << dx_sig_n_d[f] << endl;
 	}
 	if( skey == "dx_sig_p" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dx_sig_p_d[f] = sval.Atof();
 	  cout << "Loading x sigma of proton spot: " << dx_sig_p_d[f] << endl;
+	  report << "Loading x sigma of proton spot: " << dx_sig_p_d[f] << endl;
 	}
 	if( skey == "dy_sig" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  dy_sig_d[f] = sval.Atof();
 	  cout << "Loading y sigma of both hadron spots: " << dy_sig_d[f] << endl;
+	  report << "Loading y sigma of both hadron spots: " << dy_sig_d[f] << endl;
 	}
 	if( skey == "atime0" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  atime0_d[f] = sval.Atof();
 	  cout << "Loading ADC time mean: " << atime0_d[f] << endl;
+	  report << "Loading ADC time mean: " << atime0_d[f] << endl;
 	}
 	if( skey == "atime_sig" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  atime_sig_d[f] = sval.Atof();
 	  cout << "Loading ADC time sigma: " << atime_sig_d[f] << endl;
+	  report << "Loading ADC time sigma: " << atime_sig_d[f] << endl;
 	}
 	if( skey == "useAlshield" ){
 	  TString sval = ( (TObjString*)(*tokens)[1] )->GetString();
 	  useAlshield_d[f] = sval.Atoi();
 	  cout << "Loading Aluminum absorber option: " << useAlshield_d[f] << endl;
+	  report << "Loading Aluminum absorber option: " << useAlshield_d[f] << endl;
 	}
       }
       delete tokens;
@@ -1116,6 +1307,7 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
   }//end config file for over ld2 field settings
 
   cout << endl << endl << "Setup parameters loaded and chains linked." << endl;
+  report << endl << endl << "Setup parameters loaded and chains linked." << endl;
 
   // Create stopwatch to track processing time
   TStopwatch *sw = new TStopwatch();
@@ -1123,8 +1315,10 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
   
   // Declare outfile
   TFile *fout;
-  if( tofreplay ){
-    fout = new TFile( Form("reporting/timing/allCorrReplay_sbs%d.root", kine ), "RECREATE" );
+  if( tofqreplay ){
+    fout = new TFile( Form("reporting/timing/allc_qtreplay_sbs%d.root", kine ), "RECREATE" );
+  }else if( tofreplay ){
+    fout = new TFile( Form("reporting/timing/allc_replay_sbs%d.root", kine ), "RECREATE" );
   }else if( qreplay ){
     fout = new TFile( Form("reporting/timing/qtreplay_sbs%d.root", kine ), "RECREATE" );
   }else{
@@ -1133,7 +1327,6 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 
   // Initialize vectors and arrays
   Double_t TDCoffsets[kNcell] = {0.0};
-  Double_t TDCdeviations[kNcell] = {0.0};
   Double_t ADCtoffsets[kNcell] = {0.0};
   Double_t TDCsig[kNcell] = {0.0};
   Double_t ADCtsig[kNcell] = {0.0};
@@ -1174,22 +1367,47 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
   TH1D *hpp_n = new TH1D( "hpp_n", "Expected neutron momentum from BB; GeV", 100, 0, 10 );
 
   //Declare diagnostic histograms (as sparse as possible)
+  //Delta plots
   TH2D *hdx_mag_h = new TH2D( "hdx_mag_h", "Delta X vs Field Setting (LH2); field (percent); x_{HCAL} - x_{exp} (m)", 21, 0, 105, 250, -4, 3 );
   TH2D *hdy_mag_h = new TH2D( "hdy_mag_h", "Delta Y vs Field Setting (LH2); field (percent); y_{HCAL} - y_{exp} (m)", 21, 0, 105, 250, -1.25, 1.25 );
   TH2D *hdx_mag_d = new TH2D( "hdx_mag_d", "Delta X vs Field Setting (LD2); field (percent); x_{HCAL} - x_{exp} (m)", 21, 0, 105, 250, -4, 3 );
   TH2D *hdy_mag_d = new TH2D( "hdy_mag_d", "Delta Y vs Field Setting (LD2); field (percent); y_{HCAL} - y_{exp} (m)", 21, 0, 105, 250, -1.25, 1.25 );
+
+  //TDC plots
+  //1D over all tdc corrections
   TH1D *htdc = new TH1D("htdc","TDC (All Channels); ns",ttotb,tllim,tulim);
-  TH1D *htdc_corr = new TH1D("htdc_corr","TDC TWalk/Hodo Corrected TW (All Channels); ns",ttotb,tllim,tulim);
-  TH1D *htdc_allcorr = new TH1D("htdc_allcorr","TDC TWalk/Hodo Corrected TW/TOF (All Channels); ns",ttotb,tllim,tulim);
+  TH1D *htdc_hodocorr = new TH1D("htdc_hodocorr","TDC Hodo Corrected (All Channels); ns",ttotb,tllim,tulim);
+  TH1D *htdc_twcorr = new TH1D("htdc_twcorr","TDC TWalk Corrected (All Channels); ns",ttotb,tllim,tulim);
+  TH1D *htdc_tofpcorr_p = new TH1D("htdc_tofpcorr_p","TDC Proton TOF (vs ep) Corrected (All Channels); ns",ttotb+50,tllim-50,tulim);
+  TH1D *htdc_tofpcorr_n = new TH1D("htdc_tofpcorr_n","TDC Neutron TOF (vs ep) Corrected (All Channels); ns",ttotb+50,tllim-50,tulim);
+  TH1D *htdc_tofidcorr_p = new TH1D("htdc_tofidcorr_p","TDC Proton TOF (vs pos) Corrected (All Channels); ns",ttotb+50,tllim-50,tulim);
+  TH1D *htdc_tofidcorr_n = new TH1D("htdc_tofidcorr_n","TDC Neutron TOF (vs pos) Corrected (All Channels); ns",ttotb+50,tllim-50,tulim);
+  TH1D *htdc_allcorr_p = new TH1D("htdc_allcorr_p","TDC Proton Corrected TW/TOF/Hodo (All Channels); ns",ttotb+50,tllim-50,tulim);
+  TH1D *htdc_allcorr_n = new TH1D("htdc_allcorr_n","TDC Neutron Corrected TW/TOF/Hodo (All Channels); ns",ttotb+50,tllim-50,tulim);
+  //2D over all primary blocks and corrections
+  TH2D *htp_ID = new TH2D("htp_ID","TDC Primary Block;Channel;TDC_{HCAL} (ns)",288,0,288,ttotb,tllim,tulim);
+  TH2D *htp_hodocorr_ID = new TH2D("htp_hodocorr_ID","TDC Primary Block - TDC hodo;Channel;TDC_{HCAL}-TDC_{HODO} (ns)",288,0,288,ttotb,tllim,tulim);
+  TH2D *htp_twcorr_ID = new TH2D("htp_twcorr_ID","TDC Primary Block Timewalk Corrected;Channel;TDC_{HCAL}-Corr_{TW} (ns)",288,0,288,ttotb,tllim,tulim);
+  TH2D *htp_tofpcorr_p_ID = new TH2D("htp_tofpcorr_p_ID","TDC Proton Primary Block TOF vs Electron Momentum Corrected;Channel;TDC_{HCAL}-Corr_{TOF} (ns)",288,0,288,ttotb+50,tllim-50,tulim);
+  TH2D *htp_tofpcorr_n_ID = new TH2D("htp_tofpcorr_n_ID","TDC Neutron Primary Block TOF vs Electron Momentum Corrected;Channel;TDC_{HCAL}-Corr_{TOF} (ns)",288,0,288,ttotb+50,tllim-50,tulim);
+  TH2D *htp_tofidcorr_p_ID = new TH2D("htp_tofidcorr_p_ID","TDC Proton Primary Block TOF vs ID Corrected;Channel;TDC_{HCAL}-Corr_{TOF} (ns)",288,0,288,ttotb+50,tllim-50,tulim);
+  TH2D *htp_tofidcorr_n_ID = new TH2D("htp_tofidcorr_n_ID","TDC Neutron Primary Block TOF vs ID Corrected;Channel;TDC_{HCAL}-Corr_{TOF} (ns)",288,0,288,ttotb+50,tllim-50,tulim);
+  TH2D *htp_allcorr_p_ID = new TH2D("htp_allcorr_p_ID","TDC Proton Primary Block TOF/Hodo Corrected;Channel;TDC_{HCAL}-Corr_{TOF} (ns)",288,0,288,ttotb+50,tllim-50,tulim);
+  TH2D *htp_allcorr_n_ID = new TH2D("htp_allcorr_n_ID","TDC Neutron Primary Block TOF/Hodo Corrected;Channel;TDC_{HCAL}-Corr_{TOF} (ns)",288,0,288,ttotb+50,tllim-50,tulim);
+  //2D over all cluster blocks and corrections
+  TH2D *ht_ID = new TH2D("ht_ID","TDC;Channel;TDC_{HCAL} (ns)",288,0,288,ttotb,tllim,tulim);
+  TH2D *ht_hodocorr_ID = new TH2D("ht_hodocorr_ID","TDC Hodo Corrected (all cluster elements);Channel;TDC_{HCAL}-TDC_{HODO} (ns)",288,0,288,ttotb,tllim,tulim);
+  TH2D *ht_twcorr_ID = new TH2D("ht_twcorr_ID","TDC TW Corrected (all cluster elements);Channel;TDC_{HCAL}, TW_{Corr} (ns)",288,0,288,ttotb,tllim,tulim);
+  TH2D *ht_tofpcorr_p_ID = new TH2D("ht_tofpcorr_p_ID","TDC Proton TOF (vs ep) Corrected (all cluster elements);Channel;TDC_{HCAL} TOF v p Corrected (ns)",288,0,288,ttotb+50,tllim-50,tulim);
+  TH2D *ht_tofpcorr_n_ID = new TH2D("ht_tofpcorr_n_ID","TDC Neutron TOF (vs ep) Corrected (all cluster elements);Channel;TDC_{HCAL} TOF v p Corrected (ns)",288,0,288,ttotb+50,tllim-50,tulim);
+  TH2D *ht_tofidcorr_p_ID = new TH2D("ht_tofidcorr_p_ID","TDC Proton TOF (vs ID) Corrected (all cluster elements);Channel;TDC_{HCAL} TOF v ID Corrected (ns)",288,0,288,ttotb+50,tllim-50,tulim);
+  TH2D *ht_tofidcorr_n_ID = new TH2D("ht_tofidcorr_n_ID","TDC Neutron TOF (vs ID) Corrected (all cluster elements);Channel;TDC_{HCAL} TOF v ID Corrected (ns)",288,0,288,ttotb+50,tllim-50,tulim);
+  TH2D *ht_allcorr_p_ID = new TH2D("ht_allcorr_p_ID","TDC Proton TW/TOF/Hodo Corrected (all cluster elements);Channel;TDC_{HCAL}-TDC_{HODO} w/TWalk w/TOF (ns)",288,0,288,ttotb+50,tllim-50,tulim);
+  TH2D *ht_allcorr_n_ID = new TH2D("ht_allcorr_n_ID","TDC Neutron TW/TOF/Hodo Corrected (all cluster elements);Channel;TDC_{HCAL}-TDC_{HODO} w/TWalk w/TOF (ns)",288,0,288,ttotb+50,tllim-50,tulim);
+
+  //ADCt plots
   TH1D *hadct = new TH1D("hadct","ADCt (All Channels); ns",atotb,allim,aulim);
   TH1D *hadct_corr = new TH1D("hadct_corr","ADCt TWalk/Hodo Corrected (All Channels); ns",atotb,allim,aulim);
-  TH2D *ht_ID = new TH2D("ht_ID","TDC;Channel;TDC_{HCAL} (ns)",288,0,288,ttotb,tllim,tulim);
-  TH2D *htp_ID = new TH2D("htp_ID","TDC Primary Block;Channel;TDC_{HCAL} (ns)",288,0,288,ttotb,tllim,tulim);
-  TH2D *htpDiff_ID = new TH2D("htpDiff_ID","TDC Primary Block - TDC hodo;Channel;TDC_{HCAL}-TDC_{HODO} (ns)",288,0,288,ttotb,tllim,tulim);
-  TH2D *htpCorr_ID = new TH2D("htpCorr_ID","TDC Primary Block, Corrected;Channel;TDC_{HCAL}-TDC_{HODO}-Corr_{TW} (ns)",288,0,288,ttotb,tllim,tulim);
-  TH2D *htDiff_ID = new TH2D("htDiff_ID",";Channel;TDC_{HCAL}-TDC_{HODO} (ns)",288,0,288,ttotb,tllim,tulim);
-  TH2D *htCorr_ID = new TH2D("htCorr_ID",";Channel;TDC_{HCAL}-TDC_{HODO} w/TWalk (ns)",288,0,288,ttotb,tllim,tulim);
-  TH2D *htAllCorr_ID = new TH2D("htAllCorr_ID",";Channel;TDC_{HCAL}-TDC_{HODO} w/TWalk w/TOF (ns)",288,0,288,ttotb,tllim,tulim);
   TH2D *ha_ID = new TH2D("ha_ID","ADCt;Channel;ADCtime_{HCAL} (ns)",288,0,288,atotb,allim,aulim);
   TH2D *hap_ID = new TH2D("hap_ID","ADCt Primary Block;Channel;ADCtime_{HCAL} (ns)",288,0,288,atotb,allim,aulim);
   TH2D *hapDiff_ID = new TH2D("hapDiff_ID","ADCt Primary Block - TDC hodo;Channel;ADCtime_{HCAL} - TDC_{HODO} (ns)",288,0,288,atotb,allim,aulim);
@@ -1200,8 +1418,14 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
   //Declare self timing histograms
   TH1D *hclusmean = new TH1D( "hclusmean", "HCal Cluster Mean Time (Primary Block Reftime, nblk>1)", 1000, -50, 50 );
   TH2D *hclusmeanID = new TH2D( "hclusmeanID", "HCal Cluster Mean Time, (Primary Block Reftime/ID, nblk>1), vs ID", 288, 0, 288, 1000, -50, 50 );
+  TH1D *hclusmean_corrp = new TH1D( "hclusmean_corrp", "HCal Proton Cluster Mean Time TW Corrected (Primary Block Reftime, nblk>1)", 1000, -50, 50 );
+  TH2D *hclusmeanID_corrp = new TH2D( "hclusmeanID_corrp", "HCal Proton Cluster Mean Time TW Corrected (Primary Block Reftime/ID, nblk>1), vs ID", 288, 0, 288, 1000, -50, 50 );
+  TH1D *hclusmean_corrn = new TH1D( "hclusmean_corrn", "HCal Neutron Cluster Mean Time TW Corrected (Primary Block Reftime, nblk>1)", 1000, -50, 50 );
+  TH2D *hclusmeanID_corrn = new TH2D( "hclusmeanID_corrn", "HCal Neutron Cluster Mean Time TW Corrected (Primary Block Reftime/ID, nblk>1), vs ID", 288, 0, 288, 1000, -50, 50 );
   TH1D *hclusdiff = new TH1D( "hclusdiff", "HCal Cluster Seed - Block Diff, (Primary Block Reftime, nblk>1)", 1000, -50, 50 );  
   TH2D *hclusdiffID = new TH2D( "hclusdiffID", "HCal Cluster Seed - Block Diff, (Primary Block Reftime, nblk>1), vs ID", 288, 0, 288, 1000, -50, 50 );
+  TH2D *hpvablkdiffID = new TH2D( "hpvablkdiffID", "HCal Cluster Seed - Adjacent Block Diff vs ID", 288, 0, 288, 400, -20, 20 );
+
 
   //TW fit diagnostic histos
   TH1D *htdcP0 = new TH1D("htdcP0","TDC P0, P0exp(P1*x)+P2",60,0,30);
@@ -1228,7 +1452,7 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
   for( Int_t f=0; f<nfset_lh2[kIdx]; f++ ){
     
     Int_t hfieldset = fset_lh2[kIdx][f]; //Check B field setting
-    bool tofready = tofreplay && hfieldset==tofB[kIdx]; //Check if TOF corrections can be applied for these data
+    bool tofready = tofreplay && hfieldset==tofB[kIdx]; //Check if TOF corrections can be applied for these data where only one field setting has been estimated per kinematic for TOF v ep. Will expand to all fields.
 
     //Declare energy loss parameters for beam going through the target
     Double_t pBeam = E_e_h[f]/(1.+E_e_h[f]/M_p*(1.-cos(BB_th_h[f])));
@@ -1283,16 +1507,17 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
       Double_t p_ep = BBtr_p_h[f][0];
       Double_t Q2 = 2*E_corr*E_ep*( 1-(BBtr_pz_h[f][0]/p_ep) ); // Obtain Q2 from beam energy, outgoing electron energy, and momenta
 	
+      //Get some physics
       Double_t W = PgammaN.M();
       Double_t W2 = ekineW2_h[f];
-
-      //Use the electron kinematics to predict the proton momentum assuming elastic scattering on free proton at rest:
       Double_t E_pp = nu+M_p; // Get energy of the proton
       Double_t Enucleon = sqrt(pow(pp,2)+pow(M_p,2)); // Check on E_pp, same
       Double_t KE_p = nu; //For elastics
+
+      //Money
       Double_t dx = HCALx_h[f] - xexpect_HCAL;
       Double_t dy = HCALy_h[f] - yexpect_HCAL;
-      
+
       /////////////////////////////////////////////////
       //Primary W2 cut on elastics and HCal active area
       if( fabs(W2-W2_mean_h[f])>W2_sig_h[f] ) continue; //Observed mean W2 cut on elastic peak
@@ -1315,14 +1540,46 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
       if( !pass_y ) continue;
       bool pass_p = abs(dx-dx0_p_h[f])<ifac*dx_sig_p_h[f];
       bool pass_n = abs(dx-dx0_n_h[f])<ifac*dx_sig_n_h[f]; //Redundant for LH2
-      bool isproton = pass_p && !pass_n;
-      bool isneutron = pass_n && !pass_p;
-      bool isamb = pass_p && pass_n;
+      bool isproton = pass_p; //pass_n is meaningless for LH2 (same cut)
+      bool isneutron = false; //No neutrons in LH2
+      bool isamb = pass_p && pass_n; //Will never obtain here
       if( !pass_p && !pass_n ) continue; //Cut on both n and p spots for each event, cannot know which apriori
       //////////////////////////////////////////////////////////////////
       if( isproton ) hpp_p->Fill( pp );
       if( isneutron ) hpp_n->Fill( pn );
       
+      //Calculate expected block from BB projections to HCAL block for TOF corrections
+      Double_t xdeflect = dx0_n_d[f] - dx0_p_d[f]; //Get SBS field deflection from fits to p/n peaks, ld2
+      Double_t xpexpect = (HCAL_intersect - HCAL_origin).Dot( HCAL_xaxis )-xdeflect;
+      Int_t IDexpect;
+
+      Int_t rowexpect = (xpexpect-HCal_Xi)/HCal_divx;
+      Int_t colexpect = (yexpect_HCAL-HCal_Yi)/HCal_divy;
+
+      IDexpect = 12*rowexpect+colexpect;
+
+      if( HCALy_h[f]<HCal_Yi || HCALy_h[f]>HCal_Yf || HCALx_h[f]<HCal_Xi || HCALx_h[f]>HCal_Xf ){
+	report << "Warning: Event passes p/n cut, but is projected off of HCal!" << endl;
+	continue;
+      }
+      
+      //Get time of flight correction by id from fits to MC
+      Double_t tofidcorr = 0;
+      if( isproton && tofready ) tofidcorr = tofcorr_p[f][IDexpect];
+      if( isneutron && tofready ) tofidcorr = tofcorr_n[f][IDexpect];
+
+      //Get time of flight correction by ep from functional fit to TOF vs mag_p
+      Double_t tofpcorr = 0.; //time of flight correction from momentum fit
+      if( isproton && tofready ){
+	Double_t protmom = pp;
+	if( protmom>pulim[kIdx] ) protmom = pulim[kIdx]; //do not pass corrections for momenta > fit limit in MC
+	tofpcorr = TOFfitp_p[kIdx][0]+TOFfitp_p[kIdx][1]*protmom+TOFfitp_p[kIdx][2]*pow(protmom,2)+TOFfitp_p[kIdx][3]*pow(protmom,3);
+      }
+      if( isneutron && tofready ){
+	Double_t neutmom = pn;
+	if( neutmom>pulim[kIdx] ) neutmom = pulim[kIdx]; //do not pass corrections for momenta > fit limit in MC
+	tofpcorr = TOFfitp_n[kIdx][0]+TOFfitp_n[kIdx][1]*neutmom+TOFfitp_n[kIdx][2]*pow(neutmom,2)+TOFfitp_n[kIdx][3]*pow(neutmom,3);
+      }
 
       //Hodo cluster mean time
       Double_t hodot = HODOtmean_h[f];
@@ -1339,17 +1596,35 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
       }else{
 	pblke = cblke_h[f][0]/cblkagain_h[f][0]*gConst_iter1[pblkid];
       }
+
+      //Fill TDC histos.
       if( qreplay ){
-	pTWcorr = otdcP0[pblkid]*exp(-otdcP1[pblkid]*pblke);
-	pTDC = cblktime_h[f][0] + oldTDCoffsets[pblkid]*TDCCalib - calTDCoffsets[pblkid]*TDCCalib;
+	pTWcorr = otdcP0[pblkid]*exp(-otdcP1[pblkid]*pblke)+otdcP2[pblkid];
+	pTDC = pTDC + oldTDCoffsets[pblkid]*TDCCalib - calTDCoffsets[pblkid]*TDCCalib;
       }
       htp_ID->Fill( pblkid, pTDC );
-      htpDiff_ID->Fill( pblkid, pTDC-hodot );
-      htpCorr_ID->Fill( pblkid, pTDC-hodot-pTWcorr );
-      
+      htp_hodocorr_ID->Fill( pblkid, pTDC-hodot );
+      // Normalize to those corrected to evaluate efficiency
+      if( pTWcorr != 0. ) htp_twcorr_ID->Fill( pblkid, pTDC-pTWcorr );
+      if( isproton ){
+	if( tofpcorr != 0. ){
+	  htp_tofpcorr_p_ID->Fill( pblkid, pTDC-tofpcorr );
+	  htp_allcorr_p_ID->Fill( pblkid, pTDC-hodot-tofpcorr );
+	}
+	if( tofidcorr != 0. ) htp_tofidcorr_p_ID->Fill( pblkid, pTDC-tofidcorr );
+      }
+      if( isneutron ){
+	if( tofpcorr != 0. ){
+	  htp_tofpcorr_n_ID->Fill( pblkid, pTDC-tofpcorr );
+	  htp_allcorr_n_ID->Fill( pblkid, pTDC-hodot-tofpcorr );
+	}
+	if( tofidcorr != 0. ) htp_tofidcorr_n_ID->Fill( pblkid, pTDC-tofidcorr );
+      }
+
+      //Fill ADCt histos
       if( qreplay ){
 	pADCtcorr = oadctP0[pblkid]*exp(-oadctP1[pblkid]*pblke);
-	pADCt = cblkatime_h[f][0] + oldADCtoffsets[pblkid] - calADCtoffsets[pblkid];
+	pADCt = pADCt + oldADCtoffsets[pblkid] - calADCtoffsets[pblkid];
       }
       hap_ID->Fill( pblkid, pADCt );
       hapDiff_ID->Fill( pblkid, pADCt-hodot );
@@ -1357,7 +1632,10 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 
       //Loop over primary cluster
       Double_t blkseed = 0.;
-      Double_t tavg = 0;
+      Double_t tavg = 0.;
+      Double_t blkseedcorr = 0.;
+      Double_t tavgcorr = 0.;
+      Int_t Ndiffcorr = 0; //keep track of the number of differences for meantime calculation rejecting blks where no good TW correction exists (TOF passed exclusively by BB and primary projected hadron)
       Int_t nblk = (int)nblk_h[f];
       for( Int_t blk = 0; blk<nblk; blk++ ){
 	Int_t blkid = int(cblkid_h[f][blk])-1; //-1 necessary since sbs.hcal.clus_blk.id ranges from 1 to 288 (different than just about everything else)
@@ -1370,24 +1648,16 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 	  blke = cblke_h[f][blk]/cblkagain_h[f][blk]*gConst_iter1[blkid];
 	}
 	
-	Double_t TOFcorr = 0; //time of flight correction
-	Double_t TWcorr = 0.; //timewalk correction
-	Double_t ADCtcorr = 0.;
+	Double_t TWcorr = 0.; //tdc timewalk correction applied by block
+	Double_t ADCtcorr = 0.; //adct tw corr
 	if( qreplay ){
-	  TWcorr = otdcP0[blkid]*exp(-otdcP1[blkid]*blke); //timewalk correction applied
-	  if( isproton && tofready){ //Check if tofreplay, in proton dxdy, not ambiguous, if field set matches current MC fits
-	    Double_t protmom = pp;
-	    if( pp>pulim[kIdx] ) protmom = pulim[kIdx]; //do not pass corrections for momenta > fit limit in MC
-	    TOFcorr = TOFfitp_p[kIdx][0]+TOFfitp_p[kIdx][1]*protmom+TOFfitp_p[kIdx][2]*pow(protmom,2)+TOFfitp_p[kIdx][3]*pow(protmom,3); //proton correction, only overwrite if data matches currently available MC fit results
-	  }
-	  if( isneutron && tofready){ //Check if tofreplay, in neutron dxdy, not ambiguous, if field set matches current MC fits
-	    Double_t neutmom = pn;
-	    if( pn>pulim[kIdx] ) neutmom = pulim[kIdx]; //do not pass corrections for momenta > fit limit in MC
-	    TOFcorr = TOFfitp_n[kIdx][0]+TOFfitp_n[kIdx][1]*neutmom+TOFfitp_n[kIdx][2]*pow(neutmom,2)+TOFfitp_n[kIdx][3]*pow(neutmom,3); //proton correction, only overwrite if data matches currently available MC fit results
-	  }
+	  TWcorr = otdcP0[blkid]*exp(-otdcP1[blkid]*blke)+otdcP2[blkid]; //timewalk correction applied
 	  ADCtcorr = oadctP0[blkid]*exp(-oadctP1[blkid]*blke);
 	  Double_t blkatime_new = blkatime + oldADCtoffsets[blkid] - calADCtoffsets[blkid]; //reverse replay "+", then qreplay "-"
 	  Double_t blktime_new = blktime + oldTDCoffsets[blkid]*TDCCalib - calTDCoffsets[blkid]*TDCCalib; //reverse replay "+", then qreplay "-", but first note that both offset values are in tdc units and need conversion to ns with tdccalib
+	  Double_t blktime_new_corrected = blktime_new - hodot - TWcorr - tofpcorr; //Use p for now
+
+	  //Fill ADCt histos
 	  if( blkatime_new>0 ){
 	    hadct->Fill( blkatime_new );
 	    hadct_corr->Fill( blkatime_new - hodot - ADCtcorr );
@@ -1396,28 +1666,67 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 	    haCorr_ID->Fill( blkid, blkatime_new - hodot - ADCtcorr );
 	    hadctVe[blkid]->Fill( blke*1000, blkatime_new ); //Convert to MeV for clarity in plots
 	  }
+	  //Fill TDC histos
 	  if( blktime_new<10000 && blktime_new>-500){ //ensure that good tdc times exist on tree
 	    htdc->Fill( blktime_new );
-	    htdc_corr->Fill( blktime_new - hodot - TWcorr );
 	    ht_ID->Fill( blkid, blktime_new );
-	    htDiff_ID->Fill( blkid, blktime_new - hodot );
-	    htCorr_ID->Fill( blkid, blktime_new - hodot - TWcorr );
+	    htdc_hodocorr->Fill( blktime_new - hodot );
+	    ht_hodocorr_ID->Fill( blkid, blktime_new - hodot );
 	    htdcVe[blkid]->Fill( blke*1000, blktime_new ); //Convert to MeV for clarity in plots
-	    if( tofready ){
-	      htdc_allcorr->Fill( blktime_new - hodot - TWcorr - TOFcorr );
-	      htAllCorr_ID->Fill( blkid, blktime_new - hodot - TWcorr - TOFcorr);
+	    if( TWcorr != 0. ){
+	      htdc_twcorr->Fill( blktime_new - TWcorr );
+	      ht_twcorr_ID->Fill( blkid, blktime_new - TWcorr );
+	    }
+	    if( isproton ){
+	      if( tofpcorr != 0. ){
+		htdc_tofpcorr_p->Fill( blktime_new - tofpcorr );
+		ht_tofpcorr_p_ID->Fill( blkid, blktime_new - tofpcorr );
+	      }
+	      if( tofidcorr != 0. ){
+		htdc_tofidcorr_p->Fill( blktime_new - tofidcorr );
+		ht_tofidcorr_p_ID->Fill( blkid, blktime_new - tofidcorr );
+	      }
+	      if( TWcorr != 0. && tofpcorr != 0. ){
+		htdc_allcorr_p->Fill( blktime_new_corrected );
+		ht_allcorr_p_ID->Fill( blkid, blktime_new_corrected );
+	      }
+	    }
+	    if( isneutron ){
+	      if( tofpcorr != 0. ){
+		htdc_tofpcorr_n->Fill( blktime_new - tofpcorr );
+		ht_tofpcorr_n_ID->Fill( blkid, blktime_new - tofpcorr );
+	      }
+	      if( tofidcorr != 0. ){
+		htdc_tofidcorr_n->Fill( blktime_new - tofidcorr );
+		ht_tofidcorr_n_ID->Fill( blkid, blktime_new - tofidcorr );
+	      }
+	      if( TWcorr != 0. && tofpcorr != 0. ){
+		htdc_allcorr_n->Fill( blktime_new_corrected );
+		ht_allcorr_n_ID->Fill( blkid, blktime_new_corrected );
+	      }
 	    }
 
 	    //Get self timing histograms
+	    Double_t blktime_nTW = blktime_new - TWcorr; //Include only correction relevent for self timing
 	    if( blk==0 ){ //Just set the reference time with the time of the primary block
 	      blkseed = blktime_new;
+	      if( TWcorr != 0. ) blkseedcorr = blktime_nTW;
 	    }else if( blkseed != 0. ){
 	      
-	      Double_t tcdiff = blktime_new-blkseed;
-	      
+	      Double_t tcdiff = blktime_new - blkseed;
 	      tavg += tcdiff;
+
+	      if( TWcorr != 0. ){
+		Double_t tcdiffcorr = blktime_nTW - blkseedcorr;
+		tavgcorr += tcdiffcorr;
+		Ndiffcorr++;
+	      }
+
+	      if( blkid == pblkid+1 ) hpvablkdiffID->Fill( pblkid, tcdiff );
+
 	      hclusdiffID->Fill( blkid, tcdiff );
 	      hclusdiff->Fill( tcdiff );
+
 	    }
 	    
 	  }
@@ -1432,10 +1741,9 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 	  }
 	  if( blktime<10000 && blktime>-500){ //ensure that good tdc times exist on tree
 	    htdc->Fill( blktime );
-	    htdc_corr->Fill( blktime - hodot - TWcorr );
 	    ht_ID->Fill( blkid, blktime );
-	    htDiff_ID->Fill( blkid, blktime - hodot );
-	    htCorr_ID->Fill( blkid, blktime - hodot - TWcorr );
+	    htdc_hodocorr->Fill( blktime - hodot );
+	    ht_hodocorr_ID->Fill( blkid, blktime - hodot );
 	    htdcVe[blkid]->Fill( blke*1000, blktime ); //Convert to MeV for clarity in plots
 	    
 	    //Get self timing histograms (no recovery on bad tdc pblks yet)
@@ -1458,13 +1766,30 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
       } //loop over blocks in primary cluster
 
       //Finish getting self timing mean time
-      if( nblk<2 ) continue;
-      tavg /= (nblk-1);
-      if( tavg!=0 ){
-	hclusmeanID->Fill( pblkid, tavg );
-	hclusmean->Fill( tavg );
-      }
+      if( nblk>1 ){
+	tavg /= (nblk-1);
       
+	if( tavg!=0 ){
+	  hclusmeanID->Fill( pblkid, tavg );
+	  hclusmean->Fill( tavg );
+	}
+      }
+      if( Ndiffcorr>1 ){
+	tavgcorr /= Ndiffcorr;
+      
+	if( tavgcorr!=0 ){
+	  if( isproton ){
+	    hclusmeanID_corrp->Fill( pblkid, tavgcorr );
+	    hclusmean_corrp->Fill( tavgcorr );
+	  }
+	  if( isneutron ){
+	    hclusmeanID_corrn->Fill( pblkid, tavgcorr );
+	    hclusmean_corrn->Fill( tavgcorr );
+	  }
+	}
+
+      }
+
     } //loop over hydrogen events
   } //loop for lh2
 
@@ -1534,9 +1859,9 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
       Double_t pp = sqrt(pow(nu,2)+2.*M_p*nu); //momentum of proton
       Double_t pn = sqrt(pow(nu,2)+2.*M_n*nu); //momentum of neutron
       Double_t phinucleon = ephi + PI; //assume coplanarity
-      Double_t thetanucleon = acos( (E_corr - BBtr_pz_d[f][0])/pp ); //use elastic constraint on nucleon kinematics
-	
+      Double_t thetanucleon = acos( (E_corr - BBtr_pz_d[f][0])/pp );	
       TVector3 pNhat( sin(thetanucleon)*cos(phinucleon),sin(thetanucleon)*sin(phinucleon),cos(thetanucleon));
+
       //Define HCal coordinate system
       TVector3 HCAL_zaxis(sin(-HCal_th_d[f]),0,cos(-HCal_th_d[f]));
       TVector3 HCAL_xaxis(0,-1,0);
@@ -1546,22 +1871,23 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
       //Define intersection points for hadron vector
       Double_t sintersect = ( HCAL_origin - vertex ).Dot( HCAL_zaxis ) / ( pNhat.Dot( HCAL_zaxis ) );
       TVector3 HCAL_intersect = vertex + sintersect * pNhat;
-      Double_t yexpect_dCAL = (HCAL_intersect - HCAL_origin).Dot( HCAL_yaxis );
-      Double_t xexpect_dCAL = (HCAL_intersect - HCAL_origin).Dot( HCAL_xaxis );
+      Double_t yexpect_HCAL = (HCAL_intersect - HCAL_origin).Dot( HCAL_yaxis );
+      Double_t xexpect_HCAL = (HCAL_intersect - HCAL_origin).Dot( HCAL_xaxis );
       Double_t E_ep = sqrt( pow(M_e,2) + pow(BBtr_p_d[f][0],2) ); // Obtain the scattered electron energy	
       Double_t p_ep = BBtr_p_d[f][0];
       Double_t Q2 = 2*E_corr*E_ep*( 1-(BBtr_pz_d[f][0]/p_ep) ); // Obtain Q2 from beam energy, outgoing electron energy, and momenta
 	
+      //Get some physics
       Double_t W = PgammaN.M();
       Double_t W2 = ekineW2_d[f];
-
-      //Use the electron kinematics to predict the proton momentum assuming elastic scattering on free proton at rest:
       Double_t E_pp = nu+M_p; // Get energy of the proton
       Double_t Enucleon = sqrt(pow(pp,2)+pow(M_p,2)); // Check on E_pp, same
       Double_t KE_p = nu; //For elastics
-      Double_t dx = HCALx_d[f] - xexpect_dCAL;
-      Double_t dy = HCALy_d[f] - yexpect_dCAL;
-      
+
+      //Money
+      Double_t dx = HCALx_d[f] - xexpect_HCAL;
+      Double_t dy = HCALy_d[f] - yexpect_HCAL;
+
       /////////////////////////////////////////////////
       //Primary W2 cut on elastics and HCal active area
       if( fabs(W2-W2_mean_d[f])>W2_sig_d[f] ) continue; //Observed mean W2 cut on elastic peak
@@ -1592,6 +1918,39 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
       if( isproton ) hpp_p->Fill( pp );
       if( isneutron ) hpp_n->Fill( pn );
 
+      //Calculate expected block from BB projections to HCAL block for TOF corrections
+      Double_t xdeflect = dx0_n_d[f] - dx0_p_d[f]; //Get SBS field deflection from fits to p/n peaks, ld2
+      Double_t xpexpect = (HCAL_intersect - HCAL_origin).Dot( HCAL_xaxis )-xdeflect;
+      Int_t IDexpect;
+
+      Int_t rowexpect = (xpexpect-HCal_Xi)/HCal_divx;
+      Int_t colexpect = (yexpect_HCAL-HCal_Yi)/HCal_divy;
+
+      IDexpect = 12*rowexpect+colexpect;
+
+      if( HCALy_d[f]<HCal_Yi || HCALy_d[f]>HCal_Yf || HCALx_d[f]<HCal_Xi || HCALx_d[f]>HCal_Xf ){
+	report << "Warning: Event passes p/n cut, but is projected off of HCal!" << endl;
+	continue;
+      }
+      
+      //Get time of flight correction by id from fits to MC
+      Double_t tofidcorr = 0;
+      if( isproton && tofready ) tofidcorr = tofcorr_p[f][IDexpect];
+      if( isneutron && tofready ) tofidcorr = tofcorr_n[f][IDexpect];
+
+      //Get time of flight correction by ep from functional fit to TOF vs mag_p
+      Double_t tofpcorr = 0.; //time of flight correction from momentum fit
+      if( isproton && tofready ){
+	Double_t protmom = pp;
+	if( protmom>pulim[kIdx] ) protmom = pulim[kIdx]; //do not pass corrections for momenta > fit limit in MC
+	tofpcorr = TOFfitp_p[kIdx][0]+TOFfitp_p[kIdx][1]*protmom+TOFfitp_p[kIdx][2]*pow(protmom,2)+TOFfitp_p[kIdx][3]*pow(protmom,3);
+      }
+      if( isneutron && tofready ){
+	Double_t neutmom = pn;
+	if( neutmom>pulim[kIdx] ) neutmom = pulim[kIdx]; //do not pass corrections for momenta > fit limit in MC
+	tofpcorr = TOFfitp_n[kIdx][0]+TOFfitp_n[kIdx][1]*neutmom+TOFfitp_n[kIdx][2]*pow(neutmom,2)+TOFfitp_n[kIdx][3]*pow(neutmom,3);
+      }
+
       //Hodo cluster mean time
       Double_t hodot = HODOtmean_d[f];
 
@@ -1607,17 +1966,35 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
       }else{
 	pblke = cblke_d[f][0]/cblkagain_d[f][0]*gConst_iter1[pblkid];
       }
+
+      //Fill TDC histos.
       if( qreplay ){
-	pTWcorr = otdcP0[pblkid]*exp(-otdcP1[pblkid]*pblke);
-	pTDC = cblktime_d[f][0] + oldTDCoffsets[pblkid]*TDCCalib - calTDCoffsets[pblkid]*TDCCalib;
+	pTWcorr = otdcP0[pblkid]*exp(-otdcP1[pblkid]*pblke)+otdcP2[pblkid];
+	pTDC = pTDC + oldTDCoffsets[pblkid]*TDCCalib - calTDCoffsets[pblkid]*TDCCalib;
       }
       htp_ID->Fill( pblkid, pTDC );
-      htpDiff_ID->Fill( pblkid, pTDC-hodot );
-      htpCorr_ID->Fill( pblkid, pTDC-hodot-pTWcorr );
-      
+      htp_hodocorr_ID->Fill( pblkid, pTDC-hodot );
+      // Normalize to those corrected to evaluate efficiency
+      if( pTWcorr != 0. ) htp_twcorr_ID->Fill( pblkid, pTDC-pTWcorr );
+      if( isproton ){
+	if( tofpcorr != 0. ){
+	  htp_tofpcorr_p_ID->Fill( pblkid, pTDC-tofpcorr );
+	  htp_allcorr_p_ID->Fill( pblkid, pTDC-hodot-tofpcorr );
+	}
+	if( tofidcorr != 0. ) htp_tofidcorr_p_ID->Fill( pblkid, pTDC-tofidcorr );
+      }
+      if( isneutron ){
+	if( tofpcorr != 0. ){
+	  htp_tofpcorr_n_ID->Fill( pblkid, pTDC-tofpcorr );
+	  htp_allcorr_n_ID->Fill( pblkid, pTDC-hodot-tofpcorr );
+	}
+	if( tofidcorr != 0. ) htp_tofidcorr_n_ID->Fill( pblkid, pTDC-tofidcorr );
+      }
+
+      //Fill ADCt histos
       if( qreplay ){
 	pADCtcorr = oadctP0[pblkid]*exp(-oadctP1[pblkid]*pblke);
-	pADCt = cblkatime_d[f][0] + oldADCtoffsets[pblkid] - calADCtoffsets[pblkid];
+	pADCt = pADCt + oldADCtoffsets[pblkid] - calADCtoffsets[pblkid];
       }
       hap_ID->Fill( pblkid, pADCt );
       hapDiff_ID->Fill( pblkid, pADCt-hodot );
@@ -1626,6 +2003,9 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
       //Loop over primary cluster
       Double_t blkseed = 0.;
       Double_t tavg = 0;
+      Double_t blkseedcorr = 0.;
+      Double_t tavgcorr = 0.;
+      Int_t Ndiffcorr = 0; //keep track of the number of differences for meantime calculation rejecting blks where no good TW correction exists (TOF passed exclusively by BB and primary projected hadron)
       Int_t nblk = (int)nblk_d[f];
       for( Int_t blk = 0; blk<nblk; blk++ ){
 	Int_t blkid = int(cblkid_d[f][blk])-1; //-1 necessary since sbs.hcal.clus_blk.id ranges from 1 to 288 (different than just about everything else)
@@ -1638,24 +2018,16 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 	  blke = cblke_d[f][blk]/cblkagain_d[f][blk]*gConst_iter1[blkid];
 	}
 
-	Double_t TOFcorr = 0.; //time of flight correction
-	Double_t TWcorr = 0.; //timewalk correction
-	Double_t ADCtcorr = 0.;
+	Double_t TWcorr = 0.; //tdc timewalk correction applied by block
+	Double_t ADCtcorr = 0.; //adct tw corr
 	if( qreplay ){
-	  TWcorr = otdcP0[blkid]*exp(-otdcP1[blkid]*blke);
-	  if( isproton && tofready){ //Check if tofreplay, in proton dxdy, not ambiguous, if field set matches current MC fits
-	    Double_t protmom = pp;
-	    if( pp>pulim[kIdx] ) protmom = pulim[kIdx]; //do not pass corrections for momenta > fit limit in MC
-	    TOFcorr = TOFfitp_p[kIdx][0]+TOFfitp_p[kIdx][1]*protmom+TOFfitp_p[kIdx][2]*pow(protmom,2)+TOFfitp_p[kIdx][3]*pow(protmom,3); //proton correction, only overwrite if data matches currently available MC fit results
-	  }
-	  if( isneutron && tofready){ //Check if tofreplay, in neutron dxdy, not ambiguous, if field set matches current MC fits
-	    Double_t neutmom = pn;
-	    if( pn>pulim[kIdx] ) neutmom = pulim[kIdx]; //do not pass corrections for momenta > fit limit in MC
-	    TOFcorr = TOFfitp_n[kIdx][0]+TOFfitp_n[kIdx][1]*neutmom+TOFfitp_n[kIdx][2]*pow(neutmom,2)+TOFfitp_n[kIdx][3]*pow(neutmom,3); //proton correction, only overwrite if data matches currently available MC fit results
-	  }
+	  TWcorr = otdcP0[blkid]*exp(-otdcP1[blkid]*blke)+otdcP2[blkid]; //timewalk correction applied
 	  ADCtcorr = oadctP0[blkid]*exp(-oadctP1[blkid]*blke);
 	  Double_t blkatime_new = blkatime + oldADCtoffsets[blkid] - calADCtoffsets[blkid]; //reverse replay "+", then qreplay "-"
 	  Double_t blktime_new = blktime + oldTDCoffsets[blkid]*TDCCalib - calTDCoffsets[blkid]*TDCCalib; //reverse replay "+", then qreplay "-", but first note that both offset values are in tdc units and need conversion to ns with tdccalib
+	  Double_t blktime_new_corrected = blktime_new - hodot - TWcorr - tofpcorr; //Use p for now
+
+	  //Fill ADCt histos
 	  if( blkatime_new>0 ){
 	    hadct->Fill( blkatime_new );
 	    hadct_corr->Fill( blkatime_new - hodot - ADCtcorr );
@@ -1664,29 +2036,68 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 	    haCorr_ID->Fill( blkid, blkatime_new - hodot - ADCtcorr );
 	    hadctVe[blkid]->Fill( blke*1000, blkatime_new ); //Convert to MeV for clarity in plots
 	  }
+	  //Fill TDC histos
 	  if( blktime_new<10000 && blktime_new>-500){ //ensure that good tdc times exist on tree
 	    htdc->Fill( blktime_new );
-	    htdc_corr->Fill( blktime_new - hodot - TWcorr );
 	    ht_ID->Fill( blkid, blktime_new );
-	    htDiff_ID->Fill( blkid, blktime_new - hodot );
-	    htCorr_ID->Fill( blkid, blktime_new - hodot - TWcorr );
-	    htdcVe[blkid]->Fill( blke*1000, blktime_new ); //Convert to MeV for clarity in plots
-	    if( tofready ){
-	      htdc_allcorr->Fill( blktime_new - hodot - TWcorr - TOFcorr );
-	      htAllCorr_ID->Fill( blkid, blktime_new - hodot - TWcorr - TOFcorr);
+	    htdc_hodocorr->Fill( blktime_new - hodot );
+	    ht_hodocorr_ID->Fill( blkid, blktime_new - hodot );
+	    if( TWcorr != 0. ){
+	      htdc_twcorr->Fill( blktime_new - TWcorr );
+	      ht_twcorr_ID->Fill( blkid, blktime_new - TWcorr );
+	    }
+	    if( isproton ){
+	      if( tofpcorr != 0. ){
+		htdc_tofpcorr_p->Fill( blktime_new - tofpcorr );
+		ht_tofpcorr_p_ID->Fill( blkid, blktime_new - tofpcorr );
+	      }
+	      if( tofidcorr != 0. ){
+		htdc_tofidcorr_p->Fill( blktime_new - tofidcorr );
+		ht_tofidcorr_p_ID->Fill( blkid, blktime_new - tofidcorr );
+	      }
+	      if( TWcorr != 0. && tofpcorr != 0. ){
+		htdc_allcorr_p->Fill( blktime_new_corrected );
+		ht_allcorr_p_ID->Fill( blkid, blktime_new_corrected );
+	      }
+	    }
+	    if( isneutron ){
+	      if( tofpcorr != 0. ){
+		htdc_tofpcorr_n->Fill( blktime_new - tofpcorr );
+		ht_tofpcorr_n_ID->Fill( blkid, blktime_new - tofpcorr );
+	      }
+	      if( tofidcorr != 0. ){
+		htdc_tofidcorr_n->Fill( blktime_new - tofidcorr );
+		ht_tofidcorr_n_ID->Fill( blkid, blktime_new - tofidcorr );
+	      }
+	      if( TWcorr != 0. && tofpcorr != 0. ){
+		htdc_allcorr_n->Fill( blktime_new_corrected );
+		ht_allcorr_n_ID->Fill( blkid, blktime_new_corrected );
+	      }
 	    }
 
 	    //Get self timing histograms
+	    Double_t blktime_nTW = blktime_new - TWcorr; //Include only correction relevent for self timing
 	    if( blk==0 ){ //Just set the reference time with the time of the primary block
 	      blkseed = blktime_new;
-	    }else if( blkseed != 0.){
-	      Double_t tcdiff = blktime_new-blkseed;
+	      if( TWcorr != 0. ) blkseedcorr = blktime_nTW;
+	    }else if( blkseed != 0. ){
 	      
+	      Double_t tcdiff = blktime_new - blkseed;
 	      tavg += tcdiff;
+
+	      if( TWcorr != 0. && tofpcorr != 0. ){
+		Double_t tcdiffcorr = blktime_nTW - blkseedcorr;
+		tavgcorr += tcdiffcorr;
+		Ndiffcorr++;
+	      }
+
+	      if( blkid == pblkid+1 ) hpvablkdiffID->Fill( pblkid, tcdiff );
+
 	      hclusdiffID->Fill( blkid, tcdiff );
 	      hclusdiff->Fill( tcdiff );
-	    }
 
+	    }
+	 
 	  }	  
 	}else{
 	  if( blkatime>0 ){
@@ -1699,12 +2110,11 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 	  }
 	  if( blktime<10000 && blktime>-500){ //ensure that good tdc times exist on tree
 	    htdc->Fill( blktime );
-	    htdc_corr->Fill( blktime - hodot - TWcorr );
 	    ht_ID->Fill( blkid, blktime );
-	    htDiff_ID->Fill( blkid, blktime - hodot );
-	    htCorr_ID->Fill( blkid, blktime - hodot - TWcorr );
-	    htdcVe[blkid]->Fill( blke, blktime ); //Convert to MeV for clarity in plots
-	  
+	    htdc_hodocorr->Fill( blktime - hodot );
+	    ht_hodocorr_ID->Fill( blkid, blktime - hodot );
+	    htdcVe[blkid]->Fill( blke*1000, blktime ); //Convert to MeV for clarity in plots
+	     
 	    //Get self timing histograms
 	    if( blk==0 ){ //Just set the reference time with the time of the primary block
 	      blkseed = blktime;
@@ -1725,11 +2135,28 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
       } //loop over blocks in primary cluster
 
       //Finish getting self timing mean time
-      if( nblk<2 ) continue;
-      tavg /= (nblk-1);
-      if( tavg!=0 ){
-	hclusmeanID->Fill( pblkid, tavg );
-	hclusmean->Fill( tavg );
+      if( nblk>1 ){
+	tavg /= (nblk-1);
+      
+	if( tavg!=0 ){
+	  hclusmeanID->Fill( pblkid, tavg );
+	  hclusmean->Fill( tavg );
+	}
+      }
+      if( Ndiffcorr>1 ){
+	tavgcorr /= Ndiffcorr;
+      
+	if( tavgcorr!=0 ){
+	  if( isproton ){
+	    hclusmeanID_corrp->Fill( pblkid, tavgcorr );
+	    hclusmean_corrp->Fill( tavgcorr );
+	  }
+	  if( isneutron ){
+	    hclusmeanID_corrn->Fill( pblkid, tavgcorr );
+	    hclusmean_corrn->Fill( tavgcorr );
+	  }
+	}
+
       }
 
     } //loop over deuterium events
@@ -1837,7 +2264,11 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
     Double_t tfitl = 0.;
     Double_t tfith = 0.;
     tcell[c] = c;
-    tcellslice[c] = htpDiff_ID->ProjectionY(Form("tcellslice_%d",c+1),c+1,c+1); //Trying htpDiff_ID from htDiff_ID
+    if( !tofreplay ){
+      tcellslice[c] = htp_hodocorr_ID->ProjectionY(Form("tcellslice_%d",c+1),c+1,c+1); //Trying htp_hodocorr_ID from htDiff_ID
+    }else{
+      tcellslice[c] = htp_allcorr_p_ID->ProjectionY(Form("tcellslice_%d",c+1),c+1,c+1);
+    }
     tcval[c] = oldTDCoffsets[c]; //will overwrite if fit is good.
     tcvalw[c] = 0.; //leave as zero to evaluate fit values only
 
@@ -1974,6 +2405,8 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
   ofstream tdcoff;
   ofstream adctoff;
 
+  ofstream tdcfinaloff; //Add to align to proton TOF/TW/Hodo corrected times
+
   //Write to outfiles if !qreplay
   if( !qreplay ){
     //Write first TDCvE parameter
@@ -2073,9 +2506,8 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
     report << "#HCal TDC offsets obtained " << date.c_str() << endl;
     report << "#Offsets obtained from fits over TDC distributions = " << endl;
   
-    for( Int_t i=0; i<kNcell; i++ ){ //check this!!
-      //bool firstpeak = tcval[i]
-      if( oldTDCoffsets[i]>0 && tcval[i]==0 ){
+    for( Int_t i=0; i<kNcell; i++ ){
+      if( oldTDCoffsets[i]>0 && ( tcval[i]==0 || abs(tcerr[i])<0.05 ) ){ //This will only work if most channels are closely aligned already
 	tdcoff << tcval_avg << endl;
 	report << tcval_avg << " with adjustment" << endl;
       }else{
@@ -2103,17 +2535,45 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
     adctoff.close();
   }
 
+  if( tofreplay && !tofqreplay ){
+    //Write TDC offsets after all corrections are applied. Align to protons (more data!)
+    tdcfinaloff.open( tdcfinalconstPath );
+    tdcfinaloff << "#HCal Fully Corrected (TW/TOF/Hodo) TDC offsets obtained " << date.c_str() << " on iteration " << iter << endl;
+    tdcfinaloff << "#Offsets obtained from fits over TDC distributions = " << endl;
+    report << "#HCal Fully Corrected (TW/TOF/Hodo) TDC offsets obtained " << date.c_str() << " on iteration " << iter << endl;
+    report << "#Offsets obtained from fits over TDC distributions = " << endl;
+  
+    for( Int_t i=0; i<kNcell; i++ ){
+      if( oldTDCoffsets[i]>0 && ( tcval[i]==0 || abs(tcerr[i])<0.05 ) ){ //This will only work if most channels are closely aligned already - sets channel to average value over all channels if fit and old offset are bad
+	tdcfinaloff << tcval_avg << endl;
+	report << tcval_avg << " with adjustment" << endl;
+      }else{
+	tdcfinaloff << tcval[i]/TDCCalib + oldTDCoffsets[i] - TDC_target/TDCCalib << endl;
+	report << tcval[i]/TDCCalib + oldTDCoffsets[i] - TDC_target/TDCCalib << endl;
+      }
+    }  
+
+    tdcfinaloff.close();
+
+  }
+
   fout->Write();
 
   cout << endl << endl << "Elastic yield for analyzed runs: " << elasYield << ". Total event bins available for calibration = LH2 + LD2: " << TNEV_h << " + " << TNEV_d << " = " << TNEV_h + TNEV_d << ". Total number of events analyzed: " << lh2Events + ld2Events << "." << endl << endl;
   report << endl << endl << "Elastic yield for analyzed runs: " << elasYield << ". Total event bins available for calibration = LH2 + LD2: " << TNEV_h << " + " << TNEV_d << " = " << TNEV_h + TNEV_d << ". Total number of events analyzed: " << lh2Events + ld2Events << "." << endl << endl;
   
-  if( qreplay ){
-    cout << "Diagnostic iteration complete. Histograms written to file." << endl;
-    report << "Diagnostic iteration complete. Histograms written to file." << endl << endl;
+  if( tofqreplay ){
+    cout << "Final alignment with all corrections iteration complete. Histograms written to file." << endl;
+    report << "Final alignment with all corrections iteration complete. Histograms written to file." << endl << endl;
+  }else if( tofreplay ){
+    cout << "All corrections diagnostic iteration complete. Histograms written to file." << endl;
+    report << "All corrections diagnostic iteration complete. Histograms written to file." << endl << endl;
+  }else if( qreplay ){
+    cout << "Simple diagnostic iteration complete. Histograms written to file." << endl;
+    report << "Simple diagnostic iteration complete. Histograms written to file." << endl << endl;
   }else{
-    cout << "Timing analysis complete. Constants and histograms written to file." << endl;
-    report << "Timing analysis complete. Constants and histograms written to file." << endl << endl;
+    cout << "Timing analysis complete. Constants and histograms extracted from data and written to file." << endl;
+    report << "Timing analysis complete. Constants and histograms extracted from data and written to file." << endl << endl;
   }
 
   st->Stop();
