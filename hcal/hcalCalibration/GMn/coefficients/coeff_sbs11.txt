@@ -1,4 +1,4 @@
-#HCal gain coefficients from SBS-11 obtained 3_17_2023
+#HCal gain coefficients from SBS-11 obtained 3_29_2023
 sbs.hcal.adc.gain =
 0  0  0  0  0  0  0  0  0  0  0  0  
 0  0  0  0  0  0  0  0  0  0  0  0  

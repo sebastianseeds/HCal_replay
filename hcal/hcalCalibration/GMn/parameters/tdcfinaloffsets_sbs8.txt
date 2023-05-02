@@ -1,4 +1,4 @@
-#HCal Fully Corrected (TW/TOF/Hodo) TDC offsets obtained 3_21_2023 on iteration 2
+#HCal Fully Corrected (TW/TOF/Hodo) TDC offsets obtained 3_22_2023 on iteration 2
 #Offsets obtained from fits over TDC distributions = 
 -597.139
 -595.569

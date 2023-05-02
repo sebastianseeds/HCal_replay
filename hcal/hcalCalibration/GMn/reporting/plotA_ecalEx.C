@@ -44,6 +44,7 @@ void plotA_ecalEx( ){
     c1->cd(i+1);
 
     gStyle->SetOptStat(0);
+    gStyle->SetPalette(53);
 
     TFile *f1 = TFile::Open(Form("qreplay_sbs%d.root",kIdx[i]));
     TH2D *h1 = (TH2D*)f1->Get("hHCALeX");

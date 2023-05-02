@@ -83,7 +83,7 @@ const Double_t TOFfitp_p[6][4] = {{73.7816, -35.8806, 12.90060, -1.60996},
 				  {60.6177, -18.2422, 5.123620, -0.49684},
 				  {71.7263, -32.1323, 41.57460, -1.18023}}; //Pol3 TOF fit params from proton MC data with SBS fields {30,85,100,70,70,70}
 const Double_t TOFfitp_n[6][4] = {{62.1158, -20.8086, 6.464510, -0.71342},
-				  {55.8218, -3.84358, 06176470, -0.03516},
+				  {55.8218, -3.84358, 0.617647, -0.03516},
 				  {51.4030, -0.51868, 0.016076, 0.001009},
 				  {64.1014, -9.30317, 1.818670, -0.12324},
 				  {56.1597, -13.4154, 3.449660, -0.30995},
@@ -1384,6 +1384,8 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
   TH1D *htdc_tofidcorr_n = new TH1D("htdc_tofidcorr_n","TDC Neutron TOF (vs pos) Corrected (All Channels); ns",ttotb+50,tllim-50,tulim);
   TH1D *htdc_allcorr_p = new TH1D("htdc_allcorr_p","TDC Proton Corrected TW/TOF/Hodo (All Channels); ns",ttotb+50,tllim-50,tulim);
   TH1D *htdc_allcorr_n = new TH1D("htdc_allcorr_n","TDC Neutron Corrected TW/TOF/Hodo (All Channels); ns",ttotb+50,tllim-50,tulim);
+  TH1D *htp_allcorr_p = new TH1D("htp_allcorr_p","Primary Block TDC Proton Corrected TW/TOF/Hodo (All Channels); ns",ttotb+50,tllim-50,tulim);
+  TH1D *htp_allcorr_n = new TH1D("htp_allcorr_n","Primary Block TDC Neutron Corrected TW/TOF/Hodo (All Channels); ns",ttotb+50,tllim-50,tulim);
   //2D over all primary blocks and corrections
   TH2D *htp_ID = new TH2D("htp_ID","TDC Primary Block;Channel;TDC_{HCAL} (ns)",288,0,288,ttotb,tllim,tulim);
   TH2D *htp_hodocorr_ID = new TH2D("htp_hodocorr_ID","TDC Primary Block - TDC hodo;Channel;TDC_{HCAL}-TDC_{HODO} (ns)",288,0,288,ttotb,tllim,tulim);
@@ -1609,6 +1611,7 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
       if( isproton ){
 	if( tofpcorr != 0. ){
 	  htp_tofpcorr_p_ID->Fill( pblkid, pTDC-tofpcorr );
+	  htp_allcorr_p->Fill( pTDC-hodot-tofpcorr );
 	  htp_allcorr_p_ID->Fill( pblkid, pTDC-hodot-tofpcorr );
 	}
 	if( tofidcorr != 0. ) htp_tofidcorr_p_ID->Fill( pblkid, pTDC-tofidcorr );
@@ -1616,6 +1619,7 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
       if( isneutron ){
 	if( tofpcorr != 0. ){
 	  htp_tofpcorr_n_ID->Fill( pblkid, pTDC-tofpcorr );
+	  htp_allcorr_n->Fill( pTDC-hodot-tofpcorr );
 	  htp_allcorr_n_ID->Fill( pblkid, pTDC-hodot-tofpcorr );
 	}
 	if( tofidcorr != 0. ) htp_tofidcorr_n_ID->Fill( pblkid, pTDC-tofidcorr );
@@ -1980,6 +1984,7 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 	if( tofpcorr != 0. ){
 	  htp_tofpcorr_p_ID->Fill( pblkid, pTDC-tofpcorr );
 	  htp_allcorr_p_ID->Fill( pblkid, pTDC-hodot-tofpcorr );
+	  htp_allcorr_p->Fill( pTDC-hodot-tofpcorr );
 	}
 	if( tofidcorr != 0. ) htp_tofidcorr_p_ID->Fill( pblkid, pTDC-tofidcorr );
       }
@@ -1987,6 +1992,7 @@ void tcal( Int_t kine=-1, Int_t iter=0 ){
 	if( tofpcorr != 0. ){
 	  htp_tofpcorr_n_ID->Fill( pblkid, pTDC-tofpcorr );
 	  htp_allcorr_n_ID->Fill( pblkid, pTDC-hodot-tofpcorr );
+	  htp_allcorr_n->Fill( pTDC-hodot-tofpcorr );
 	}
 	if( tofidcorr != 0. ) htp_tofidcorr_n_ID->Fill( pblkid, pTDC-tofidcorr );
       }

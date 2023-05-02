@@ -39,6 +39,7 @@ const Int_t uni_N = 400; // Total number of bins used to measure detection unifo
 const Int_t xN = 48; //2*kNrows, total number of dispersive bins detection uni
 const Int_t yN = 24; //2*kNcols, total number of transverse bins detection uni
 const Double_t hcalheight = -0.2897; //Height of the center of HCAL above beam (m)
+const Double_t hcalvoffset = -0.45001; //vert offset from hall coord, db (m)
 //const Double_t sampFrac[6] = {0.0797,0.0812,0.0812,0.0824,0.0811,0.0817}; //HCal sampling fractions from MC by kinematic. Position dependence confirmed to be negligible. 
 //const Double_t sampFrac[6] = {0.0997,0.1012,0.1012,0.1024,0.1011,0.1017}; //HCal sampling fractions tuned by hand 
 //Target constants
@@ -103,7 +104,7 @@ string getDate(){
 //   return amp*exp(-0.5*pow((x[0]-offset)/sigma,2.));
 // }
 
-//Main. Calibration one kinematic at a time. Loads all configs for both lh2 and ld2.
+//Main. Calibration one kinematic at a time. Loads all configs for both lh2 and ld2. Iter == 0 obtains coeff. Iter == 1 checks results of calibration
 void ecal( Int_t kine=-1, Int_t iter=0 ){
 
   // Define a clock to check macro processing time
@@ -332,11 +333,15 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
   Int_t maxEventPerCell = 4000; // Maximum number of scattered p events to contribute
   Double_t HCal_divx = 0.15875; // Transverse width in x and y per cell
   Double_t HCal_divy = 0.15494;
-  Double_t HCal_Xi = -2.355005; // Distance from beam center to top of HCal in m from MC database
-  Double_t HCal_Xf = 1.454995; // Distance from beam center to bottom of HCal in m from MC database
-  Double_t HCal_Yi = -0.92964; // Distance from beam center to opposite-beam side of HCal in m from MC database
-  Double_t HCal_Yf = 0.92964;
-  Double_t highDelta = 0.1; // Minimum M(i,j)/b(i) factor allowed 
+  // Double_t HCal_Xi = -2.355005; // Distance from beam center to top of HCal in m from MC database
+  // Double_t HCal_Xf = 1.454995; // Distance from beam center to bottom of HCal in m from MC database
+  // Double_t HCal_Yi = -0.92964; // Distance from beam center to opposite-beam side of HCal in m from MC database
+  // Double_t HCal_Yf = 0.92964;
+  Double_t HCal_Xi = -2.3531; // Distance from beam center to top of HCal in m from MC database
+  Double_t HCal_Xf = 1.45309; // Distance from beam center to bottom of HCal in m from MC database
+  Double_t HCal_Yi = -0.93155; // Distance from beam center to opposite-beam side of HCal in m from MC database
+  Double_t HCal_Yf = 0.93155;
+  Double_t highDelta = 0.05; // Minimum M(i,j)/b(i) factor allowed 
 
   // Declare general physics parameters to be modified by input config file - LH2
   //Double_t E_e_h[nfset_lh2[kIdx]] = {0.}; // Energy of beam (incoming electrons from accelerator)  
@@ -775,6 +780,9 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
   TH1D *hHCALblke = new TH1D( "hHCALblke","HCal Cluster Seed E", 400, 0., 1. );
   TH1D *hSampFrac = new TH1D( "hSampFrac","W2 Cut HCal Cluster E / Expected KE", 400, 0., 1. );
   TH1D *hblkid = new TH1D( "hblkid","HCal Block ID", 400, -50, 350 );
+  TH2D *hSampFracvID = new TH2D( "hSampFracvID","HCal Cluster E / Expected KE vs ID", kNcell, 0, kNcell, 400, 0., 1. );
+  TH2D *hSampFracvRow = new TH2D( "hSampFracvRow","HCal Cluster E / Expected KE vs Row", kNrows, 0, kNrows, 400, 0., 1. );
+  TH2D *hSampFracvCol = new TH2D( "hSampFracvCol","HCal Cluster E / Expected KE vs Col", kNcols, 0, kNcols, 400, 0., 1. );
 
   //Loop over events
   cout << "Looping over hydrogen data.." << endl;
@@ -928,6 +936,10 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
       hHCALeY->Fill( HCALy_h[f], clusE );
       hHCALblke->Fill( clusblkE );
       hSampFrac->Fill( clusE/KE_p );
+      hSampFracvID->Fill( cblkid_h[f][0], clusE/KE_p );
+      hSampFracvRow->Fill( crow_h[f], clusE/KE_p );
+      hSampFracvCol->Fill( ccol_h[f], clusE/KE_p );
+      
 
       //////////////////////////////////////////////////////////////////
       //Continue if iter == 1 (second quasi-replay pass for diagnostics)
@@ -1183,6 +1195,9 @@ void ecal( Int_t kine=-1, Int_t iter=0 ){
       hHCALeY->Fill( HCALy_d[f], clusE );
       hHCALblke->Fill( clusblkE );
       hSampFrac->Fill( clusE/KE_p );
+      hSampFracvID->Fill( cblkid_d[f][0], clusE/KE_p );
+      hSampFracvRow->Fill( crow_d[f], clusE/KE_p );
+      hSampFracvCol->Fill( ccol_d[f], clusE/KE_p );
 
       //////////////////////////////////////////////////////////////////
       //Continue if iter == 1 (second quasi-replay pass for diagnostics)

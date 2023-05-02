@@ -82,7 +82,8 @@ void sfracMC( Int_t kine=-1 ){
 
   TChain *C = new TChain("T");
 
-  C->Add(Form("/lustre19/expphy/volatile/halla/sbs/seeds/simulation/gmn_sbs%d*",kine));
+  //C->Add(Form("/lustre19/expphy/volatile/halla/sbs/seeds/simulation/gmn_sbs%d*",kine));
+  C->Add(Form("/lustre19/expphy/volatile/halla/sbs/seeds/sim032123/gmn_sbs%d*",kine));
 
   // Declare Chain for many root files
   // First obtain index for nfset constants
@@ -90,33 +91,33 @@ void sfracMC( Int_t kine=-1 ){
   Double_t beamE; //GeV
   if( kine == 4 ){
     kIdx=0;
-    beamE=3.728;
+    beamE=3.7393;
   }
   if( kine == 7 ){
     kIdx=1;
-    beamE=7.907;
+    beamE=7.9308;
   } 
   if( kine == 11 ){
     kIdx=2;
-    beamE=9.859;
+    beamE=9.889;
   }
   if( kine == 14 ){
     kIdx=3;
-    beamE=5.965;
+    beamE=5.9828;
   }
   if( kine == 8 ){
     kIdx=4;
-    beamE=5.965;
+    beamE=5.9826;
   }
   if( kine == 9 ){
     kIdx=5;
-    beamE=4.015;
+    beamE=4.0268;
   }
 
   cout << endl << "Setup parameters loaded and chains linked." << endl;
 
   // Declare outfile
-  TFile *fout = new TFile( Form("output/sfracMC_sbs%d_1btest.root", kine ), "RECREATE" );;
+  TFile *fout = new TFile( Form("output/MChcalE_sbs%d.root", kine ), "RECREATE" );;
 
   MC *G = new MC(C);
 
@@ -129,7 +130,10 @@ void sfracMC( Int_t kine=-1 ){
   TH2D *hcEvID = new TH2D( "hcEvID", "HCal Cluster Element E vs Cell", 288, 0, 288, 400, 0., 1.);
   TH1D *csize = new TH1D( "csize", "P Cluster size, hit thresh 0.01 GeV", 30, 0, 30 );
   TH1D *bhits = new TH1D( "bhits", "Number of blocks over 1MeV thresh", 30, 0, 30 );
+  TH1D *hHCALe = new TH1D( "hHCALe","HCal Detector E", 400, 0., 1. );
+  TH1D *hHCALe_clus = new TH1D( "hHCALe_clus","HCal Cluster E", 400, 0., 1. );
   TH2D *hcEvID_1b = new TH2D( "hcEvID_1b", "HCal One Block Cluster E vs Cell", 288, 0, 288, 400, 0., 10.);
+  TH1D *hNKE = new TH1D( "hNKE","Nucleon KE", 300, 0., 15. );
 
   //Loop over events
   cout << "Main loop over all data commencing.." << endl;
@@ -165,6 +169,7 @@ void sfracMC( Int_t kine=-1 ){
       ///////////////////////////////////////////////////
 
       Double_t hcalE = G->Harm_HCalScint_det_esum;
+      hHCALe->Fill(hcalE);
       Double_t ep = G->ev_ep;
 
       Double_t detSF = hcalE/(beamE-ep);
@@ -217,6 +222,7 @@ void sfracMC( Int_t kine=-1 ){
 
       if( clusterE<0.01 ) continue; //Mirror min cluster energy required to be considered in calibration
 
+      hHCALe_clus->Fill(clusterE);
       hSampFrac_clus->Fill(clusterE/(beamE-ep));
       hep->Fill(ep);
       csize->Fill(clustersize);
