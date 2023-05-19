@@ -1,7 +1,6 @@
-//SSeeds 5.3.23 - Standalone script adapted from tcal.C at https://github.com/sebastianseeds/HCal_replay
-//5.15.23 Update - Added class structure improvements.
+//SSeeds 5.19.23 Script to extract timewalk exponential fit parameters from tdc distributions
 //NOTE: requires $DB_DIR path set correctly in current environment. Script assumes hardware differences on tdcoffset timestamps and outputs alignment constants for all timestamps within the configuration provided.
-//ADDITIONAL NOTE: this script does not adjust tdc calib, but creates additional calibration sets for changes in the tdc calibration constant (where they exist)
+//ADDITIONAL NOTE: this script expects that tdc_align.C, adct_align.C, and ecal.C are performed first and will look for new offset parameters to update tdc data set, adct parameters to improve elastic selection, and ecal parameters to update energies
 
 #include <vector>
 #include <iostream>
@@ -16,17 +15,18 @@
 #include "TStopwatch.h"
 #include "../include/sbs.h"
 
-// TDC offset extraction constraints
+// TDC vs E extraction constraints
 const Int_t first_hcal_chan = 0;
-const Int_t total_bins = 320;
-const Int_t lower_lim = -140;
-const Int_t upper_lim = 20;
-const Int_t fit_event_min = 50;
-const Double_t observed_tdc_sigma = 2.5; //rough estimate
-const Double_t TDC_target = -75.; //Target value for peak tdc. Should be roughly centered in window.
+const Int_t tdc_bins = 500;
+const Double_t tdc_lower_lim = -200.;
+const Double_t tdc_upper_lim = 50.;
+const Int_t E_bins = 1000;
+const Double_t E_lower_lim = 0.;
+const Double_t E_upper_lim = 500.;
+const Int_t fit_event_min = 100;
 
-//Main <experiment> <configuration> <quasi-replay> <replay-pass>; qreplay should only be performed after new offsets obtained
-void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay = true, Int_t pass = 0 ){
+//Main <experiment> <configuration> <quasi-replay> <replay-pass> <number-of-calibration-sets>; qreplay should only be performed after new offsets obtained
+void tdc_tw( const char *experiment = "gmn", Int_t config = 4, bool qreplay = false, Int_t pass = 0, Int_t Nset = 2 ){
 
   // Define a clock to check macro processing time
   TStopwatch *st = new TStopwatch();
@@ -37,13 +37,22 @@ void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay =
 
   // Set up universal paths and variables
   string db_path = gSystem->Getenv("DB_DIR");
-  std::string new_tdcoffset_path = Form("parameters/tdcoffsets_class_%s_conf%d_pass%d.txt",experiment,config,pass);
+  std::string new_tdcoffset_path = Form("../timing/parameters/tdcoffsets_class_%s_conf%d_pass%d.txt",experiment,config,pass);
+  std::string new_adcgain_path = Form("../energy/parameters/adcgaincoeff_%s_conf%d.txt",experiment,config);
+  std::string new_adctoffset_path = Form("../timing/parameters/adctoffsets_class_%s_conf%d_pass%d.txt",experiment,config,pass);
+  std::string new_tdctw_path = Form("../timing/parameters/tdctw_class_%s_conf%d_pass%d.txt",experiment,config,pass);
+  if( qreplay )
+    new_tdctw_path = "/dev/null";  //Safety to prevent overwriting constants on quasi-replay
   std::string old_db_path = db_path + "/db_sbs.hcal.dat";
   std::string db_tdcoffset_variable = "sbs.hcal.tdc.offset";
   std::string db_tdccalib_variable = "sbs.hcal.tdc.calib";
+  std::string db_tdctwA_variable = "sbs.hcal.tdc.tw_a";
+  std::string db_tdctwB_variable = "sbs.hcal.tdc.tw_b";
+  std::string db_gain_variable = "sbs.hcal.adc.gain";
+  std::string db_adctoffset_variable = "sbs.hcal.adc.timeoffset";
 
   // Declare output analysis file
-  TFile *fout = new TFile( Form("outfiles/tdcalign_class_%s_conf%d_qr%d_pass%d.root",experiment,config,(Int_t)qreplay,pass), "RECREATE" );
+  TFile *fout = new TFile( Form("outfiles/tdctw_class_%s_conf%d_qr%d_pass%d.root",experiment,config,(Int_t)qreplay,pass), "RECREATE" );
 
   // Get information from .csv files
   std::string struct_dir = Form("../config/%s/",experiment); //unique to my environment for now
@@ -55,7 +64,7 @@ void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay =
   util::ReadRunList(struct_dir,experiment,nruns,config,pass,verb,runs); //nruns=-1 modifies nruns to loop over all available
   
   //Set up structure to hold calibration parameters and initialize size/index
-  calset tdc_cal[hcal::gNstamp];
+  calset tdctw_cal[Nset];
   Int_t Ncal_set_size = 0;
   Int_t Ncal_set_idx = 0;
   
@@ -120,29 +129,46 @@ void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay =
   std::string sbs_timestamp = config_parameters.GetSBSTimestamp();
 
   //Declare histograms for modification later where additional calibration sets are necessary
-  TH2D *htp_hodocorr_ID[hcal::gNstamp];
+  TH2D *htdcvE[Nset][hcal::maxHCalChan];
+  TH2D *htdcvE_pblk[Nset][hcal::maxHCalChan];
 
-  for( Int_t set=0; set<hcal::gNstamp; set++ ){
-    htp_hodocorr_ID[set] = new TH2D(Form("htp_hodocorr_ID_set%d",set),
-				    "null",
-				    hcal::maxHCalChan,
-				    first_hcal_chan,
-				    hcal::maxHCalChan,
-				    total_bins,
-				    lower_lim,
-				    upper_lim);
-    
+  for( Int_t set=0; set<Nset; set++ ){
+    for( Int_t chan=0; chan<hcal::maxHCalChan; chan++ ){
+      
+      htdcvE[set][chan] = new TH2D(Form("htdcvE_set%d_chan%d",set,chan),
+				   "null",
+				   E_bins,
+				   E_lower_lim,
+				   E_upper_lim,
+				   tdc_bins,
+				   tdc_lower_lim,
+				   tdc_upper_lim);
+      
+      htdcvE_pblk[set][chan] = new TH2D(Form("htdcvE_pblk_set%d_chan%d",set,chan),
+				   "null",
+				   E_bins,
+				   E_lower_lim,
+				   E_upper_lim,
+				   tdc_bins,
+				   tdc_lower_lim,
+				   tdc_upper_lim);
+      
+    }
   }
 
   //minimize reporting
   Int_t target_change_index;
+  Int_t total_analyzed_events;
+  Int_t missing_tdc_events;
 
   //Main loop over runs
   for (Int_t r=0; r<nruns; r++) {
 
     //Get run experimental parameters
-    std::string current_offset_timestamp = runs[r].tdc_ts;
-    std::string current_calib_timestamp = runs[r].tdcc_ts;
+    std::string current_gain_timestamp = runs[r].adcg_ts;
+    std::string current_adctoffset_timestamp = runs[r].adcg_ts;
+    std::string current_tdcoffset_timestamp = runs[r].tdc_ts;
+    std::string current_tdccalib_timestamp = runs[r].tdcc_ts;
     Int_t current_runnumber = runs[r].runnum;
 
     std::string current_target = runs[r].target;
@@ -171,36 +197,60 @@ void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay =
       target_change_index = target_index;
     }
 
-    //Record new offset parameters from qreplay==false. Repopulate array on each run for changing timestamps
+    ////Timestamp juggling. There is probably a more efficient and clear way to do this.
+
+    //Record new offset/coefficient parameters. Repopulate array on each run for changing timestamps
     Double_t new_tdc_offsets[hcal::maxHCalChan] = {0.};
-    if( qreplay ){ //Check which timestamp is newest (DB:tdcoffset, DB:tdccalib, new)
-      std::string active_timestamp;
-      util::tsCompare( current_offset_timestamp, config_parameters.GetSBSTimestamp(), active_timestamp );
-      util::tsCompare( active_timestamp, current_calib_timestamp, active_timestamp );
-      util::readDB( new_tdcoffset_path, active_timestamp, db_tdcoffset_variable, new_tdc_offsets );
+    Double_t new_adct_offsets[hcal::maxHCalChan] = {0.};
+    Double_t new_adcg_coeff[hcal::maxHCalChan] = {1.};
+    Double_t new_tdctwA_par[hcal::maxHCalChan] = {0.};
+    Double_t new_tdctwB_par[hcal::maxHCalChan] = {0.};
+
+    //Get timestamp for new tdc offsets for this run
+    std::string tdc_active_timestamp = "-------[ 0000-00-00 00:00:00 ]";
+    util::tsCompare( current_tdcoffset_timestamp, config_parameters.GetSBSTimestamp(), tdc_active_timestamp );
+    util::tsCompare( tdc_active_timestamp, current_tdccalib_timestamp, tdc_active_timestamp );
+    util::readDB( new_tdcoffset_path, tdc_active_timestamp, db_tdcoffset_variable, new_tdc_offsets );
+    
+    cout << "1" << endl;
+
+    //get timestamp for new adct offsets for this run
+    std::string adct_active_timestamp = "-------[ 0000-00-00 00:00:00 ]";
+    util::tsCompare( current_adctoffset_timestamp, config_parameters.GetSBSTimestamp(), adct_active_timestamp );
+    util::readDB( new_adctoffset_path, adct_active_timestamp, db_adctoffset_variable, new_adct_offsets );
+
+    cout << "2" << endl;
+
+
+    //get timestamp for new adc gain coefficients for this run
+    std::string active_timestamp = "-------[ 0000-00-00 00:00:00 ]";
+    util::tsCompare( current_gain_timestamp, config_parameters.GetSBSTimestamp(), active_timestamp );
+    util::readDB( new_adcgain_path, active_timestamp, db_gain_variable, new_adcg_coeff );
+    //quasi-replay, get new timewalk parameters
+    if( qreplay ){
+      util::readDB( new_tdctw_path, active_timestamp, db_tdctwA_variable, new_tdctwA_par );
+      util::readDB( new_tdctw_path, active_timestamp, db_tdctwB_variable, new_tdctwB_par );
     }
 
+    cout << "3" << endl;
+
+
     //////////
-    //Select correct calibration set.
-    bool new_calib_ts = true;
+    //Select correct calibration set. Timewalk corrections will go with energy, active_timestamp left unaltered.
+    bool new_ts = true;
     bool new_offset_ts = true;
     //Look through available sets for duplicate timestamps
     for( Int_t cs=0; cs<Ncal_set_size; cs++ ){ 
-
-      if( tdc_cal[cs].timestamp == current_offset_timestamp )
-	new_offset_ts = false;
-      if( tdc_cal[cs].calib_ts == current_calib_timestamp )
-	new_calib_ts = false;
-      //set the index where both exist
-      if( tdc_cal[cs].calib_ts == current_calib_timestamp &&
-	  tdc_cal[cs].timestamp == current_offset_timestamp )
+      if( tdctw_cal[cs].timestamp == active_timestamp ){
+	new_ts = false;
 	Ncal_set_idx = cs;
+      }
     }
-
+    
     //if a new timestamp exists, expand the set and update index/old-offsets/old-calib
-    if( new_calib_ts || new_offset_ts || Ncal_set_size==0){
+    if( new_ts || Ncal_set_size==0){
 
-      cout << "Adding new calibration set. Offset ts:" << current_offset_timestamp << ", calib ts:" << current_calib_timestamp << endl << endl;
+      cout << "Adding new calibration set. Active (energy calibration) timestamp:" << active_timestamp << endl << endl;
 
       Ncal_set_idx = Ncal_set_size;
 
@@ -209,11 +259,19 @@ void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay =
 	return;
       }
 
-      tdc_cal[Ncal_set_size].timestamp = current_offset_timestamp.c_str();
-      tdc_cal[Ncal_set_size].calib_ts = current_calib_timestamp.c_str();
-      util::readDB( old_db_path, current_offset_timestamp, db_tdcoffset_variable, tdc_cal[Ncal_set_size].old_param ); 
-      util::readDB( old_db_path, current_calib_timestamp, db_tdccalib_variable, tdc_cal[Ncal_set_size].tdc_calib );
-      htp_hodocorr_ID[Ncal_set_size]->SetTitle(Form("TDC Primary Block - TDC hodo, offset ts: %s, calib ts: %s;Channel;TDC_{HCAL}-TDC_{HODO} (ns)",tdc_cal[Ncal_set_size].timestamp.c_str(),tdc_cal[Ncal_set_size].calib_ts.c_str()));
+      //update timestamp and old coefficients for corrections. Don't use active timestamp, use db timestamps for old
+      tdctw_cal[Ncal_set_size].timestamp = active_timestamp.c_str();
+      util::readDB( old_db_path, current_gain_timestamp, db_gain_variable, tdctw_cal[Ncal_set_size].old_param ); //gain 
+      util::readDB( old_db_path, current_tdcoffset_timestamp, db_tdcoffset_variable, tdctw_cal[Ncal_set_size].old_paramB );  //tdcoffset
+      util::readDB( old_db_path, current_adctoffset_timestamp, db_adctoffset_variable, tdctw_cal[Ncal_set_size].old_paramC );  //adctoffset   
+      util::readDB( old_db_path, current_tdccalib_timestamp, db_tdccalib_variable, tdctw_cal[Ncal_set_size].tdc_calib );  //tdcoffset
+
+
+      //build analysis histograms
+      for( Int_t chan=0; chan<hcal::maxHCalChan; chan++ ){
+	htdcvE[Ncal_set_size][chan]->SetTitle(Form("TDC vs E, set: %d, chan: %d;MeV;ns",Ncal_set_size,chan));
+	htdcvE_pblk[Ncal_set_size][chan]->SetTitle(Form("TDC vs E primary block only, set: %d, chan: %d;MeV;ns",Ncal_set_size,chan));
+      }
 
       Ncal_set_size++;
     }     
@@ -342,6 +400,17 @@ void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay =
       if( failedglobal ) continue;
 
       ///////
+      //HCal coincidence time cut (using adctime while hcal tdc suspect, new offsets)
+      Int_t pblkid = cblkid[0]-1; //define primary block, primary cluster ID
+      Double_t hcaladct = cblkatime[0]+tdctw_cal[Ncal_set_idx].old_paramC[pblkid]-new_adct_offsets[pblkid]; //new atime
+      Double_t atime0 = cut[0].atime0; //observed elastic peak in adc time
+      Double_t atimesig = cut[0].atime_sig; //observed width of elastic peak in adc time
+
+      bool failedcoin = abs(hcaladct-atime0)>3*atimesig;
+	  
+      if( failedcoin ) continue; //All events where adctime outside of reasonable window cut
+
+      ///////
       //Physics calculations
       //correct beam energy with vertex information, primary track
       Double_t ebeam_c = ebeam - ( (BBtr_vz[0]+target_length/2.0) * target_rho * target_dEdx + upstream_wthick * cell_rho * cell_dEdx );
@@ -392,18 +461,55 @@ void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay =
 	  
       if( failedaccmatch ) continue;
 
-      Double_t pblkid = (double)cblkid[0]-1;
-      Double_t hcaltdc = cblktime[0];
-      //correct the tree tdc time with new offset
-      if( qreplay ) 
-	hcaltdc = hcaltdc + 
-		       tdc_cal[Ncal_set_idx].old_param[(Int_t)pblkid] * tdc_cal[Ncal_set_idx].tdc_calib - 
-		       new_tdc_offsets[(Int_t)pblkid] * tdc_cal[Ncal_set_idx].tdc_calib;
+      //////
+      //Cut on bad tdc and keep track of missing primary cluster events
+      total_analyzed_events++;
+      bool missedtdc = cblktime[0]==-1000 ||
+		       cblktime[0]>10000;
+      if( missedtdc ){
+	missing_tdc_events++;
+	continue;
+      }
+	
+      ///////
+      //Address timewalk with primary cluster block tdc time vs energy
+      Double_t pblke = 0;
+      Double_t tdc_tc = -1000;
+      for( Int_t blk = 0; blk<nblk; blk++ ){
+	
+	//get the channel id for the blk-th block in the cluster
+	Int_t blkid = (Int_t)cblkid[blk]-1;
 
-      Double_t tdc_tc = hcaltdc-HODOtmean; //Primary cluster, primary block tdc with trigger correction (ns)
+	//get updated primary cluster block tdc time
+	Double_t blktime = cblktime[blk] + 
+	  tdctw_cal[Ncal_set_idx].old_param[pblkid] * tdctw_cal[Ncal_set_idx].tdc_calib - 
+	  new_tdc_offsets[pblkid] * tdctw_cal[Ncal_set_idx].tdc_calib;
+	  
+	//add trigger correction from hodo
+	Double_t blktime_tc = blktime - HODOtmean;
+
+	//get updated primary cluster block energy
+	Double_t blke = cblke[blk]/tdctw_cal[Ncal_set_idx].old_param[blkid]*new_adcg_coeff[blkid];
+
+	//on quasi-replay, apply timewalk correction by block as well
+	if( qreplay )
+	  blktime_tc -= new_tdctwA_par[blkid]*exp(-new_tdctwB_par[blkid]*blke);
+
+	//get primary cluster primary block information
+	if( blk==0 ){
+	  pblke = blke;
+	  tdc_tc = blktime_tc;
+	}
+
+	//build tdc vs E over all cluster blocks
+	htdcvE[Ncal_set_idx][blk]->Fill( blke, blktime_tc );
+
+      }
+
+      //build tdc vs E for primary block only
+      htdcvE_pblk[Ncal_set_idx][pblkid]->Fill( pblke, tdc_tc );
       
-      htp_hodocorr_ID[Ncal_set_idx]->Fill( pblkid, tdc_tc );
-      
+      //fill analysis tree
       pblkid_out = pblkid;
       tdc_out = cblktime[0];
       atime_out = cblkatime[0];
@@ -428,175 +534,106 @@ void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay =
   }//endloop over runs
   
   // Declare canvas and graph for plots
-  TCanvas *TDC_top[Ncal_set_size];
-  TCanvas *TDC_bot[Ncal_set_size];
+  TCanvas *TDCtw_top[Ncal_set_size];
+  TCanvas *TDCtw_bot[Ncal_set_size];
 
-  // Set up arrays for tgraph
-  //No error on cell location
-  Double_t cellerr[hcal::maxHCalChan] = {0.};
+  // set up arrays for timewalk fits
+  Double_t TDCvseP0[Ncal_set_size][hcal::maxHCalChan];
+  Double_t TDCvseP1[Ncal_set_size][hcal::maxHCalChan];
+  Double_t TDCvseP2[Ncal_set_size][hcal::maxHCalChan];
 
-  //Make arrays for tdc tgraphs
-  Double_t tcell[Ncal_set_size][hcal::maxHCalChan];
-  Double_t tcval[Ncal_set_size][hcal::maxHCalChan];
-  Double_t tcvalw[Ncal_set_size][hcal::maxHCalChan];
-  Double_t tcerr[Ncal_set_size][hcal::maxHCalChan];
-  TH1D *tcellslice[Ncal_set_size][hcal::maxHCalChan];
+  //Loop over all independent data sets
+  for( Int_t s=0; s<Ncal_set_size; s++ ){
 
-  //Get averages for empty channels
-  Double_t tcval_avg[Ncal_set_size];
-  Int_t tcval_Ng[Ncal_set_size];
+    TDCtw_top[s] = new TCanvas(Form("TDC_top_s%d",s),Form("TDC_top_s%d",s),1600,1200);
+    TDCtw_bot[s] = new TCanvas(Form("TDC_bot_s%d",s),Form("TDC_bot_s%d",s),1600,1200);
 
-  for( Int_t set=0; set<Ncal_set_size; set++ ){
-    
-    //Define calibration set by newest timestamp (config/tdcoffset/tdccalib) and record constant
-    Double_t calib_const = tdc_cal[set].tdc_calib;
-    std::string offset_timestamp = tdc_cal[set].timestamp;
-    std::string calib_timestamp = tdc_cal[set].calib_ts;
-    std::string config_timestamp = config_parameters.GetSBSTimestamp();
-    std::string active_timestamp;
-    util::tsCompare( offset_timestamp, calib_timestamp, active_timestamp );
-    util::tsCompare( active_timestamp, config_timestamp, active_timestamp );
-
-    tcval_avg[set] = 0.;
-    tcval_Ng[set] = 0;
-
-    //Set up canvases for quick inspections
-    TDC_top[set] = new TCanvas(Form("TDC_top, set TS: %s, offset TS: %s, calib TS: %s",active_timestamp.c_str(),offset_timestamp.c_str(),calib_timestamp.c_str()),"TDC_top",1600,1200);
-    TDC_bot[set] = new TCanvas(Form("TDC_bot, set TS: %s, offset TS: %s, calib TS: %s",active_timestamp.c_str(),offset_timestamp.c_str(),calib_timestamp.c_str()),"TDC_bot",1600,1200);
-    TDC_top[set]->Divide(12,12);
-    TDC_bot[set]->Divide(12,12);
-    gStyle->SetOptStat(0);
-    
+    //Fits for timewalk corrections
     for(Int_t c=0; c<hcal::maxHCalChan; c++){
-      //initialize the graph arrays
-      tcvalw[set][c] = 0.;
-      tcerr[set][c] = 0.;
-
-      Int_t half_chan = hcal::maxHCalChan/2;
+      
+      //initialize the arrays
+      TDCvseP0[s][c] = 0.;
+      TDCvseP1[s][c] = 0.;
+      TDCvseP2[s][c] = 0.;
 
       //Index through the canvas
-      TDC_top[set]->cd(c+1);
-      if( c>=half_chan )
-	TDC_bot[set]->cd(c+1-half_chan);
-      
-      //Get slices from htDiff_ID and fit for mean vals
-      Double_t tfitl = 0.;
-      Double_t tfith = 0.;
-      tcell[set][c] = c;
-      tcellslice[set][c] = htp_hodocorr_ID[set]->ProjectionY(Form("tcellslice_%d_%d",set,c+1),c+1,c+1);
-      tcval[set][c] = tdc_cal[set].old_param[c]; 
-      
-      tcvalw[set][c] = 0; 
-
-      Int_t sliceN = tcellslice[set][c]->GetEntries();
-      Int_t binmax = tcellslice[set][c]->GetMaximumBin();
-      Double_t binmaxX = lower_lim+binmax*(upper_lim-lower_lim)/total_bins;
-      Double_t binmaxY = tcellslice[set][c]->GetBinContent(binmax);
-      tfitl = binmaxX - 4*observed_tdc_sigma;
-      tfith = binmaxX + 4*observed_tdc_sigma;
-
-      if( sliceN<fit_event_min || binmaxX<=lower_lim || binmaxX>=upper_lim ){
-	tcellslice[set][c]->Draw();
-	continue;
+      TDCtw_top[s]->cd(c+1);
+      if( c>=144 ){
+	TDCtw_bot[s]->cd(c-143);
+	gStyle->SetOptStat(0);
       }
 
-      TF1 *sgausfit = new TF1("sgausfit",util::g_sgfit_bg,tfitl,tfith,5);
-      sgausfit->SetLineWidth(4);
-      sgausfit->SetParameter(0,binmaxY);
-      sgausfit->SetParameter(1,binmaxX);
-      sgausfit->SetParLimits(1,tfitl,tfith);
-      sgausfit->SetParameter(2,observed_tdc_sigma);
-      sgausfit->SetParLimits(2,1.,3*observed_tdc_sigma);
-      sgausfit->SetParameter(3,1.1);
-      sgausfit->SetParLimits(3,0.3,8);
-      sgausfit->SetParameter(4,25);
-      sgausfit->SetParLimits(4,5,30);
-      tcellslice[set][c]->Fit("sgausfit","RBMQ");
+      //Fit the TDC vs E plots
+      TF1 *fittdcTW = new TF1( "fittdcTW", util::g_twfit, 0, 300, 3 );
+      fittdcTW->SetParameters(14,0.04,-77);
+      fittdcTW->SetParLimits(0,2,26);
+      fittdcTW->SetParLimits(1,0.01,0.2);
+      fittdcTW->SetParLimits(2,-200,50);
 
-      tcellslice[set][c]->Draw();
+      if( htdcvE_pblk[s][c]->GetEntries()>fit_event_min ){
+	htdcvE_pblk[s][c]->Fit("fittdcTW","Q","",5,300);
+	TDCvseP0[s][c] = fittdcTW->GetParameter(0);
+	TDCvseP1[s][c] = fittdcTW->GetParameter(1);
+	TDCvseP2[s][c] = fittdcTW->GetParameter(2);
+	htdcvE_pblk[s][c]->SetTitle(Form("P0:%f P1:%f P2:%f",TDCvseP0[s][c],TDCvseP1[s][c],TDCvseP2[s][c]));
+	htdcvE_pblk[s][c]->Draw();
+      }
+    }
+
+    TDCtw_top[s]->Write();
+    TDCtw_bot[s]->Write();
+
+  }
+
+  // Create timewalk fit parameter files
+  ofstream tdctw;
+  tdctw.open( new_tdcoffset_path );
+
+  if( !qreplay ){
+    for( Int_t p=0; p<2; p++ ){
+      if( p==0 )
+	tdctw.open( new_tdctw_path );
+      else
+	tdctw.open( new_tdctw_path, fstream::app );
       
-      tcval[set][c] = sgausfit->GetParameter(1);
-      tcvalw[set][c] = sgausfit->GetParameter(1);
-      tcerr[set][c] = sgausfit->GetParameter(2);
-      tcellslice[set][c]->SetTitle(Form("Set:%d N:%d MaxX:%f Mean:%f Sigma:%f Alpha:%f",set,sliceN,binmaxX,tcval[set][c],tcerr[set][c],sgausfit->GetParameter(3)));    
-      tcellslice[set][c]->Write();
+      tdctw << endl << endl << "#HCal tdc vs E fit parameter P" << p << " obtained " << date.c_str() << endl;
+      tdctw << "#Exponential fit for i PMTs -> y = P0_i*exp(-P1_i*x)+P2_i" << endl;
 
-      tcval_avg[set] += tcval[set][c];
-      tcval_Ng[set]++;
+      if( p==0 )
+	tdctw << db_tdctwA_variable << " =" << endl;
+      else
+	tdctw << db_tdctwB_variable << " =" << endl;
 
-    }    
-    TDC_top[set]->Write();
-    TDC_bot[set]->Write();
-
-    tcval_avg[set] /= tcval_Ng[set];
-
-  }//endloop over slice fits
-
-  TCanvas *TDC_graph[Ncal_set_size];
-  TGraphErrors *gtdc_c[Ncal_set_size];
-
-  // Output text file for new TDC offsets
-  ofstream writeParFile;
-  if( qreplay )
-    new_tdcoffset_path = "/dev/null"; //Safety to prevent overwriting constants on quasi-replay
-  writeParFile.open( new_tdcoffset_path );
-
-  // Get tgraph and record tdc offsets
-  for( Int_t set=0; set<Ncal_set_size; set++ ){
-
-    //Define calibration set by newest timestamp (config/tdcoffset/tdccalib) and record constant
-    Double_t calib_const = tdc_cal[set].tdc_calib;
-    std::string offset_timestamp = tdc_cal[set].timestamp;
-    std::string calib_timestamp = tdc_cal[set].calib_ts;
-    std::string config_timestamp = config_parameters.GetSBSTimestamp();
-    std::string active_timestamp;
-    util::tsCompare( offset_timestamp, calib_timestamp, active_timestamp );
-    util::tsCompare( active_timestamp, config_timestamp, active_timestamp );
-
-    TDC_graph[set] = new TCanvas(Form("TDC_graph, set TS: %s, offset TS: %s, calib TS: %s",active_timestamp.c_str(),offset_timestamp.c_str(),calib_timestamp.c_str()),"TDC vs ID, means",1600,1200);
-    TDC_graph[set]->cd();
-
-    //Make graphs with errors for reporting. All failed fits are zero here
-    gtdc_c[set] = new TGraphErrors( hcal::maxHCalChan, tcell[set], tcvalw[set], cellerr, tcerr[set] );
-    gtdc_c[set]->GetXaxis()->SetLimits(-10,290);  
-    gtdc_c[set]->GetYaxis()->SetLimits(lower_lim,upper_lim);
-    gtdc_c[set]->SetTitle(Form("TDC_{hcal}-TDCmean_{hodo} vs Cell, set TS: %s, offset TS: %s, calib TS: %s, qreplay: %d",active_timestamp.c_str(),offset_timestamp.c_str(),calib_timestamp.c_str(),(Int_t)qreplay ) );
-    gtdc_c[set]->GetXaxis()->SetTitle("Cell");
-    gtdc_c[set]->GetYaxis()->SetTitle("TDC_{HCAL}-TDC_{MEAN,HODO}");
-    gtdc_c[set]->SetMarkerStyle(20); // idx 20 Circles, idx 21 Boxes
-    gtdc_c[set]->Draw();
-    gtdc_c[set]->Write(Form("gtdc_c_s%d",set));  
-
-    //Write to output text file
-    if( qreplay ) continue; //Don't write if quasi-replay
-    writeParFile << "#HCal TDC offsets obtained " << date.c_str() << " for db tdc offset timestamp " << offset_timestamp << " and for tdc calib timestamp " << calib_timestamp << endl;
-    writeParFile << "#Offsets obtained from fits over TDC distributions." << endl;
-    writeParFile << active_timestamp << endl;
-    writeParFile << db_tdcoffset_variable << " =" << endl;
-  
-    Int_t cell = 0;
-
-    for( Int_t r = 0; r<hcal::maxHCalRows; r++){
-      for( Int_t c = 0; c<hcal::maxHCalCols; c++){
-	
-	if( tdc_cal[set].old_param[cell]>0 && ( tcval[set][cell]==0 || abs(tcerr[set][cell])<0.05 ) ){ //This will only work if most channels are closely aligned already and oldtdcoffsets aren't believable
-	  writeParFile << tcval_avg[set]/calib_const + tdc_cal[set].old_param[cell] - TDC_target/calib_const << " ";
-	}else{
-	  writeParFile << tcval[set][cell]/calib_const + tdc_cal[set].old_param[cell] - TDC_target/calib_const << " ";
+      Int_t cell = 0;
+      for( Int_t r=0; r<hcal::maxHCalRows; r++ ){
+	for( Int_t c=0; c<hcal::maxHCalCols; c++ ){
+	  if( p==0 )
+	    tdctw << TDCvseP0[cell] << "  ";
+	  else
+	    tdctw << TDCvseP1[cell] << "  ";
+	  cell++;
 	}
-	cell++;
-      } // endloop over columns 
-      writeParFile << endl;
-    } // endloop over rows
-    writeParFile << endl << endl;
-    
-  } // endloop over calibration sets
+	tdctw << endl;
+      }
+    }
+  }
 
-  writeParFile.close();
+  tdctw.close();
+
+  //clean up
+  for( Int_t unused_set_index=Ncal_set_size; unused_set_index<Nset; unused_set_index++ ){
+    for( Int_t c=0; c<hcal::maxHCalChan; c++ ){
+      delete htdcvE[unused_set_index][c];
+      delete htdcvE_pblk[unused_set_index][c];
+    }
+  }
+
   fout->Write();
+
   st->Stop();
 
   // Send time efficiency report to console
-  cout << "CPU time elapsed = " << st->CpuTime() << " s = " << st->CpuTime()/60.0 << " min. Real time = " << st->RealTime() << " s = " << st->RealTime()/60.0 << " min." << endl;
+  cout << "CPU time elapsed = " << st->CpuTime() << " s = " << st->CpuTime()/60.0 << " min. Real time = " << st->RealTime() << " s = " << st->RealTime()/60.0 << " min." << endl;    
 
 }
+
