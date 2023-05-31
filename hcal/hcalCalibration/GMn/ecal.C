@@ -75,7 +75,7 @@ const Int_t fset_ld2[6][4] = {{0,30,50,-1},
 			      {0,100,-1,-1},
 			      {70,-1,-1,-1},
 			      {0,50,70,100},
-			      {70,-1,-1,-1}}; //All field settings for all kinematics LH2. -1 indicates no setting
+			      {70,-1,-1,-1}}; //All field settings for all kinematics LD2. -1 indicates no setting
 
 
 //Math

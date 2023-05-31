@@ -33,17 +33,20 @@ void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay =
   st->Start( kTRUE );
   
   // Get the date
-  string date = util::getDate();
+  std::string date = util::getDate();
 
   // Set up universal paths and variables
-  string db_path = gSystem->Getenv("DB_DIR");
+  std::string db_path = gSystem->Getenv("DB_DIR");
+  std::string outdir_path = gSystem->Getenv("OUT_DIR");
+  std::string tdc_align_path = outdir_path + Form("/hcal_calibrations/pass%d/timing/tdcalign_class_%s_conf%d_qr%d_pass%d.root",pass,experiment,config,(Int_t)qreplay,pass);
+
   std::string new_tdcoffset_path = Form("parameters/tdcoffsets_class_%s_conf%d_pass%d.txt",experiment,config,pass);
   std::string old_db_path = db_path + "/db_sbs.hcal.dat";
   std::string db_tdcoffset_variable = "sbs.hcal.tdc.offset";
   std::string db_tdccalib_variable = "sbs.hcal.tdc.calib";
 
   // Declare output analysis file
-  TFile *fout = new TFile( Form("outfiles/tdcalign_class_%s_conf%d_qr%d_pass%d.root",experiment,config,(Int_t)qreplay,pass), "RECREATE" );
+  TFile *fout = new TFile( tdc_align_path.c_str(), "RECREATE" );
 
   // Get information from .csv files
   std::string struct_dir = Form("../config/%s/",experiment); //unique to my environment for now
@@ -310,6 +313,10 @@ void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay =
     C->SetBranchAddress( "bb.sh.y", &BBsh_y ); 
     C->SetBranchAddress( "bb.hodotdc.clus.tmean", &HODOtmean );
     C->SetBranchAddress( "Ndata.sbs.hcal.clus.id", &Ncid ); //Odd maxing out at 10 clusters on all cluster Ndata objects, so this is needed in addition to sbs.hcal.nclus
+
+    //Globalcut enables
+    C->SetBranchStatus( "bb.tr.tg_th", 1 );
+    C->SetBranchStatus( "bb.tr.tg_ph", 1 );
 
     //Use TTreeFormula to avoid looping over data an additional time
     TCut GCut = cut[0].gcut.c_str();
@@ -591,6 +598,11 @@ void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay =
     writeParFile << endl << endl;
     
   } // endloop over calibration sets
+
+  //clean up
+  for( Int_t unused_set_index=Ncal_set_size; unused_set_index<hcal::gNstamp; unused_set_index++ ){
+    delete htp_hodocorr_ID[unused_set_index];
+  }
 
   writeParFile.close();
   fout->Write();

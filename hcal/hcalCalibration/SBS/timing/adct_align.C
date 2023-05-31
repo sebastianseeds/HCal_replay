@@ -1,4 +1,5 @@
 //SSeeds 5.8.23 - Script adapted from tcal.C at https://github.com/sebastianseeds/HCal_replay to align adct elastic peaks across all HCal block ids
+// 5.23.23 update - Added adct all-channels distribution and fit for adct sigma extraction and calibration of sbs.hcal.tmax
 //NOTE: requires $DB_DIR path set correctly in current environment. Script assumes hardware differences on adctoffset timestamps and outputs alignment constants for all timestamps within the configuration provided.
 
 #include <vector>
@@ -22,6 +23,7 @@ const Int_t upper_lim = 140;
 const Int_t fit_event_min = 50;
 const Double_t observed_adct_sigma = 4.0; //rough estimate
 const Double_t ADCt_target = 50.;
+const Double_t tmax_factor = 5.; //number of sigma to consider for tmax cut on cluster elements
 
 //Main <experiment> <configuration> <quasi-replay> <replay-pass>; qreplay should only be performed after new offsets obtained
 void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = true, Int_t pass = 0 ){
@@ -31,16 +33,24 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
   st->Start( kTRUE );
   
   // Get the date
-  string date = util::getDate();
+  std::string date = util::getDate();
 
-  // Set up universal paths and variables
-  string db_path = gSystem->Getenv("DB_DIR");
+  // outfile path
+  std::string outdir_path = gSystem->Getenv("OUT_DIR");
+  std::string adctalign_path = outdir_path + Form("/hcal_calibrations/pass%d/timing/adctalign_class_%s_conf%d_qr%d_pass%d.root",pass,experiment,config,(Int_t)qreplay,pass);
+
+  // offset paths and variables
+  std::string db_path = gSystem->Getenv("DB_DIR");
   std::string new_adctoffset_path = Form("parameters/adctoffsets_class_%s_conf%d_pass%d.txt",experiment,config,pass);
+  std::string new_tmax_path = Form("parameters/adcttmax_class_%s_conf%d_pass%d.txt",experiment,config,pass);
   std::string old_db_path = db_path + "/db_sbs.hcal.dat";
   std::string db_adctoffset_variable = "sbs.hcal.adc.timeoffset";
+  std::string db_tmax_variable = "sbs.hcal.tmax";
+
+  //std::string testpath = "adcttest.root";
 
   // Set up output analysis file
-  TFile *fout = new TFile( Form("outfiles/adctalign_%s_conf%d_qr%d_pass%d.root",experiment,config,(Int_t)qreplay,pass), "RECREATE" );
+  TFile *fout = new TFile( adctalign_path.c_str(), "RECREATE" );
 
   // Get information from .csv files
   std::string struct_dir = Form("../config/%s/",experiment); //unique to my environment for now
@@ -119,6 +129,7 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
   
   // Declare histograms for modification later where additional calibration sets are necessary
   TH2D *hap_hodocorr_ID[hcal::gNstamp];
+  TH1D *hadct[hcal::gNstamp];
 
   for( Int_t set=0; set<hcal::gNstamp; set++ ){
     hap_hodocorr_ID[set] = new TH2D(Form("hap_hodocorr_ID_set%d",set),
@@ -129,6 +140,13 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
 				    total_bins,
 				    lower_lim,
 				    upper_lim);
+
+    hadct[set] = new TH1D(Form("hadct_set%d",set),
+			  "null",
+			  total_bins,
+			  lower_lim,
+			  upper_lim);
+
 
   }
 
@@ -204,7 +222,8 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
 
       adct_cal[Ncal_set_size].timestamp = current_offset_timestamp.c_str();
       util::readDB( old_db_path, current_offset_timestamp, db_adctoffset_variable, adct_cal[Ncal_set_size].old_param ); 
-      hap_hodocorr_ID[Ncal_set_size]->SetTitle(Form("ADCt Primary Block - TDC hodo, offset ts: %s;Channel;TDC_{HCAL}-TDC_{HODO} (ns)",adct_cal[Ncal_set_size].timestamp.c_str()));
+      hap_hodocorr_ID[Ncal_set_size]->SetTitle(Form("ADCt Primary Block - TDC hodo, offset ts: %s;Channel;ADCt_{HCAL}-TDC_{HODO} (ns)",adct_cal[Ncal_set_size].timestamp.c_str()));
+      hadct[Ncal_set_size]->SetTitle(Form("ADCt All Blocks, offset ts: %s;ADCt_{HCAL}-TDC_{HODO} (ns)",adct_cal[Ncal_set_size].timestamp.c_str()));
 
       Ncal_set_size++;
     }     
@@ -302,6 +321,10 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
     C->SetBranchAddress( "bb.hodotdc.clus.tmean", &HODOtmean );
     C->SetBranchAddress( "Ndata.sbs.hcal.clus.id", &Ncid ); //Odd maxing out at 10 clusters on all cluster Ndata objects, so this is needed in addition to sbs.hcal.nclus
 
+    //Globalcut enables
+    C->SetBranchStatus( "bb.tr.tg_th", 1 );
+    C->SetBranchStatus( "bb.tr.tg_ph", 1 );
+
     //Use TTreeFormula to avoid looping over data an additional time
     TCut GCut = cut[0].gcut.c_str();
     TTreeFormula *GlobalCut = new TTreeFormula( "GlobalCut", GCut, C );
@@ -392,6 +415,9 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
       Double_t adct_tc = hcalatime-HODOtmean; //Primary cluster, primary block tdc with trigger correction (ns)
 
       hap_hodocorr_ID[Ncal_set_idx]->Fill( pblkid, adct_tc );
+      
+      for( Int_t blk = 0; blk<nblk; blk++ )
+	hadct[Ncal_set_idx]->Fill(cblkatime[blk]);
 
       pblkid_out = pblkid;
       tdc_out = cblktime[0];
@@ -419,6 +445,7 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
   // Declare canvas and graph for plots
   TCanvas *ADCt_top[Ncal_set_size];
   TCanvas *ADCt_bot[Ncal_set_size];
+  TCanvas *ADCt_all[Ncal_set_size];
 
   //No error on cell location
   Double_t cellerr[hcal::maxHCalChan] = {0.};
@@ -434,10 +461,16 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
   Double_t tcval_avg[Ncal_set_size];
   Int_t tcval_Ng[Ncal_set_size];
 
+  //Get sigma for tmax calibrations
+  Double_t allsig[Ncal_set_size];
+
+  //Define offset calibration set
+  std::string offset_timestamp;
+
   for( Int_t set=0; set<Ncal_set_size; set++ ){
         
     //Define calibration set by newest timestamp (config/tdcoffset/tdccalib) and record constant
-    std::string offset_timestamp = adct_cal[set].timestamp;
+    offset_timestamp = adct_cal[set].timestamp;
     std::string config_timestamp = config_parameters.GetSBSTimestamp();
     std::string active_timestamp;
     util::tsCompare( offset_timestamp, config_timestamp, active_timestamp );
@@ -446,12 +479,45 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
     tcval_Ng[set] = 0;
 
     //Set up canvases for quick inspections
+    ADCt_all[set] = new TCanvas(Form("ADCt_all, timestamp: %s",active_timestamp.c_str()),"ADCt_top",1600,1200); 
     ADCt_top[set] = new TCanvas(Form("ADCt_top, timestamp: %s",active_timestamp.c_str()),"ADCt_top",1600,1200);
     ADCt_bot[set] = new TCanvas(Form("ADCt_bot, timestamp: %s",active_timestamp.c_str()),"ADCt_bot",1600,1200);
     ADCt_top[set]->Divide(12,12);
     ADCt_bot[set]->Divide(12,12);
     gStyle->SetOptStat(0);
     
+    //Fit all channel adct and extract sigma for tmax calibration
+    ADCt_all[set]->cd();
+    Double_t allfitl = 0.;
+    Double_t allfith = 0.;
+
+    Int_t adctN = hadct[set]->GetEntries();
+    Int_t allbinmax = hadct[set]->GetMaximumBin();
+    Double_t allbinmaxX = lower_lim+allbinmax*(upper_lim-lower_lim)/total_bins;
+    Double_t allbinmaxY = hadct[set]->GetBinContent(allbinmax);
+    allfitl = allbinmaxX - 2*observed_adct_sigma;
+    allfith = allbinmaxX + 2*observed_adct_sigma;
+
+    TF1 *gausfitall = new TF1("gausfitall",util::g_gfit_bg,allfitl,allfith,5);
+    gausfitall->SetLineWidth(4);
+    gausfitall->SetParameter(0,allbinmaxY);
+    gausfitall->SetParameter(1,allbinmaxX);
+    gausfitall->SetParLimits(1,allfitl,allfith);
+    gausfitall->SetParameter(2,observed_adct_sigma);
+    gausfitall->SetParLimits(2,1.,3*observed_adct_sigma);
+    gausfitall->SetParameter(3,25);
+    gausfitall->SetParameter(4,20);
+    gausfitall->SetParLimits(3,0,200);
+    
+    hadct[set]->Fit("gausfitall","RBMQ");
+    hadct[set]->Draw();
+
+    Double_t allmean = gausfitall->GetParameter(1);
+    allsig[set] = gausfitall->GetParameter(2);
+    hadct[set]->SetTitle(Form("Set:%d QR:%d N:%d Mean:%f Sigma:%f",set,(Int_t)qreplay,adctN,allmean,allsig[set]));    
+    //hadct[set]->Write();
+    ADCt_all[set]->Write();
+
     for(Int_t c=0; c<hcal::maxHCalChan; c++){
       tcvalw[Ncal_set_size][c] = 0.;
       tcerr[Ncal_set_size][c] = 0.;
@@ -483,7 +549,7 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
 	continue;
       }
 
-      TF1 *gausfit = new TF1("gausfit",util::g_gfit_bg,tfitl,tfith,4);
+      TF1 *gausfit = new TF1("gausfit",util::g_gfit_bg,tfitl,tfith,5);
       gausfit->SetLineWidth(4);
       gausfit->SetParameter(0,binmaxY);
       gausfit->SetParameter(1,binmaxX);
@@ -550,9 +616,8 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
     writeParFile << "#HCal ADCt offsets obtained " << date.c_str() << " for db adct offset timestamp " << offset_timestamp << endl;
     writeParFile << "#Offsets obtained from fits over ADCt distributions." << endl;
     writeParFile << active_timestamp << endl;
-    writeParFile << "sbs.hcal.adc.timeoffset =" << endl;
+    writeParFile << db_adctoffset_variable << " =" << endl;
 
-  
     Int_t cell = 0;
 
     for( Int_t r = 0; r<hcal::maxHCalRows; r++){
@@ -567,10 +632,27 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
       writeParFile << endl;
     }  // endloop over rows 
     writeParFile << endl << endl;
-
+      
   } //endloop over calibration sets
 
   writeParFile.close();
+
+  //Write tmax calibrations per set on qreplay
+  ofstream write_tmax_file;
+  if( !qreplay )
+    new_tmax_path = "/dev/null";
+  write_tmax_file.open( new_tmax_path );
+  for( Int_t set=0; set<Ncal_set_size; set++ ){
+    write_tmax_file << "#tmax parameters obtained " << date.c_str() << " for db adct offset timestamp " << offset_timestamp << endl;
+    write_tmax_file << db_tmax_variable << " = " << tmax_factor*allsig[set] << endl;
+  }
+  write_tmax_file.close();
+
+  //clean up
+  for( Int_t unused_set_index=Ncal_set_size; unused_set_index<hcal::gNstamp; unused_set_index++ ){
+    delete hap_hodocorr_ID[unused_set_index];
+  }
+
   fout->Write();
   st->Stop();
 

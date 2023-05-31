@@ -16,7 +16,7 @@
 const Double_t Y_range_factor = 20; //plot +/- about average value for comparison. Adjust depending on variance across HCal ID
 
 //Main. Pass exp{gmn,gen,genrp,gep,etc}, config{<int>configuration number}, type{tdc,adtc}, setN{<int> calibration subset number}
-void plot_talign_comparison( const char *exp = "gmn", Int_t config = 4, const char *type = "adct", Int_t setN = 0 ){
+void plot_talign_comparison( const char *exp = "gmn", Int_t config = 4, const char *type = "tdc", Int_t setN = 0, Int_t pass=0 ){
   //build the canvas
   gStyle->SetOptFit();
   gStyle->SetEndErrorSize(0);
@@ -28,9 +28,15 @@ void plot_talign_comparison( const char *exp = "gmn", Int_t config = 4, const ch
   Double_t x,y;
   Double_t avg = 0;
 
+  std::string outdir_path = gSystem->Getenv("OUT_DIR");
+  std::string align_path = outdir_path + Form("/hcal_calibrations/pass%d/timing/%salign_%s_conf%d_qr0.root",pass,type,exp,config);
+  std::string align_qr_path = outdir_path + Form("/hcal_calibrations/pass%d/timing/%salign_%s_conf%d_qr1.root",pass,type,exp,config);
+
   //open files and get tgraphs
-  TFile *f = TFile::Open(Form("%salign_%s_conf%d_qr0.root",type,exp,config));
-  TFile *fqr = TFile::Open(Form("%salign_%s_conf%d_qr1.root",type,exp,config));
+  // TFile *f = TFile::Open(Form("%salign_%s_conf%d_qr0.root",type,exp,config));
+  // TFile *fqr = TFile::Open(Form("%salign_%s_conf%d_qr1.root",type,exp,config));
+  TFile *f = TFile::Open(align_path.c_str());
+  TFile *fqr = TFile::Open(align_qr_path.c_str());
   TGraphErrors *g = (TGraphErrors*)f->Get(Form("g%s_c_s%d",type,setN));
   for( Int_t i=0; i<hcal::maxHCalChan; i++ ){ //remove points where not enough data to fit (y=0) and get Y average
     x=-1;

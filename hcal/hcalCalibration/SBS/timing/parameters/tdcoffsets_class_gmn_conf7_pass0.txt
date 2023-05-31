@@ -1,4 +1,4 @@
-#HCal TDC offsets obtained 5_18_2023 for db tdc offset timestamp none and for tdc calib timestamp none
+#HCal TDC offsets obtained 5_26_2023 for db tdc offset timestamp none and for tdc calib timestamp none
 #Offsets obtained from fits over TDC distributions.
 --------[ 2021-11-13 00:00:00 ]
 sbs.hcal.tdc.offset =
