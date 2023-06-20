@@ -1,6 +1,6 @@
 //SSeeds 5.8.23 - Script adapted from tcal.C at https://github.com/sebastianseeds/HCal_replay to align adct elastic peaks across all HCal block ids
 // 5.23.23 update - Added adct all-channels distribution and fit for adct sigma extraction and calibration of sbs.hcal.tmax
-//NOTE: requires $DB_DIR path set correctly in current environment. Script assumes hardware differences on adctoffset timestamps and outputs alignment constants for all timestamps within the configuration provided.
+//NOTE: requires $DB_DIR and $OUT_DIR paths set correctly in current environment. Script assumes hardware differences on adctoffset timestamps and outputs alignment constants for all timestamps within the configuration provided.
 
 #include <vector>
 #include <iostream>
@@ -23,10 +23,11 @@ const Int_t upper_lim = 140;
 const Int_t fit_event_min = 50;
 const Double_t observed_adct_sigma = 4.0; //rough estimate
 const Double_t ADCt_target = 50.;
-const Double_t tmax_factor = 5.; //number of sigma to consider for tmax cut on cluster elements
+const Double_t tmax_factor = 6.; //number of sigma to consider for tmax cut on cluster elements
+const Int_t linecount = 12;
 
-//Main <experiment> <configuration> <quasi-replay> <replay-pass>; qreplay should only be performed after new offsets obtained
-void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = true, Int_t pass = 0 ){
+//Main <experiment> <configuration> <quasi-replay> <replay-pass> <target_option>; qreplay should only be performed after new offsets obtained
+void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = true, Int_t pass = 0, bool h2only = false ){
 
   // Define a clock to check macro processing time
   TStopwatch *st = new TStopwatch();
@@ -36,8 +37,12 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
   std::string date = util::getDate();
 
   // outfile path
+  std::string h2opt = "";
+  if( h2only )
+    h2opt = "_lh2only";
   std::string outdir_path = gSystem->Getenv("OUT_DIR");
-  std::string adctalign_path = outdir_path + Form("/hcal_calibrations/pass%d/timing/adctalign_class_%s_conf%d_qr%d_pass%d.root",pass,experiment,config,(Int_t)qreplay,pass);
+  std::string adctalign_path = outdir_path + Form("/hcal_calibrations/pass%d/timing/adctalign%s_%s_conf%d_qr%d_pass%d.root",pass,h2opt.c_str(),experiment,config,(Int_t)qreplay,pass);
+  std::string plotdir = Form("../quality_plots/%s/conf%d/",experiment,config);
 
   // offset paths and variables
   std::string db_path = gSystem->Getenv("DB_DIR");
@@ -223,7 +228,7 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
       adct_cal[Ncal_set_size].timestamp = current_offset_timestamp.c_str();
       util::readDB( old_db_path, current_offset_timestamp, db_adctoffset_variable, adct_cal[Ncal_set_size].old_param ); 
       hap_hodocorr_ID[Ncal_set_size]->SetTitle(Form("ADCt Primary Block - TDC hodo, offset ts: %s;Channel;ADCt_{HCAL}-TDC_{HODO} (ns)",adct_cal[Ncal_set_size].timestamp.c_str()));
-      hadct[Ncal_set_size]->SetTitle(Form("ADCt All Blocks, offset ts: %s;ADCt_{HCAL}-TDC_{HODO} (ns)",adct_cal[Ncal_set_size].timestamp.c_str()));
+      hadct[Ncal_set_size]->SetTitle(Form("ADCt All Blocks, offset ts: %s;Raw Cluster Block ADCt_{HCAL} (ns)",adct_cal[Ncal_set_size].timestamp.c_str()));
 
       Ncal_set_size++;
     }     
@@ -327,6 +332,11 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
 
     //Use TTreeFormula to avoid looping over data an additional time
     TCut GCut = cut[0].gcut.c_str();
+
+    //Add globalcut and elastic cuts for reporting
+    adct_cal[Ncal_set_idx].gcut = cut[0].gcut;
+    adct_cal[Ncal_set_idx].minEv = fit_event_min;
+
     TTreeFormula *GlobalCut = new TTreeFormula( "GlobalCut", GCut, C );
 
     // Set up hcal coordinate system with hcal angle wrt exit beamline
@@ -416,6 +426,7 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
 
       hap_hodocorr_ID[Ncal_set_idx]->Fill( pblkid, adct_tc );
       
+      //Fill the adc time for all blocks in the primary cluster for tmax extraction. Note that no hodoscope correction is applied as it is not included in SBS-offline
       for( Int_t blk = 0; blk<nblk; blk++ )
 	hadct[Ncal_set_idx]->Fill(cblkatime[blk]);
 
@@ -478,10 +489,10 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
     tcval_avg[set] = 0.;
     tcval_Ng[set] = 0;
 
-    //Set up canvases for quick inspections
-    ADCt_all[set] = new TCanvas(Form("ADCt_all, timestamp: %s",active_timestamp.c_str()),"ADCt_top",1600,1200); 
-    ADCt_top[set] = new TCanvas(Form("ADCt_top, timestamp: %s",active_timestamp.c_str()),"ADCt_top",1600,1200);
-    ADCt_bot[set] = new TCanvas(Form("ADCt_bot, timestamp: %s",active_timestamp.c_str()),"ADCt_bot",1600,1200);
+    //Set up canvases for quality checks
+    ADCt_all[set] = new TCanvas(Form("adct_tmax_set%d",set),Form("ADCt_all, timestamp: %s",active_timestamp.c_str()),1600,1200); 
+    ADCt_top[set] = new TCanvas(Form("adct_fit_top_set%d",set),Form("ADCt_top, timestamp: %s",active_timestamp.c_str()),1600,1200);
+    ADCt_bot[set] = new TCanvas(Form("adct_fit_bot_set%d",set),Form("ADCt_bot, timestamp: %s",active_timestamp.c_str()),1600,1200);
     ADCt_top[set]->Divide(12,12);
     ADCt_bot[set]->Divide(12,12);
     gStyle->SetOptStat(0);
@@ -574,7 +585,16 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
     }    
     ADCt_top[set]->Write();
     ADCt_bot[set]->Write();
- 	
+
+    if( !qreplay ){
+      std::string qplotpath_all = plotdir + Form("adct_tmax_set%d.png",set);
+      std::string qplotpath_top = plotdir + Form("adct_fit_top_set%d.png",set);
+      std::string qplotpath_bot = plotdir + Form("adct_fit_bot_set%d.png",set);
+      ADCt_all[set]->SaveAs(qplotpath_all.c_str());
+      ADCt_top[set]->SaveAs(qplotpath_top.c_str());
+      ADCt_bot[set]->SaveAs(qplotpath_bot.c_str());
+    } 	
+
     tcval_avg[set] /= tcval_Ng[set];
 	
   }//endloop over slice fits
@@ -647,6 +667,50 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
     write_tmax_file << db_tmax_variable << " = " << tmax_factor*allsig[set] << endl;
   }
   write_tmax_file.close();
+
+    //Add output report canvas
+  TCanvas *c1[Ncal_set_size];
+
+  for( Int_t s=0; s<Ncal_set_size; s++ ){
+
+    c1[s] = new TCanvas(Form("adctalignreport_%d",s), Form("Configuration/Cut Information, Calibration Set %d",s), 200, 10, 900, 500);
+  
+    // Set margin.
+    c1[s]->SetLeftMargin(0.05);
+
+    // Create a TText object.
+    TText *t = new TText();
+
+    // Set text align to the left (horizontal alignment = 1).
+    t->SetTextAlign(11);
+
+    //make an array of strings
+    std::string target_option = "All Available";
+    if( h2only )
+      target_option = "LH2";
+    std::string report[linecount] = {
+      "General ADCt Alignment Info",
+      Form("Experiment: %s, Configuration: %d, Pass: %d", experiment, config, pass),
+      Form("Creation Date: %s", date.c_str() ),
+      Form("Target(s) Used: %s", target_option.c_str() ),
+      Form("Calibration Set: %s", adct_cal[s].timestamp.c_str() ),
+      "",
+      "Elastic Cuts",
+      Form("Global Elastic Cuts: %s", adct_cal[s].gcut.c_str() ),
+      "",
+      "Other Cuts",
+      Form("Minimum Ev per Cell : %d", adct_cal[s].minEv),
+      "HCal Active Area (Projected Nucleon 1 row/col Within HCal Acceptance)"
+    };
+    // Loop to write the lines to the canvas.
+    for( Int_t i = 0; i<linecount; i++ ) {
+      // Vertical position adjusted according to line number.
+      Double_t verticalPosition = 0.9 - i * 0.04;
+      t->DrawTextNDC(0.1, verticalPosition, report[i].c_str());
+    }
+
+    c1[s]->Write();    
+  }
 
   //clean up
   for( Int_t unused_set_index=Ncal_set_size; unused_set_index<hcal::gNstamp; unused_set_index++ ){

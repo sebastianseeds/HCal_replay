@@ -38,6 +38,14 @@ const Double_t hIDvtrXm = -60.24; //bb.hodotdc.clus.id:bb.tr.x pol1 fit p1
 const Double_t hIDvtrXsig = 0.02; //bb.tr.x, bb.hodotdc.clus.id==hIDvtrXoff, 2sig
 const Double_t htrXshift = 0.02; //empyrical check on bb.tr.x fit dists
 
+//Keep this around just in case it's needed later
+Double_t Gfit(Double_t *x, Double_t *par){
+  Double_t amp = par[0];
+  Double_t offset = par[1];
+  Double_t sigma = par[2];
+  return amp*exp(-0.5*pow((x[0]-offset)/sigma,2.));
+}
+
 void rf_study( Int_t kine = 4 ){
 
   // Declare Chain for many root files
@@ -328,7 +336,7 @@ void rf_study( Int_t kine = 4 ){
   TH1D *hpvabardiff = new TH1D( "hpvabardiff", "Hodo Cluster Bar Seed - Adjacent Bar Diff (uncorrected)", 400, -10, 10 );
   TH2D *hpvabardiffID = new TH2D( "hpvabardiffID", "Hodo Cluster Bar Seed - Adjacent Bar Diff vs ID (uncorrected)", 100, -10, 90, 400, -10, 10 );
   TH1D *hclusdiff = new TH1D( "hclusdiff", "Hodo Cluster Seed - Block Diff, (Primary Block Reftime, nblk>1)", 400, -10, 10 );
-  TH2D *hclusmeanID = new TH2D( "hclusmeanID", "Hodo Cluster Mean Time, (Primary Block Reftime/ID, nblk>1), vs ID", 100, -10, 90, 400, -10, 10 );
+  TH2D *hclusmeanID = new TH2D( "hclusmeanID", "Hodo Cluster Mean Time, (Primary Block Reftime/ID, nblk>1), vs ID", 100, -10, 90, 400, -10, 10 ); //slice this one
   TH1D *hclusmean = new TH1D( "hclusmean", "Hodo Cluster Mean Time, (Primary Block Reftime/ID, nblk>1)", 400, -2, 2 );
   TH2D *hclusbardiffID = new TH2D( "hclusbardiffID", "Hodo Cluster Bar Seed - Block Diff, (Primary Block Reftime, nblk>1, no corrections), vs ID", 100, -10, 90, 400, -10, 10 );
   TH2D *hclusbarmeanID = new TH2D( "hclusbarmeanID", "Hodo Cluster Bar Mean Time, (Primary Block Reftime/ID, nblk>1, no corrections), vs ID", 100, -10, 90, 400, -10, 10 );
@@ -336,15 +344,13 @@ void rf_study( Int_t kine = 4 ){
   TH2D *hclusbarB1vB2 = new TH2D( "hclusbarB1vB2", "Hodo Cluster Bar 1 vs Bar 2, (no corrections)", 400, -20, 20, 400, -20, 20 );
   TH2D *hbarB40vB41 = new TH2D( "hbarB40vB41", "Hodo Bar 40 vs Bar 41, (no corrections); bar40 (ns); bar41 (ns)", 400, -20, 20, 400, -20, 20 );
 
-
-
   //TDCTRIG histos
   TH1D *hrf = new TH1D( "hrf", "RF signal", 800, -100, 300 );
 
   //HCAL histos
   //TH1D *hhclusdiff = new TH1D( "hhclusdiff", "HCal Cluster Seed - Block Diff (Primary Block Reftime, nblk>1)", 400, -100, 100 );
   TH1D *hhclusmean = new TH1D( "hhclusmean", "HCal Cluster Mean Time (Primary Block Reftime, nblk>1)", 400, -20, 20 );
-  TH2D *hhclusmeanID = new TH2D( "hhclusmeanID", "HCal Cluster Mean Time, (Primary Block Reftime/ID, nblk>1), vs ID", 288, 0, 288, 400, -20, 20 );
+  TH2D *hhclusmeanID = new TH2D( "hhclusmeanID", "HCal Cluster Mean Time, (Primary Block Reftime/ID, nblk>1), vs ID", 288, 0, 288, 400, -20, 20 ); //slice this one
   TH1D *hhclusdiff = new TH1D( "hhclusdiff", "HCal Cluster Seed - Block Diff, (Primary Block Reftime, nblk>1)", 400, -20, 20 );  
   TH2D *hhclusdiffID = new TH2D( "hhclusdiffID", "HCal Cluster Seed - Block Diff, (Primary Block Reftime, nblk>1), vs ID", 288, 0, 288, 400, -20, 20 );
   TH2D *hhB1B2diffID = new TH2D( "hhB1B2diffID", "HCal Cluster Seed - Next Highest E Block Diff vs ID", 288, 0, 288, 400, -20, 20 );
@@ -617,6 +623,94 @@ void rf_study( Int_t kine = 4 ){
 
   }
   
+  //Make TGraphErrors for hodoscope internal meantime vs ID
+  const Int_t hodoslices = 100;
+  Double_t aTDCsig = 1.; //Approximate mean internal tdc sigma
+
+  //No error on cell location
+  Double_t cellerr[hodoslices] = {0.};
+  Double_t tsetpar[3];
+  Double_t tcval_avg = 0.;
+  Int_t tcval_Ng = 0;
+
+  //Make arrays for tdc tgraphs
+  Double_t tcell[hodoslices] = {0.};
+  Double_t tcval[hodoslices] = {0.};
+  Double_t tcerr[hodoslices] = {0.};
+  TH1D *hodocellslice[hodoslices];
+  
+  //Fits for hodo cluster meantime
+  TCanvas *HITmean_u = new TCanvas("HITmean_u","HITmean_u",800,1200); //Hodo internal tdc mean
+  TCanvas *HITmean_l = new TCanvas("HITmean_l","HITmean_l",800,1200); //Hodo internal tdc mean
+
+  HITmean_u->Divide(25,2);
+  HITmean_l->Divide(25,2);
+
+  gStyle->SetOptStat(0);
+
+  for(Int_t c=0; c<hodoslices; c++){
+
+    //Index through the canvas
+    HITmean_u->cd(c+1);
+    if( c>=50 ){
+      HITmean_l->cd(c-49);
+      gStyle->SetOptStat(0);
+    }
+
+    //Get slices from htDiff_ID and fit for mean vals
+    Double_t tfitl = 0.;
+    Double_t tfith = 0.;
+    Int_t adj_c = c-10+1;
+    tcell[c] = adj_c;
+    hodocellslice[c] = hclusbarmeanID->ProjectionY(Form("hodocellslice_%d",adj_c+1),adj_c+1,adj_c+1);
+    tcval[c] = 0.; //will overwrite if fit is good.
+
+    Int_t sliceN = hodocellslice[c]->GetEntries();
+    if( sliceN<tFitMin ){
+      hodocellslice[c]->Draw();
+      continue;
+    }
+
+    Double_t arimean = hodocellslice[c]->GetMean();
+    tsetpar[0] = sliceN;
+    tsetpar[1] = arimean;
+    tsetpar[2] = aTDCsig;
+    tfitl = arimean - 4*aTDCsig;
+    tfith = arimean + 4*aTDCsig;
+    TF1 *gausfit = new TF1("gausfit",Gfit,tfitl,tfith,3);
+    gausfit->SetLineWidth(4);
+    gausfit->SetParameter(0,tsetpar[0]);
+    gausfit->SetParameter(1,tsetpar[1]);
+    gausfit->SetParLimits(1,tfitl,tfith);
+    gausfit->SetParameter(2,tsetpar[2]);
+    gausfit->SetParLimits(2,0,5);
+
+    hodocellslice[c]->Fit("gausfit","RBM");
+    hodocellslice[c]->Draw();
+
+    tcval[c] = gausfit->GetParameter(1);
+    tcerr[c] = gausfit->GetParameter(2);
+    hodocellslice[c]->SetTitle(Form("Mean:%f Sigma:%f",tcval[c],tcerr[c]));    
+
+    tcval_avg += tcval[c];
+    tcval_Ng++;
+
+  }    
+  HITmean_u->Write();
+  HITmean_l->Write();
+
+  //Make graphs with errors for reporting
+  TGraphErrors *HIT_c = new TGraphErrors( hodoslices, tcell, tcval, cellerr, tcerr );
+  HIT_c->GetXaxis()->SetLimits(-10,90);  
+  HIT_c->GetYaxis()->SetLimits(-3.,3.);
+  HIT_c->SetTitle("Hodo Cluster Internal Mean Time vs Cell");
+  HIT_c->GetXaxis()->SetTitle("Cell");
+  HIT_c->GetYaxis()->SetTitle("SUM(blk_{blkN!=0}-blk_{blkN=0})/(nblk-1)");
+  HIT_c->SetMarkerStyle(20); // idx 20 Circles, idx 21 Boxes
+  HIT_c->Draw();
+  HIT_c->Write("HIT_c");
+
+
   cout << endl << endl;
 
   cout << "Total elastics on sample: " << elasYield << "/" << Nevents << endl << endl;

@@ -1,6 +1,6 @@
 //SSeeds 5.15.23 - Script adapted from ecal.C at https://github.com/sebastianseeds/HCal_replay to calibrate energy with elastic events from all available data. Assumes tdc/adct alignment scripts have been written and new alignments are available. Check sbs.h for class details.
 //NOTE: This script is configured to calibrate by configuration/kinematic. One could, in principle, calibrate the energy over all configurations. This method is chosen to be sensitive to expected changes in hcal sampling fraction and E/sigma ratios prediced by MC. Timestamps are dynamically handled to address mismatches. Any timestamps occurring within a configuration are assumed to be hardware/HV related and will result in multiple calibration sets for that configuration.
-//ADDITIONAL NOTE: requires $DB_DIR path set correctly in current environment and directory structure to match the github model.
+//ADDITIONAL NOTE: requires $DB_DIR and $OUT_DIR paths set correctly in current environment and DB directory structure to match the github model from SBS-replay.
 
 #include <vector>
 #include <iostream>
@@ -20,7 +20,7 @@
 #include "../include/sbs.h"
 
 const Double_t minEventPerCell = 100;
-const Double_t highDelta = 0.01;
+const Double_t highDelta = 0.01; //max allowed discrepancy factor between energy deposited in block and expected
 const Int_t hcal_first_channel = 0;
 const Int_t bins_magnet_percent = 21;
 const Double_t start_magnet_percent = 0.;
@@ -33,9 +33,11 @@ const Double_t end_dy = 1.25;
 const Double_t bins_SFE = 400;
 const Double_t start_SFE = 0.;
 const Double_t end_SFE = 1.;
+const Int_t linecount = 25;
+const Int_t atimeNsig = 6;
 
-//Main <experiment> <configuration> <quasi-replay-option> <replay-pass>; qreplay should only be performed after new offsets obtained
-void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false, Int_t pass = 0 ){
+//Main <experiment> <configuration> <quasi-replay-option> <replay-pass> <target-option>; qreplay should only be performed after new offsets obtained
+void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false, Int_t pass = 0, bool h2only = true ){
   
   // Define a clock to check macro processing time
   TStopwatch *st = new TStopwatch();
@@ -45,13 +47,16 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
   string date = util::getDate();
 
   // outfile path
+  std::string h2opt = "";
+  if( h2only )
+    h2opt = "_lh2only";
   std::string outdir_path = gSystem->Getenv("OUT_DIR");
-  std::string ecal_path = outdir_path + Form("/hcal_calibrations/pass%d/energy/ecal_class_%s_conf%d_qr%d_pass%d.root",pass,experiment,config,(Int_t)qreplay,pass);
+  std::string ecal_path = outdir_path + Form("/hcal_calibrations/pass%d/energy/hes_ecal%s_%s_conf%d_qr%d_pass%d.root",pass,h2opt.c_str(),experiment,config,(Int_t)qreplay,pass);
 
   //Set up path variables and output files
   string db_path = gSystem->Getenv("DB_DIR");
   TFile *fout = new TFile( ecal_path.c_str(), "RECREATE" );
-  std::string new_adcgain_path = Form("parameters/adcgaincoeff_%s_conf%d_pass%d.txt",experiment,config,pass);
+  std::string new_adcgain_path = Form("parameters/hes_adcgaincoeff_%s%s_conf%d_pass%d.txt",experiment,h2opt.c_str(),config,pass);
 
   // Get information from .csv files
   std::string struct_dir = Form("../config/%s/",experiment); //unique to my environment for now
@@ -62,9 +67,15 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
   vector<calrun> runs; 
   util::ReadRunList(struct_dir,experiment,nruns,config,pass,verb,runs); //nruns=-1 modifies nruns to loop over all available
   
+  //define structures for holding calibration data and indices
   calset gain_coeff[hcal::gNstamp];
   Int_t Ncal_set_size = 0;
   Int_t Ncal_set_idx = 0;
+
+  //define structures for holding cut report data and indices	    
+  reportset report_set[hcal::gNmag];
+  Int_t report_set_size = 0;
+  Int_t report_set_idx = 0;
   
   // re-allocate memory at each run to load different cuts/parameters
   TChain *C = nullptr;
@@ -95,6 +106,7 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
   Int_t run_out; //run number
   Int_t tar_out; //target, LH2 or LD2
   Int_t badclus_out; //0: all blocks pass coin, 1: at least one block fails coin
+  Int_t failedglobal_out;
 
   //cluster block variables
   Double_t cblkid_out[hcal::maxHCalBlk];
@@ -123,6 +135,7 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
   P->Branch( "run", &run_out, "run_out/I" );
   P->Branch( "tar", &tar_out, "tar_out/I" );
   P->Branch( "badclus", &badclus_out, "badclus_out/I" );
+  P->Branch( "failedglobal", &failedglobal_out, "failedglobal_out/I" );
 
   P->Branch( "cblkid", &cblkid_out, Form("cblkid[%d]/D",hcal::maxHCalBlk) );
   P->Branch( "cblkatime", &cblkatime_out, Form("cblkatime[%d]/D",hcal::maxHCalBlk) );
@@ -278,8 +291,10 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
 
   }
 
-  //minimize reporting
+  //reporting indices
   Int_t target_change_index;
+  Double_t config_sampling_fraction;
+  Double_t config_e_sigma_ratio;
 
   //Main loop over runs
   for (Int_t r=0; r<nruns; r++) {
@@ -298,7 +313,7 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
 
     //Get target configuration
     SBStarget target_parameters(current_target);
-    Int_t target_index = target_parameters.GetTargIndex();
+    Int_t target_index = target_parameters.GetTargIndex();  //Target index (1:lh2,2:ld2,3:he3)
     Double_t target_length = target_parameters.GetTargLength();
     Double_t target_rho = target_parameters.GetTargRho();
     Double_t cell_rho = target_parameters.GetCellRho();
@@ -308,11 +323,9 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
     Double_t target_dEdx = target_parameters.GetTargdEdx();
     Double_t M_avg = target_parameters.GetAvgMass();
         
-    //send to console if the target changes
-    if( target_change_index != target_index ){
-      cout << target_parameters;
-      target_change_index = target_index;
-    }
+    //check target and continue on deuterium of only calibrating with hydrogen
+    if( h2only && target_index!=1 )
+      continue;
 
     //Record old gain and offset parameters by tstamp from database (assumes one file for all timestamps)
     std::string old_db_path = db_path + "/db_sbs.hcal.dat";
@@ -352,6 +365,7 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
       }
 
       gain_coeff[Ncal_set_size].timestamp = current_timestamp.c_str();
+      gain_coeff[Ncal_set_size].good_events = 0;
 
       //resize the matrices and vectors
       gain_coeff[Ncal_set_size].Ma.ResizeTo(hcal::maxHCalChan,hcal::maxHCalChan);
@@ -480,6 +494,46 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
 
     //Use TTreeFormula to avoid looping over data an additional time
     TCut GCut = cut[0].gcut.c_str();
+
+    //Add globalcut and elastic cuts for reporting
+    if( target_change_index != target_index ){
+      cout << target_parameters;
+      target_change_index = target_index;
+    }
+
+    //Look through available report sets by magnetic field setting and target for duplicate entries. Correct index where necessary.
+    bool found_ri = false;
+    for( Int_t rs=0; rs<=report_set_size; rs++ ){
+      if( report_set[rs].mag == mag && report_set[rs].targetidx == target_index ){
+	found_ri = true;
+	report_set_idx = rs;
+      }
+    }
+
+    if( !found_ri ){
+      report_set_idx = report_set_size;
+
+      report_set[report_set_idx].gcut = cut[0].gcut;
+      report_set[report_set_idx].target = current_target;
+      report_set[report_set_idx].mag = mag;
+      report_set[report_set_idx].targetidx = target_index;
+      report_set[report_set_idx].W2mean = cut[0].W2_mean;
+      report_set[report_set_idx].W2sigma = cut[0].W2_sig;
+      report_set[report_set_idx].dxmean_n = cut[0].dx0_n;
+      report_set[report_set_idx].dxmean_p = cut[0].dx0_p;
+      report_set[report_set_idx].dxsigma_n = cut[0].dx_sig_n;
+      report_set[report_set_idx].dxsigma_p = cut[0].dx_sig_p;
+      report_set[report_set_idx].dymean = cut[0].dy0;
+      report_set[report_set_idx].dysigma = cut[0].dy_sig;
+      report_set[report_set_idx].atimemean = cut[0].atime0;
+      report_set[report_set_idx].atimesigma = cut[0].atime_sig;
+      report_set[report_set_idx].minEv = minEventPerCell;
+      report_set[report_set_idx].highdelta = highDelta;
+    
+      report_set_size++;
+
+    }
+
     TTreeFormula *GlobalCut = new TTreeFormula( "GlobalCut", GCut, C );
     
     // Set up hcal coordinate system with hcal angle wrt exit beamline
@@ -506,7 +560,8 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
       }
       bool failedglobal = GlobalCut->EvalInstance(0) == 0;
 	  
-      if( failedglobal ) continue;
+      if( failedglobal ) 
+      	continue;
 
       ///////
       //HCal Active Area Cut
@@ -516,19 +571,21 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
 	pblkcol==0 || 
 	pblkcol==11;
 
-      if( failedactivearea ) continue; //All events with primary cluster element on edge blocks cut
+      if( failedactivearea ) 
+      	continue; //All events with primary cluster element on edge blocks cut
 
       ///////
-      //HCal coincidence time cut (using adctime while hcal tdc suspect, new offsets)
+      //HCal primary cluster coincidence time cut (using adctime while hcal tdc suspect, new offsets)
       Int_t pblkid = cblkid[0]-1; //define primary block, primary cluster ID
 
       Double_t natime = cblkatime[0]+old_adct_offsets[pblkid]-new_adct_offsets[pblkid]; //new atime
       Double_t atime0 = cut[0].atime0; //observed elastic peak in adc time
       Double_t atimesig = cut[0].atime_sig; //observed width of elastic peak in adc time
 
-      bool failedcoin = abs(natime-atime0)>3*atimesig;
-	  
-      if( failedcoin ) continue; //All events where adctime outside of reasonable window cut
+      bool failedcoin = abs(natime-atime0)>atimeNsig*atimesig;
+
+      if( failedcoin ) 
+      	continue; //All events where adctime outside of reasonable window cut
 	
       //ADC arrays reset per event 
       Double_t A[hcal::maxHCalChan] = {0.0}; // Array to keep track of ADC values per cell. Outscope on each ev
@@ -595,39 +652,50 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
 	hdyvmag_h3[Ncal_set_idx]->Fill( mag, dy );
       }
 
-      ///////
       //Target Energy in HCal for calibrations
-      Double_t hcal_samp_frac = cut[0].hcal_sf;
-      Double_t hcal_esratio = cut[0].hcal_es; 
+      Double_t hcal_samp_frac = cut[0].hcal_sf; config_sampling_fraction = hcal_samp_frac;
+      Double_t hcal_esratio = cut[0].hcal_es; config_e_sigma_ratio = hcal_esratio;
       Double_t KE_exp = KE_p*hcal_samp_frac/hcal_esratio; //Expected E in HCal
 
       ///////
-      //BigBite/SBS Acceptance matching.
+      //BigBite/SBS Acceptance matching. Redundant here with dxdy cuts. Removed.
       bool failedaccmatch = 
 	xyhcalexp[1] > hcal::posHCalYf ||
 	xyhcalexp[1] < hcal::posHCalYi ||
 	xyhcalexp[0] > hcal::posHCalXf ||
 	xyhcalexp[0] < hcal::posHCalXi;
-	  
-      if( failedaccmatch ) continue;
+
+      // if( failedaccmatch ) 
+      // 	continue;
 
       ///////
       //dy elastic cut
       Double_t dy0 = cut[0].dy0;
       Double_t dysig = cut[0].dy_sig;
-      bool faileddy = abs(dy-dy0)<3*dysig;
+      bool faileddy = abs(dy-dy0)>3*dysig;
 
-      if( faileddy ) continue;
+      if( faileddy ) 
+      	continue;
 
       ///////
       //PID
       Int_t pid = -1;
       util::checkPID(current_target,cut[0].dx0_p,cut[0].dx0_n,cut[0].dx_sig_p,cut[0].dx_sig_n,dx,pid);
-      
+
       ///////
       //dx elastic cut
-      if( pid==-1 ) continue;
+      if( pid==-1 ) 
+      	continue;
 
+      ////////////////////////////
+      //Primary W2 cut on elastics
+      Double_t W2_mean = cut[0].W2_mean;
+      Double_t W2_sig = cut[0].W2_sig;
+      bool failedW2 = fabs(W2-W2_mean)>W2_sig;
+
+      if( failedW2 ) 
+      	continue; //Observed mean W2 cut on elastic peak
+      
       ///////
       //Get corrected primary cluster energy
       Double_t clusE = 0.0;
@@ -638,9 +706,11 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
 	Int_t blkid = int(cblkid[blk])-1; //-1 necessary since sbs.hcal.clus_blk.id ranges from 1 to 288 (different than just about everything else)
 	Double_t blke = cblke[blk];
 	
+	Double_t blknatime = cblkatime[blk]+old_adct_offsets[blkid]-new_adct_offsets[blkid]; //new atime
+
 	////////
 	//Cluster block coincidence adc time check, 5sig estimate
-	if( abs(cblkatime[blk]-atime0)>5*atimesig ){
+	if( abs(blknatime-atime0)>atimeNsig*atimesig ){
 	  badclus = 1;
 	  continue; //May wish to remove this cut. Should investigate expected spread in time in MC
 	}
@@ -648,7 +718,7 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
 	//Correct the block energy with new gain coeff on quasi-replay
 	if( qreplay )
 	  blke = cblke[blk]/gain_coeff[Ncal_set_idx].old_param[blkid]*new_adcg_coeff[blkid];
-	
+
 	clusE += blke;
 	if( blk==0 ) clusblkE += blke;
 	
@@ -683,8 +753,8 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
       W2_out = W2;
       Q2_out = Q2;
       nu_out = nu;
-      hcale_out = HCALe;
-      sfrac_out = SFrac;
+      hcale_out = clusE;
+      sfrac_out = sampling_fraction;
       thetapq_pout = thetapq_p;
       thetapq_nout = thetapq_n;
       nblk_out = nblk;
@@ -694,28 +764,33 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
       tar_out = target_index;
       badclus_out = badclus;
       hodotmean_out = HODOtmean;
+      failedglobal_out = failedglobal;
 
       P->Fill();
 
       ////////
       //Proceed only if calibrating
-      if( qreplay ) continue;
+      if( qreplay ) 
+	continue;
 
+      gain_coeff[Ncal_set_idx].good_events++;
       clusE = 0.0; //reset cluster energy
       Double_t cluspC = 0.0;
       for( Int_t blk = 0; blk<nblk; blk++ ){
       
-	////////
-	//Cluster block coincidence time cut (using adct for now)
-	bool badblock = false;
-	if( abs(cblkatime[blk]-atime0)>5*atimesig )
-	  badblock=true;
-	    
-	if( badblock ) continue;
-
 	Int_t blkid = int(cblkid[blk])-1;
 	Double_t blke = cblke[blk];
 	Double_t blkpC = cblke[blk]/gain_coeff[Ncal_set_idx].old_param[blkid];
+	Double_t blknatime = cblkatime[blk]+old_adct_offsets[blkid]-new_adct_offsets[blkid]; //new atime
+
+	////////
+	//Cluster block coincidence time cut (using adct for now)
+	bool badblock = false;
+	if( abs(blknatime-atime0)>atimeNsig*atimesig )
+	  badblock=true;
+	    
+	// if( badblock ) 
+	//   continue;
 
 	clusE += blke;
 	cluspC += blkpC;
@@ -891,6 +966,7 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
       Int_t cell = 0;
 
       GainCoeff << "#HCal gain coefficients from SBS-" << config << " obtained " << date.c_str() << " timestamp set " << active_timestamp << endl;
+      GainCoeff << "Total number of events available to calibrate for this set: " << gain_coeff[s].good_events << endl;
       if( active_timestamp.compare("none")!=0 )
 	GainCoeff << active_timestamp << endl;
       GainCoeff << "sbs.hcal.adc.gain =" << endl;
@@ -935,11 +1011,66 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
 	GainCoeff << endl;
 	cout << endl;
       }
-
+      GainCoeff << endl << endl;
       GainCoeff.close();
     } //end if iter==0
 
   }//endloop over calibration sets
+
+  //Add output report canvas
+  TCanvas *c1[report_set_size];
+
+  for( Int_t s=0; s<report_set_size; s++ ){
+
+    c1[s] = new TCanvas(Form("ecalreport_report%d",s), Form("Configuration/Cut Information, Report %d",s), 200, 10, 1400, 600);
+  
+    // Set margin.
+    c1[s]->SetLeftMargin(0.05);
+
+    // Create a TText object.
+    TText *t = new TText();
+
+    // Set text align to the left (horizontal alignment = 1).
+    t->SetTextAlign(11);
+    t->SetTextSize(0.05);
+
+    //make an array of strings
+    std::string report[linecount] = {
+      "General HCal Energy Calibration Info",
+      Form("Experiment: %s, Configuration: %d, Pass: %d", experiment, config, pass),
+      Form("Creation Date: %s", date.c_str() ),
+      Form("Target: %s", report_set[s].target.c_str() ),
+      Form("SBS Field: %d%%", report_set[s].mag ),
+      "",
+      "Elastic Cuts",
+      Form("Global Elastic Cuts: %s", report_set[s].gcut.c_str() ),
+      Form("W2 mean (GeV): %f", report_set[s].W2mean),
+      Form("W2 sigma (GeV): %f", report_set[s].W2sigma),
+      Form("dx mean, neutron (m): %f", report_set[s].dxmean_n),
+      Form("dx mean, proton (m): %f", report_set[s].dxmean_p),
+      Form("dx sigma, neutron (m): %f", report_set[s].dxsigma_p),
+      Form("dx sigma, proton (m): %f", report_set[s].dxsigma_p),
+      Form("dy mean (m): %f", report_set[s].dymean),
+      Form("dy sigma (m): %f", report_set[s].dysigma),
+      Form("adc time mean (ns): %f", report_set[s].atimemean),
+      Form("adc time sigma (ns): %f", report_set[s].atimesigma),
+      "",
+      "Other Cuts/Information",
+      Form("Minimum Ev per Cell : %d", report_set[s].minEv),
+      Form("Minimum Energy Deposited in Cell (factor, vs expectation) : %0.2f", report_set[s].highdelta),
+      Form("Sampling Fraction Target from Monte Carlo: %f", config_sampling_fraction),
+      Form("Observed Energy to Energy Sigma Ratio: %f", config_e_sigma_ratio),
+      "HCal Active Area (Projected Nucleon 1 row/col Within HCal Acceptance)"
+    };
+    // Loop to write the lines to the canvas.
+    for( Int_t i = 0; i<linecount; i++ ) {
+      // Vertical position adjusted according to line number.
+      Double_t verticalPosition = 0.9 - i * 0.04;
+      t->DrawTextNDC(0.1, verticalPosition, report[i].c_str());
+    }
+
+    c1[s]->Write();    
+  }
 
   //clean up
   for( Int_t unused_set_index=Ncal_set_size; unused_set_index<hcal::gNstamp; unused_set_index++ ){

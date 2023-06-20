@@ -139,6 +139,8 @@ typedef struct calset {
   
   //general members
   std::string timestamp;
+  std::string gcut;
+  Int_t good_events;
   Double_t old_param[hcal::maxHCalChan];
   Double_t old_paramB[hcal::maxHCalChan];
   Double_t old_paramC[hcal::maxHCalChan];
@@ -160,12 +162,40 @@ typedef struct calset {
   Double_t err_ev[hcal::maxHCalChan];
   Double_t err_oneblock[hcal::maxHCalChan];
   Double_t err_ev_oneblock[hcal::maxHCalChan];
+  Int_t minEv;
 
   // constructor
   calset():
-  timestamp("NONE"),old_param{},old_paramB{},old_paramC{},new_param{},new_paramB{},calib_ts("NONE"),tdc_calib(0),new_param_oneblock{},new_param_divide{},Ma(),Ma_oneblock(),ba(),ba_oneblock(),NEV{},NEV_oneblock{},err{},err_ev{},err_oneblock{},err_ev_oneblock{}
+  timestamp("NONE"),gcut("NONE"),old_param{},old_paramB{},old_paramC{},new_param{},new_paramB{},calib_ts("NONE"),tdc_calib(0),new_param_oneblock{},new_param_divide{},Ma(),Ma_oneblock(),ba(),ba_oneblock(),NEV{},NEV_oneblock{},err{},err_ev{},err_oneblock{},err_ev_oneblock{},minEv(0)
   {}
 
 } calset_t;
+
+typedef struct reportset {
+  
+  //members for reporting cuts depending on configuration and field settings
+  std::string gcut;
+  std::string target;
+  Int_t mag;
+  Int_t targetidx;
+  Double_t W2mean;
+  Double_t W2sigma;
+  Double_t dxmean_n;
+  Double_t dxmean_p;
+  Double_t dxsigma_n;
+  Double_t dxsigma_p;
+  Double_t dymean;
+  Double_t dysigma;
+  Double_t atimemean;
+  Double_t atimesigma;
+  Int_t minEv;
+  Double_t highdelta;
+
+  // constructor
+  reportset():
+  gcut("NONE"),target("NONE"),mag(0),targetidx(0),W2mean(0),W2sigma(0),dxmean_n(0),dxmean_p(0),dxsigma_n(0),dxsigma_p(0),dymean(0),dysigma(0),atimemean(0),atimesigma(0), minEv(0), highdelta(0)
+  {}
+
+} reportset_t;
 
 #endif

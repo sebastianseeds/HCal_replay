@@ -209,7 +209,6 @@ void displayEvent(Int_t entry = -1)
       }
     }
 
-  
     // Clear old histogram  
     heatMapHisto->Reset("ICES");
     clustHisto->Reset("ICES");
@@ -494,7 +493,7 @@ void clicked_displayEntryButton()
 }
 
 //Hardcode set for SBS8
-Int_t clusDisplay_HCal(Int_t run = 1198, Int_t event = -1){
+Int_t clusDisplay_HCal(Int_t run = 13559, Int_t event = -1){
   
   // Initialize function with user commands
   /*

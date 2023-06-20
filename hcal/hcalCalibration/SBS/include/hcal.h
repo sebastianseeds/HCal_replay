@@ -57,6 +57,7 @@ namespace hcal{
   const Double_t SBSdist = 2.25; //m
   const Double_t sbsdipolegap = 1.22;  //m
   const Double_t sbsmaxfield = 3.1 * atan( 0.85/(11.0 - 2.25 - 1.22/2.0 ))/0.3/1.22/0.7;
+  const Int_t gNmag = 20; //Field setting maximum * max targets (reasonable limit)
 
   //GEMs
   const Double_t GEMpitch = 10*TMath::DegToRad();

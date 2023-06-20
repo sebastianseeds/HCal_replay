@@ -78,6 +78,7 @@ namespace util {
   
 
   // Reads database-style file for 288 (hcal::maxHCalChan) elements after a given moniker (type)
+  // A return character must exist after the list of parameters or error will be thrown
   void readDB( std::string const_path, 
 	       std::string timestamp, 
 	       std::string type,
@@ -90,7 +91,7 @@ namespace util {
 
       Int_t n0=0;
       Double_t d0;
-      string readline;
+      std::string readline;
       bool read_param = false;
       bool found_tstamp = false;
 
@@ -117,6 +118,7 @@ namespace util {
 	}
       
 	if( found_tstamp && read_param ){
+
 	  istringstream iss( readline );
 	  while( iss >> d0 ){
 	    

@@ -1,6 +1,7 @@
 //SSeeds 5.19.23 Script to extract timewalk exponential fit parameters from tdc distributions
+// 6.3.23 update: Added param_override to allow user to select a previous set of timewalk parameters where data is too sparse to obtain good fit on current configuration. This is intended for use on quality plots.
 //NOTE: requires $DB_DIR and $OUT_DIR path set correctly in current environment. Script assumes hardware differences on tdcoffset timestamps and outputs alignment constants for all timestamps within the configuration provided.
-//ADDITIONAL NOTE: this script expects that tdc_align.C, adct_align.C, and ecal.C are performed first and will look for new offset parameters to update tdc data set, adct parameters to improve elastic selection, and ecal parameters to update energies
+//ADDITIONAL NOTE: this script expects that tdc_align.C, adct_align.C, and ecal.C are performed first and will look for new offset parameters to update tdc data set, adct parameters to improve elastic selection, and ecal parameters to update energies. The total number of energy calibration sets is passed as an argument to improve efficiency and reduce output file size. WARNING: if Nset>3 output file size will be very large.
 
 #include <vector>
 #include <iostream>
@@ -25,8 +26,18 @@ const Double_t E_lower_lim = 0.;
 const Double_t E_upper_lim = 0.5;
 const Int_t fit_event_min = 60;
 
+// Overall timewalk fit constraints - may need to be tuned at different hadron momenta
+const Double_t tw_fit_llim = 0.05;
+const Double_t tw_fit_ulim = 0.45;
+const Double_t tw_p0_llim = 2.;
+const Double_t tw_p0_ulim = 6.;
+const Double_t tw_p1_llim = 4.;
+const Double_t tw_p1_ulim = 9.;
+const Double_t tw_p2_llim = -76.5;
+const Double_t tw_p2_ulim = -67.5;
+
 //Main <experiment> <configuration> <quasi-replay> <replay-pass> <number-of-calibration-sets>; qreplay should only be performed after new offsets obtained
-void tdc_tw( const char *experiment = "gmn", Int_t config = 4, bool qreplay = true, Int_t pass = 0, Int_t Nset = 2 ){
+void tdc_tw( const char *experiment = "gmn", Int_t config = 4, bool qreplay = true, Int_t pass = 0, Int_t Nset = 2, std::string param_override = "false", std::string param_ts = "null" ){
 
   // Define a clock to check macro processing time
   TStopwatch *st = new TStopwatch();
@@ -42,7 +53,7 @@ void tdc_tw( const char *experiment = "gmn", Int_t config = 4, bool qreplay = tr
   // offset paths and variables
   std::string db_path = gSystem->Getenv("DB_DIR");
   std::string new_tdcoffset_path = Form("../timing/parameters/tdcoffsets_class_%s_conf%d_pass%d.txt",experiment,config,pass);
-  std::string new_adcgain_path = Form("../energy/parameters/adcgaincoeff_%s_conf%d.txt",experiment,config);
+  std::string new_adcgain_path = Form("../energy/parameters/adcgaincoeff_%s_conf%d_pass%d.txt",experiment,config,pass);
   std::string new_adctoffset_path = Form("../timing/parameters/adctoffsets_class_%s_conf%d_pass%d.txt",experiment,config,pass);
   std::string new_tdctw_path = Form("../timing/parameters/tdctw_class_%s_conf%d_pass%d.txt",experiment,config,pass);
   std::string old_db_path = db_path + "/db_sbs.hcal.dat";
@@ -149,6 +160,8 @@ void tdc_tw( const char *experiment = "gmn", Int_t config = 4, bool qreplay = tr
   TH2D *htdcvE[Nset][hcal::maxHCalChan];
   TH2D *htdcvE_pblk[Nset][hcal::maxHCalChan];
   TH2D *htdcvE_pblk_all[Nset];
+  TH1D *htdc[Nset];
+  TH1D *htdc_tw[Nset];
 
   for( Int_t set=0; set<Nset; set++ ){
     for( Int_t chan=0; chan<hcal::maxHCalChan; chan++ ){
@@ -180,6 +193,19 @@ void tdc_tw( const char *experiment = "gmn", Int_t config = 4, bool qreplay = tr
 				    tdc_bins,
 				    tdc_lower_lim,
 				    tdc_upper_lim);
+
+    htdc[set] = new TH1D(Form("htdc_set%d",set),
+				    "null",
+				    tdc_bins,
+				    tdc_lower_lim,
+				    tdc_upper_lim);
+
+    htdc_tw[set] = new TH1D(Form("htdc_tw_set%d",set),
+				    "null",
+				    tdc_bins,
+				    tdc_lower_lim,
+				    tdc_upper_lim);
+
   }
 
   //minimize reporting
@@ -249,11 +275,15 @@ void tdc_tw( const char *experiment = "gmn", Int_t config = 4, bool qreplay = tr
     util::tsCompare( current_gain_timestamp, config_parameters.GetSBSTimestamp(), active_timestamp );
     util::readDB( new_adcgain_path, active_timestamp, db_gain_variable, new_adcg_coeff );
 
-    //quasi-replay, get new timewalk parameters
-    if( qreplay ){
+    //quasi-replay, get new timewalk parameters. Where param_override is not false, use passed params
+    if( qreplay && param_override.compare("false")==0 ){
       util::readDB( new_tdctw_path, active_timestamp, db_tdctwA_variable, new_tdctwA_par );
       util::readDB( new_tdctw_path, active_timestamp, db_tdctwB_variable, new_tdctwB_par );
       util::readDB( new_tdctw_path, active_timestamp, db_tdctw_variable, new_tdctw_par );      
+    }else if( qreplay ){
+      util::readDB( param_override, param_ts, db_tdctwA_variable, new_tdctwA_par );
+      util::readDB( param_override, param_ts, db_tdctwB_variable, new_tdctwB_par );
+      util::readDB( param_override, param_ts, db_tdctw_variable, new_tdctw_par );  
     }
 
     //////////
@@ -292,6 +322,9 @@ void tdc_tw( const char *experiment = "gmn", Int_t config = 4, bool qreplay = tr
 	htdcvE[Ncal_set_size][chan]->SetTitle(Form("TDC vs E, set: %d, chan: %d;MeV;ns",Ncal_set_size,chan));
 	htdcvE_pblk[Ncal_set_size][chan]->SetTitle(Form("TDC vs E primary block only, set: %d, chan: %d;MeV;ns",Ncal_set_size,chan));
       }
+      htdcvE_pblk_all[Ncal_set_size]->SetTitle(Form("TDC vs E primary block only, set: %d;MeV;ns",Ncal_set_size));
+      htdc[Ncal_set_size]->SetTitle(Form("TDC no correction, set: %d; ns",Ncal_set_size));
+      htdc_tw[Ncal_set_size]->SetTitle(Form("TDC timewalk corrected, set: %d; ns",Ncal_set_size));
 
       Ncal_set_size++;
     }     
@@ -577,6 +610,10 @@ void tdc_tw( const char *experiment = "gmn", Int_t config = 4, bool qreplay = tr
       htdcvE_pblk[Ncal_set_idx][pblkid]->Fill( pblke, time_all ); //convert to MeV
       htdcvE_pblk_all[Ncal_set_idx]->Fill( pblke, time_all ); //convert to MeV
 
+      //build tdc general histos for quality check
+      htdc[Ncal_set_idx]->Fill(time);
+      htdc_tw[Ncal_set_idx]->Fill(time_tw);
+
       //fill analysis tree
       pblkid_out = pblkid;
       tdc_out = time;
@@ -639,13 +676,19 @@ void tdc_tw( const char *experiment = "gmn", Int_t config = 4, bool qreplay = tr
     //Fit the TDC vs E plots
     //TF1 *fittdcTWall = new TF1( "fittdcTWall", util::g_p6fit, 0, 500, 5 );
     //TF1 *fittdcTWall = new TF1( "fittdcTWall", util::g_p3fit, 0, 0.5, 4 );
-    TF1 *fittdcTWall = new TF1( "fittdcTWall", util::g_twfit, 0, 0.5, 3 );
-    //fittdcTW->SetParameters(14,0.04,-77);
-    //fittdcTW->SetParLimits(0,2,26);
-    //fittdcTW->SetParLimits(1,0.01,0.2);
-    //fittdcTW->SetParLimits(2,-200,50);
+    //TF1 *fittdcTWall = new TF1( "fittdcTWall", util::g_twfit, 0.02, 0.45, 3 );
+    TF1 *fittdcTWall = new TF1( "fittdcTWall", util::g_twfit, tw_fit_llim, tw_fit_ulim, 3 );
+    fittdcTWall->SetParameters((tw_p0_ulim-tw_p0_llim)/2,
+			       (tw_p1_ulim-tw_p1_llim)/2,
+			       (tw_p2_ulim-tw_p2_llim)/2);
+    // fittdcTWall->SetParLimits(0,2,6);
+    // fittdcTWall->SetParLimits(1,4,9);
+    // fittdcTWall->SetParLimits(2,-80,-70);
+    fittdcTWall->SetParLimits(0,tw_p0_llim,tw_p0_ulim);
+    fittdcTWall->SetParLimits(1,tw_p1_llim,tw_p1_ulim);
+    fittdcTWall->SetParLimits(2,tw_p2_llim,tw_p2_ulim);
 
-    htdcvE_pblk_all[s]->Fit("fittdcTWall","Q","",0.005,0.45);
+    htdcvE_pblk_all[s]->Fit("fittdcTWall","WQ","",tw_fit_llim,tw_fit_ulim);
     //htdcvE_pblk_all[s]->SetTitle(Form("P0:%f P1:%f P2:%f P3:%f P4:%f",fittdcTWall->GetParameter(0),fittdcTWall->GetParameter(1),fittdcTWall->GetParameter(2),fittdcTWall->GetParameter(3),fittdcTWall->GetParameter(4)));
     TDCvseAllP0[s] = fittdcTWall->GetParameter(0);
     TDCvseAllP1[s] = fittdcTWall->GetParameter(1);
@@ -768,8 +811,11 @@ void tdc_tw( const char *experiment = "gmn", Int_t config = 4, bool qreplay = tr
 
   st->Stop();
 
+  // Send missing primary cluster tdc events to console for reference
+  std::cout << "Missing TDC signals on all elastics analyzed: " << missing_tdc_events << "/" << total_analyzed_events << std::endl;
+
   // Send time efficiency report to console
-  cout << "CPU time elapsed = " << st->CpuTime() << " s = " << st->CpuTime()/60.0 << " min. Real time = " << st->RealTime() << " s = " << st->RealTime()/60.0 << " min." << endl;    
+  std::cout << "CPU time elapsed = " << st->CpuTime() << " s = " << st->CpuTime()/60.0 << " min. Real time = " << st->RealTime() << " s = " << st->RealTime()/60.0 << " min." << std::endl;    
 
 }
 

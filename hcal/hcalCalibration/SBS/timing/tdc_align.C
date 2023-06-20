@@ -1,6 +1,6 @@
 //SSeeds 5.3.23 - Standalone script adapted from tcal.C at https://github.com/sebastianseeds/HCal_replay
 //5.15.23 Update - Added class structure improvements.
-//NOTE: requires $DB_DIR path set correctly in current environment. Script assumes hardware differences on tdcoffset timestamps and outputs alignment constants for all timestamps within the configuration provided.
+//NOTE: requires $DB_DIR and $OUT_DIR paths set correctly in current environment. Script assumes hardware differences on tdcoffset timestamps and outputs alignment constants for all timestamps within the configuration provided.
 //ADDITIONAL NOTE: this script does not adjust tdc calib, but creates additional calibration sets for changes in the tdc calibration constant (where they exist)
 
 #include <vector>
@@ -24,9 +24,10 @@ const Int_t upper_lim = 20;
 const Int_t fit_event_min = 50;
 const Double_t observed_tdc_sigma = 2.5; //rough estimate
 const Double_t TDC_target = -75.; //Target value for peak tdc. Should be roughly centered in window.
+const Int_t linecount = 12;
 
-//Main <experiment> <configuration> <quasi-replay> <replay-pass>; qreplay should only be performed after new offsets obtained
-void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay = true, Int_t pass = 0 ){
+//Main <experiment> <configuration> <quasi-replay> <replay-pass> <target_option>; qreplay should only be performed after new offsets obtained
+void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay = true, Int_t pass = 0, bool h2only = false ){
 
   // Define a clock to check macro processing time
   TStopwatch *st = new TStopwatch();
@@ -36,9 +37,12 @@ void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay =
   std::string date = util::getDate();
 
   // Set up universal paths and variables
+  std::string h2opt = "";
+  if( h2only )
+    h2opt = "_lh2only";
   std::string db_path = gSystem->Getenv("DB_DIR");
   std::string outdir_path = gSystem->Getenv("OUT_DIR");
-  std::string tdc_align_path = outdir_path + Form("/hcal_calibrations/pass%d/timing/tdcalign_class_%s_conf%d_qr%d_pass%d.root",pass,experiment,config,(Int_t)qreplay,pass);
+  std::string tdc_align_path = outdir_path + Form("/hcal_calibrations/pass%d/timing/tdcalign%s_%s_conf%d_qr%d_pass%d.root",pass,h2opt.c_str(),experiment,config,(Int_t)qreplay,pass);
 
   std::string new_tdcoffset_path = Form("parameters/tdcoffsets_class_%s_conf%d_pass%d.txt",experiment,config,pass);
   std::string old_db_path = db_path + "/db_sbs.hcal.dat";
@@ -47,6 +51,7 @@ void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay =
 
   // Declare output analysis file
   TFile *fout = new TFile( tdc_align_path.c_str(), "RECREATE" );
+  std::string plotdir = Form("../quality_plots/%s/conf%d/",experiment,config);
 
   // Get information from .csv files
   std::string struct_dir = Form("../config/%s/",experiment); //unique to my environment for now
@@ -168,6 +173,10 @@ void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay =
     Double_t target_dEdx = target_parameters.GetTargdEdx();
     Double_t M_avg = target_parameters.GetAvgMass();
     
+    //check target and continue on deuterium of only calibrating with hydrogen
+    if( h2only && target_index!=1 )
+      continue;
+
     //send to console if the target changes
     if( target_change_index != target_index ){
       cout << target_parameters;
@@ -274,7 +283,6 @@ void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay =
     C->SetBranchStatus( "bb.sh.x", 1 );
     C->SetBranchStatus( "bb.sh.y", 1 );
     C->SetBranchStatus( "bb.hodotdc.clus.tmean", 1 );
-    C->SetBranchStatus( "bb.hodotdc.clus.tmean", 1 );
     C->SetBranchStatus( "bb.gem.track.nhits", 1 );
     C->SetBranchStatus( "bb.etot_over_p", 1 );
     C->SetBranchStatus( "Ndata.sbs.hcal.clus.id", 1 ); //Odd maxing out at 10 clusters on all cluster Ndata objects, so this is needed in addition to sbs.hcal.nclus
@@ -320,6 +328,11 @@ void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay =
 
     //Use TTreeFormula to avoid looping over data an additional time
     TCut GCut = cut[0].gcut.c_str();
+
+    //Add globalcut and elastic cuts for reporting
+    tdc_cal[Ncal_set_idx].gcut = cut[0].gcut;
+    tdc_cal[Ncal_set_idx].minEv = fit_event_min;
+
     TTreeFormula *GlobalCut = new TTreeFormula( "GlobalCut", GCut, C );
 
     // Set up hcal coordinate system with hcal angle wrt exit beamline
@@ -467,9 +480,9 @@ void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay =
     tcval_avg[set] = 0.;
     tcval_Ng[set] = 0;
 
-    //Set up canvases for quick inspections
-    TDC_top[set] = new TCanvas(Form("TDC_top, set TS: %s, offset TS: %s, calib TS: %s",active_timestamp.c_str(),offset_timestamp.c_str(),calib_timestamp.c_str()),"TDC_top",1600,1200);
-    TDC_bot[set] = new TCanvas(Form("TDC_bot, set TS: %s, offset TS: %s, calib TS: %s",active_timestamp.c_str(),offset_timestamp.c_str(),calib_timestamp.c_str()),"TDC_bot",1600,1200);
+    //Set up canvases for quality check
+    TDC_top[set] = new TCanvas(Form("tdc_fit_top_set%d",set),Form("TDC_top, set TS: %s, offset TS: %s, calib TS: %s",active_timestamp.c_str(),offset_timestamp.c_str(),calib_timestamp.c_str()),1600,1200);
+    TDC_bot[set] = new TCanvas(Form("tdc_fit_bot_set%d",set),Form("TDC_bot, set TS: %s, offset TS: %s, calib TS: %s",active_timestamp.c_str(),offset_timestamp.c_str(),calib_timestamp.c_str()),1600,1200);
     TDC_top[set]->Divide(12,12);
     TDC_bot[set]->Divide(12,12);
     gStyle->SetOptStat(0);
@@ -535,6 +548,13 @@ void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay =
     TDC_top[set]->Write();
     TDC_bot[set]->Write();
 
+    if( !qreplay ){
+      std::string qplotpath_top = plotdir + Form("tdc_fit_top_set%d.png",set);
+      std::string qplotpath_bot = plotdir + Form("tdc_fit_bot_set%d.png",set);
+      TDC_top[set]->SaveAs(qplotpath_top.c_str());
+      TDC_top[set]->SaveAs(qplotpath_bot.c_str());
+    } 
+
     tcval_avg[set] /= tcval_Ng[set];
 
   }//endloop over slice fits
@@ -598,6 +618,50 @@ void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay =
     writeParFile << endl << endl;
     
   } // endloop over calibration sets
+
+    //Add output report canvas
+  TCanvas *c1[Ncal_set_size];
+
+  for( Int_t s=0; s<Ncal_set_size; s++ ){
+
+    c1[s] = new TCanvas(Form("tdcalignreport_set%d",s), Form("Configuration/Cut Information, Calibration Set %d",s), 200, 10, 900, 500);
+  
+    // Set margin.
+    c1[s]->SetLeftMargin(0.05);
+
+    // Create a TText object.
+    TText *t = new TText();
+
+    // Set text align to the left (horizontal alignment = 1).
+    t->SetTextAlign(11);
+
+    //make an array of strings
+    std::string target_option = "All Available";
+    if( h2only )
+      target_option = "LH2";
+    std::string report[linecount] = {
+      "General TDC Alignment Info",
+      Form("Experiment: %s, Configuration: %d, Pass: %d", experiment, config, pass),
+      Form("Creation Date: %s", date.c_str() ),
+      Form("Target(s) Used: %s", target_option.c_str() ),
+      Form("Calibration Set: %s", tdc_cal[s].timestamp.c_str() ),
+      "",
+      "Elastic Cuts",
+      Form("Global Elastic Cuts: %s", tdc_cal[s].gcut.c_str() ),
+      "",
+      "Other Cuts",
+      Form("Minimum Ev per Cell : %d", tdc_cal[s].minEv),
+      "HCal Acceptance Match (Projected Nucleon Within HCal Acceptance)"
+    };
+    // Loop to write the lines to the canvas.
+    for( Int_t i = 0; i<linecount; i++ ) {
+      // Vertical position adjusted according to line number.
+      Double_t verticalPosition = 0.9 - i * 0.04;
+      t->DrawTextNDC(0.1, verticalPosition, report[i].c_str());
+    }
+
+    c1[s]->Write();    
+  }
 
   //clean up
   for( Int_t unused_set_index=Ncal_set_size; unused_set_index<hcal::gNstamp; unused_set_index++ ){
