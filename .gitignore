@@ -12,3 +12,6 @@
 .#*
 ## Ignore log files
 *.log
+## Ignore reporting files
+*.png
+*.pdf
