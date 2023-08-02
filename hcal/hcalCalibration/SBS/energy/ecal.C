@@ -19,10 +19,10 @@
 #include "TStopwatch.h"
 #include "../include/sbs.h"
 
-const Double_t minEventPerCell = 100;
+const Double_t minEventPerCell = 100; //minimum elastic events detected in cell to be considered for calibration
 const Double_t highDelta = 0.01; //max allowed discrepancy factor between energy deposited in block and expected
-const Int_t hcal_first_channel = 0;
-const Int_t bins_magnet_percent = 21;
+const Int_t hcal_first_channel = 0; //first channel in hcal index
+const Int_t bins_magnet_percent = 21; //SBS field at 2100A, so divide by this factor to get percent
 const Double_t start_magnet_percent = 0.;
 const Double_t end_magnet_percent = 105.;
 const Int_t bins_dxdy = 250;
@@ -51,12 +51,12 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
   if( h2only )
     h2opt = "_lh2only";
   std::string outdir_path = gSystem->Getenv("OUT_DIR");
-  std::string ecal_path = outdir_path + Form("/hcal_calibrations/pass%d/energy/hes_ecal%s_%s_conf%d_qr%d_pass%d.root",pass,h2opt.c_str(),experiment,config,(Int_t)qreplay,pass);
+  std::string ecal_path = outdir_path + Form("/hcal_calibrations/pass%d/energy/ecal%s_%s_conf%d_qr%d_pass%d.root",pass,h2opt.c_str(),experiment,config,(Int_t)qreplay,pass);
 
   //Set up path variables and output files
   string db_path = gSystem->Getenv("DB_DIR");
   TFile *fout = new TFile( ecal_path.c_str(), "RECREATE" );
-  std::string new_adcgain_path = Form("parameters/hes_adcgaincoeff_%s%s_conf%d_pass%d.txt",experiment,h2opt.c_str(),config,pass);
+  std::string new_adcgain_path = Form("parameters/adcgaincoeff_%s%s_conf%d_pass%d.txt",experiment,h2opt.c_str(),config,pass);
 
   // Get information from .csv files
   std::string struct_dir = Form("../config/%s/",experiment); //unique to my environment for now
@@ -105,6 +105,7 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
   Int_t mag_out; //sbs magnetic field strength (percent)
   Int_t run_out; //run number
   Int_t tar_out; //target, LH2 or LD2
+  Int_t calset_out; //calibration set in chronological order
   Int_t badclus_out; //0: all blocks pass coin, 1: at least one block fails coin
   Int_t failedglobal_out;
 
@@ -134,6 +135,7 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
   P->Branch( "mag", &mag_out, "mag_out/I" );
   P->Branch( "run", &run_out, "run_out/I" );
   P->Branch( "tar", &tar_out, "tar_out/I" );
+  P->Branch( "calset", &calset_out, "calset_out/I" );
   P->Branch( "badclus", &badclus_out, "badclus_out/I" );
   P->Branch( "failedglobal", &failedglobal_out, "failedglobal_out/I" );
 
@@ -295,6 +297,8 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
   Int_t target_change_index;
   Double_t config_sampling_fraction;
   Double_t config_e_sigma_ratio;
+  bool first = true;
+  Double_t test_adcg_coeff[hcal::maxHCalChan] = {1.};
 
   //Main loop over runs
   for (Int_t r=0; r<nruns; r++) {
@@ -395,10 +399,43 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
       
     }
 
+    //quick check on gain coefficients
+    //Double_t test_adcg_coeff[hcal::maxHCalChan] = {1.};
+    bool different = false;
+    if( first )
+      std::cout << "First calibration set, Ncal_set_idx: " << Ncal_set_idx << std::endl << std::endl;  
+    for( int r=0; r<24; r++ ){
+      for ( int c=0; c<12; c++){
+	int i = r*12+c;
+	if( first ){
+	  test_adcg_coeff[i] = new_adcg_coeff[i];
+	}else{
+	  if( test_adcg_coeff[i] != new_adcg_coeff[i] )
+	    different = true;
+	}
+      }
+    }
+
+    if( different ){
+      std::cout << "ADC gain coeffients have changed on calibration set " << Ncal_set_idx << std::endl << std::endl;
+      for( int r=0; r<24; r++ ){
+	for ( int c=0; c<12; c++){
+	  int i = r*12+c;
+	  test_adcg_coeff[i] = new_adcg_coeff[i];
+	}
+      }
+    }
+
     //Get available cuts for current config/target/field combination. Use first element (0) of cut
     vector<calcut> cut;
-    util::ReadCutList(struct_dir,experiment,config,pass,current_target,mag,verb,cut);
+    util::ReadCutList(struct_dir,experiment,config,Ncal_set_idx,pass,current_target,mag,verb,cut);
+    if( different || first )
+      std::cout << cut[0];
     
+    //Remove first calibration set trigger for future processing
+    if( first )
+      first = false;
+
     // Setting up chain and branch addresses
     C = new TChain("T");
     C->Add(rootfile_path.c_str());
@@ -497,7 +534,7 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
 
     //Add globalcut and elastic cuts for reporting
     if( target_change_index != target_index ){
-      cout << target_parameters;
+      std::cout << target_parameters;
       target_change_index = target_index;
     }
 
@@ -587,7 +624,7 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
       if( failedcoin ) 
       	continue; //All events where adctime outside of reasonable window cut
 	
-      //ADC arrays reset per event 
+      //ADC arrays reset per event. 
       Double_t A[hcal::maxHCalChan] = {0.0}; // Array to keep track of ADC values per cell. Outscope on each ev
       Double_t A_oneblock[hcal::maxHCalChan] = {0.0}; // Array to keep track of ADC values per cell for one block clusters only. Outscope on each ev
 
@@ -655,7 +692,10 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
       //Target Energy in HCal for calibrations
       Double_t hcal_samp_frac = cut[0].hcal_sf; config_sampling_fraction = hcal_samp_frac;
       Double_t hcal_esratio = cut[0].hcal_es; config_e_sigma_ratio = hcal_esratio;
-      Double_t KE_exp = KE_p*hcal_samp_frac/hcal_esratio; //Expected E in HCal
+      Double_t KE_exp = KE_p*hcal_samp_frac/hcal_esratio; //Expected E in HCal, equivalent to KE*modified_samp_frac
+      //TEST ONLY, REMOVE THIS!
+      // if( Ncal_set_idx!=0 )
+      // 	KE_exp = KE_p*hcal_samp_frac/0.2;
 
       ///////
       //BigBite/SBS Acceptance matching. Redundant here with dxdy cuts. Removed.
@@ -712,7 +752,7 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
 	//Cluster block coincidence adc time check, 5sig estimate
 	if( abs(blknatime-atime0)>atimeNsig*atimesig ){
 	  badclus = 1;
-	  continue; //May wish to remove this cut. Should investigate expected spread in time in MC
+	  //continue; //May wish to remove this cut. Should investigate expected spread in time in MC
 	}
 	
 	//Correct the block energy with new gain coeff on quasi-replay
@@ -762,6 +802,7 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
       mag_out = mag;
       run_out = current_runnumber;
       tar_out = target_index;
+      calset_out = Ncal_set_idx;
       badclus_out = badclus;
       hodotmean_out = HODOtmean;
       failedglobal_out = failedglobal;
@@ -780,7 +821,7 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
       
 	Int_t blkid = int(cblkid[blk])-1;
 	Double_t blke = cblke[blk];
-	Double_t blkpC = cblke[blk]/gain_coeff[Ncal_set_idx].old_param[blkid];
+	Double_t blkpC = cblke[blk]/gain_coeff[Ncal_set_idx].old_param[blkid]; //divide off the old coefficient
 	Double_t blknatime = cblkatime[blk]+old_adct_offsets[blkid]-new_adct_offsets[blkid]; //new atime
 
 	////////
@@ -789,7 +830,7 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
 	if( abs(blknatime-atime0)>atimeNsig*atimesig )
 	  badblock=true;
 	    
-	// if( badblock ) 
+	// if( badblock ) //May wish to remove this cut until adc time is better calibrated
 	//   continue;
 
 	clusE += blke;
@@ -1019,20 +1060,21 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
 
   //Add output report canvas
   TCanvas *c1[report_set_size];
+  Int_t report_height = 1800;
 
   for( Int_t s=0; s<report_set_size; s++ ){
 
-    c1[s] = new TCanvas(Form("ecalreport_report%d",s), Form("Configuration/Cut Information, Report %d",s), 200, 10, 1400, 600);
+    c1[s] = new TCanvas(Form("ecalreport_report%d",s), Form("Configuration/Cut Information, Report %d",s), report_height, 1000);
   
     // Set margin.
-    c1[s]->SetLeftMargin(0.05);
+    c1[s]->SetLeftMargin(0.01);
 
     // Create a TText object.
     TText *t = new TText();
 
     // Set text align to the left (horizontal alignment = 1).
     t->SetTextAlign(11);
-    t->SetTextSize(0.05);
+    t->SetTextSize(0.02);
 
     //make an array of strings
     std::string report[linecount] = {
@@ -1065,7 +1107,7 @@ void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false,
     // Loop to write the lines to the canvas.
     for( Int_t i = 0; i<linecount; i++ ) {
       // Vertical position adjusted according to line number.
-      Double_t verticalPosition = 0.9 - i * 0.04;
+      Double_t verticalPosition = 0.95 - i * 0.03;
       t->DrawTextNDC(0.1, verticalPosition, report[i].c_str());
     }
 

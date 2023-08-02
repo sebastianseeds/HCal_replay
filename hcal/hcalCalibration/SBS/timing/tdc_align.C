@@ -1,5 +1,6 @@
 //SSeeds 5.3.23 - Standalone script adapted from tcal.C at https://github.com/sebastianseeds/HCal_replay
 //5.15.23 Update - Added class structure improvements.
+//8.2.23 Update - Changed target TDC alignment to 0ns to correspond well with changes to ADCt
 //NOTE: requires $DB_DIR and $OUT_DIR paths set correctly in current environment. Script assumes hardware differences on tdcoffset timestamps and outputs alignment constants for all timestamps within the configuration provided.
 //ADDITIONAL NOTE: this script does not adjust tdc calib, but creates additional calibration sets for changes in the tdc calibration constant (where they exist)
 
@@ -19,11 +20,11 @@
 // TDC offset extraction constraints
 const Int_t first_hcal_chan = 0;
 const Int_t total_bins = 320;
-const Int_t lower_lim = -140;
-const Int_t upper_lim = 20;
+const Int_t lower_lim = -100;
+const Int_t upper_lim = 60;
 const Int_t fit_event_min = 50;
 const Double_t observed_tdc_sigma = 2.5; //rough estimate
-const Double_t TDC_target = -75.; //Target value for peak tdc. Should be roughly centered in window.
+const Double_t TDC_target = 0.; //Target value for peak tdc.
 const Int_t linecount = 12;
 
 //Main <experiment> <configuration> <quasi-replay> <replay-pass> <target_option>; qreplay should only be performed after new offsets obtained
@@ -232,7 +233,7 @@ void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay =
 
     //Get available cuts for current config/target/field combination. Use first element (0) of cut
     vector<calcut> cut;
-    util::ReadCutList(struct_dir,experiment,config,pass,current_target,mag,verb,cut);
+    util::ReadCutList(struct_dir,experiment,config,Ncal_set_idx,pass,current_target,mag,verb,cut);
 
     // Setting up chain and branch addresses
     C = new TChain("T");

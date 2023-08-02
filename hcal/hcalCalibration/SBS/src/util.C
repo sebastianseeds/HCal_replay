@@ -357,6 +357,7 @@ namespace util {
   void ReadCutList(std::string cutsheet_dir,  // Dir. path containing CSV files with cut info
 		   std::string experiment,     // experiment {gmn,gen,genrp,gep,etc.}
 		   Int_t sbsconfig,            // SBS configuration
+		   Int_t calib_set,            // Calibration set
 		   Int_t replay_pass,          // replay pass
 		   std::string target,         // target
 		   Int_t field,                // sbs field in percent
@@ -384,8 +385,9 @@ namespace util {
 	}
 	// select cut based on config, target, and field
 	if (stoi(temp[0]) == sbsconfig &&
-	    temp[1].compare(target)==0 &&
-	    stoi(temp[2]) == field ) {
+	    stoi(temp[1]) == calib_set &&
+	    temp[2].compare(target)==0 &&
+	    stoi(temp[3]) == field ) {
 	  if( max_pushback ) //throw error if more than one element added to cut array
 	    throw "Error on [util::ReadCutList], config/target/field not uniquely specified in cut spreadsheet";
 	  calcut temp_cc;

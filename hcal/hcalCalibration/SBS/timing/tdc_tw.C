@@ -18,9 +18,9 @@
 
 // TDC vs E extraction constraints
 const Int_t first_hcal_chan = 0;
-const Int_t tdc_bins = 500;
-const Double_t tdc_lower_lim = -200.;
-const Double_t tdc_upper_lim = 50.;
+const Int_t tdc_bins = 220;
+const Double_t tdc_lower_lim = -100.;
+const Double_t tdc_upper_lim = 10.;
 const Int_t E_bins = 1000;
 const Double_t E_lower_lim = 0.;
 const Double_t E_upper_lim = 0.5;
@@ -36,7 +36,7 @@ const Double_t tw_p1_ulim = 9.;
 const Double_t tw_p2_llim = -76.5;
 const Double_t tw_p2_ulim = -67.5;
 
-//Main <experiment> <configuration> <quasi-replay> <replay-pass> <number-of-calibration-sets>; qreplay should only be performed after new offsets obtained
+//Main <experiment> <configuration> <quasi-replay> <replay-pass> <number-of-calibration-sets> <parameter-override-option> <override-timestamp>; qreplay should only be performed after new offsets obtained
 void tdc_tw( const char *experiment = "gmn", Int_t config = 4, bool qreplay = true, Int_t pass = 0, Int_t Nset = 2, std::string param_override = "false", std::string param_ts = "null" ){
 
   // Define a clock to check macro processing time
@@ -331,7 +331,7 @@ void tdc_tw( const char *experiment = "gmn", Int_t config = 4, bool qreplay = tr
 
     //Get available cuts for current config/target/field combination. Use first element (0) of cut
     vector<calcut> cut;
-    util::ReadCutList(struct_dir,experiment,config,pass,current_target,mag,verb,cut);
+    util::ReadCutList(struct_dir,experiment,config,Ncal_set_idx,pass,current_target,mag,verb,cut);
 
     // Setting up chain and branch addresses
     C = new TChain("T");

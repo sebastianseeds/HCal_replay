@@ -1,5 +1,6 @@
 //SSeeds 5.8.23 - Script adapted from tcal.C at https://github.com/sebastianseeds/HCal_replay to align adct elastic peaks across all HCal block ids
 // 5.23.23 update - Added adct all-channels distribution and fit for adct sigma extraction and calibration of sbs.hcal.tmax
+// 7.31.23 update - Added tracking of timing peaks for two sample channels over runs to monitor timing shifts evident in GMn. Shifted target ADCt value to zero. Staged shift to timing difference between HCal - BBCal atime to improve timing resolution for tighter elastic selection and added branch to output analysis tree.
 //NOTE: requires $DB_DIR and $OUT_DIR paths set correctly in current environment. Script assumes hardware differences on adctoffset timestamps and outputs alignment constants for all timestamps within the configuration provided.
 
 #include <vector>
@@ -17,14 +18,69 @@
 
 // ADCt offset extraction constraints
 const Int_t first_hcal_chan = 0;
-const Int_t total_bins = 240;
-const Int_t lower_lim = 0;
-const Int_t upper_lim = 140;
-const Int_t fit_event_min = 50;
+const Int_t total_bins = 320;
+const Int_t lower_lim = -60;
+const Int_t upper_lim = 100;
+const Int_t fit_event_min = 50; //Minimum events in histogram to fit
 const Double_t observed_adct_sigma = 4.0; //rough estimate
-const Double_t ADCt_target = 50.;
+const Double_t ADCt_target = 0.; //set the adc time target (ns)
 const Double_t tmax_factor = 6.; //number of sigma to consider for tmax cut on cluster elements
 const Int_t linecount = 12;
+const Int_t samples[2] = {161,80}; //Sample channels to check timing alignment over runs within calibrations set
+
+void overlayWithGaussianFits(TH2D *h2d, TCanvas *canvas) {
+  // switch to canvas location
+  canvas->cd();
+
+  // Create a TGraphErrors to hold the means and standard deviations
+  TGraphErrors *graphErrors = new TGraphErrors(h2d->GetNbinsX());
+
+  // Loop over the bins in the TH2D
+  for (int i = 1; i <= h2d->GetNbinsX(); ++i) {
+    // Get the projection of this bin along the y-axis
+    TH1D *projY = h2d->ProjectionY("_py", i, i);
+
+    //Skip the fit if less than 100 entries exist in the bin
+    if( projY->GetEntries()<100 )
+      continue;
+
+    //declare some dynamic fit variables
+    Int_t binMax = projY->GetMaximumBin();
+    Double_t binCenter = projY->GetBinCenter( binMax );
+    Double_t fitLowerLim = binCenter - 2*observed_adct_sigma;
+    Double_t fitUpperLim = binCenter + 2*observed_adct_sigma;
+
+    // Fit a Gaussian to this projection
+    TF1 *gausFit = new TF1("gausFit", "gaus");
+    projY->Fit(gausFit, "Q", "", fitLowerLim, fitUpperLim ); // "Q" for quiet mode
+
+    // Get the mean and standard deviation from the fit
+    double mean = gausFit->GetParameter(1);
+    double stdDev = gausFit->GetParameter(2);
+
+    // Get the error on the mean and standard deviation
+    double meanError = gausFit->GetParError(1);
+    double stdDevError = gausFit->GetParError(2);
+
+    // Set this point in the TGraphErrors
+    graphErrors->SetPoint(i - 1, h2d->GetXaxis()->GetBinCenter(i), mean);
+    graphErrors->SetPointError(i - 1, 0, stdDev); // Assuming no error on x
+  }
+
+  // Draw the TH2D
+  h2d->Draw("COLZ");
+
+  // Customize the appearance of the TGraphErrors
+  graphErrors->SetMarkerStyle(20);
+  graphErrors->SetMarkerColor(kBlack);
+  graphErrors->SetLineColor(kBlack);
+
+  // Draw the TGraphErrors on the same canvas
+  graphErrors->Draw("P SAME");
+
+  // Update the canvas
+  gPad->Update();
+}
 
 //Main <experiment> <configuration> <quasi-replay> <replay-pass> <target_option>; qreplay should only be performed after new offsets obtained
 void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = true, Int_t pass = 0, bool h2only = false ){
@@ -82,6 +138,8 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
   Double_t tdc_out; //hcal cluster tdc time, tree
   Double_t atime_out; //hcal cluster adc time, tree
   Double_t hodotmean_out; //hodoscope cluster mean tdc time
+  Double_t atime_hc_out; //hodoscope corrected hcal adct
+  Double_t atime_bc_out; //bbcal corrected hcal adct
 
   // Physics
   Double_t dx_out; //hcal cluster dx
@@ -106,6 +164,8 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
   P->Branch( "tdc", &tdc_out, "tdc/D" );
   P->Branch( "atime", &atime_out, "atime/D" );
   P->Branch( "hodotmean", &hodotmean_out, "hodotmean/D" );
+  P->Branch( "atime_hc", &atime_hc_out, "atime_hc/D" );
+  P->Branch( "atime_bc", &atime_bc_out, "atime_bc/D" );
   P->Branch( "dx", &dx_out, "dx/D" );
   P->Branch( "dy", &dy_out, "dy/D" );
   P->Branch( "W2", &W2_out, "W2/D" );
@@ -131,9 +191,11 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
   Double_t bbtheta_rad = config_parameters.GetBBtheta_rad(); //in radians
   std::string sbs_timestamp = config_parameters.GetSBSTimestamp();
 
-  
   // Declare histograms for modification later where additional calibration sets are necessary
   TH2D *hap_hodocorr_ID[hcal::gNstamp];
+  TH2D *hadct_samp1_run[hcal::gNstamp];
+  TH2D *hadct_samp2_run[hcal::gNstamp];
+  TH1D *hadctblk[hcal::gNstamp];
   TH1D *hadct[hcal::gNstamp];
 
   for( Int_t set=0; set<hcal::gNstamp; set++ ){
@@ -146,6 +208,32 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
 				    lower_lim,
 				    upper_lim);
 
+    //Assumes that the runlist is ordered in ascending run numbers
+    hadct_samp1_run[set] = new TH2D(Form("hadct_s%d_run_set%d",samples[0],set),
+				   "null",
+				   (runs[nruns-1].runnum+1) - (runs[0].runnum-1),
+				   runs[0].runnum-1,
+				   runs[nruns-1].runnum+1,
+				   total_bins,
+				   lower_lim,
+				   upper_lim);
+
+    hadct_samp2_run[set] = new TH2D(Form("hadct_s%d_run_set%d",samples[1],set),
+				   "null",
+				   (runs[nruns-1].runnum+1) - (runs[0].runnum-1),
+				   runs[0].runnum-1,
+				   runs[nruns-1].runnum+1,
+				   total_bins,
+				   lower_lim,
+				   upper_lim);
+    
+    hadctblk[set] = new TH1D(Form("hadctblk_set%d",set),
+			  "null",
+			  total_bins,
+			  lower_lim,
+			  upper_lim);
+
+    
     hadct[set] = new TH1D(Form("hadct_set%d",set),
 			  "null",
 			  total_bins,
@@ -228,14 +316,17 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
       adct_cal[Ncal_set_size].timestamp = current_offset_timestamp.c_str();
       util::readDB( old_db_path, current_offset_timestamp, db_adctoffset_variable, adct_cal[Ncal_set_size].old_param ); 
       hap_hodocorr_ID[Ncal_set_size]->SetTitle(Form("ADCt Primary Block - TDC hodo, offset ts: %s;Channel;ADCt_{HCAL}-TDC_{HODO} (ns)",adct_cal[Ncal_set_size].timestamp.c_str()));
-      hadct[Ncal_set_size]->SetTitle(Form("ADCt All Blocks, offset ts: %s;Raw Cluster Block ADCt_{HCAL} (ns)",adct_cal[Ncal_set_size].timestamp.c_str()));
+      hadct_samp1_run[Ncal_set_size]->SetTitle(Form("ADCt vs Run, offset ts: %s;Run;ADCt_{HCAL} (ns)",adct_cal[Ncal_set_size].timestamp.c_str()));
+      hadct_samp2_run[Ncal_set_size]->SetTitle(Form("ADCt vs Run, offset ts: %s;Run;ADCt_{HCAL} (ns)",adct_cal[Ncal_set_size].timestamp.c_str()));
+      hadct[Ncal_set_size]->SetTitle(Form("ADCt All Blocks Primary Cluster, offset ts: %s;Raw Cluster Block ADCt_{HCAL} (ns)",adct_cal[Ncal_set_size].timestamp.c_str()));
+      hadctblk[Ncal_set_size]->SetTitle(Form("ADCt Primary Block Primary Cluster, offset ts: %s;Raw Cluster Block ADCt_{HCAL} (ns)",adct_cal[Ncal_set_size].timestamp.c_str()));
 
       Ncal_set_size++;
     }     
 
     //Get available cuts for current config/target/field combination. Use first element (0) of cut
     vector<calcut> cut;
-    util::ReadCutList(struct_dir,experiment,config,pass,current_target,mag,verb,cut);
+    util::ReadCutList(struct_dir,experiment,config,Ncal_set_idx,pass,current_target,mag,verb,cut);
 
     // Setting up chain and branch addresses
     C = new TChain("T");
@@ -244,7 +335,7 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
     C->SetBranchStatus("*",0);    
     Double_t BBtr_p[hcal::maxTracks], BBtr_px[hcal::maxTracks], BBtr_py[hcal::maxTracks], BBtr_pz[hcal::maxTracks];
     Double_t BBtr_vz[hcal::maxTracks];
-    Double_t BBtr_n, BBps_x, BBps_y, BBps_e, BBsh_x, BBsh_y, BBsh_e;	
+    Double_t BBtr_n, BBps_x, BBps_y, BBps_e, BBps_atime, BBsh_x, BBsh_y, BBsh_e;	
     Double_t HCALx, HCALy, HCALe;
     Double_t pblkrow, pblkcol, nblk, nclus;
     Int_t Ncid;
@@ -282,6 +373,7 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
     C->SetBranchStatus( "bb.ps.e", 1 );
     C->SetBranchStatus( "bb.ps.x", 1 );
     C->SetBranchStatus( "bb.ps.y", 1 );
+    C->SetBranchStatus( "bb.ps.atimeblk", 1 );
     C->SetBranchStatus( "bb.sh.e", 1 );
     C->SetBranchStatus( "bb.sh.x", 1 );
     C->SetBranchStatus( "bb.sh.y", 1 );
@@ -320,6 +412,7 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
     C->SetBranchAddress( "bb.ps.e", &BBps_e );
     C->SetBranchAddress( "bb.ps.x", &BBps_x );
     C->SetBranchAddress( "bb.ps.y", &BBps_y );
+    C->SetBranchAddress( "bb.ps.atimeblk", &BBps_atime );
     C->SetBranchAddress( "bb.sh.e", &BBsh_e );
     C->SetBranchAddress( "bb.sh.x", &BBsh_x );
     C->SetBranchAddress( "bb.sh.y", &BBsh_y ); 
@@ -416,23 +509,39 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
 	  
       if( failedaccmatch ) continue;
 
-      Double_t pblkid = (double)cblkid[0]-1;
+      Double_t pblkid = (Double_t)cblkid[0]-1;
 
       Double_t hcalatime = cblkatime[0];
       if( qreplay ) 
 	hcalatime = hcalatime + adct_cal[Ncal_set_idx].old_param[(Int_t)pblkid] - new_adct_offsets[(Int_t)pblkid];
+      hadct[Ncal_set_idx]->Fill(hcalatime);
 
+      //Double_t adct_tc = hcalatime-BBps_atime; //Primary cluster, primary block tdc with trigger correction (ns)
       Double_t adct_tc = hcalatime-HODOtmean; //Primary cluster, primary block tdc with trigger correction (ns)
 
+      //Fill primary timing alignment histogram. Will use hodoscope corrected time for cancellation with BBCal atime later
       hap_hodocorr_ID[Ncal_set_idx]->Fill( pblkid, adct_tc );
       
-      //Fill the adc time for all blocks in the primary cluster for tmax extraction. Note that no hodoscope correction is applied as it is not included in SBS-offline
-      for( Int_t blk = 0; blk<nblk; blk++ )
-	hadct[Ncal_set_idx]->Fill(cblkatime[blk]);
+      //Fill single channel histograms for comparison over many runs
+      if(pblkid==samples[0])
+	hadct_samp1_run[Ncal_set_idx]->Fill(current_runnumber,hcalatime);
+      if(pblkid==samples[1])
+	hadct_samp2_run[Ncal_set_idx]->Fill(current_runnumber,hcalatime);
+
+      //Fill the adc time for all blocks in the primary cluster for tmax extraction. Note that no hodoscope correction is applied as it is not included in SBS-offline and on qreplay new offsets are used
+      for( Int_t blk = 0; blk<nblk; blk++ ){
+	Double_t blkid = (Double_t)cblkid[blk]-1;
+	Double_t blkatime = cblkatime[blk];
+	if( qreplay ) 
+	  blkatime = blkatime + adct_cal[Ncal_set_idx].old_param[(Int_t)blkid] - new_adct_offsets[(Int_t)blkid];
+	hadctblk[Ncal_set_idx]->Fill(blkatime);
+      }
 
       pblkid_out = pblkid;
       tdc_out = cblktime[0];
-      atime_out = cblkatime[0];
+      atime_out = hcalatime;
+      atime_hc_out = hcalatime-HODOtmean;
+      atime_bc_out = hcalatime-BBps_atime;
       hcale_out = HCALe;
       dx_out = dx;
       dy_out = dy;
@@ -456,7 +565,10 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
   // Declare canvas and graph for plots
   TCanvas *ADCt_top[Ncal_set_size];
   TCanvas *ADCt_bot[Ncal_set_size];
+  TCanvas *ADCtblk_all[Ncal_set_size];
   TCanvas *ADCt_all[Ncal_set_size];
+  TCanvas *samp1_run[Ncal_set_size];
+  TCanvas *samp2_run[Ncal_set_size];
 
   //No error on cell location
   Double_t cellerr[hcal::maxHCalChan] = {0.};
@@ -472,7 +584,8 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
   Double_t tcval_avg[Ncal_set_size];
   Int_t tcval_Ng[Ncal_set_size];
 
-  //Get sigma for tmax calibrations
+  //Get sigma for tmax/tcut calibrations
+  Double_t allblksig[Ncal_set_size];
   Double_t allsig[Ncal_set_size];
 
   //Define offset calibration set
@@ -490,14 +603,55 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
     tcval_Ng[set] = 0;
 
     //Set up canvases for quality checks
-    ADCt_all[set] = new TCanvas(Form("adct_tmax_set%d",set),Form("ADCt_all, timestamp: %s",active_timestamp.c_str()),1600,1200); 
+    ADCtblk_all[set] = new TCanvas(Form("adct_tmax_set%d",set),Form("ADCtblk_all, timestamp: %s",active_timestamp.c_str()),1600,1200); 
+    ADCt_all[set] = new TCanvas(Form("adct_tcut_set%d",set),Form("ADCt_all, timestamp: %s",active_timestamp.c_str()),1600,1200); 
     ADCt_top[set] = new TCanvas(Form("adct_fit_top_set%d",set),Form("ADCt_top, timestamp: %s",active_timestamp.c_str()),1600,1200);
     ADCt_bot[set] = new TCanvas(Form("adct_fit_bot_set%d",set),Form("ADCt_bot, timestamp: %s",active_timestamp.c_str()),1600,1200);
+    samp1_run[set] = new TCanvas(Form("samp1_run_set%d",set),Form("ADCt vs Run, Channel: %d, ts:%s",samples[0],active_timestamp.c_str()),1600,1200);
+    samp2_run[set] = new TCanvas(Form("samp2_run_set%d",set),Form("ADCt vs Run, Channel: %d, ts:%s",samples[1],active_timestamp.c_str()),1600,1200); 
     ADCt_top[set]->Divide(12,12);
     ADCt_bot[set]->Divide(12,12);
     gStyle->SetOptStat(0);
     
-    //Fit all channel adct and extract sigma for tmax calibration
+    //Fit channels and overlay for run-to-run comparison
+    overlayWithGaussianFits(hadct_samp1_run[set],samp1_run[set]);
+    samp1_run[set]->Write();
+    overlayWithGaussianFits(hadct_samp2_run[set],samp2_run[set]);
+    samp2_run[set]->Write();
+
+    //Fit all channel all block adct and extract sigma for tmax calibration
+    ADCtblk_all[set]->cd();
+    Double_t allblkfitl = 0.;
+    Double_t allblkfith = 0.;
+
+    Int_t adctblkN = hadctblk[set]->GetEntries();
+    Int_t allblkbinmax = hadctblk[set]->GetMaximumBin();
+    Double_t allblkbinmaxX = lower_lim+allblkbinmax*(upper_lim-lower_lim)/total_bins;
+    Double_t allblkbinmaxY = hadctblk[set]->GetBinContent(allblkbinmax);
+    allblkfitl = allblkbinmaxX - 2*observed_adct_sigma;
+    allblkfith = allblkbinmaxX + 2*observed_adct_sigma;
+
+    TF1 *gausfitallblk = new TF1("gausfitallblk",util::g_gfit_bg,allblkfitl,allblkfith,5);
+    gausfitallblk->SetLineWidth(4);
+    gausfitallblk->SetParameter(0,allblkbinmaxY);
+    gausfitallblk->SetParameter(1,allblkbinmaxX);
+    gausfitallblk->SetParLimits(1,allblkfitl,allblkfith);
+    gausfitallblk->SetParameter(2,observed_adct_sigma);
+    gausfitallblk->SetParLimits(2,1.,3*observed_adct_sigma);
+    gausfitallblk->SetParameter(3,25);
+    gausfitallblk->SetParameter(4,20);
+    gausfitallblk->SetParLimits(3,0,200);
+    
+    hadctblk[set]->Fit("gausfitallblk","RBMQ");
+    hadctblk[set]->Draw();
+
+    Double_t allblkmean = gausfitallblk->GetParameter(1);
+    allblksig[set] = gausfitallblk->GetParameter(2);
+    hadctblk[set]->SetTitle(Form("All Blk Set:%d QR:%d N:%d Mean:%f Sigma:%f",set,(Int_t)qreplay,adctblkN,allblkmean,allblksig[set]));    
+    //hadctblk[set]->Write();
+    ADCtblk_all[set]->Write();
+
+    //Fit all channel adct and extract sigma for tcut calibration
     ADCt_all[set]->cd();
     Double_t allfitl = 0.;
     Double_t allfith = 0.;
@@ -587,9 +741,11 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
     ADCt_bot[set]->Write();
 
     if( !qreplay ){
-      std::string qplotpath_all = plotdir + Form("adct_tmax_set%d.png",set);
+      std::string qplotpath_blkall = plotdir + Form("adct_tmax_set%d.png",set);
+      std::string qplotpath_all = plotdir + Form("adct_tcut_set%d.png",set);
       std::string qplotpath_top = plotdir + Form("adct_fit_top_set%d.png",set);
       std::string qplotpath_bot = plotdir + Form("adct_fit_bot_set%d.png",set);
+      ADCtblk_all[set]->SaveAs(qplotpath_blkall.c_str());
       ADCt_all[set]->SaveAs(qplotpath_all.c_str());
       ADCt_top[set]->SaveAs(qplotpath_top.c_str());
       ADCt_bot[set]->SaveAs(qplotpath_bot.c_str());
@@ -673,7 +829,7 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
 
   for( Int_t s=0; s<Ncal_set_size; s++ ){
 
-    c1[s] = new TCanvas(Form("adctalignreport_%d",s), Form("Configuration/Cut Information, Calibration Set %d",s), 200, 10, 900, 500);
+    c1[s] = new TCanvas(Form("adctalignreport_%d",s), Form("Configuration/Cut Information, Calibration Set %d",s), 1800, 900);
   
     // Set margin.
     c1[s]->SetLeftMargin(0.05);

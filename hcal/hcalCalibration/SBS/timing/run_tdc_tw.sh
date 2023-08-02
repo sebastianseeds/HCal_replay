@@ -3,7 +3,7 @@
 # SSeeds - 5.28.23 - simple shell script to run tcal.C
 
 ## Usage
-#./run_tdc_align.sh <string: experiment> <int: configuration> <bool: quasi-replay> <int: replay pass> <int: number of energy calibrations> <string: parameter override path>
+#./run_tdc_align.sh <string: experiment> <int: configuration> <bool: quasi-replay> <int: replay pass> <int: number of energy calibrations> <bool: parameter override option> <string: parameter override timestamp>
 
 exp=$1
 config=$2

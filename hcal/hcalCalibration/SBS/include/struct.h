@@ -66,6 +66,7 @@ typedef struct calrun {
 typedef struct calcut {
 
   Int_t sbsconfig;
+  Int_t calib_set;
   std::string target;
   Int_t field;           // SBS magnet current (A)
   Double_t hcal_sf;
@@ -85,13 +86,14 @@ typedef struct calcut {
 
   // constructor 
   calcut(): 
-  sbsconfig(0),target("NONE"),field(0),hcal_sf(0),hcal_es(0),W2_mean(0),W2_sig(0),dx0_n(0),dx0_p(0),dy0(0),dx_sig_n(0),dx_sig_p(0),dy_sig(0),atime0(0),atime_sig(0),useAlshield(0),gcut("NONE")
+  sbsconfig(0),calib_set(0),target("NONE"),field(0),hcal_sf(0),hcal_es(0),W2_mean(0),W2_sig(0),dx0_n(0),dx0_p(0),dy0(0),dx_sig_n(0),dx_sig_p(0),dy_sig(0),atime0(0),atime_sig(0),useAlshield(0),gcut("NONE")
   {}
 
   // define an ostream operator to print to screen conveniently
   friend ostream& operator <<(ostream &out, const calcut& ccut) {
     out << " -------------------------------------------------" << std::endl;
     out << " SBS config                          : " << ccut.sbsconfig << std::endl;
+    out << " Calibration Set                     : " << ccut.calib_set << std::endl;
     out << " Target                              : " << ccut.target << std::endl;
     out << " SBS field strength                  : " << ccut.field << std::endl;
     out << " HCal Samp Frac                      : " << ccut.hcal_sf << std::endl;
@@ -115,22 +117,23 @@ typedef struct calcut {
   // sets data by reading runsheet (exclusively for util::ReadRunList functions)
   void SetDataCutSheet(std::vector<std::string> data) {
     sbsconfig = stoi(data[0]);
-    target = data[1];
-    field = stoi(data[2]);
-    hcal_sf = stod(data[3]);
-    hcal_es = stod(data[4]);
-    W2_mean = stod(data[5]);
-    W2_sig = stod(data[6]);
-    dx0_n = stod(data[7]);
-    dx0_p = stod(data[8]);
-    dy0 = stod(data[9]);
-    dx_sig_n = stod(data[10]);
-    dx_sig_p = stod(data[11]);
-    dy_sig = stod(data[12]);
-    atime0 = stod(data[13]);
-    atime_sig = stod(data[14]);
-    useAlshield = stoi(data[15]);
-    gcut = data[16];
+    calib_set = stoi(data[1]);
+    target = data[2];
+    field = stoi(data[3]);
+    hcal_sf = stod(data[4]);
+    hcal_es = stod(data[5]);
+    W2_mean = stod(data[6]);
+    W2_sig = stod(data[7]);
+    dx0_n = stod(data[8]);
+    dx0_p = stod(data[9]);
+    dy0 = stod(data[10]);
+    dx_sig_n = stod(data[11]);
+    dx_sig_p = stod(data[12]);
+    dy_sig = stod(data[13]);
+    atime0 = stod(data[14]);
+    atime_sig = stod(data[15]);
+    useAlshield = stoi(data[16]);
+    gcut = data[17];
   }
 
 } calcut_t;  

@@ -451,13 +451,21 @@ void quality_check( const char *experiment = "gmn", Int_t config = 11, Int_t pas
   TCanvas *c5 = new TCanvas("c5","MC sampling fraction",1600,1200);
   c5->cd();
 
-  //get path to mc output files
+  //get path to mc output files (no digitization, replay)
   std::string mc_path = outdir_path + Form("/hcal_calibrations/MC/hcalE_mc_class_%s_conf%d.root",experiment,config);
 
-  TFile *fSFmc = TFile::Open(mc_path.c_str());
-  TH1D *hSFmc = (TH1D*)fSFmc->Get("hSampFrac_clus");
+  //get path to mc output files (no digitization, replay)
+  std::string digmc_path = outdir_path + Form("/hcal_calibrations/MC/hcalE_mc_dig_%s_conf%d.root",experiment,config);
+
+  //TFile *fSFmc = TFile::Open(mc_path.c_str());
+  TFile *fSFmc = TFile::Open(digmc_path.c_str());
+  //TH1D *hSFmc = (TH1D*)fSFmc->Get("hSampFrac_clus");
+  TH1D *hSFmc = (TH1D*)fSFmc->Get("hSF_mc");
 
   hSFmc->SetLineWidth(3);
+  hSFmc->SetLineColor(kGreen);
+  //hSFmc->SetFillStyle(3004);
+  //hSFmc->SetFillColor(kGreen);
   hSFmc->Draw("hist");
 
   //get reasonable limits on fit
@@ -494,10 +502,15 @@ void quality_check( const char *experiment = "gmn", Int_t config = 11, Int_t pas
   TCanvas *c6 = new TCanvas("c6","MC energy spectrum",1600,1200);
   c6->cd();
 
-  TFile *fEmc = TFile::Open(mc_path.c_str());
-  TH1D *hEmc = (TH1D*)fEmc->Get("hHCALe_clus");
+  //TFile *fEmc = TFile::Open(mc_path.c_str());
+  TFile *fEmc = TFile::Open(digmc_path.c_str());
+  //TH1D *hEmc = (TH1D*)fEmc->Get("hHCALe_clus");
+  TH1D *hEmc = (TH1D*)fEmc->Get("hE_mc");
 
   hEmc->SetLineWidth(3);
+  hEmc->SetLineColor(kGreen);
+  //hEmc->SetFillStyle(3004);
+  //hEmc->SetFillColor(kGreen);
   hEmc->Draw("hist");
 
   //get reasonable limits on fit
@@ -647,8 +660,10 @@ void quality_check( const char *experiment = "gmn", Int_t config = 11, Int_t pas
     c9->cd(set+1);
     
     //Get MC energy
-    TFile *fEmc = TFile::Open(mc_path.c_str());
-    TH1D *hEmc = (TH1D*)fEmc->Get("hHCALe_clus");
+    //TFile *fEmc = TFile::Open(mc_path.c_str());
+    TFile *fEmc = TFile::Open(digmc_path.c_str());
+    //TH1D *hEmc = (TH1D*)fEmc->Get("hHCALe_clus");
+    TH1D *hEmc = (TH1D*)fEmc->Get("hE_mc");
 
     //get max value of histogram
     Double_t hEmc_max = hEmc->GetMaximum();
@@ -664,7 +679,9 @@ void quality_check( const char *experiment = "gmn", Int_t config = 11, Int_t pas
     Double_t scale_factor = hEmc_max / h2_max;
 
     hEmc->SetLineWidth(3);
-    hEmc->SetLineColor(kBlack);
+    hEmc->SetLineColor(kGreen);
+    hEmc->SetFillStyle(3004);
+    hEmc->SetFillColor(kGreen);
     hEmc->GetXaxis()->SetRangeUser(0,E_hard_ulim);
     hEmc->GetXaxis()->SetTitle("GeV");
     hEmc->Draw("hist");
@@ -673,7 +690,7 @@ void quality_check( const char *experiment = "gmn", Int_t config = 11, Int_t pas
     h2->Scale(scale_factor);
 
     h2->SetLineWidth(2);
-    h2->SetLineColor(kBlue);
+    h2->SetLineColor(kBlack);
     h2->GetXaxis()->SetRangeUser(0,E_hard_ulim);
     h2->GetXaxis()->SetTitle("GeV");
     h2->Draw("hist same");
@@ -681,7 +698,7 @@ void quality_check( const char *experiment = "gmn", Int_t config = 11, Int_t pas
     //Add a legend
     auto legend = new TLegend(0.63,0.7,0.89,0.89);
     legend->SetTextSize(0.03);
-    legend->SetHeader(Form("HCal Energy Spectrum Data/MC SBS%d, Cal Set%d",config,set));
+    legend->SetHeader(Form("SBS%d, Cal Set%d",config,set));
     legend->AddEntry(hEmc,"MC","l");
     legend->AddEntry(h2,"Data (Scaled)","l");
     legend->Draw();
@@ -704,8 +721,10 @@ void quality_check( const char *experiment = "gmn", Int_t config = 11, Int_t pas
     c10->cd(set+1);
     
     //Get MC energy
-    TFile *fSFmc = TFile::Open(mc_path.c_str());
-    TH1D *hSFmc = (TH1D*)fSFmc->Get("hSampFrac_clus");
+    //TFile *fSFmc = TFile::Open(mc_path.c_str());
+    TFile *fSFmc = TFile::Open(digmc_path.c_str());
+    //TH1D *hSFmc = (TH1D*)fSFmc->Get("hSampFrac_clus");
+    TH1D *hSFmc = (TH1D*)fSFmc->Get("hSF_mc");
 
     //get max value of histogram
     Double_t hSFmc_max = hSFmc->GetMaximum();
@@ -721,7 +740,9 @@ void quality_check( const char *experiment = "gmn", Int_t config = 11, Int_t pas
     Double_t scale_factor = hSFmc_max / h2_max;
 
     hSFmc->SetLineWidth(3);
-    hSFmc->SetLineColor(kBlack);
+    hSFmc->SetLineColor(kGreen);
+    hSFmc->SetFillStyle(3004);
+    hSFmc->SetFillColor(kGreen);
     hSFmc->GetXaxis()->SetRangeUser(0,0.5);
     hSFmc->GetXaxis()->SetTitle("E_{clus}/KE");
     hSFmc->Draw("hist");
@@ -730,7 +751,7 @@ void quality_check( const char *experiment = "gmn", Int_t config = 11, Int_t pas
     h2->Scale(scale_factor);
 
     h2->SetLineWidth(2);
-    h2->SetLineColor(kBlue);
+    h2->SetLineColor(kBlack);
     h2->GetXaxis()->SetRangeUser(0,0.5);
     h2->GetXaxis()->SetTitle("E_{clus}/KE");
     h2->Draw("hist same");
@@ -738,7 +759,7 @@ void quality_check( const char *experiment = "gmn", Int_t config = 11, Int_t pas
     //Add a legend
     auto legend = new TLegend(0.63,0.7,0.89,0.89);
     legend->SetTextSize(0.03);
-    legend->SetHeader(Form("HCal Sampling Fraction Data/MC SBS%d, Cal Set%d",config,set));
+    legend->SetHeader(Form("SBS%d, Cal Set%d",config,set));
     legend->AddEntry(hSFmc,"MC","l");
     legend->AddEntry(h2,"Data (Scaled)","l");
     legend->Draw();
