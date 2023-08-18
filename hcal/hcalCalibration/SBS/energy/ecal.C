@@ -37,7 +37,7 @@ const Int_t linecount = 25;
 const Int_t atimeNsig = 6;
 
 //Main <experiment> <configuration> <quasi-replay-option> <replay-pass> <target-option>; qreplay should only be performed after new offsets obtained
-void ecal( const char *experiment = "gmn", Int_t config=4, bool qreplay = false, Int_t pass = 0, bool h2only = true ){
+void ecal( const char *experiment = "gmn", Int_t config = 4, bool qreplay = false, Int_t pass = 0, bool h2only = true ){
   
   // Define a clock to check macro processing time
   TStopwatch *st = new TStopwatch();

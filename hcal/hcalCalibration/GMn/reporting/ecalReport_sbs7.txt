@@ -1,4 +1,4 @@
-#HCal energy calibration error and performance report from SBS-7 obtained 3_29_2023
+#HCal energy calibration error and performance report from SBS-7 obtained 8_7_2023
 
 Quasi-replay is 0
 
@@ -2684,4 +2684,4 @@ Elastic yield for analyzed runs: 15785. Total event bins available for calibrati
 
 Calibration complete. Constants and histograms written to file.
 
-CPU time elapsed = 134.36 s = 2.23933 min. Real time = 553.785 s = 9.22975 min.
+CPU time elapsed = 160.7 s = 2.67833 min. Real time = 545.734 s = 9.09557 min.

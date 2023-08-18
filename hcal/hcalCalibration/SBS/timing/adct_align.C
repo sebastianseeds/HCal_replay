@@ -746,14 +746,19 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
       std::string qplotpath_top = plotdir + Form("adct_fit_top_set%d.png",set);
       std::string qplotpath_bot = plotdir + Form("adct_fit_bot_set%d.png",set);
       ADCtblk_all[set]->SaveAs(qplotpath_blkall.c_str());
-      ADCt_all[set]->SaveAs(qplotpath_all.c_str());
+      //ADCt_all[set]->SaveAs(qplotpath_all.c_str());
       ADCt_top[set]->SaveAs(qplotpath_top.c_str());
       ADCt_bot[set]->SaveAs(qplotpath_bot.c_str());
+    }else{
+      std::string samp1plotpath = plotdir + Form("samp1_run_set%d.png",set);
+      std::string samp2plotpath = plotdir + Form("samp2_run_set%d.png",set);
+      samp1_run[set]->SaveAs(samp1plotpath.c_str());
+      samp2_run[set]->SaveAs(samp2plotpath.c_str());
     } 	
 
     tcval_avg[set] /= tcval_Ng[set];
 	
-  }//endloop over slice fits
+  }//endloop over nsets
 
   TCanvas *ADCt_graph[Ncal_set_size];
   TGraphErrors *gadct_c[Ncal_set_size];
@@ -826,19 +831,21 @@ void adct_align( const char *experiment = "gmn", Int_t config=4, bool qreplay = 
 
     //Add output report canvas
   TCanvas *c1[Ncal_set_size];
+  Int_t report_height = 1800;
 
   for( Int_t s=0; s<Ncal_set_size; s++ ){
 
-    c1[s] = new TCanvas(Form("adctalignreport_%d",s), Form("Configuration/Cut Information, Calibration Set %d",s), 1800, 900);
+    c1[s] = new TCanvas(Form("adctalignreport_%d",s), Form("Configuration/Cut Information, Calibration Set %d",s), report_height, 900);
   
     // Set margin.
-    c1[s]->SetLeftMargin(0.05);
+    c1[s]->SetLeftMargin(0.01);
 
     // Create a TText object.
     TText *t = new TText();
 
     // Set text align to the left (horizontal alignment = 1).
     t->SetTextAlign(11);
+    t->SetTextSize(0.02);
 
     //make an array of strings
     std::string target_option = "All Available";

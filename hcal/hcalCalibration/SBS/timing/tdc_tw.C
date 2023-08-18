@@ -18,26 +18,32 @@
 
 // TDC vs E extraction constraints
 const Int_t first_hcal_chan = 0;
-const Int_t tdc_bins = 220;
-const Double_t tdc_lower_lim = -100.;
-const Double_t tdc_upper_lim = 10.;
+const Int_t tdc_bins = 200;
+const Double_t tdc_lower_lim = -50.;
+const Double_t tdc_upper_lim = 50.;
 const Int_t E_bins = 1000;
 const Double_t E_lower_lim = 0.;
 const Double_t E_upper_lim = 0.5;
 const Int_t fit_event_min = 60;
 
-// Overall timewalk fit constraints - may need to be tuned at different hadron momenta
+// Overall expo timewalk fit constraints - may need to be tuned at different hadron momenta
 const Double_t tw_fit_llim = 0.05;
 const Double_t tw_fit_ulim = 0.45;
 const Double_t tw_p0_llim = 2.;
 const Double_t tw_p0_ulim = 6.;
 const Double_t tw_p1_llim = 4.;
 const Double_t tw_p1_ulim = 9.;
-const Double_t tw_p2_llim = -76.5;
-const Double_t tw_p2_ulim = -67.5;
+const Double_t tw_p2_llim = -10;
+const Double_t tw_p2_ulim = 10;
+
+//pol1 tw fit constraints
+const Double_t p0_set = 3.;
+const Double_t p1_set = -5.;
+const Double_t fit_ul = 0.45;
+const Double_t fit_ll = 0.01;
 
 //Main <experiment> <configuration> <quasi-replay> <replay-pass> <number-of-calibration-sets> <parameter-override-option> <override-timestamp>; qreplay should only be performed after new offsets obtained
-void tdc_tw( const char *experiment = "gmn", Int_t config = 4, bool qreplay = true, Int_t pass = 0, Int_t Nset = 2, std::string param_override = "false", std::string param_ts = "null" ){
+void tdc_tw( const char *experiment = "gmn", Int_t config = 7, bool qreplay = false, Int_t pass = 0, Int_t Nset = 1, std::string param_override = "false", std::string param_ts = "null" ){
 
   // Define a clock to check macro processing time
   TStopwatch *st = new TStopwatch();
@@ -385,6 +391,8 @@ void tdc_tw( const char *experiment = "gmn", Int_t config = 4, bool qreplay = tr
     C->SetBranchStatus( "bb.hodotdc.clus.tmean", 1 );
     C->SetBranchStatus( "bb.gem.track.nhits", 1 );
     C->SetBranchStatus( "bb.etot_over_p", 1 );
+    C->SetBranchStatus( "bb.tr.tg_th", 1 );
+    C->SetBranchStatus( "bb.tr.tg_ph", 1 );
     C->SetBranchStatus( "Ndata.sbs.hcal.clus.id", 1 ); //Odd maxing out at 10 clusters on all cluster Ndata objects, so this is needed in addition to sbs.hcal.nclus
 
     // Linking memory
@@ -647,6 +655,7 @@ void tdc_tw( const char *experiment = "gmn", Int_t config = 4, bool qreplay = tr
   TCanvas *TDCtw_top[Ncal_set_size];
   TCanvas *TDCtw_bot[Ncal_set_size];
   TCanvas *TDCtw_all[Ncal_set_size];
+  TCanvas *pol1_all[Ncal_set_size];
 
   // set up arrays for timewalk fits
   Double_t TDCvseP0[Ncal_set_size][hcal::maxHCalChan];
@@ -656,6 +665,10 @@ void tdc_tw( const char *experiment = "gmn", Int_t config = 4, bool qreplay = tr
   Double_t TDCvseAllP1[Ncal_set_size];
   Double_t TDCvseAllP2[Ncal_set_size];
   Double_t TDCvseAllP3[Ncal_set_size];
+  Double_t pol1AllP0[Ncal_set_size];
+  Double_t pol1AllP1[Ncal_set_size];
+
+  TH2D *hpol1clone[Ncal_set_size];
 
   // Create timewalk fit parameter files
   ofstream tdctw;
@@ -665,9 +678,12 @@ void tdc_tw( const char *experiment = "gmn", Int_t config = 4, bool qreplay = tr
   //Loop over all independent data sets
   for( Int_t s=0; s<Ncal_set_size; s++ ){
 
+    hpol1clone[s] = (TH2D*)htdcvE_pblk_all[s]->Clone("hpol1Clone");
+
     TDCtw_top[s] = new TCanvas(Form("TDC_top_s%d",s),Form("TDC_top_s%d",s),1600,1200);
     TDCtw_bot[s] = new TCanvas(Form("TDC_bot_s%d",s),Form("TDC_bot_s%d",s),1600,1200);
     TDCtw_all[s] = new TCanvas(Form("TDC_all_s%d",s),Form("TDC_all_s%d",s),1600,1200);
+    pol1_all[s] = new TCanvas(Form("TDC_pol1_all_s%d",s),Form("TDC_pol1_all_s%d",s),1600,1200);
     TDCtw_top[s]->Divide(12,12);
     TDCtw_bot[s]->Divide(12,12);
 
@@ -698,6 +714,25 @@ void tdc_tw( const char *experiment = "gmn", Int_t config = 4, bool qreplay = tr
     htdcvE_pblk_all[s]->Draw();
 
     TDCtw_all[s]->Write();
+
+    pol1_all[s]->cd();
+
+    //Fit the TDC vs E plots
+    TF1 *fittdcpol1 = new TF1( "fittdcpol1", "pol1", fit_ll, fit_ul );
+    fittdcTWall->SetParameters(p0_set,p1_set);
+
+    // fittdcTWall->SetParLimits(0,tw_p0_llim,tw_p0_ulim);
+    // fittdcTWall->SetParLimits(1,tw_p1_llim,tw_p1_ulim);
+    // fittdcTWall->SetParLimits(2,tw_p2_llim,tw_p2_ulim);
+
+    hpol1clone[s]->Fit("fittdcpol1","WQ","",fit_ll,fit_ul);
+    pol1AllP0[s] = fittdcpol1->GetParameter(0);
+    pol1AllP1[s] = fittdcpol1->GetParameter(1);
+
+    hpol1clone[s]->SetTitle(Form("P0:%f P1:%f",pol1AllP0[s],pol1AllP1[s]));
+    hpol1clone[s]->Draw();
+
+    pol1_all[s]->Write();
 
     //Fits for timewalk corrections
     for(Int_t c=0; c<hcal::maxHCalChan; c++){
@@ -785,12 +820,19 @@ void tdc_tw( const char *experiment = "gmn", Int_t config = 4, bool qreplay = tr
       }
 
       //tdctw << endl << "#Last set order 3 polynomial fit for all pmts, ignoring offset (P0)" << endl;
-      tdctw << endl << "#Last set exponential fit for all pmts, ignoring offset (P0)" << endl;
+      tdctw << endl << "#Exponential fit for all pmts" << endl;
       
       tdctw << db_tdctw_variable << " = ";
       tdctw << TDCvseAllP0[s] << " ";
       //tdctw << TDCvseAllP2[s] << " ";
       tdctw << TDCvseAllP1[s] << endl << endl;
+
+      tdctw << endl << "#Pol1 fit for all pmts" << endl;
+      
+      tdctw << db_tdctw_variable << " = ";
+      tdctw << pol1AllP0[s] << " ";
+      //tdctw << TDCvseAllP2[s] << " ";
+      tdctw << pol1AllP1[s] << endl << endl;
     
       tdctw << endl << endl; //needed for now to prevent bug in util::readDB
 

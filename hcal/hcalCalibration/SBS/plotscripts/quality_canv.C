@@ -73,9 +73,9 @@ void quality_canv( const char *experiment = "gmn", Int_t config = 4, Int_t pass 
   std::string adct_type = "adct";
   std::string tdc_type = "tdc";
 
-  std::string adct_align_qr0_path = outdir_path + Form("/hcal_calibrations/pass%d/timing/%salign_class_%s_conf%d_qr0_pass%d.root",pass,adct_type.c_str(),experiment,config,pass);
+  std::string adct_align_qr0_path = outdir_path + Form("/hcal_calibrations/pass%d/timing/%salign_%s_conf%d_qr0_pass%d.root",pass,adct_type.c_str(),experiment,config,pass);
 
-  std::string tdc_align_qr0_path = outdir_path + Form("/hcal_calibrations/pass%d/timing/%salign_class_%s_conf%d_qr0_pass%d.root",pass,tdc_type.c_str(),experiment,config,pass);
+  std::string tdc_align_qr0_path = outdir_path + Form("/hcal_calibrations/pass%d/timing/%salign_%s_conf%d_qr0_pass%d.root",pass,tdc_type.c_str(),experiment,config,pass);
 
   std::string ecal_qr0_path = outdir_path + Form("/hcal_calibrations/pass%d/energy/ecal%s_%s_conf%d_qr0_pass%d.root",pass,h2opt.c_str(),experiment,config,pass);
 

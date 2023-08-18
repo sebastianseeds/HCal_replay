@@ -20,15 +20,15 @@
 // TDC offset extraction constraints
 const Int_t first_hcal_chan = 0;
 const Int_t total_bins = 320;
-const Int_t lower_lim = -100;
-const Int_t upper_lim = 60;
+const Int_t lower_lim = -120;
+const Int_t upper_lim = 40;
 const Int_t fit_event_min = 50;
 const Double_t observed_tdc_sigma = 2.5; //rough estimate
 const Double_t TDC_target = 0.; //Target value for peak tdc.
 const Int_t linecount = 12;
 
 //Main <experiment> <configuration> <quasi-replay> <replay-pass> <target_option>; qreplay should only be performed after new offsets obtained
-void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay = true, Int_t pass = 0, bool h2only = false ){
+void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay = false, Int_t pass = 0, bool h2only = false ){
 
   // Define a clock to check macro processing time
   TStopwatch *st = new TStopwatch();
@@ -45,13 +45,17 @@ void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay =
   std::string outdir_path = gSystem->Getenv("OUT_DIR");
   std::string tdc_align_path = outdir_path + Form("/hcal_calibrations/pass%d/timing/tdcalign%s_%s_conf%d_qr%d_pass%d.root",pass,h2opt.c_str(),experiment,config,(Int_t)qreplay,pass);
 
-  std::string new_tdcoffset_path = Form("parameters/tdcoffsets_class_%s_conf%d_pass%d.txt",experiment,config,pass);
+  //std::string new_tdcoffset_path = Form("parameters/tdcoffsets_class_%s_conf%d_pass%d.txt",experiment,config,pass);
+  std::string new_tdcoffset_path = "test.txt";
   std::string old_db_path = db_path + "/db_sbs.hcal.dat";
   std::string db_tdcoffset_variable = "sbs.hcal.tdc.offset";
   std::string db_tdccalib_variable = "sbs.hcal.tdc.calib";
 
   // Declare output analysis file
-  TFile *fout = new TFile( tdc_align_path.c_str(), "RECREATE" );
+  //TFile *fout = new TFile( tdc_align_path.c_str(), "RECREATE" );
+
+  TFile *fout = new TFile("test.root","RECREATE");
+
   std::string plotdir = Form("../quality_plots/%s/conf%d/",experiment,config);
 
   // Get information from .csv files
@@ -549,12 +553,12 @@ void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay =
     TDC_top[set]->Write();
     TDC_bot[set]->Write();
 
-    if( !qreplay ){
-      std::string qplotpath_top = plotdir + Form("tdc_fit_top_set%d.png",set);
-      std::string qplotpath_bot = plotdir + Form("tdc_fit_bot_set%d.png",set);
-      TDC_top[set]->SaveAs(qplotpath_top.c_str());
-      TDC_top[set]->SaveAs(qplotpath_bot.c_str());
-    } 
+    // if( !qreplay ){
+    //   std::string qplotpath_top = plotdir + Form("tdc_fit_top_set%d.png",set);
+    //   std::string qplotpath_bot = plotdir + Form("tdc_fit_bot_set%d.png",set);
+    //   TDC_top[set]->SaveAs(qplotpath_top.c_str());
+    //   TDC_top[set]->SaveAs(qplotpath_bot.c_str());
+    // } 
 
     tcval_avg[set] /= tcval_Ng[set];
 
@@ -620,21 +624,25 @@ void tdc_align( const char *experiment = "gmn", Int_t config = 4, bool qreplay =
     
   } // endloop over calibration sets
 
+  writeParFile << endl << endl;
+
     //Add output report canvas
   TCanvas *c1[Ncal_set_size];
+  Int_t report_height = 1800;
 
   for( Int_t s=0; s<Ncal_set_size; s++ ){
 
-    c1[s] = new TCanvas(Form("tdcalignreport_set%d",s), Form("Configuration/Cut Information, Calibration Set %d",s), 200, 10, 900, 500);
+    c1[s] = new TCanvas(Form("tdcalignreport_set%d",s), Form("Configuration/Cut Information, Calibration Set %d",s), report_height, 900);
   
     // Set margin.
-    c1[s]->SetLeftMargin(0.05);
+    c1[s]->SetLeftMargin(0.01);
 
     // Create a TText object.
     TText *t = new TText();
 
     // Set text align to the left (horizontal alignment = 1).
     t->SetTextAlign(11);
+    t->SetTextSize(0.02);
 
     //make an array of strings
     std::string target_option = "All Available";

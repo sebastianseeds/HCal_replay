@@ -18,10 +18,11 @@ const Double_t Y_range_factor = 20; //plot +/- about average value for compariso
 const Double_t SF_hard_llim = 0.02; //Hard lower limit on hcal SF for fitting
 const Double_t SF_hard_ulim = 0.30; //Hard lower limit on hcal SF for fitting
 const Double_t E_hard_llim = 0.02; //Hard lower limit on hcal E for fitting
-const Double_t E_hard_ulim = 0.80; //Hard lower limit on hcal E for fitting
+const Double_t E_hard_ulim = 1.6; //Hard lower limit on hcal E for fitting (0.8 for all except sbs11: 1.6)
 const Double_t tdc_fit_llim = -120.;
 const Double_t tdc_fit_ulim = 50.;
 const Int_t fit_min = 50;
+const Double_t FWHM = 0.05; //approx fullwidthhalfmax hcal E dist
 
 //Gets the maximum bin on a user passed range
 Int_t get_max_bin_on_range( TH1D *h, Double_t xlow, Double_t xhigh ){
@@ -170,8 +171,8 @@ void quality_check( const char *experiment = "gmn", Int_t config = 11, Int_t pas
   //get paths to calibration output files and type
   std::string adct_type = "adct";
   std::string adct_param = "sbs.hcal.adc.timeoffset";
-  std::string adct_align_qr0_path = outdir_path + Form("/hcal_calibrations/pass%d/timing/%salign_class_%s_conf%d_qr0_pass%d.root",pass,adct_type.c_str(),experiment,config,pass);
-  std::string adct_align_qr1_path = outdir_path + Form("/hcal_calibrations/pass%d/timing/%salign_class_%s_conf%d_qr1_pass%d.root",pass,adct_type.c_str(),experiment,config,pass);
+  std::string adct_align_qr0_path = outdir_path + Form("/hcal_calibrations/pass%d/timing/%salign_%s_conf%d_qr0_pass%d.root",pass,adct_type.c_str(),experiment,config,pass);
+  std::string adct_align_qr1_path = outdir_path + Form("/hcal_calibrations/pass%d/timing/%salign_%s_conf%d_qr1_pass%d.root",pass,adct_type.c_str(),experiment,config,pass);
   std::string adct_param_path = Form("../timing/parameters/adctoffsets_class_%s_conf%d_pass%d.txt",experiment,config,pass);
   std::string adc_gain_path = Form("../energy/parameters/adcgaincoeff_%s%s_conf%d_pass%d.txt",experiment,h2opt.c_str(),config,pass);
   
@@ -220,8 +221,8 @@ void quality_check( const char *experiment = "gmn", Int_t config = 11, Int_t pas
   //get paths to calibration output files and type
   std::string tdc_type = "tdc";
   std::string tdc_param = "sbs.hcal.tdc.offset";
-  std::string tdc_align_qr0_path = outdir_path + Form("/hcal_calibrations/pass%d/timing/%salign_class_%s_conf%d_qr0_pass%d.root",pass,tdc_type.c_str(),experiment,config,pass);
-  std::string tdc_align_qr1_path = outdir_path + Form("/hcal_calibrations/pass%d/timing/%salign_class_%s_conf%d_qr1_pass%d.root",pass,tdc_type.c_str(),experiment,config,pass);
+  std::string tdc_align_qr0_path = outdir_path + Form("/hcal_calibrations/pass%d/timing/%salign_%s_conf%d_qr0_pass%d.root",pass,tdc_type.c_str(),experiment,config,pass);
+  std::string tdc_align_qr1_path = outdir_path + Form("/hcal_calibrations/pass%d/timing/%salign_%s_conf%d_qr1_pass%d.root",pass,tdc_type.c_str(),experiment,config,pass);
   std::string tdc_param_path = Form("../timing/parameters/tdcoffsets_class_%s_conf%d_pass%d.txt",experiment,config,pass);
 
   //determine how many calibration sets exist
@@ -271,6 +272,7 @@ void quality_check( const char *experiment = "gmn", Int_t config = 11, Int_t pas
   // std::string hcal_energy_qr1_path = outdir_path + Form("/hcal_calibrations/pass%d/energy/ecal_class_test_%s_conf%d_qr1_pass%d.root",pass,experiment,config,pass);
   std::string hcal_energy_qr0_path = outdir_path + Form("/hcal_calibrations/pass%d/energy/ecal%s_%s_conf%d_qr0_pass%d.root",pass,h2opt.c_str(),experiment,config,pass);
   std::string hcal_energy_qr1_path = outdir_path + Form("/hcal_calibrations/pass%d/energy/ecal%s_%s_conf%d_qr1_pass%d.root",pass,h2opt.c_str(),experiment,config,pass);
+  //std::string hcal_energy_qr1_path = outdir_path + Form("/hcal_calibrations/qreplay/qreplay%s_from_gmn_8_1_to_%s_%d_%d.root",h2opt.c_str(),experiment,config,pass);
 
   //determine how many calibration sets exist
   Int_t hcal_energy_Nsets = util::countSets( adc_gain_path, adc_gain_param );
@@ -455,12 +457,16 @@ void quality_check( const char *experiment = "gmn", Int_t config = 11, Int_t pas
   std::string mc_path = outdir_path + Form("/hcal_calibrations/MC/hcalE_mc_class_%s_conf%d.root",experiment,config);
 
   //get path to mc output files (no digitization, replay)
-  std::string digmc_path = outdir_path + Form("/hcal_calibrations/MC/hcalE_mc_dig_%s_conf%d.root",experiment,config);
+  //std::string digmc_path = outdir_path + Form("/hcal_calibrations/MC/hcalE_mc_dig_%s_conf%d.root",experiment,config);
+
+  //get path to mc output files (no digitization, replay)
+  std::string digmc_path = outdir_path + Form("/hcal_calibrations/MC/hcalE_idx_mc_dig_%s_conf%d.root",experiment,config);
 
   //TFile *fSFmc = TFile::Open(mc_path.c_str());
   TFile *fSFmc = TFile::Open(digmc_path.c_str());
   //TH1D *hSFmc = (TH1D*)fSFmc->Get("hSampFrac_clus");
   TH1D *hSFmc = (TH1D*)fSFmc->Get("hSF_mc");
+  //TH1D *hSFmc = (TH1D*)fSFmc->Get("hSF_mc_tridx");
 
   hSFmc->SetLineWidth(3);
   hSFmc->SetLineColor(kGreen);
@@ -506,6 +512,7 @@ void quality_check( const char *experiment = "gmn", Int_t config = 11, Int_t pas
   TFile *fEmc = TFile::Open(digmc_path.c_str());
   //TH1D *hEmc = (TH1D*)fEmc->Get("hHCALe_clus");
   TH1D *hEmc = (TH1D*)fEmc->Get("hE_mc");
+  //TH1D *hEmc = (TH1D*)fEmc->Get("hE_mc_tridx");
 
   hEmc->SetLineWidth(3);
   hEmc->SetLineColor(kGreen);
@@ -664,43 +671,68 @@ void quality_check( const char *experiment = "gmn", Int_t config = 11, Int_t pas
     TFile *fEmc = TFile::Open(digmc_path.c_str());
     //TH1D *hEmc = (TH1D*)fEmc->Get("hHCALe_clus");
     TH1D *hEmc = (TH1D*)fEmc->Get("hE_mc");
+    //TH1D *hEmc = (TH1D*)fEmc->Get("hE_mc_tridx");
 
     //get max value of histogram
     Double_t hEmc_max = hEmc->GetMaximum();
 
+    Int_t hEmc_binMax = hEmc->GetMaximumBin();
+    Double_t hEmc_binCenter = hEmc->GetBinCenter( hEmc_binMax );
+    Double_t hEmc_fitLL = hEmc_binCenter - FWHM;
+    Double_t hEmc_fitUL = hEmc_binCenter + FWHM;
+    
+    // Fit a Gaussian to this projection
+    TF1 *hEmc_gfit = new TF1("hEmc_gfit", "gaus");
+    hEmc->Fit( "hEmc_gfit", "QN", "", hEmc_fitLL, hEmc_fitUL ); // "Q" for quiet mode, "N" for no draw
+    Double_t hEmc_fit_max = hEmc_gfit->GetMaximum(hEmc_fitLL,hEmc_fitUL);
+
     //Get data energy
     TFile *f2 = TFile::Open(hcal_energy_qr1_path.c_str());
-    TH1D *h2 = (TH1D*)f2->Get(Form("hE_set%d",set));
+    TH1D *hE = (TH1D*)f2->Get(Form("hE_set%d",set));
 
-    //get max value
-    Double_t h2_max = h2->GetMaximum();
+    //get max value of fit
+    Int_t hE_binMax = hE->GetMaximumBin();
+    Double_t hE_binCenter = hE->GetBinCenter( hE_binMax );
+    Double_t hE_fitLL = hE_binCenter - FWHM;
+    Double_t hE_fitUL = hE_binCenter + FWHM;
+  
+    // Fit a Gaussian to this projection
+    TF1 *hE_gfit = new TF1( "hE_gfit", "gaus" );
+    hE->Fit( "hE_gfit", "QN", "", hE_fitLL, hE_fitUL ); // "Q" for quiet mode, "N" for no draw
+    Double_t hE_fit_max = hE_gfit->GetMaximum(hE_fitLL,hE_fitUL);
 
-    //get scale factor
-    Double_t scale_factor = hEmc_max / h2_max;
+    //get scale factor, scale, and get max value
+    Double_t scale_factor = hEmc_fit_max / hE_fit_max;
+    hE->Scale(scale_factor);
+    Double_t hE_max = hE->GetMaximum();
+
+    Double_t yrangescale = hEmc_max*1.1;
+    if( hEmc_max < hE_max )
+      yrangescale = hE_max*1.1;
+
+    //cout << "hE max: " << hE_max << " hEmc max: " << hEmc_max << " yrangescale " << yrangescale << endl;
 
     hEmc->SetLineWidth(3);
     hEmc->SetLineColor(kGreen);
     hEmc->SetFillStyle(3004);
     hEmc->SetFillColor(kGreen);
     hEmc->GetXaxis()->SetRangeUser(0,E_hard_ulim);
+    hEmc->GetYaxis()->SetRangeUser(0,yrangescale);
     hEmc->GetXaxis()->SetTitle("GeV");
     hEmc->Draw("hist");
 
-    //scale the data for comparison
-    h2->Scale(scale_factor);
-
-    h2->SetLineWidth(2);
-    h2->SetLineColor(kBlack);
-    h2->GetXaxis()->SetRangeUser(0,E_hard_ulim);
-    h2->GetXaxis()->SetTitle("GeV");
-    h2->Draw("hist same");
+    hE->SetLineWidth(2);
+    hE->SetLineColor(kBlack);
+    hE->GetXaxis()->SetRangeUser(0,E_hard_ulim);
+    hE->GetXaxis()->SetTitle("GeV");
+    hE->Draw("hist same");
 
     //Add a legend
     auto legend = new TLegend(0.63,0.7,0.89,0.89);
     legend->SetTextSize(0.03);
     legend->SetHeader(Form("SBS%d, Cal Set%d",config,set));
     legend->AddEntry(hEmc,"MC","l");
-    legend->AddEntry(h2,"Data (Scaled)","l");
+    legend->AddEntry(hE,"Data (Scaled)","l");
     legend->Draw();
 
   }
@@ -725,43 +757,66 @@ void quality_check( const char *experiment = "gmn", Int_t config = 11, Int_t pas
     TFile *fSFmc = TFile::Open(digmc_path.c_str());
     //TH1D *hSFmc = (TH1D*)fSFmc->Get("hSampFrac_clus");
     TH1D *hSFmc = (TH1D*)fSFmc->Get("hSF_mc");
+    //TH1D *hSFmc = (TH1D*)fSFmc->Get("hSF_mc_tridx");
 
     //get max value of histogram
     Double_t hSFmc_max = hSFmc->GetMaximum();
 
+    Int_t hSFmc_binMax = hSFmc->GetMaximumBin();
+    Double_t hSFmc_binCenter = hSFmc->GetBinCenter( hSFmc_binMax );
+    Double_t hSFmc_fitLL = hSFmc_binCenter - FWHM;
+    Double_t hSFmc_fitUL = hSFmc_binCenter + FWHM;
+  
+    // Fit a Gaussian to this projection
+    TF1 *hSFmc_gfit = new TF1("hSFmc_gfit", "gaus");
+    hSFmc->Fit("hSFmc_gfit", "QN", "", hSFmc_fitLL, hSFmc_fitUL ); // "Q" for quiet mode, "N" for no draw
+    Double_t hSFmc_fit_max = hSFmc_gfit->GetMaximum(hSFmc_fitLL,hSFmc_fitUL);
+
     //Get data energy
     TFile *f2 = TFile::Open(hcal_energy_qr1_path.c_str());
-    TH1D *h2 = (TH1D*)f2->Get(Form("hSF_set%d",set));
+    TH1D *hSF = (TH1D*)f2->Get(Form("hSF_set%d",set));
 
-    //get max value
-    Double_t h2_max = h2->GetMaximum();
+    //get max value of fit
+    Int_t hSF_binMax = hSF->GetMaximumBin();
+    Double_t hSF_binCenter = hSF->GetBinCenter( hSF_binMax );
+    Double_t hSF_fitLL = hSF_binCenter - FWHM;
+    Double_t hSF_fitUL = hSF_binCenter + FWHM;
+  
+    // Fit a Gaussian to this projection
+    TF1 *hSF_gfit = new TF1("hSF_gfit", "gaus");
+    hSF->Fit("hSF_gfit", "QN", "", hSF_fitLL, hSF_fitUL ); // "Q" for quiet mode, "N" for no draw
+    Double_t hSF_fit_max = hSF_gfit->GetMaximum(hSF_fitLL,hSF_fitUL);
 
     //get scale factor
-    Double_t scale_factor = hSFmc_max / h2_max;
+    Double_t scale_factor = hSFmc_fit_max / hSF_fit_max;
+    hSF->Scale(scale_factor);
+    Double_t hSF_max = hSF->GetMaximum();
+
+    Double_t yrangescale = hSFmc_max*1.1;
+    if( hSFmc_max < hSF_max )
+      yrangescale = hSF_max*1.1;
 
     hSFmc->SetLineWidth(3);
     hSFmc->SetLineColor(kGreen);
     hSFmc->SetFillStyle(3004);
     hSFmc->SetFillColor(kGreen);
     hSFmc->GetXaxis()->SetRangeUser(0,0.5);
+    hSFmc->GetYaxis()->SetRangeUser(0,yrangescale);
     hSFmc->GetXaxis()->SetTitle("E_{clus}/KE");
     hSFmc->Draw("hist");
 
-    //scale the data for comparison
-    h2->Scale(scale_factor);
-
-    h2->SetLineWidth(2);
-    h2->SetLineColor(kBlack);
-    h2->GetXaxis()->SetRangeUser(0,0.5);
-    h2->GetXaxis()->SetTitle("E_{clus}/KE");
-    h2->Draw("hist same");
+    hSF->SetLineWidth(2);
+    hSF->SetLineColor(kBlack);
+    hSF->GetXaxis()->SetRangeUser(0,0.5);
+    hSF->GetXaxis()->SetTitle("E_{clus}/KE");
+    hSF->Draw("hist same");
 
     //Add a legend
     auto legend = new TLegend(0.63,0.7,0.89,0.89);
     legend->SetTextSize(0.03);
     legend->SetHeader(Form("SBS%d, Cal Set%d",config,set));
     legend->AddEntry(hSFmc,"MC","l");
-    legend->AddEntry(h2,"Data (Scaled)","l");
+    legend->AddEntry(hSF,"Data (Scaled)","l");
     legend->Draw();
 
   }

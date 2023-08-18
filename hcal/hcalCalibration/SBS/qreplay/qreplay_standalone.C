@@ -30,7 +30,8 @@ const Double_t start_dy = -1.25;
 const Double_t end_dy = 1.25;
 const Double_t bins_SFE = 400;
 const Double_t start_SFE = 0.;
-const Double_t end_SFE = 1.;
+const Double_t end_SFE = 1.0;
+const Double_t end_pC = 1.0/0.0017; //estimated range from cosmic gain coefficient
 const Int_t linecount = 25;
 const Int_t atimeNsig = 6;
 const Int_t total_bins = 320;
@@ -38,18 +39,109 @@ const Int_t tdc_lower_lim = -140;
 const Int_t tdc_upper_lim = 20;
 const Int_t lower_lim = -60;
 const Int_t upper_lim = 100;
+const Double_t E_approx_FWHM = 0.3;
+const Double_t pC_approx_FWHM = 0.3/0.0017;
 const Int_t samples[2] = {161,80}; //Sample channels to check timing alignment over runs within calibrations set
+//const Double_t test_coeff = 0.0017;
+
+
+void overlayWithGaussianFits(TH2D* hist, TCanvas* canvas, bool pCopt, const std::vector<int>& redBins) {
+  if (!hist || !canvas) {
+    std::cerr << "Null histogram or canvas pointer!" << std::endl;
+    return;
+  }
+
+  // Use the provided canvas
+  canvas->cd();
+
+  // Create TGraphErrors for standard and red points
+  TGraphErrors* graph = new TGraphErrors();
+  TGraphErrors* redGraph = new TGraphErrors();
+
+  // //get x value of first bin
+  // Int_t xstart = hist->GetBinCenter(1);
+  // //
+
+  for (int binX = 1; binX <= hist->GetNbinsX(); ++binX) {
+    // Project the 2D histogram onto a 1D histogram along the y-axis for the current x-bin
+    TH1D* projY = hist->ProjectionY("_py", binX, binX);
+
+    //Skip the fit if less than 100 entries exist in the bin
+    if( projY->GetEntries()<100 )
+      continue;
+	
+    //declare some dynamic fit variables
+    Double_t FWHM = E_approx_FWHM;
+    if(pCopt) FWHM = pC_approx_FWHM;
+    Int_t binMax = projY->GetMaximumBin();
+    Double_t binCenter = projY->GetBinCenter( binMax );
+    Double_t fitLowerLim = binCenter - FWHM;
+    Double_t fitUpperLim = binCenter + FWHM;
+	
+    // Fit a Gaussian to this projection
+    TF1 *gaussFit = new TF1("gausFit", "gaus");
+    projY->Fit(gaussFit, "Q", "", fitLowerLim, fitUpperLim ); // "Q" for quiet mode
+    
+    if (gaussFit) { // Ensure the fit was successful
+
+      // Determine the x-value as the center of the current bin
+      double xCenter = hist->GetXaxis()->GetBinCenter(binX);
+
+      double mean = gaussFit->GetParameter(1);
+      double sigma = gaussFit->GetParameter(2);
+
+      // Get the errors on the mean and sigma
+      double meanError = gaussFit->GetParError(1);
+      double sigmaError = gaussFit->GetParError(2);
+
+      // Determine which graph to fill based on whether the bin is in redBins
+      
+
+      TGraphErrors* currentGraph = graph;
+      Int_t binXval = hist->GetXaxis()->GetBinCenter(binX);
+
+      cout << "binXval: " << binXval << endl;
+
+      if (std::find(redBins.begin(), redBins.end(), binXval) != redBins.end()) {
+	currentGraph = redGraph;
+      }
+
+      int pointIdx = currentGraph->GetN();
+      currentGraph->SetPoint(pointIdx, xCenter, mean);
+      currentGraph->SetPointError(pointIdx, 0, sigma);
+    }
+    delete projY; // Clean up
+  }
+
+  // Draw the original histogram, standard graph, and red graph
+  hist->Draw("COLZ");
+  graph->SetMarkerStyle(20);
+  graph->SetMarkerColor(kBlack);
+  graph->SetLineColor(kBlack);
+  graph->Draw("P SAME");
+
+  redGraph->SetMarkerStyle(20);
+  redGraph->SetMarkerColor(kRed);
+  redGraph->SetLineColor(kRed);
+  redGraph->Draw("P SAME");
+
+  // Update the canvas
+  canvas->Update();
+}
 
 //Main <experiment> <configuration> <replay-pass> <target-option> <selected-energy-timestamp> <replacement-experiment> <replacement-configuration> <replacement-pass> <replacement-database-timestamp> <verbose-option>;
+//Timestamp GMn SBS4 set 2: -------[ 2021-10-24 04:30:00 ]
+//For the first set from a given kinematic, pass "none" to avoid any runs from additional sets
+
 void qreplay_standalone( const char *experiment = "gmn", 
-			 Int_t config = 4, 
-			 Int_t pass = 0, 
-			 bool h2only = true, 
-			 const char *sts = "-------[ 2021-10-24 04:30:00 ]", //if entire set should be analyzed, pass ""
+			 Int_t config = 11, 
+			 Int_t pass = 1,  
+			 const char *sts = "", //if entire set should be analyzed with new gain parameters, pass the argument ""
 			 const char *rexperiment = "gmn", 
-			 Int_t rconfig = 4, 
-			 Int_t rpass = 0, 
-			 const char *qts = "--------[ 2021-10-18 16:00:00 ]",
+			 Int_t rconfig = 8, 
+			 Int_t rpass = 1, 
+			 const char *qts = "",
+			 bool h2only = false,
 			 bool verbose = true ){
   
   // Define a clock to check macro processing time
@@ -60,20 +152,21 @@ void qreplay_standalone( const char *experiment = "gmn",
   string date = util::getDate();
 
   // outfile path
-  std::string h2opt = "_alldata";
+  std::string h2opt = "";
   if( h2only )
     h2opt = "_lh2only";
   std::string outdir_path = gSystem->Getenv("OUT_DIR");
-  std::string qr_path = outdir_path + Form("/hcal_calibrations/qreplay/qreplay%s_from_%s_%d_%d_to_%s_%d_%d.root",h2opt.c_str(),experiment,config,pass,rexperiment,rconfig,rpass);
+  std::string qr_path = outdir_path + Form("/hcal_calibrations/qreplay/qreplay%s_from_%s_%d_%d_to_%s_%d_%d.root",h2opt.c_str(),rexperiment,rconfig,rpass,experiment,config,pass);
 
   //Set up path variables and output files
   TFile *fout = new TFile( qr_path.c_str(), "RECREATE" );
 
-  std::string qr_report_path = "qreplay%s_from_%s_%d_%d_to_%s_%d_%d.txt";
+  std::string qr_report_path = Form("report_path/qreplay%s_from_%s_%d_%d_to_%s_%d_%d.txt",h2opt.c_str(),experiment,config,pass,rexperiment,rconfig,rpass);
   std::string db_path = gSystem->Getenv("DB_DIR");
   std::string hcal_db_path = db_path + "/db_sbs.hcal.dat";
   //Using trial calibrated set
-  std::string r_adcgain_path = Form("../energy/parameters/adcgaincoeff_%s%s_conf%d_pass%d.txt",rexperiment,h2opt.c_str(),rconfig,rpass);
+  //std::string r_adcgain_path = Form("../energy/parameters/adcgaincoeff_%s%s_conf%d_pass%d.txt",rexperiment,h2opt.c_str(),rconfig,rpass);
+  std::string r_adcgain_path = Form("../energy/parameters/adcgaincoeff_%s_lh2only_conf%d_pass%d.txt",rexperiment,rconfig,rpass); //check only calibration constants from lh2 for comparisons
   //Use base calibrated set, not trial replacement calibrated set
   std::string r_adct_path = Form("../timing/parameters/adctoffsets_class_%s_conf%d_pass%d.txt",experiment,config,pass);
   std::string r_tdcoffset_path = Form("../timing/parameters/tdcoffsets_class_%s_conf%d_pass%d.txt",experiment,config,pass);
@@ -88,14 +181,11 @@ void qreplay_standalone( const char *experiment = "gmn",
   Int_t nruns = -1; //Analyze all available runs for this configuration
   Int_t verb = 0; //Don't print diagnostic info by default
 
+  cout << "GOT HERE" << endl;
+
   //read the run list to parse run numbers associated to input parameters and set up for loop over runs
   vector<calrun> runs; 
   util::ReadRunList(struct_dir,experiment,nruns,config,pass,verb,runs); //nruns=-1 modifies nruns to loop over all available
-  
-  //define structures for holding calibration data and indices
-  calset gain_coeff[hcal::gNstamp];
-  Int_t Ncal_set_size = 0;
-  Int_t Ncal_set_idx = 0;
 
   //define structures for holding cut report data and indices	    
   reportset report_set[hcal::gNmag];
@@ -125,6 +215,18 @@ void qreplay_standalone( const char *experiment = "gmn",
 
   TH1D * hE_old = new TH1D("hE_old",
 			   "HCal Primary Cluster E, Old Coeff, Elastic Cuts; GeV",
+			   bins_SFE,
+			   start_SFE,
+			   end_SFE);
+
+  TH1D * hpC_nocut = new TH1D("hpC_old_nocut",
+				 "HCal Primary Cluster pC, No Coeff, No Elastic Cuts; GeV",
+				 bins_SFE,
+				 start_SFE,
+				 end_SFE);
+
+  TH1D * hpC = new TH1D("hpC_old",
+			   "HCal Primary Cluster pC, No Coeff, Elastic Cuts; GeV",
 			   bins_SFE,
 			   start_SFE,
 			   end_SFE);
@@ -291,6 +393,48 @@ void qreplay_standalone( const char *experiment = "gmn",
 				   total_bins,
 				   lower_lim,
 				   upper_lim);
+
+
+  TH2D *hE_run_nocut = new TH2D("hE_run_nocut",
+				"Corrected E vs run all channels no elastic cut",
+				(runs[nruns-1].runnum+1) - (runs[0].runnum-1),
+				runs[0].runnum-1,
+				runs[nruns-1].runnum+1,
+				bins_SFE,
+				start_SFE,
+				end_SFE);
+
+
+  TH2D *hE_old_run = new TH2D("hE_old_run",
+			  "E (old coeff) vs run all channels",
+			  (runs[nruns-1].runnum+1) - (runs[0].runnum-1),
+			  runs[0].runnum-1,
+			  runs[nruns-1].runnum+1,
+			  bins_SFE,
+			  start_SFE,
+			  end_SFE);
+
+
+
+  TH2D *hE_run = new TH2D("hE_run",
+			  "Corrected E vs run all channels",
+			  (runs[nruns-1].runnum+1) - (runs[0].runnum-1),
+			  runs[0].runnum-1,
+			  runs[nruns-1].runnum+1,
+			  bins_SFE,
+			  start_SFE,
+			  end_SFE);
+
+
+  TH2D *hpC_run = new TH2D("hpC_run",
+			  "pC vs run all channels",
+			  (runs[nruns-1].runnum+1) - (runs[0].runnum-1),
+			  runs[0].runnum-1,
+			  runs[nruns-1].runnum+1,
+			  bins_SFE,
+			  start_SFE,
+			  end_pC);
+
     
   TH1D *hadctblk = new TH1D("hadctblk",
 			    "adct all channels all blocks primary cluster",
@@ -299,6 +443,12 @@ void qreplay_standalone( const char *experiment = "gmn",
 			    upper_lim);
 
     
+  TH1D *hadct_nocut = new TH1D("hadct_nocut",
+			 "adct all channels primary block primary cluster no elastic cut",
+			 total_bins,
+			 lower_lim,
+			 upper_lim);
+
   TH1D *hadct = new TH1D("hadct",
 			 "adct all channels primary block primary cluster",
 			 total_bins,
@@ -315,6 +465,39 @@ void qreplay_standalone( const char *experiment = "gmn",
 				   tdc_upper_lim);
 
   
+  //cut quality plots
+  TH1D * hfglobal = new TH1D("hfglobal",
+			     "failed global cut, 1=fail",
+			     3,
+			     -1,
+			     2);
+
+  TH1D * hfactivearea = new TH1D("hfactivearea",
+				 "failed active area cut, 1=fail",
+				 3,
+				 -1,
+				 2);
+  TH1D * hfcoin = new TH1D("hfcoin",
+			   "failed adct coin cut, 1=fail",
+			   3,
+			   -1,
+			   2);
+  TH1D * hfdy = new TH1D("hfdy",
+			 "failed dy cut, 1=fail",
+			 3,
+			 -1,
+			 2);
+  TH1D * hpid = new TH1D("hpid",
+			 "Particle",
+			 6,
+			 -2,
+			 4);
+  TH1D * hfW2 = new TH1D("hfW2",
+			 "failed W2 cut, 1=fail",
+			 3,
+			 -1,
+			 2);
+
 
   //reporting indices
   Int_t target_change_index;
@@ -322,6 +505,7 @@ void qreplay_standalone( const char *experiment = "gmn",
   Double_t config_e_sigma_ratio;
   std::string ts_compare = "";
   bool first = true;
+  std::vector<Int_t> lh2runs;
 
   //Main loop over runs
   for (Int_t r=0; r<nruns; r++) {
@@ -329,6 +513,15 @@ void qreplay_standalone( const char *experiment = "gmn",
 
     //Get run experimental parameters
     std::string current_timestamp = runs[r].adcg_ts; //For now, only select on energy calibration sets
+    Int_t current_runnumber = runs[r].runnum;
+    std::string current_target = runs[r].target;
+
+    //Will use these to differentiate the tgraph later on
+    if( current_target.compare("lh2")==0 )
+      lh2runs.push_back(current_runnumber);
+
+    if(verbose) 
+      std::cout << "Current run number: " << current_runnumber << ", current timestamp: " << current_timestamp << ", current target: " << current_target << std::endl;
 
     if( !(current_timestamp.compare(ts_compare)==0) ){
       ts_compare = current_timestamp;
@@ -341,9 +534,6 @@ void qreplay_standalone( const char *experiment = "gmn",
     if( !(current_timestamp.compare(select_timestamp)==0) && !(select_timestamp.compare("")==0) )
       continue;
 
-    Int_t current_runnumber = runs[r].runnum;
-
-    std::string current_target = runs[r].target;
     std::string targ_uppercase = current_target; transform(targ_uppercase.begin(), targ_uppercase.end(), targ_uppercase.begin(), ::toupper );
     Int_t mag = runs[r].sbsmag / 21; //convert to percent where max field is at 2100A
 
@@ -383,17 +573,15 @@ void qreplay_standalone( const char *experiment = "gmn",
     Double_t r_adcg_coeff[hcal::maxHCalChan] = {0.};
     Double_t r_adct_offsets[hcal::maxHCalChan] = {0.};
     Double_t r_tdc_offsets[hcal::maxHCalChan] = {0.};
-    Double_t r_tdc_calib = 1;
 
     //if no selected timestamp is passed, we use the first set of new coefficients that appears
-    if( select_timestamp.compare("")==0 ) select_timestamp = "none";
+    if( quality_timestamp.compare("")==0 ) quality_timestamp = "none";
     if(verbose) std::cout << "Reading parameters from file: " << r_adcgain_path << std::endl;
-    util::readDB( r_adcgain_path, select_timestamp, db_adcg_variable, r_adcg_coeff );
+    util::readDB( r_adcgain_path, quality_timestamp, db_adcg_variable, r_adcg_coeff );
     if(verbose) std::cout << "Reading parameters from file: " << r_adct_path << std::endl;
     util::readDB( r_adct_path, "none", db_adct_variable, r_adct_offsets );
     if(verbose) std::cout << "Reading parameters from file: " << r_tdcoffset_path << std::endl;
     util::readDB( r_tdcoffset_path, "none", db_tdcoffset_variable, r_tdc_offsets );
-    util::readDB( r_tdcoffset_path, "none", db_tdccalib_variable, r_tdc_calib );
     
     //Report offset parameters on first loop
     if( verbose && first ){
@@ -401,48 +589,54 @@ void qreplay_standalone( const char *experiment = "gmn",
       for( Int_t r=0; r<hcal::maxHCalRows; r++ ){
 	for ( Int_t c=0; c<hcal::maxHCalCols; c++){
 	  Int_t i = r*hcal::maxHCalCols+c;
-	  std::cout << old_adct_offsets[i] << std::endl;
+	  std::cout << old_adct_offsets[i] << " ";
 	}
+	std::cout << std::endl;
       }
       std::cout << std::endl << std::endl << "Current set of replacement ADCt offset coefficients:" << std::endl;
       for( Int_t r=0; r<hcal::maxHCalRows; r++ ){
 	for ( Int_t c=0; c<hcal::maxHCalCols; c++){
 	  Int_t i = r*hcal::maxHCalCols+c;
-	  std::cout << r_adct_offsets[i] << std::endl;
+	  std::cout << r_adct_offsets[i] << " ";
 	}
+	std::cout << std::endl;
       }
       std::cout << std::endl << std::endl << "Current set of old TDC offset coefficients:" << std::endl;
       for( Int_t r=0; r<hcal::maxHCalRows; r++ ){
 	for ( Int_t c=0; c<hcal::maxHCalCols; c++){
 	  Int_t i = r*hcal::maxHCalCols+c;
-	  std::cout << old_tdc_offsets[i] << std::endl;
+	  std::cout << old_tdc_offsets[i] << " ";
 	}
+	std::cout << std::endl;
       }
       std::cout << std::endl << std::endl << "Current set of replacement TDC offset coefficients:" << std::endl;
       for( Int_t r=0; r<hcal::maxHCalRows; r++ ){
 	for ( Int_t c=0; c<hcal::maxHCalCols; c++){
 	  Int_t i = r*hcal::maxHCalCols+c;
-	  std::cout << r_tdc_offsets[i] << std::endl;
+	  std::cout << r_tdc_offsets[i] << " ";
 	}
+	std::cout << std::endl;
       }
       first = false;
     }
 
     //Report gain parameters on each database change as necessary
     if( verbose && ts_different ){
-      std::cout << "Current set of old ADC gain coefficients:" << std::endl;
+      std::cout << std::endl << std::endl << "Current set of old ADC gain coefficients:" << std::endl;
       for( Int_t r=0; r<hcal::maxHCalRows; r++ ){
 	for ( Int_t c=0; c<hcal::maxHCalCols; c++){
 	  Int_t i = r*hcal::maxHCalCols+c;
-	  std::cout << old_adcg_coeff[i] << std::endl;
+	  std::cout << old_adcg_coeff[i] << " ";
 	}
+	std::cout << std::endl;
       }
       std::cout << std::endl << std::endl << "Current set of replacement ADC gain coefficients:" << std::endl;
       for( Int_t r=0; r<hcal::maxHCalRows; r++ ){
 	for ( Int_t c=0; c<hcal::maxHCalCols; c++){
 	  Int_t i = r*hcal::maxHCalCols+c;
-	  std::cout << r_adcg_coeff[i] << std::endl;
+	  std::cout << r_adcg_coeff[i] << " ";
 	}
+	std::cout << std::endl;
       }
     }
 
@@ -566,7 +760,7 @@ void qreplay_standalone( const char *experiment = "gmn",
     //Main loop over events in run
     while (C->GetEntry(nevent++)) {
 
-      cout << "Analyzing run " << current_runnumber << ": " <<  nevent << "/" << nevents << " \r";
+      cout << "Analyzing " << current_target << " run " << current_runnumber << ": " <<  nevent << "/" << nevents << " \r";
       cout.flush();
 
       ///////
@@ -599,6 +793,10 @@ void qreplay_standalone( const char *experiment = "gmn",
       Double_t natime = cblkatime[0]+old_adct_offsets[pblkid]-r_adct_offsets[pblkid]; //new atime
       Double_t atime0 = cut[0].atime0; //observed elastic peak in adc time
       Double_t atimesig = cut[0].atime_sig; //observed width of elastic peak in adc time
+      Double_t natime_hodo = natime - HODOtmean;
+
+      Double_t ntime = cblktime[0]+old_tdc_offsets[pblkid]-r_tdc_offsets[pblkid];
+      Double_t ntime_hodo = ntime - HODOtmean;
 
       bool failedcoin = abs(natime-atime0)>atimeNsig*atimesig;
 
@@ -666,11 +864,6 @@ void qreplay_standalone( const char *experiment = "gmn",
 	hdyvmag_h3->Fill( mag, dy );
       }
 
-      //Target Energy in HCal for calibrations
-      Double_t hcal_samp_frac = cut[0].hcal_sf; config_sampling_fraction = hcal_samp_frac;
-      Double_t hcal_esratio = cut[0].hcal_es; config_e_sigma_ratio = hcal_esratio;
-      Double_t KE_exp = KE_p*hcal_samp_frac/hcal_esratio; //Expected E in HCal, equivalent to KE*modified_samp_frac
-
       ///////
       //dy elastic cut
       Double_t dy0 = cut[0].dy0;
@@ -702,6 +895,7 @@ void qreplay_standalone( const char *experiment = "gmn",
       ///////
       //Get corrected primary cluster energy
       Double_t clusE = 0.0;
+      Double_t cluspC = 0.0;
       Double_t clusE_corr = 0.0;
       bool badclus = false;
 
@@ -709,7 +903,9 @@ void qreplay_standalone( const char *experiment = "gmn",
       for( Int_t blk = 0; blk<nblk; blk++ ){
 	Int_t blkid = int(cblkid[blk])-1; //-1 necessary since sbs.hcal.clus_blk.id ranges from 1 to 288 (different than just about everything else)
 	Double_t blke = cblke[blk];
-	Double_t blke_corr = cblke[blk]/gain_coeff[Ncal_set_idx].old_param[blkid]*r_adcg_coeff[blkid];
+	Double_t blke_corr = cblke[blk]/old_adcg_coeff[blkid]*r_adcg_coeff[blkid];
+	//Double_t blke_corr = cblke[blk]/old_adcg_coeff[blkid]*test_coeff;
+	Double_t blkpC = cblke[blk]/old_adcg_coeff[blkid];
 
 	Double_t blknatime = cblkatime[blk]+old_adct_offsets[blkid]-r_adct_offsets[blkid]; //new atime
 
@@ -721,23 +917,43 @@ void qreplay_standalone( const char *experiment = "gmn",
 	}
 	
 	clusE += blke;
+	cluspC += blkpC;
 	clusE_corr += blke_corr;
    
       }
+
+      //Assume that no cut placed on adc time in the cluster loop
+      if( clusE != HCALe )
+	cout << "ERROR: sbs.hcal.e ne primary cluster sum E" << endl;
 
       Double_t sampling_fraction = clusE/KE_p;
       Double_t sampling_fraction_corr = clusE_corr/KE_p;
 
       hE_old_nocut->Fill( clusE );
       hE_new_nocut->Fill( clusE_corr );
+      hpC_nocut->Fill( cluspC );
       hSF_old_nocut->Fill( sampling_fraction );
       hSF_new_nocut->Fill( sampling_fraction_corr );
+      hfglobal->Fill( failedglobal );
+      hfactivearea->Fill( failedactivearea );
+      hfcoin->Fill( failedcoin );
+      hfdy->Fill( faileddy );
+      hpid->Fill( pid );
+      hfW2->Fill( failedW2 );
+      hE_run_nocut->Fill( current_runnumber, clusE_corr);
+      hadct_nocut->Fill( natime );
 
       if( failedglobal || failedactivearea || failedcoin || faileddy || pid==-1 || failedW2 )
 	continue;
 
+      if(pblkid==samples[0])
+	hadct_samp1_run->Fill(current_runnumber,natime);
+      if(pblkid==samples[1])
+	hadct_samp2_run->Fill(current_runnumber,natime);
+
       hE_old->Fill( clusE );
       hE_new->Fill( clusE_corr );
+      hpC->Fill( cluspC );
       hSF_old->Fill( sampling_fraction );
       hSF_new->Fill( sampling_fraction_corr );
       hEvX->Fill( HCALx, clusE );
@@ -745,8 +961,14 @@ void qreplay_standalone( const char *experiment = "gmn",
       hSFvID->Fill( cblkid[0], sampling_fraction );
       hSFvrow->Fill( crow[0], sampling_fraction );
       hSFvcol->Fill( ccol[0], sampling_fraction );
-
+      hE_run->Fill( current_runnumber, clusE_corr);
+      hE_old_run->Fill( current_runnumber, clusE);
+      hpC_run->Fill( current_runnumber, cluspC);
+      hap_hodocorr_ID->Fill( pblkid, natime_hodo );
+      htp_hodocorr_ID->Fill( pblkid, ntime_hodo );
+      hadct->Fill( natime );
      
+
     }//endloop over events
 
     // getting ready for the next run
@@ -754,18 +976,44 @@ void qreplay_standalone( const char *experiment = "gmn",
 
   }//endloop over runs
 
-  cout << "Ended loop over runs. " << Ncal_set_size << " calibration sets for " << experiment << " configuration " << config << ". Proceeding to final analysis." << endl; 
+  cout << "lh2 runs are as follows: ";
+  for( int i=0; i<lh2runs.size(); i++ )
+    cout << lh2runs[i] << " ";
+  cout << endl;
+
+  //overlay energy vs run histo
+  TCanvas *c1 = new TCanvas("c1","E vs Run",1200,1200);
+  //gStyle->SetOptStat(0);
+  c1->cd();
+  overlayWithGaussianFits(hE_run,c1,false,lh2runs);
+  c1->Write();
+
+  //overlay pC vs run histo
+  TCanvas *c2 = new TCanvas("c2","pC vs Run",1200,1200);
+  //gStyle->SetOptStat(0);
+  c2->cd();
+  overlayWithGaussianFits(hpC_run,c2,true,lh2runs);
+  c2->Write();
+
+  //overlay old coeff energy vs run histo
+  TCanvas *c3 = new TCanvas("c3","E (old coeff) vs Run",1200,1200);
+  //gStyle->SetOptStat(0);
+  c3->cd();
+  overlayWithGaussianFits(hE_old_run,c3,false,lh2runs);
+  c3->Write();
+
+  cout << "Ended loop over runs. Report printed to working directory." << endl;
 
   if( verbose ){
     std::cout << "LH2 only option:                     " << h2only << std::endl;
     std::cout << "Test experiment parameter:           " << experiment << std::endl;
     std::cout << "Test configuration parameter:        " << config << std::endl;
     std::cout << "Test pass parameter:                 " << pass << std::endl;
-    std::cout << "Selected test data timestamp:        " << experiment << std::endl;
+    std::cout << "Selected test data timestamp:        " << sts << std::endl;
     std::cout << "Replacement experiment parameter:    " << rexperiment << std::endl;
-    std::cout << "Replacement configuration parameter: " << experiment << std::endl;
-    std::cout << "Replacement pass parameter:          " << experiment << std::endl;
-    std::cout << "Selected replacement data timestamp: " << experiment << std::endl;
+    std::cout << "Replacement configuration parameter: " << rconfig << std::endl;
+    std::cout << "Replacement pass parameter:          " << rpass << std::endl;
+    std::cout << "Selected replacement data timestamp: " << qts << std::endl;
   }
 
   //write report file
@@ -777,11 +1025,11 @@ void qreplay_standalone( const char *experiment = "gmn",
   qreplay_report << "Test experiment parameter:           " << experiment << std::endl;
   qreplay_report << "Test configuration parameter:        " << config << std::endl;
   qreplay_report << "Test pass parameter:                 " << pass << std::endl;
-  qreplay_report << "Selected test data timestamp:        " << experiment << std::endl;
+  qreplay_report << "Selected test data timestamp:        " << sts << std::endl;
   qreplay_report << "Replacement experiment parameter:    " << rexperiment << std::endl;
-  qreplay_report << "Replacement configuration parameter: " << experiment << std::endl;
-  qreplay_report << "Replacement pass parameter:          " << experiment << std::endl;
-  qreplay_report << "Selected replacement data timestamp: " << experiment << std::endl << std::endl;
+  qreplay_report << "Replacement configuration parameter: " << rconfig << std::endl;
+  qreplay_report << "Replacement pass parameter:          " << rpass << std::endl;
+  qreplay_report << "Selected replacement data timestamp: " << qts << std::endl << std::endl;
   qreplay_report << std::endl << std::endl;
   qreplay_report.close();
 

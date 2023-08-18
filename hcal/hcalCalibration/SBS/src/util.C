@@ -40,7 +40,7 @@ namespace util {
       }
       
     }else{
-      cerr << "Error on [util::readParam] Parameter file doesn't exist" << endl;
+      cerr << "Error on [util::readParam] Parameter file doesn't exist at " << const_path << endl;
       throw;
     }
     const_file.close();
@@ -71,7 +71,7 @@ namespace util {
       return Nsets;
 
     }else{
-      cerr << "Error on [util::countSets] Parameter file doesn't exist" << endl;
+      cerr << "Error on [util::countSets] Parameter file doesn't exist at " << const_path << endl;
       throw;
     }
   } 
@@ -129,11 +129,11 @@ namespace util {
 	}
       }
       
-      cerr << "Error on [util::readDB] Did not find required number of elements in param[]" << endl;
+      cerr << "Error on [util::readDB] Did not find required number of elements in param[] at " << const_path << endl;
       throw;
 
     }else{
-      cerr << "Error on [util::readDB] Parameter file doesn't exist" << endl;
+      cerr << "Error on [util::readDB] Parameter file doesn't exist at " << const_path << endl;
       throw;
     }
   }
@@ -179,11 +179,11 @@ namespace util {
 	  return;
 	}
       }
-      cerr << "Error on [util::readDB] timestamp/type does not exist in file" << endl;
+      cerr << "Error on [util::readDB] timestamp/type does not exist in file at " << const_path << endl;
       throw;
 
     }else{
-      cerr << "Error on [util::readDB] Parameter file doesn't exist" << endl;
+      cerr << "Error on [util::readDB] Parameter file doesn't exist at " << const_path << endl;
       throw;
     }
   }
@@ -233,11 +233,11 @@ namespace util {
 	  return;
 	}
       }
-      cerr << "Error on [util::readDB] timestamp/type does not exist in file" << endl;
+      cerr << "Error on [util::readDB] timestamp/type does not exist in file at " << const_path << endl;
       throw;
 
     }else{
-      cerr << "Error on [util::readDB] Parameter file doesn't exist" << endl;
+      cerr << "Error on [util::readDB] Parameter file doesn't exist at " << const_path << endl;
       throw;
     }
   }
@@ -502,7 +502,15 @@ namespace util {
     return exp(amp+str*x[0]);
   }
 
-  //tuned timewalk fit
+  //traditional timewalk fit
+  Double_t g_tradtwfit(Double_t *x, Double_t *par){
+    Double_t asymp = par[0];
+    Double_t scale = par[1];
+    Double_t expo = par[2];
+    return asymp+scale/pow(x[0],expo);
+  }
+
+  //tuned exponential timewalk fit
   Double_t g_twfit(Double_t *x, Double_t *par){
     Double_t amp = par[0];
     Double_t str = par[1];
