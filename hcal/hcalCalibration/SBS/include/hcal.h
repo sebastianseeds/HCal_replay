@@ -18,16 +18,21 @@ namespace hcal{
   const Int_t maxHCalChan = 288; // Total HCal channels
   const Int_t maxHCalRows = 24; // Total HCal rows
   const Int_t maxHCalCols = 12; // Total HCal cols
-  const Int_t maxHCalClus = 25; // Total HCal cols
+  const Int_t maxHCalClus = 100; // Maximum HCal clusters
   const Int_t maxHCalBlk = 25; // Total HCal cols
   const Int_t maxClusters = 10; // Total HCal clusters with information saved
   const Double_t HCalvoff = -0.2897; // Height of HCal above beamline in m
+  const Double_t HCalvoff_p2 = 0.0; // Post pass 2, DB corrected, no offset necessary.
   const Double_t HCalblk_l_h = 0.15494; // Horizontal length of all HCAL blocks in m from MC database
   const Double_t HCalblk_l_v = 0.15875; // Vertical length of all HCAL blocks in m from MC database
-  const Double_t posHCalXi = -2.3531; // Distance from beam center to top of HCal in m from MC database
-  const Double_t posHCalXf = 1.45309; // Distance from beam center to bottom of HCal in m from MC database
-  const Double_t posHCalYi = -0.93155; // Distance from beam center to opposite-beam side of HCal in m from MC database
-  const Double_t posHCalYf = 0.93155; // Distance from beam center to beam side of HCal in m from MC database
+  /* const Double_t posHCalXi = -2.3531; // Distance from beam center to top of HCal in m from MC database */
+  /* const Double_t posHCalXf = 1.45309; // Distance from beam center to bottom of HCal in m from MC database */
+  const Double_t posHCalXi = -2.655; // Distance from beam center to top of HCal in m from MC database
+  const Double_t posHCalXf = 1.155; // Distance from beam center to bottom of HCal in m from MC database
+  /* const Double_t posHCalYi = -0.93155; // Distance from beam center to opposite-beam side of HCal in m from MC database */
+  /* const Double_t posHCalYf = 0.93155; // Distance from beam center to beam side of HCal in m from MC database */
+  const Double_t posHCalYi = -0.92964; // Distance from beam center to opposite-beam side of HCal in m from MC database
+  const Double_t posHCalYf = 0.92964; // Distance from beam center to beam side of HCal in m from MC database
   const Double_t HCalSampFrac = 0.077;  //Re-evaluated with MC GEn settings using second to outermost shower column for kin2
   //Trigger TDC and timestamps
   const Int_t maxTDCTrigChan = 10; // Set to accomodate original 5 TDCTrig channels with buffer

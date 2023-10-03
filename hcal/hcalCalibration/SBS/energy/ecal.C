@@ -299,6 +299,11 @@ void ecal( const char *experiment = "gmn", Int_t config = 4, bool qreplay = fals
   Double_t config_e_sigma_ratio;
   bool first = true;
   Double_t test_adcg_coeff[hcal::maxHCalChan] = {1.};
+  
+  //TEST
+  vector<int> elastics_per_run;
+  vector<int> elastic_runs;
+  int total_elastics_allruns = 0;
 
   //Main loop over runs
   for (Int_t r=0; r<nruns; r++) {
@@ -435,6 +440,9 @@ void ecal( const char *experiment = "gmn", Int_t config = 4, bool qreplay = fals
     //Remove first calibration set trigger for future processing
     if( first )
       first = false;
+
+    //TEST
+    elastic_runs.push_back(current_runnumber);
 
     // Setting up chain and branch addresses
     C = new TChain("T");
@@ -581,6 +589,9 @@ void ecal( const char *experiment = "gmn", Int_t config = 4, bool qreplay = fals
 
     long nevent = 0, nevents = C->GetEntries(); 
     Int_t treenum = 0, currenttreenum = 0;
+    
+    //TEST
+    int total_elastics = 0;
 
     //Main loop over events in run
     while (C->GetEntry(nevent++)) {
@@ -693,9 +704,6 @@ void ecal( const char *experiment = "gmn", Int_t config = 4, bool qreplay = fals
       Double_t hcal_samp_frac = cut[0].hcal_sf; config_sampling_fraction = hcal_samp_frac;
       Double_t hcal_esratio = cut[0].hcal_es; config_e_sigma_ratio = hcal_esratio;
       Double_t KE_exp = KE_p*hcal_samp_frac/hcal_esratio; //Expected E in HCal, equivalent to KE*modified_samp_frac
-      //TEST ONLY, REMOVE THIS!
-      // if( Ncal_set_idx!=0 )
-      // 	KE_exp = KE_p*hcal_samp_frac/0.2;
 
       ///////
       //BigBite/SBS Acceptance matching. Redundant here with dxdy cuts. Removed.
@@ -772,7 +780,11 @@ void ecal( const char *experiment = "gmn", Int_t config = 4, bool qreplay = fals
 	cblke_out[blk] = blke;
       }
 
-      Double_t sampling_fraction = clusE/KE_p;
+      //TEST
+      total_elastics++;
+      total_elastics_allruns++;
+
+      Double_t sampling_fraction = clusE/KE_p; //This must be KE_p NOT KE_exp
 
       hE[Ncal_set_idx]->Fill( clusE );
       hSF[Ncal_set_idx]->Fill( sampling_fraction );
@@ -862,6 +874,9 @@ void ecal( const char *experiment = "gmn", Int_t config = 4, bool qreplay = fals
       } //endloop over matrix element cols
 
     }//endloop over events
+
+    //TEST
+    elastics_per_run.push_back(total_elastics);
 
     // getting ready for the next run
     C->Reset();
@@ -1135,6 +1150,19 @@ void ecal( const char *experiment = "gmn", Int_t config = 4, bool qreplay = fals
   fout->Write();
 
   st->Stop();
+
+  //TEST
+  if( elastics_per_run.size() != elastic_runs.size() ){
+    cout << "TEST ERROR: vector size mismatch" << endl;
+    return;
+  }
+
+  //TEST
+  for( int i=0; i<elastic_runs.size(); i++ ){
+    cout << "run:" << elastic_runs[i] << "  events: " << elastics_per_run[i] << endl;
+
+  }
+  cout << "Total elastics: " << total_elastics_allruns << endl;
 
   // Send time efficiency report to console
   cout << "CPU time elapsed = " << st->CpuTime() << " s = " << st->CpuTime()/60.0 << " min. Real time = " << st->RealTime() << " s = " << st->RealTime()/60.0 << " min." << endl;    

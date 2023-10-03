@@ -300,7 +300,7 @@ namespace util {
 
   }
   
-  //Reads run list .csv file
+  //Reads run list .csv file - may wish to build in selections and exclusions in an overload
   void ReadRunList(std::string runsheet_dir,  // Dir. path containing CSV files with run info
 		   std::string experiment,     // experiment {gmn,gen,genrp,gep,etc.}
 		   Int_t &nruns,               // No. of runs to analyze
