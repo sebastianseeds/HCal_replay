@@ -131,7 +131,7 @@ void sliceFits(TH1D* hist,
 }
 
 //Main. If no arguments are passed to run_b and run_e, alignment over all runs will proceed.
-void tdc_setalign( const char *experiment = "gmn", int config = 11, int pass = 0, int run_b = 0, int run_e = 0, int run_exclude_b = 0, int run_exclude_e = 0, bool lowstatopt = false ){
+void tdc_setalign( const char *experiment = "gmn", int config = 7, int pass = 2, int run_b = 0, int run_e = 0, int run_exclude_b = 0, int run_exclude_e = 0, bool lowstatopt = false, bool best_clus = false ){
 
   // Define a clock to check macro processing time
   TStopwatch *st = new TStopwatch();
@@ -275,8 +275,22 @@ void tdc_setalign( const char *experiment = "gmn", int config = 11, int pass = 0
     util::readDB( old_db_path, current_calib_timestamp, db_tdccalib_variable, tdc_cal.tdc_calib );
   
     //Get available cuts for current config/target/field combination. Use first element (0) of cut
-    vector<calcut> cut;
-    util::ReadCutList(struct_dir,experiment,config,0,pass,current_target,mag,verb,cut);
+    //vector<calcut> cut;
+    vector<caldiag> cut;
+    //util::ReadCutList(struct_dir,experiment,config,0,pass,current_target,mag,verb,cut);
+    util::ReadDiagnosticCutList(struct_dir,experiment,kine,targ,mag,verb,cut);  
+
+    std::string gcut = cut[0].gcut;
+    Double_t W2min = cut[0].W2_min;
+    Double_t W2max = cut[0].W2_max;
+    Double_t dx0_p = cut[0].dx0_p;
+    Double_t dx0_n = cut[0].dx0_n;
+    Double_t dy0 = cut[0].dy0;
+    Double_t dxsig_p = cut[0].dx_sig_p;
+    Double_t dxsig_n = cut[0].dx_sig_n;
+    Double_t dysig = cut[0].dy_sig;
+    Double_t atime0 = cut[0].atime0;
+    Double_t atimesig = cut[0].atime_sig;
 
     // Setting up chain and branch addresses
     C = new TChain("T");
@@ -291,7 +305,7 @@ void tdc_setalign( const char *experiment = "gmn", int config = 11, int pass = 0
     int Ncid;
     double cblkid[hcal::maxHCalChan], cblke[hcal::maxHCalChan], cblkatime[hcal::maxHCalChan], cblktime[hcal::maxHCalChan], cblkagain[hcal::maxHCalChan];
     double cid[hcal::maxHCalClus], crow[hcal::maxHCalClus], ccol[hcal::maxHCalClus], ce[hcal::maxHCalClus], cx[hcal::maxHCalClus], cy[hcal::maxHCalClus], catime[hcal::maxHCalClus];
-    double HODOtmean;
+    double HODOtmean[hcal::maxHCalClus];
 
     // Speed up processing by switching on only useful branches
     C->SetBranchStatus( "*", 0 );
@@ -365,7 +379,7 @@ void tdc_setalign( const char *experiment = "gmn", int config = 11, int pass = 0
     C->SetBranchAddress( "bb.sh.x", &BBsh_x );
     C->SetBranchAddress( "bb.sh.y", &BBsh_y ); 
     C->SetBranchAddress( "bb.sh.atimeblk", &BBsh_atime ); 
-    C->SetBranchAddress( "bb.hodotdc.clus.tmean", &HODOtmean );
+    C->SetBranchAddress( "bb.hodotdc.clus.tmean", HODOtmean );
     C->SetBranchAddress( "Ndata.sbs.hcal.clus.id", &Ncid ); //Odd maxing out at 10 clusters on all cluster Ndata objects, so this is needed in addition to sbs.hcal.nclus
 
     //Globalcut enables
@@ -442,27 +456,65 @@ void tdc_setalign( const char *experiment = "gmn", int config = 11, int pass = 0
       Q2 = 2.0 * pbeam.E() * pe.E() * ( 1.0 - cos(etheta) );
       W2 = pow( M_avg, 2.0 ) + 2.0*M_avg * (ebeam_c-pe.E()) - Q2;
 
+      /////////////////////
+      //W2 elastic cut
+      bool failedW2 = W2>W2max || W2<W2min;
+      if(failedW2)
+	continue;
+
       //Calculate h-arm quantities
       vector<double> xyhcalexp; util::getxyhcalexpect( vertex, pNhat, hcalorigin, hcalaxes, xyhcalexp );
       TVector3 hcalpos = hcalorigin + HCALx*hcalaxes[0] + HCALy*hcalaxes[1]; //from primary blk
       double dx = HCALx - xyhcalexp[0];
       double dy = HCALy - xyhcalexp[1];
 
-      ///////
-      //BigBite/SBS Acceptance matching.
-      bool failedaccmatch = 
-	xyhcalexp[1] > hcal::posHCalYf ||
-	xyhcalexp[1] < hcal::posHCalYi ||
-	xyhcalexp[0] > hcal::posHCalXf ||
-	xyhcalexp[0] < hcal::posHCalXi;
-	  
-      if( failedaccmatch ) continue;
-
       double pblkid = (double)cblkid[0]-1;
       double hcaltdc = cblktime[0];
 
       double tdc_tc = hcaltdc-HODOtmean; //Primary cluster, primary block tdc with trigger correction (ns)
       
+      //Best Cluster analysis using intime algorithm for simplicity on diagnosis
+
+      //Set up best cluster index and energy for sorting
+      Double_t best_cluster[2] = {-1,0.};
+
+      //loop through all clusters and select without HCal position information
+      for( int c=0; c<Nhcalcid; c++ ){
+	
+	//calculate h-arm physics quantities per cluster
+	double atime = catime[c];
+	double atime_hodo = atime - HODOtmean[0];
+	double ce = ce[c];
+	
+	//wide cut around HCal/Hodo time
+	bool passedTime = abs(atime_hodo-atime0)<3*atimesig;
+
+	if( passedTime && ce>best_cluster[1] ){
+	  best_cluster[0] = c;
+	  best_cluster[1] = ce;
+	}
+      }//endloop over cluster elements
+      
+      //If no cluster passes atime cut, use default
+      if(best_cluster[0]==-1)
+	best_cluster[0]=0;
+
+      //Switch between best clusters for systematic analysis
+      Int_t cidx_best = best_cluster[0];
+      
+      //Calculations from the best cluster
+      Double_t dx_bestcluster = hcalcx[cidx_best] - xyhcalexp[0];
+      Double_t dy_bestcluster = hcalcy[cidx_best] - xyhcalexp[1];
+      Double_t hatime_bestcluster = hcalcatime[cidx_best];
+      Double_t htime_bestcluster = hcalctdctime[cidx_best];
+      Double_t hcoin_bestcluster = hcalcatime[cidx_best] - atimeSH;
+      Double_t ce_bestcluster = hcalce[cidx_best];
+      Double_t x_bestcluster = hcalcx[cidx_best];
+      Double_t y_bestcluster = hcalcy[cidx_best];
+      Double_t row_bestcluster = hcalcrow[cidx_best];
+      Double_t col_bestcluster = hcalccol[cidx_best];
+      Double_t id_bestcluster = hcalcid[cidx_best];
+
       //prevent corruption of later logic which selects histograms to fit based on total number of events
       if(tdc_tc<-800)
 	continue;

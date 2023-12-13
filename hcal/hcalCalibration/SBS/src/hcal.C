@@ -193,19 +193,19 @@ namespace hcal {
       if(config==1)
 	return "none";
       else if(config==4)
-	return "--------[ 2021-10-21 00:00:00 ]";
+	return "--------[ 2021-10-18 05:30:00 ]";
       else if(config==7)
-	return "--------[ 2021-11-13 00:00:00 ]";
+	return "--------[ 2021-11-08 17:00:00 ]";
       else if(config==11)
-	return "--------[ 2021-11-25 00:00:00 ]";
+	return "--------[ 2021-11-17 08:00:00 ]";
       else if(config==14)
-	return "--------[ 2022-01-12 00:00:00 ]";
+	return "--------[ 2022-01-10 22:30:00 ]";
       else if(config==8)
-	return "--------[ 2022-01-22 00:00:00 ]";
+	return "--------[ 2022-01-20 07:30:00 ]";
       else if(config==9)
-	return "--------[ 2022-02-02 00:00:00 ]";
+	return "--------[ 2022-02-01 17:42:00 ]";
       else if(config==4363)
-	return "--------[ 2021-10-21 00:00:00 ]";
+	return "-------[ 2021-10-10 00:00:00 ]";
     }else if( experiment.compare("gen")==0 ){ //This section to be finished as new experiments are performed
       return "";
     }else{

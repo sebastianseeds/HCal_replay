@@ -29,10 +29,15 @@ const double ADCt_target = 0.; //set the adc time target (ns)
 const double tmax_factor = 6.; //number of sigma to consider for tmax cut on cluster elements
 const int linecount = 14;
 
-// Correct for very bad alignments
-bool channelCorrect = true;
+// Correct for very bad alignments, GMn pass0/1
+bool channelCorrect = false;
+bool no_y_extrema = false; //option to exclude first and last column from alignments
+//bool dispersive_tune = true;
 vector<int> corrChan = {264};
 vector<double> tempChanOffset = {330.};
+
+// bool for alt replay path
+bool altpath = false;
 
 //for small data sets, want to set bad fit signal mean to maximum value. true if there is a unique maximum, else false.
 bool hasUniqueMaximum(TH1D* hist) {
@@ -137,7 +142,7 @@ void sliceFits(TH1D* hist,
 }
 
 //Main. If no arguments are passed to run_b and run_e, alignment over all runs will proceed.
-void adct_setalign( const char *experiment = "gmn", int config = 8, int pass = 1, int run_b = 0, int run_e = 0, int run_exclude_b = 0, int run_exclude_e = 0, bool lowstatopt = false ){
+void adct_setalign( const char *experiment = "gmn", int config = 7, int pass = 0, int run_b = 0, int run_e = 0, int run_exclude_b = 0, int run_exclude_e = 0, bool lowstatopt = false, bool best_clus = true ){
 
   // Define a clock to check macro processing time
   TStopwatch *st = new TStopwatch();
@@ -171,8 +176,11 @@ void adct_setalign( const char *experiment = "gmn", int config = 8, int pass = 1
 
   std::string outdir_path = gSystem->Getenv("OUT_DIR");
   std::string adct_align_path = outdir_path + Form("/hcal_calibrations/pass%d/timing/adctsetalign_%s_conf%d_pass%d_%d_to_%d_exclude_%d_to_%d.root",pass,experiment,config,pass,run_b,run_e,run_exclude_b,run_exclude_e);
-
   std::string new_adctoffset_path = Form("parameters/adctsetoffsets_%s_conf%d_pass%d_%d_to_%d_exclude_%d_to_%d.txt",experiment,config,pass,run_b,run_e,run_exclude_b,run_exclude_e);
+  if(altpath){
+    adct_align_path = outdir_path + Form("/hcal_calibrations/pass%d/timing/adctsetalign_newclus_%s_conf%d_pass%d_%d_to_%d_exclude_%d_to_%d.root",pass,experiment,config,pass,run_b,run_e,run_exclude_b,run_exclude_e);
+    new_adctoffset_path = Form("parameters/adctsetoffsets_newclus_%s_conf%d_pass%d_%d_to_%d_exclude_%d_to_%d.txt",experiment,config,pass,run_b,run_e,run_exclude_b,run_exclude_e);
+  }
 
   std::string old_db_path = db_path + "/db_sbs.hcal.dat";
   std::string db_adctoffset_variable = "sbs.hcal.adc.timeoffset";
@@ -184,7 +192,12 @@ void adct_setalign( const char *experiment = "gmn", int config = 8, int pass = 1
   std::string plotdir = Form("../quality_plots/%s/conf%d/",experiment,config);
 
   // Get information from .csv files
-  std::string struct_dir = Form("../config/%s/",experiment); //unique to my environment for now
+  std::string struct_dir;
+  if(pass<2)
+    struct_dir = Form("../config/%s_p1/",experiment);
+  else
+    struct_dir = Form("../config/%s/",experiment);
+
   int nruns = -1; //Analyze all available runs for this configuration
   int verb = 0; //Don't print diagnostic info by default
 
@@ -202,6 +215,8 @@ void adct_setalign( const char *experiment = "gmn", int config = 8, int pass = 1
   vector<calrun> runs; 
   util::ReadRunList(struct_dir,experiment,nruns,config,pass,verb,runs); //nruns=-1 modifies nruns to loop over all available
   
+  cout << "GOT HERE" << endl;
+
   //Set up structure to hold calibration parameters and initialize size/index
   calset adct_cal;
   int Ncal_set_size = 0;
@@ -265,6 +280,9 @@ void adct_setalign( const char *experiment = "gmn", int config = 8, int pass = 1
 
     //Get run paths
     std::string rootfile_dir = Form("/w/halla-scshelf2102/sbs/sbs-%s/pass%d/SBS%d/%s/rootfiles/",experiment,pass,config,targ_uppercase.c_str());
+    if( altpath )
+      rootfile_dir = Form("/lustre19/expphy/volatile/halla/sbs/sbs-gmn/GMN_REPLAYS/pass2/QA_FINAL/SBS%d/%s/rootfiles/",config,targ_uppercase.c_str());
+
     std::string rootfile_path = rootfile_dir + Form("*%d*",current_runnumber);
 
     //Get target configuration
@@ -289,23 +307,38 @@ void adct_setalign( const char *experiment = "gmn", int config = 8, int pass = 1
     util::readDB( old_db_path, current_offset_timestamp, db_adctoffset_variable, adct_cal.old_param ); 
   
     //Get available cuts for current config/target/field combination. Use first element (0) of cut
-    vector<calcut> cut;
-    util::ReadCutList(struct_dir,experiment,config,0,pass,current_target,mag,verb,cut);
+    //vector<calcut> cut;
+    vector<caldiag> cut;
+    //util::ReadCutList(struct_dir,experiment,config,0,pass,current_target,mag,verb,cut);
+    util::ReadDiagnosticCutList(struct_dir,experiment,config,current_target,mag,verb,cut);  
+
+    std::string gcut = cut[0].gcut;
+    Double_t W2min = cut[0].W2_min;
+    Double_t W2max = cut[0].W2_max;
+    Double_t dx0_p = cut[0].dx0_p;
+    Double_t dx0_n = cut[0].dx0_n;
+    Double_t dy0 = cut[0].dy0;
+    Double_t dxsig_p = cut[0].dx_sig_p;
+    Double_t dxsig_n = cut[0].dx_sig_n;
+    Double_t dysig = cut[0].dy_sig;
+    Double_t atime0 = cut[0].atime0;
+    Double_t atimesig = cut[0].atime_sig;
 
     // Setting up chain and branch addresses
     C = new TChain("T");
+    std::cout << "Adding file to chain: " << rootfile_path << std::endl;
     C->Add(rootfile_path.c_str());
 
     C->SetBranchStatus("*",0);    
     double BBtr_p[hcal::maxTracks], BBtr_px[hcal::maxTracks], BBtr_py[hcal::maxTracks], BBtr_pz[hcal::maxTracks];
     double BBtr_vz[hcal::maxTracks];
-    double BBtr_n, BBps_x, BBps_y, BBps_e, BBps_atime, BBsh_x, BBsh_y, BBsh_e, BBsh_atime;	
+    double BBtr_n, BBps_x, BBps_y, BBps_e, BBps_atime, BBsh_x, BBsh_y, BBsh_e, BBsh_atime, BBsh_nclus;	
     double HCALx, HCALy, HCALe;
     double pblkrow, pblkcol, nblk, nclus;
     int Ncid;
     double cblkid[hcal::maxHCalChan], cblke[hcal::maxHCalChan], cblkatime[hcal::maxHCalChan], cblktime[hcal::maxHCalChan];
-    double cid[hcal::maxHCalClus], crow[hcal::maxHCalClus], ccol[hcal::maxHCalClus], ce[hcal::maxHCalClus], cx[hcal::maxHCalClus], cy[hcal::maxHCalClus], catime[hcal::maxHCalClus];
-    double HODOtmean;
+    double cid[hcal::maxHCalClus], crow[hcal::maxHCalClus], ccol[hcal::maxHCalClus], ce[hcal::maxHCalClus], cx[hcal::maxHCalClus], cy[hcal::maxHCalClus], catime[hcal::maxHCalClus], ctdctime[hcal::maxHCalClus];
+    double HODOtmean[hcal::maxHCalClus];
 
     // Speed up processing by switching on only useful branches
     C->SetBranchStatus( "*", 0 );
@@ -327,6 +360,7 @@ void adct_setalign( const char *experiment = "gmn", int config = 8, int pass = 1
     C->SetBranchStatus( "sbs.hcal.clus.x", 1 );
     C->SetBranchStatus( "sbs.hcal.clus.y", 1 );
     C->SetBranchStatus( "sbs.hcal.clus.atime", 1 );
+    C->SetBranchStatus( "sbs.hcal.clus.tdctime", 1 );
     C->SetBranchStatus( "bb.tr.n", 1 );
     C->SetBranchStatus( "bb.tr.px", 1 );
     C->SetBranchStatus( "bb.tr.py", 1 );
@@ -341,6 +375,7 @@ void adct_setalign( const char *experiment = "gmn", int config = 8, int pass = 1
     C->SetBranchStatus( "bb.sh.x", 1 );
     C->SetBranchStatus( "bb.sh.y", 1 );
     C->SetBranchStatus( "bb.sh.atimeblk", 1 );
+    C->SetBranchStatus( "bb.sh.nclus", 1 );
     C->SetBranchStatus( "bb.hodotdc.clus.tmean", 1 );
     C->SetBranchStatus( "bb.gem.track.nhits", 1 );
     C->SetBranchStatus( "bb.etot_over_p", 1 );
@@ -365,6 +400,7 @@ void adct_setalign( const char *experiment = "gmn", int config = 8, int pass = 1
     C->SetBranchAddress( "sbs.hcal.clus.x", cx );
     C->SetBranchAddress( "sbs.hcal.clus.y", cy );
     C->SetBranchAddress( "sbs.hcal.clus.atime", catime );
+    C->SetBranchAddress( "sbs.hcal.clus.tdctime", ctdctime );
     C->SetBranchAddress( "bb.tr.n", &BBtr_n );
     C->SetBranchAddress( "bb.tr.px", BBtr_px );
     C->SetBranchAddress( "bb.tr.py", BBtr_py );
@@ -379,7 +415,8 @@ void adct_setalign( const char *experiment = "gmn", int config = 8, int pass = 1
     C->SetBranchAddress( "bb.sh.x", &BBsh_x );
     C->SetBranchAddress( "bb.sh.y", &BBsh_y ); 
     C->SetBranchAddress( "bb.sh.atimeblk", &BBsh_atime ); 
-    C->SetBranchAddress( "bb.hodotdc.clus.tmean", &HODOtmean );
+    C->SetBranchAddress( "bb.sh.nclus", &BBsh_nclus ); 
+    C->SetBranchAddress( "bb.hodotdc.clus.tmean", HODOtmean );
     C->SetBranchAddress( "Ndata.sbs.hcal.clus.id", &Ncid ); //Odd maxing out at 10 clusters on all cluster Ndata objects, so this is needed in addition to sbs.hcal.nclus
 
     //Globalcut enables
@@ -456,26 +493,76 @@ void adct_setalign( const char *experiment = "gmn", int config = 8, int pass = 1
       Q2 = 2.0 * pbeam.E() * pe.E() * ( 1.0 - cos(etheta) );
       W2 = pow( M_avg, 2.0 ) + 2.0*M_avg * (ebeam_c-pe.E()) - Q2;
 
+      /////////////////////
+      //W2 elastic cut
+      bool failedW2 = W2>W2max || W2<W2min;
+      if(failedW2)
+	continue;
+
       //Calculate h-arm quantities
       vector<double> xyhcalexp; util::getxyhcalexpect( vertex, pNhat, hcalorigin, hcalaxes, xyhcalexp );
       TVector3 hcalpos = hcalorigin + HCALx*hcalaxes[0] + HCALy*hcalaxes[1]; //from primary blk
       double dx = HCALx - xyhcalexp[0];
       double dy = HCALy - xyhcalexp[1];
 
-      ///////
-      //BigBite/SBS Acceptance matching.
-      bool failedaccmatch = 
-	xyhcalexp[1] > hcal::posHCalYf ||
-	xyhcalexp[1] < hcal::posHCalYi ||
-	xyhcalexp[0] > hcal::posHCalXf ||
-	xyhcalexp[0] < hcal::posHCalXi;
-	  
-      if( failedaccmatch ) continue;
-
       double pblkid = (double)cblkid[0]-1;
       double hcalatime = cblkatime[0];
 
-      double adct_tc = hcalatime - HODOtmean; //Primary cluster, primary block adct with trigger correction (ns)
+      double adct_tc = hcalatime - HODOtmean[0]; //no cluster selection, primary cluster, primary block
+      
+      //Best Cluster analysis using intime algorithm for simplicity on diagnosis
+
+      //Set up best cluster index and energy for sorting
+      Double_t best_cluster[2] = {-1,0.};
+
+      //loop through all clusters and select without HCal position information
+      for( int c=0; c<Ncid; c++ ){
+	
+	//calculate h-arm physics quantities per cluster
+	double atime = catime[c];
+	double atime_hodo = atime - HODOtmean[0];
+	double cluse = ce[c];
+	
+	//wide cut around HCal/Hodo time
+	bool passedTime = abs(atime_hodo-atime0)<3*atimesig;
+
+	if( passedTime && cluse>best_cluster[1] ){
+	  best_cluster[0] = c;
+	  best_cluster[1] = cluse;
+	}
+      }//endloop over cluster elements
+      
+      //If no cluster passes atime cut, use default
+      if(best_cluster[0]==-1)
+	best_cluster[0]=0;
+
+      //Switch between best clusters for systematic analysis
+      Int_t cidx_best = best_cluster[0];
+      
+      //Calculations from the best cluster
+      Double_t dx_bestcluster = cx[cidx_best] - xyhcalexp[0];
+      Double_t dy_bestcluster = cy[cidx_best] - xyhcalexp[1];
+      Double_t hatime_bestcluster = catime[cidx_best];
+      Double_t htime_bestcluster = ctdctime[cidx_best];
+      Double_t hcoin_bestcluster = catime[cidx_best] - BBsh_atime;
+      Double_t ce_bestcluster = ce[cidx_best];
+      Double_t x_bestcluster = cx[cidx_best];
+      Double_t y_bestcluster = cy[cidx_best];
+      Double_t row_bestcluster = crow[cidx_best];
+      Double_t col_bestcluster = ccol[cidx_best];
+      Double_t id_bestcluster = cid[cidx_best];
+
+      //Time quantities
+      Double_t hadiff_bestcluster = catime[cidx_best] - HODOtmean[0];
+      Double_t hadiff = catime[0] - HODOtmean[0];
+      Double_t hdiff_bestcluster = ctdctime[cidx_best] - HODOtmean[0];
+      Double_t hdiff = ctdctime[0] - HODOtmean[0];
+
+      //Cut on dxdy spots bools
+      bool is_proton = util::Nspotcheck(dy, dx, dy0, dx0_p, 3*dysig, 3*dxsig_p);
+      bool is_neutron = util::Nspotcheck(dy, dx, dy0, dx0_n, 3*dysig, 3*dxsig_n);
+      bool is_proton_bc = util::Nspotcheck(dy_bestcluster, dx_bestcluster, dy0, dx0_p, 3*dysig, 3*dxsig_p);
+      bool is_neutron_bc = util::Nspotcheck(dy_bestcluster, dx_bestcluster, dy0, dx0_n, 3*dysig, 3*dxsig_n);
 
       //correct times out of window with large offsets. will subtract later.
       for( size_t c=0; c<pairedExChan.size(); c++ ){
@@ -486,9 +573,16 @@ void adct_setalign( const char *experiment = "gmn", int config = 8, int pass = 1
 	}
       }
 
-      hap_hodocorr_ID->Fill( pblkid, adct_tc );
-      hap_allhodocorr->Fill( adct_tc );
-
+      //cut on dxdy and fill histograms
+      if( is_proton || is_neutron ){
+	if(best_clus){
+	  hap_hodocorr_ID->Fill( id_bestcluster, hadiff_bestcluster );
+	  hap_allhodocorr->Fill( hadiff_bestcluster );
+	}else{
+	  hap_hodocorr_ID->Fill( pblkid, adct_tc );
+	  hap_allhodocorr->Fill( adct_tc );
+	}
+      }
     }//end loop over event
 
     // getting ready for the next run
@@ -579,6 +673,9 @@ void adct_setalign( const char *experiment = "gmn", int config = 8, int pass = 1
       //check to see if current cell is one that was adjusted for with tempChanOffset
       bool shifted_channel = false;
       int shifted_idx = -1;
+
+      bool y_extrema = c==0 || c==11;
+
       for(size_t i=0; i<pairedExChan.size(); ++i){
 	if(cell==pairedExChan[i].first){
 	  shifted_channel = true;
@@ -595,7 +692,11 @@ void adct_setalign( const char *experiment = "gmn", int config = 8, int pass = 1
 	writeParFile << tcval[cell] + adct_cal.old_param[cell] - ADCt_target - pairedExChan[shifted_idx].second << " ";
 
       }else{
-	writeParFile << tcval[cell] + adct_cal.old_param[cell] - ADCt_target << " ";
+	
+	if(no_y_extrema&&y_extrema)
+	  writeParFile << adct_cal.old_param[cell] - ADCt_target << " ";
+	else
+	  writeParFile << tcval[cell] + adct_cal.old_param[cell] - ADCt_target << " ";
 
       }
 

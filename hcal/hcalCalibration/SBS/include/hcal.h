@@ -12,8 +12,16 @@ const Int_t NTSTAMP = 10;
 const Int_t GMNNCONFIG = 6;
 
 namespace hcal{
+  //Paths
+  //GMn, pass 1 database
+  std::string gmn_p1_db_path = "/work/halla/sbs/seeds/alt_sbsreplay/SBS-replay/DB";
+  //GMn, pass 2 database
+  std::string gmn_p2_db_path = "/w/halla-scshelf2102/sbs/seeds/sbsoffline/SBS-replay/DB/";
+
   //HCal Detector
   const Int_t maxTracks = 1000; // Reasonable limit on tracks to be stored per event
+  const Int_t maxClus = 35;  //larger than max per tree
+  const Int_t maxBlk = 25;  //larger than max per geometry
   //HCal - Note that measurement of vertical length is 381.6cm (imprecise, by hand), indicating that the MC figures are correct
   const Int_t maxHCalChan = 288; // Total HCal channels
   const Int_t maxHCalRows = 24; // Total HCal rows

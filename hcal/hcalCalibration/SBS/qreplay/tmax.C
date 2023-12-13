@@ -201,7 +201,8 @@ void tmax( std::string experiment = "gmn",
 	   int max_runs = 10,
 	   int run_begin = 0,
 	   int run_end = 0,
-	   int select = 6 ){
+	   int select = 6,
+	   int nsig = 4 ){
 
   // Define a clock to check macro processing time
   TStopwatch *st = new TStopwatch();
@@ -305,22 +306,29 @@ void tmax( std::string experiment = "gmn",
 				      lower_lim,
 				      upper_lim);
 
+  TH1D *ht_all_diff = new TH1D("ht_all_diff",
+			       "adct all channels/runs highE cluster block difference",
+			       total_bins_short,
+			       lower_lim_short,
+			       upper_lim_short);
+
+
   TH1D *ht_all_best_diff = new TH1D("ht_all_best_diff",
-				    "adct all channels/runs best cluster block difference",
+				    "adct all channels/runs highE cluster best block difference",
 				    total_bins_short,
 				    lower_lim_short,
 				    upper_lim_short);
 
 
   TH1D *ht_all_best_diff_idx = new TH1D("ht_all_best_diff_idx",
-					"adct all channels/runs best cluster block difference index",
+					"adct all channels/runs highE cluster best block difference index",
 					total_bins_short,
 					lower_lim_short,
 					upper_lim_short);
 
 
   TH1D *ht_all_select_diff = new TH1D("ht_all_select_diff",
-  				    "adct all channels/runs select cluster block difference",
+  				    "adct all channels/runs highE cluster select block difference",
   				    total_bins_short,
   				    lower_lim_short,
   				    upper_lim_short);
@@ -605,7 +613,7 @@ void tmax( std::string experiment = "gmn",
       bool failedaccmatch = 
 	xyhcalexp[1] > hcal::posHCalYf ||
 	xyhcalexp[1] < hcal::posHCalYi ||
-		       xyhcalexp[0] > hcal::posHCalXf ||
+	xyhcalexp[0] > hcal::posHCalXf ||
 	xyhcalexp[0] < hcal::posHCalXi;
       
       if( failedaccmatch ) continue;
@@ -636,7 +644,7 @@ void tmax( std::string experiment = "gmn",
       //loop over hcal primary cluster blocks to return cluster time differences
       double diff_mark = 1000.;
       double diff_mark_idx = -1;
-      for( int c=0; c<Ncblkid; c++ ){
+      for( int c=1; c<Ncblkid; c++ ){
 	double id = cblkid[c]-1;
 	double atime = cblkatime[c];
 	double atime_c = atime + old_time_offsets[(int)id] - new_time_offsets[(int)id];
@@ -644,6 +652,7 @@ void tmax( std::string experiment = "gmn",
 	//time difference between primary cluster and each additional cluster
 	double diff = hcalatime - atime;
 	double diff_c = hcalatime_c - atime_c;
+	ht_all_diff->Fill(diff_c);
 
 	ht_cidx->Fill(c,diff_c);
 	if( c==select )
@@ -693,7 +702,7 @@ void tmax( std::string experiment = "gmn",
   fitFunction->SetParameter(3, 1);     // Initial skewness guess
   fitFunction->SetParameter(4, 500);     // Initial y-intercept guess for the linear
 
-  ht_all_select_diff->Fit(fitFunction, "Q", "", xmin, xmax);  // "Q" option for quiet mode
+  ht_all_diff->Fit(fitFunction, "Q", "", xmin, xmax);  // "Q" option for quiet mode
 
   auto [maxVal, x_max] = computeMaxValue(fitFunction, fitFunction->GetParameter(1), aFWHM);
 
@@ -708,9 +717,9 @@ void tmax( std::string experiment = "gmn",
   double sigma = fitFunction->GetParameter(2);
 
   // Draw the histogram (with the fit overlaid)
-  ht_all_select_diff->SetTitle(Form("ADCt PClus PBlk-Blk (select diff) SBS-%d, Set %d",config,set));
-  ht_all_select_diff->GetXaxis()->SetTitle("ns");
-  ht_all_select_diff->Draw();
+  ht_all_diff->SetTitle(Form("ADCt PClus PBlk-Blk (all diff) SBS-%d, Set %d",config,set));
+  ht_all_diff->GetXaxis()->SetTitle("ns");
+  ht_all_diff->Draw();
 
   // Draw the line representing the HWHM
   double y1 = fitFunction->Eval(x_max - hwhmLeftDifference);  // y-location of the HWHM
@@ -727,6 +736,9 @@ void tmax( std::string experiment = "gmn",
 
   double yOffset = maxVal * 0.0125;  // Adjust this value to control the vertical offset
 
+  double xcut = nsig*diffFromZeroLeft;
+
+  // Draw lines which represent difference between zero and HWHM right/left
   TLine *lineLeft = new TLine(-diffFromZeroLeft, y1-yOffset, 0., y1-yOffset);
   lineLeft->SetLineColor(kGreen);
   lineLeft->SetLineStyle(2);  // Dashed line
@@ -738,6 +750,20 @@ void tmax( std::string experiment = "gmn",
   lineRight->SetLineStyle(2);  // Dashed line
   lineRight->SetLineWidth(2);
   lineRight->Draw();
+
+  //draw line to show cut
+  TLine *lineCutLeft = new TLine(-xcut, yOffset-2*yOffset, -xcut, yOffset+2*yOffset);
+  lineCutLeft->SetLineColor(kGreen);
+  //lineCutLeft->SetLineStyle(2);  // Dashed line
+  lineCutLeft->SetLineWidth(2);
+  lineCutLeft->Draw();
+
+  //draw line to show cut
+  TLine *lineCutRight = new TLine(xcut, yOffset-2*yOffset, xcut, yOffset+2*yOffset);
+  lineCutRight->SetLineColor(kGreen);
+  //lineCutRight->SetLineStyle(2);  // Dashed line
+  lineCutRight->SetLineWidth(2);
+  lineCutRight->Draw();
 
   // Create a legend to report the fit parameters
   TLegend* leg = new TLegend(0.55, 0.6, 0.88, 0.88);
@@ -751,9 +777,9 @@ void tmax( std::string experiment = "gmn",
   leg->AddEntry((TObject*)0, Form("HWHM Left Magnitude (ns): %0.2f", hwhmLeftDifference ), "");
   leg->AddEntry((TObject*)0, Form("HWHM Left from x=0 Magnitude (ns): %0.2f", diffFromZeroLeft ), "");
   leg->AddEntry((TObject*)0, Form("HWHM Right from x=0 Magnitude (ns): %0.2f", diffFromZeroRight ), "");
-  leg->AddEntry((TObject*)0, Form("tmax (3 HWHM Left): %0.2f",3*hwhmLeftDifference ), "");
-  leg->AddEntry((TObject*)0, Form("tmax (3 HWHM from x=0 Left): %0.2f",3*diffFromZeroLeft ), "");
-  leg->AddEntry((TObject*)0, Form("tmax (3 HWHM from x=0 Right): %0.2f",3*diffFromZeroRight ), "");
+  leg->AddEntry((TObject*)0, Form("tmax (%d HWHM Left): %0.2f",nsig,nsig*hwhmLeftDifference ), "");
+  leg->AddEntry((TObject*)0, Form("tmax (%d HWHM from x=0 Left): %0.2f",nsig,nsig*diffFromZeroLeft ), "");
+  leg->AddEntry((TObject*)0, Form("tmax (%d HWHM from x=0 Right): %0.2f",nsig,nsig*diffFromZeroRight ), "");
   leg->Draw();
 
   // Save the canvas to a file (if needed)
