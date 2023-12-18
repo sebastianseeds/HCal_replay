@@ -330,6 +330,9 @@ namespace util {
 	vector<string> temp;
 	while(getline(tokenStream,token,delimiter)){      // reading each element of a line
 	  string temptoken=token;
+
+	  //cout << temptoken << endl;
+
 	  temp.push_back(temptoken);
 	}
 	// add relevant info to calrun objects
@@ -385,6 +388,9 @@ namespace util {
 	vector<string> temp;
 	while(getline(tokenStream,token,delimiter)){      // reading each element of a line
 	  string temptoken=token;
+	  
+	  //cout << temptoken << endl;
+
 	  temp.push_back(temptoken);
 	}
 	// select cut based on config, target, and field
@@ -432,7 +438,7 @@ namespace util {
     string readline;
     bool max_pushback = false;
     if(cut_data.is_open()){   
-      std::cout << "Reading cut info from: "<< cut_spreadsheet 
+      std::cout << "Reading diagnostic cut info from: "<< cut_spreadsheet 
 		<< std::endl << std::endl;
       string skip_header; getline(cut_data, skip_header); // skipping column header
       while(getline(cut_data,readline)){                  // reading each line
@@ -442,6 +448,9 @@ namespace util {
 	vector<string> temp;
 	while(getline(tokenStream,token,delimiter)){      // reading each element of a line
 	  string temptoken=token;
+
+	  //cout << temptoken << endl;
+
 	  temp.push_back(temptoken);
 	}
 	// select cut based on config, target, and field
@@ -916,6 +925,85 @@ namespace util {
 
       if( meanval > meanXmax || meanval < meanXmin ) //hard catch, if mean value out of known range use args
 	continue;
+
+      cell.push_back(cellval);
+      mean.push_back(meanval);
+      err.push_back(errval);
+    }
+  }
+
+  //slice histo function to include fits for all cells and write to c1 canvas. Hardcoded for HCal analysis.
+  void sliceHCalIDHisto( TH2D *h2, Int_t Nslices, Double_t fwhm, Int_t min_ev, TCanvas *c1, TCanvas *c2, vector<Double_t> &cell, vector<Double_t> &mean, vector<Double_t> &err, Double_t meanXmin = -1e38, Double_t meanXmax = 1e38 ){
+  
+    TH1D *cellslice[Nslices];
+
+    Int_t nBinsX = h2->GetNbinsX();
+
+    // Assuming 288 bins in X
+    if (nBinsX != hcal::maxHCalChan) {
+      std::cerr << "Histogram does not have " << hcal::maxHCalChan << " bins in X" << std::endl;
+        return;
+    }
+
+    c1->Divide(hcal::maxHCalCols,hcal::maxHCalRows/2); // 12 columns, 0-12 row (top half)
+    c2->Divide(hcal::maxHCalCols,hcal::maxHCalRows/2); // 12 columns, 12-24 row (bottom half)
+
+    for( Int_t i=0; i<Nslices; i++ ){
+    
+      Double_t cellval = (Double_t)i+0.5;
+      Double_t meanval = 0.;
+      Double_t errval = 0.;
+
+      cellslice[i] = h2->ProjectionY(Form("cellslice_%d",i+1),i+1,i+1);
+
+      if(i<144)
+	c1->cd(i+1);
+      else
+	c2->cd(i-143);
+
+      // Calculate the integral (total number of entries) in the range
+      double sliceN = cellslice[i]->Integral(1, cellslice[i]->GetNbinsX());
+      if( sliceN<min_ev ){ //continue if too sparse to get distribution
+	cellslice[i]->SetLineColor(kRed-5);
+	cellslice[i]->Draw();
+	continue;
+      }
+      //get reasonable limits on fit
+      Double_t min = cellslice[i]->GetXaxis()->GetXmin();
+      Double_t max = cellslice[i]->GetXaxis()->GetXmax();
+      Int_t totalbins = cellslice[i]->GetNbinsX();
+      Int_t binmax = cellslice[i]->GetMaximumBin();
+
+      if( cellslice[i]->GetMaximum() < 5 ){ //catch if all uniform noise
+	cellslice[i]->SetLineColor(kYellow-5);
+	cellslice[i]->Draw();
+	continue;
+      }
+
+      Double_t binmaxX = min+binmax*(max-min)/totalbins;
+      Double_t llim = binmaxX-fwhm;
+      Double_t ulim = binmaxX+fwhm;
+      if( llim < min ){ //if the lower limit is below minimum, recalculate
+	binmax = get_max_bin_on_range( cellslice[i], min, max );
+	binmaxX = min+binmax*(max-min)/totalbins;
+	llim = min;
+	ulim = binmaxX + ( binmaxX - llim );
+      }
+    
+      TF1 *fit1;
+      cellslice[i]->Fit("gaus","Q","",llim,ulim);
+      fit1 = cellslice[i]->GetFunction("gaus");
+      meanval = fit1->GetParameter(1);
+      errval = fit1->GetParameter(2);
+      cellslice[i]->SetTitle(Form("m:%0.2f s:%0.2f",meanval,errval));
+
+      if( meanval > meanXmax || meanval < meanXmin ){ //hard catch, if mean value out of known range use args
+	cellslice[i]->SetLineColor(kOrange-5);
+	cellslice[i]->Draw();
+	continue;
+      }
+
+      cellslice[i]->Draw();
 
       cell.push_back(cellval);
       mean.push_back(meanval);

@@ -41,6 +41,8 @@ typedef struct calrun {
     out << " Total Charge                        : " << crun.charge << std::endl;
     out << " HCal Vertical Offset                : " << crun.hcal_v_offset << std::endl;
     out << " Rootfile Directory                  : " << crun.rootfile_dir << std::endl;    
+    out << " HCal TDC offset timestamp           : " << crun.tdc_ts << std::endl;
+    out << " HCal TDC cal const offset timestamp : " << crun.tdcc_ts << std::endl;
     out << " HCal ADCt offset timestamp          : " << crun.adct_ts << std::endl;
     out << " HCal ADC gain coefficent timestamp  : " << crun.adcg_ts << std::endl;
     out << " ------------------------------------------------------" << std::endl << std::endl;
@@ -59,8 +61,10 @@ typedef struct calrun {
     charge = stod(data[7]);
     hcal_v_offset = stod(data[8]);
     rootfile_dir = data[9];
-    adct_ts = data[10];
-    adcg_ts = data[11];
+    tdc_ts = data[10];
+    tdcc_ts = data[11];
+    adct_ts = data[12];
+    adcg_ts = data[13];
   }
 
 } calrun_t;

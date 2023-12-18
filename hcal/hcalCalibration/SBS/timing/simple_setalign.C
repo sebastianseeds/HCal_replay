@@ -19,7 +19,7 @@ bool verb = true;
 
 ///////////////////////////////////////////////////////
 //Manual overide/tune information
-bool channel_override = true;
+bool channel_override = false;
 bool channel_override_tdc = false;
 Int_t corrChan = 264; //Channel to correct
 Int_t corrChan_tdc = -1; //Channel to correct
@@ -32,14 +32,14 @@ Double_t binXmin_tdc = -1e38;
 ///////////////////////////////////////////////////////
 
 //Main. If no arguments are passed to run_b and run_e, alignment over all runs will proceed.
-void simple_setalign( const char *experiment = "gmn", 
-		      int config = 7, 
-		      int pass = 0, 
+void simple_setalign( const char *experiment = "gen", 
+		      int config = 2, 
+		      int pass = 1, 
 		      int run_b = 0, 
 		      int run_e = 0, 
 		      int run_exclude_b = 0, 
 		      int run_exclude_e = 0, 
-		      bool best_clus = true, 
+		      bool best_clus = false, 
 		      double adct_target = 0.,
 		      double tdc_target = 0.,
 		      double corrChanOffset = 0){
@@ -89,8 +89,10 @@ void simple_setalign( const char *experiment = "gmn",
       cout << "ERROR: Enter a valid pass for gmn." << endl;
       return;
     }
+  }else if( exper.compare("gen")==0 ){
+    db_path = hcal::gmn_p2_db_path;
   }else{
-    cout << "ERROR: At present, script only configured for gmn." << endl;
+    cout << "ERROR: Enter a valid experiment (gmn or gen)" << endl;
     return;
   }
 
@@ -228,8 +230,6 @@ void simple_setalign( const char *experiment = "gmn",
   c0->Divide(1,2);
   c0->SetGrid();
     
-  c0->cd(1);
-
   vector<Double_t> c0cell;
   vector<Double_t> c0mean;
   vector<Double_t> c0err;
@@ -239,8 +239,18 @@ void simple_setalign( const char *experiment = "gmn",
 
   Int_t c0binsX = hadctWide->GetNbinsX();
 
-  util::sliceHisto(hadctWide, c0binsX, atime_fwhm, min_epc, c0cell, c0mean, c0err, binXmin, binXmax );
-    
+  TCanvas *c0v1 = new TCanvas("c0v1","ATime Diff fits HCal Top Half",1600,1200);
+  TCanvas *c0v2 = new TCanvas("c0v2","ATime Diff fits HCal Bottom Half",1600,1200);
+
+  if(verb){
+    util::sliceHCalIDHisto(hadctWide, c0binsX, atime_fwhm, min_epc, c0v1, c0v2, c0cell, c0mean, c0err, binXmin, binXmax );
+    c0v1->Write();
+    c0v2->Write();
+  } else
+    util::sliceHisto(hadctWide, c0binsX, atime_fwhm, min_epc, c0cell, c0mean, c0err, binXmin, binXmax );
+
+  c0->cd(1);
+
   // Convert vectors to arrays
   Double_t* c0x = &c0cell[0];  
   Double_t* c0y = &c0mean[0];
@@ -298,6 +308,7 @@ void simple_setalign( const char *experiment = "gmn",
   c0g_row->Draw("same P");
 
   c0->Update();
+  c0->Write();
  
   /////////////////////////////////
   //Fits to tight elastic cut data
@@ -306,8 +317,6 @@ void simple_setalign( const char *experiment = "gmn",
   c1->Divide(1,2);
   c1->SetGrid();
     
-  c1->cd(1);
-
   vector<Double_t> c1cell;
   vector<Double_t> c1mean;
   vector<Double_t> c1err;
@@ -321,8 +330,18 @@ void simple_setalign( const char *experiment = "gmn",
 
   Int_t c1binsX = hadctAlign->GetNbinsX();
 
-  util::sliceHisto(hadctAlign, c1binsX, atime_fwhm, min_epc, c1cell, c1mean, c1err, binXmin, binXmax );
-    
+  TCanvas *c1v1 = new TCanvas("c0v1","ATime Diff fits All Cuts HCal Top Half",1600,1200);
+  TCanvas *c1v2 = new TCanvas("c0v2","ATime Diff fits All Cuts HCal Bottom Half",1600,1200);
+   
+  if(verb){
+    util::sliceHCalIDHisto(hadctAlign, c1binsX, atime_fwhm, min_epc, c1v1, c1v2, c1cell, c1mean, c1err, binXmin, binXmax );
+    c1v1->Write();
+    c1v2->Write();
+  }else
+    util::sliceHisto(hadctAlign, c1binsX, atime_fwhm, min_epc, c1cell, c1mean, c1err, binXmin, binXmax );
+ 
+  c1->cd(1);
+
   // Convert vectors to arrays
   Double_t* c1x = &c1cell[0];  
   Double_t* c1y = &c1mean[0];
@@ -384,7 +403,8 @@ void simple_setalign( const char *experiment = "gmn",
   c1g_row->Draw("same P");
 
   c1->Update();
- 
+  c1->Write();
+
   //Calculate new offsets
 
   //check to be sure the size of the tgraph x axis matches hcal channels
@@ -581,6 +601,7 @@ void simple_setalign( const char *experiment = "gmn",
   c6g_row->Draw("same P");
 
   c6->Update();
+  c6->Write();
 
   /////////////////////////////////////
   // TDC fits to both arm elastic cuts

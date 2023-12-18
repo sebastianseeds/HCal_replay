@@ -142,10 +142,10 @@ void overlayWithMeans(TH2D* hist, TCanvas* canvas, std::vector<double> &means, s
 }
 
 //Main. Currently configured to take a maximum of four timing offset sets. leave as none if not needed, build patch list from first to fourth in run order. pass absolute paths
-void qreplay_settimepatch( std::string experiment = "gmn", 
-			   int config = 7, 
-			   int pass = 0, 
-			   bool best_clus = true,
+void qreplay_settimepatch( std::string experiment = "gen", 
+			   int config = 2, 
+			   int pass = 1, 
+			   bool best_clus = false,
 			   std::string type = "adct", 
 			   std::string first_patch_path = "none",
 			   std::string second_patch_path = "none",
@@ -202,15 +202,14 @@ void qreplay_settimepatch( std::string experiment = "gmn",
       cout << "ERROR: Enter a valid pass for gmn." << endl;
       return;
     }
+  }else if( exper.compare("gen")==0 ){
+    db_path = hcal::gmn_p2_db_path;
   }else{
-    cout << "ERROR: At present, script only configured for gmn." << endl;
+    cout << "ERROR: Enter a valid experiment (gmn or gen)" << endl;
     return;
   }
 
   std::string hcal_db_path = db_path + "/db_sbs.hcal.dat";
-  //std::string db_path = gSystem->Getenv("DB_DIR");
-  // std::string hcal_db_path = db_path + "/db_sbs.hcal.dat";
-  //std::string hcal_db_path = "/w/halla-scshelf2102/sbs/seeds/alt_sbsreplay/SBS-replay/DB/db_sbs.hcal.dat";
 
   //Get run ranges from paths
   std::vector<std::vector<int>> patch_ranges;

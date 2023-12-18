@@ -23,7 +23,7 @@ const Int_t spot_sig = 3;
 bool verb = false;
 
 //MAIN
-void timing_diagnostic( const char *experiment = "gmn", Int_t kine=4, Int_t pass=1, int run_b = 0, int run_e = 0, int run_exclude_b = 0, int run_exclude_e = 0, bool all_targets=true )
+void timing_diagnostic( const char *experiment = "gen", Int_t kine=2, Int_t pass=1, int run_b = 0, int run_e = 0, int run_exclude_b = 0, int run_exclude_e = 0, bool all_targets=false )
 {   
 
   // Define a clock to check macro processing time
@@ -197,7 +197,7 @@ void timing_diagnostic( const char *experiment = "gmn", Int_t kine=4, Int_t pass
 
   //Get experimental configuration parameters
   SBSconfig config_parameters(experiment,kine);    
-  cout << config_parameters;
+  cout << config_parameters << endl;
   Double_t hcaltheta = config_parameters.GetHCALtheta_rad();
   Double_t hcaldist = config_parameters.GetHCALdist();
   Double_t sbsdist = config_parameters.GetSBSdist();
@@ -212,7 +212,7 @@ void timing_diagnostic( const char *experiment = "gmn", Int_t kine=4, Int_t pass
   vector<int> used_fields;
 
   for (Int_t irun=0; irun<nruns; irun++) {
-      
+
     // only analyze hydrogen data to minimize better isolate elastic selection cuts
     std::string targ = runs[irun].target;
     Int_t t=-1;
@@ -241,6 +241,8 @@ void timing_diagnostic( const char *experiment = "gmn", Int_t kine=4, Int_t pass
 
     std::string targ_uppercase = targ; transform(targ_uppercase.begin(), targ_uppercase.end(), targ_uppercase.begin(), ::toupper );
     
+    cout << "Processing run " << runnum << ".." << endl;
+
     // get additional information from run object
     Int_t mag = runs[irun].sbsmag / 21; //convert to percent where max field is at 2100A
     Double_t ebeam = runs[irun].ebeam; //get beam energy per run
@@ -270,12 +272,19 @@ void timing_diagnostic( const char *experiment = "gmn", Int_t kine=4, Int_t pass
 
     util::ReadDiagnosticCutList(struct_dir,experiment,kine,targ,mag,verb,cut);  
     
+    cout << "Cut list loaded.." << endl;
+
+    //cout << cut[0].gcut << endl;
+
+    cout << cut[0] << endl;
+
     //search the used fields and targets, where current field/targ exists, don't add to allcut
     bool found_targ = false;
     if (std::find(used_targets.begin(), used_targets.end(), targ) != used_targets.end()) {
       found_targ = true; // Found the target
     }else{
       used_targets.push_back(targ); // Didn't find the target. Add to vector.
+      cout << "Found new target, adding to caldiag allcut vector.." << endl;
     }
 
     bool found_field = false;
@@ -283,6 +292,7 @@ void timing_diagnostic( const char *experiment = "gmn", Int_t kine=4, Int_t pass
       found_field = true; // Found the field
     }else{
       used_fields.push_back(mag); // Didn't find the field. Add to vector.
+      cout << "Found new SBS field setting, adding to caldiag allcut vector.." << endl;
     }
 
     //If either weren't found, new cut set exists. Add to allcut vector

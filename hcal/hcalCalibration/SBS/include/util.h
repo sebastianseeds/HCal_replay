@@ -106,6 +106,18 @@ namespace util {
 		   Double_t meanXmin,                      //hard min limit on finding mean value (if known)
 		   Double_t meanXmax);                     //hard max limit on finding mean value (if known)
 
+  void sliceHCalIDHisto( TH2D *h2,                               //2D histogram to slice
+			 Int_t Nslices,                          //number of x bins for slicing
+			 Double_t fwhm,                          //guess at std dev of gaus fit for preliminary fits
+			 Int_t min_ev,                           //minimum events to fit the x-cell
+			 TCanvas *c1,                            //Canvas to hold fits for top half cells
+			 TCanvas *c2,                           //Canvas to hold fits for bottom half cells
+			 vector<Double_t> &cell,                 //vector to store bin x values
+			 vector<Double_t> &mean,                 //vector to store mean values of fit
+			 vector<Double_t> &err,                  //vector to store std dev values of fit
+			 Double_t meanXmin,                      //hard min limit on finding mean value (if known)
+			 Double_t meanXmax);                           //Canvas to hold fits for bottom half cells
+
   void sliceHistoFine( TH2D *h2,                           //2D histogram to slice
 		       Int_t Nslices,                      //number of x bins for slicing
 		       Double_t fwhm,                      //guess at std dev of gaus fit for preliminary fits
