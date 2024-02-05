@@ -19,7 +19,7 @@ bool verb = true;
 
 ///////////////////////////////////////////////////////
 //Manual overide/tune information
-bool channel_override = false;
+bool channel_override = true;
 bool channel_override_tdc = false;
 Int_t corrChan = 264; //Channel to correct
 Int_t corrChan_tdc = -1; //Channel to correct
@@ -32,8 +32,8 @@ Double_t binXmin_tdc = -1e38;
 ///////////////////////////////////////////////////////
 
 //Main. If no arguments are passed to run_b and run_e, alignment over all runs will proceed.
-void simple_setalign( const char *experiment = "gen", 
-		      int config = 2, 
+void simple_setalign( const char *experiment = "gmn", 
+		      int config = 9, 
 		      int pass = 1, 
 		      int run_b = 0, 
 		      int run_e = 0, 
@@ -42,7 +42,7 @@ void simple_setalign( const char *experiment = "gen",
 		      bool best_clus = false, 
 		      double adct_target = 0.,
 		      double tdc_target = 0.,
-		      double corrChanOffset = 0){
+		      double corrChanOffset = -250.951){
 
   // Define a clock to check macro processing time
   TStopwatch *st = new TStopwatch();
@@ -71,7 +71,9 @@ void simple_setalign( const char *experiment = "gen",
   }
 
   //Path to analysis file
-  std::string out_path = out_dir + Form("/hcal_calibrations/pass%d/timing/setalign_%s_conf%d_pass%d_%d_to_%d_exclude_%d_to_%d.root",pass,experiment,config,pass,run_b,run_e,run_exclude_b,run_exclude_e);
+  //std::string out_path = out_dir + Form("/hcal_calibrations/pass%d/timing/setalign_%s_conf%d_pass%d_%d_to_%d_exclude_%d_to_%d.root",pass,experiment,config,pass,run_b,run_e,run_exclude_b,run_exclude_e);
+
+  std::string out_path = Form("setalign_%s_conf%d_pass%d_%d_to_%d_exclude_%d_to_%d.root",experiment,config,pass,run_b,run_e,run_exclude_b,run_exclude_e);
 
   //New Offset text paths
   std::string new_adctoffset_path = Form("parameters/simple_adctoffsets_%s_conf%d_pass%d_%d_to_%d_exclude_%d_to_%d.txt",experiment,config,pass,run_b,run_e,run_exclude_b,run_exclude_e);
@@ -308,6 +310,7 @@ void simple_setalign( const char *experiment = "gen",
   c0g_row->Draw("same P");
 
   c0->Update();
+  c0->Draw();
   c0->Write();
  
   /////////////////////////////////
@@ -330,8 +333,8 @@ void simple_setalign( const char *experiment = "gen",
 
   Int_t c1binsX = hadctAlign->GetNbinsX();
 
-  TCanvas *c1v1 = new TCanvas("c0v1","ATime Diff fits All Cuts HCal Top Half",1600,1200);
-  TCanvas *c1v2 = new TCanvas("c0v2","ATime Diff fits All Cuts HCal Bottom Half",1600,1200);
+  TCanvas *c1v1 = new TCanvas("c1v1","ATime Diff fits All Cuts HCal Top Half",1600,1200);
+  TCanvas *c1v2 = new TCanvas("c1v2","ATime Diff fits All Cuts HCal Bottom Half",1600,1200);
    
   if(verb){
     util::sliceHCalIDHisto(hadctAlign, c1binsX, atime_fwhm, min_epc, c1v1, c1v2, c1cell, c1mean, c1err, binXmin, binXmax );
@@ -403,6 +406,7 @@ void simple_setalign( const char *experiment = "gen",
   c1g_row->Draw("same P");
 
   c1->Update();
+  c1->Draw();
   c1->Write();
 
   //Calculate new offsets
@@ -601,6 +605,7 @@ void simple_setalign( const char *experiment = "gen",
   c6g_row->Draw("same P");
 
   c6->Update();
+  c6->Draw();
   c6->Write();
 
   /////////////////////////////////////
@@ -689,6 +694,7 @@ void simple_setalign( const char *experiment = "gen",
   c2g_row->Draw("same P");
 
   c2->Update();
+  c2->Draw();
   c2->Write();  
 
   //Calculate new tdc offsets
@@ -785,8 +791,8 @@ void simple_setalign( const char *experiment = "gen",
 
   writeTDCParFile.close();
 
-
   fout->Write();
+  fout->Close();
   st->Stop();
 
   cout << endl << "ADCt Analysis and fits written to " << out_path << endl << endl;

@@ -23,7 +23,7 @@ const Int_t spot_sig = 3;
 bool verb = false;
 
 //MAIN
-void timing_diagnostic( const char *experiment = "gen", Int_t kine=2, Int_t pass=1, int run_b = 0, int run_e = 0, int run_exclude_b = 0, int run_exclude_e = 0, bool all_targets=false )
+void timing_diagnostic( const char *experiment = "gmn", Int_t kine=9, Int_t pass=1, int run_b = 0, int run_e = 0, int run_exclude_b = 0, int run_exclude_e = 0, bool all_targets=true )
 {   
 
   // Define a clock to check macro processing time
@@ -33,8 +33,9 @@ void timing_diagnostic( const char *experiment = "gen", Int_t kine=2, Int_t pass
   // Get the date
   std::string date = util::getDate();
 
-  //One set of data files in json config shared between pass0/1 per kinematic
-  if( pass==0 )
+  //One set of data files in json config shared between pass0/1 per kinematic gmn
+  std::string expType = experiment;
+  if( expType.compare("gmn")==0 && pass==0 )
     pass=1;
 
   //switch if all runs or no exclusions should be considered
