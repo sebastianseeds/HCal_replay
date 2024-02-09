@@ -639,7 +639,7 @@ void timing_diagnostic( const char *experiment = "gmn", Int_t kine=9, Int_t pass
       Double_t y_bestcluster = hcalcy[cidx_best];
       Double_t row_bestcluster = hcalcrow[cidx_best];
       Double_t col_bestcluster = hcalccol[cidx_best];
-      Double_t id_bestcluster = hcalcid[cidx_best];
+      Double_t id_bestcluster = hcalcid[cidx_best]-1; //correct for id index
       
       hdxdy->Fill(dy,dx);
       hdxdy_bc->Fill(dy_bestcluster,dx_bestcluster);
@@ -659,14 +659,14 @@ void timing_diagnostic( const char *experiment = "gmn", Int_t kine=9, Int_t pass
       hatimerun_ecut->Fill( irun, hadiff);
       hatimerow_ecut->Fill( hcalcrow[0], hadiff);
       hatimecol_ecut->Fill( hcalccol[0], hadiff);
-      hatimeid_ecut->Fill( hcalcid[0], hadiff);
+      hatimeid_ecut->Fill( hcalcid[0]-1, hadiff); //correct for id index
       hatimex_ecut->Fill( hcalcx[0], hadiff);
       hatimey_ecut->Fill( hcalcy[0], hadiff);
 
       htimerun_ecut->Fill( irun, hdiff);
       htimerow_ecut->Fill( hcalcrow[0], hdiff);
       htimecol_ecut->Fill( hcalccol[0], hdiff);
-      htimeid_ecut->Fill( hcalcid[0], hdiff);
+      htimeid_ecut->Fill( hcalcid[0]-1, hdiff); //correct for id index
       htimex_ecut->Fill( hcalcx[0], hdiff);
       htimey_ecut->Fill( hcalcy[0], hdiff);
 
@@ -683,14 +683,14 @@ void timing_diagnostic( const char *experiment = "gmn", Int_t kine=9, Int_t pass
 	hatimerun->Fill( irun, hadiff);
 	hatimerow->Fill( hcalcrow[0], hadiff);
 	hatimecol->Fill( hcalccol[0], hadiff);
-	hatimeid->Fill( hcalcid[0], hadiff);
+	hatimeid->Fill( hcalcid[0]-1, hadiff); //correct for id index
 	hatimex->Fill( hcalcx[0], hadiff);
 	hatimey->Fill( hcalcy[0], hadiff);
 
 	htimerun->Fill( irun, hdiff);
 	htimerow->Fill( hcalcrow[0], hdiff);
 	htimecol->Fill( hcalccol[0], hdiff);
-	htimeid->Fill( hcalcid[0], hdiff);
+	htimeid->Fill( hcalcid[0]-1, hdiff); //correct for id index
 	htimex->Fill( hcalcx[0], hdiff);
 	htimey->Fill( hcalcy[0], hdiff);
       }      
@@ -736,7 +736,7 @@ void timing_diagnostic( const char *experiment = "gmn", Int_t kine=9, Int_t pass
       sbs_hcal_nclus_out = nclus;
       Ndata_sbs_hcal_clus_id_out = Nhcalcid;
       for( Int_t c=0; c<Nhcalcid; ++c ){
-	Double_t cid = hcalcid[c];
+	Double_t cid = hcalcid[c]-1; //correct for id index
 	Double_t ce = hcalce[c];
 	Double_t cx = hcalcx[c];
 	Double_t cy = hcalcy[c];
@@ -753,7 +753,7 @@ void timing_diagnostic( const char *experiment = "gmn", Int_t kine=9, Int_t pass
       sbs_hcal_nblk_out = nblk;
       Ndata_sbs_hcal_clus_blk_id_out = Nhcalcbid;
       for( Int_t b=0; b<Nhcalcbid; ++b ){
-	Double_t cbid = hcalcbid[b];
+	Double_t cbid = hcalcbid[b]-1; //correct for id index
 	Double_t cbe = hcalcbe[b];
 	Double_t cbx = hcalcbx[b];
 	Double_t cby = hcalcby[b];

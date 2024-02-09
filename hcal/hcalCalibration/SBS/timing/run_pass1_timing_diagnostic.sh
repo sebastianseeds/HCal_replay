@@ -35,10 +35,10 @@ root -l -b -q 'timing_diagnostic.C("gmn",8,1,0,0,0,0,true)'
 
 wait
 
-root -l -b -q 'timing_diagnostic.C("gmn",9,1,13682,13682,0,0,true)'
+# root -l -b -q 'timing_diagnostic.C("gmn",9,1,13682,13682,0,0,true)'
 
-wait
+# wait
 
-root -l -b -q 'timing_diagnostic.C("gmn",9,1,0,0,13682,13682,true)'
+# root -l -b -q 'timing_diagnostic.C("gmn",9,1,0,0,13682,13682,true)'
 
-wait
+# wait

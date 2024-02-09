@@ -24,7 +24,7 @@ const int total_bins = 500;
 const int lower_lim = -150;
 const int upper_lim = 150;
 bool verbose = true;
-const double tFWHM = 4;
+//const double tFWHM = 4;
 
 //for monitoring - sends current coefficient set to console
 void sendOffsetsToConsole(const double arr[hcal::maxHCalChan], std::string type_var) {
@@ -71,16 +71,17 @@ std::vector<int> extractLastFourIntegers(const std::string& s) {
   return lastFourIntegers;
 }
 
-void overlayWithMeans(TH2D* hist, TCanvas* canvas, std::vector<double> &means, std::vector<double> &xcent) {
+void overlayWithMeans(TH2D* hist, double sigma, TCanvas* canvas, std::vector<double> &means, std::vector<double> &xcent) {
   if (!hist || !canvas) {
     std::cerr << "Null histogram or canvas pointer!" << std::endl;
     return;
   }
 
   //Make histogram to store all tdc slices
+  double FWHM = 2*sigma;
   TH1D *hist_all = hist->ProjectionY("hist_all", 1, hist->GetNbinsX(), "e");
   //Get fit parameters
-  vector<Double_t> fit_vec = util::fitGaussianAndGetFineParams(hist_all, tFWHM);
+  vector<Double_t> fit_vec = util::fitGaussianAndGetFineParams(hist_all, FWHM);
   double win_low = fit_vec[1] - 5*fit_vec[2];
   double win_high = fit_vec[1] + 5*fit_vec[2];
 
@@ -94,8 +95,6 @@ void overlayWithMeans(TH2D* hist, TCanvas* canvas, std::vector<double> &means, s
     // Project the 2D histogram onto a 1D histogram along the y-axis for the current x-bin
     TH1D* projY = hist->ProjectionY("_py", binX, binX);
 
-    //declare some dynamic fit variables
-    double FWHM = tFWHM;
     int binMax = projY->GetMaximumBin();
     double binCenter = projY->GetBinCenter( binMax );
     double fitLowerLim = binCenter - FWHM;
@@ -142,8 +141,8 @@ void overlayWithMeans(TH2D* hist, TCanvas* canvas, std::vector<double> &means, s
 }
 
 //Main. Currently configured to take a maximum of four timing offset sets. leave as none if not needed, build patch list from first to fourth in run order. pass absolute paths
-void qreplay_settimepatch( std::string experiment = "gen", 
-			   int config = 2, 
+void qreplay_settimepatch( std::string experiment = "gmn", 
+			   int config = 9, 
 			   int pass = 1, 
 			   bool best_clus = false,
 			   std::string type = "adct", 
@@ -296,6 +295,42 @@ void qreplay_settimepatch( std::string experiment = "gen",
 				lower_lim,
 				upper_lim);
 
+  TH2D *ht_run_ecut_before = new TH2D("ht_run_ecut_before",
+				 Form( "%s-HODOtmean vs Run, Before Alignment, ecut only",type.c_str() ),
+				 (runs[nruns-1].runnum+1) - (runs[0].runnum-1),
+				 runs[0].runnum-1,
+				 runs[nruns-1].runnum+1,
+				 total_bins,
+				 lower_lim,
+				 upper_lim);
+  
+  TH2D *ht_run_ecut_after = new TH2D("ht_run_ecut_after",
+				Form( "%s-HODOtmean vs Run, After Alignment, ecut only",type.c_str() ),
+				(runs[nruns-1].runnum+1) - (runs[0].runnum-1),
+				runs[0].runnum-1,
+				runs[nruns-1].runnum+1,
+				total_bins,
+				lower_lim,
+				upper_lim);
+
+  TH2D *ht_id_ecut_before = new TH2D("ht_id_ecut_before",
+				Form( "%s-HODOtmean vs ID, Before Alignment, ecut only",type.c_str() ),
+				hcal::maxHCalChan,
+				     0,
+				     hcal::maxHCalChan,
+				     total_bins,
+				     lower_lim,
+				     upper_lim);
+  
+  TH2D *ht_id_ecut_after = new TH2D("ht_id_ecut_after",
+				    Form( "%s-HODOtmean vs ID, After Alignment, ecut only",type.c_str() ),
+				    hcal::maxHCalChan,
+				    0,
+				    hcal::maxHCalChan,
+				    total_bins,
+				    lower_lim,
+				    upper_lim);
+
   TH2D *ht_id_before = new TH2D("ht_id_before",
 				Form( "%s-HODOtmean vs ID, Before Alignment",type.c_str() ),
 				hcal::maxHCalChan,
@@ -332,6 +367,24 @@ void qreplay_settimepatch( std::string experiment = "gen",
 			       lower_lim,
 			       upper_lim);
 
+  TH2D *ht_row_ecut_before = new TH2D("ht_row_ecut_before",
+				Form( "%s-HODOtmean vs row, Before Alignment, ecut only",type.c_str() ),
+				hcal::maxHCalRows,
+				0,
+				hcal::maxHCalRows,
+				total_bins,
+				lower_lim,
+				upper_lim);
+  
+  TH2D *ht_row_ecut_after = new TH2D("ht_row_ecut_after",
+			       Form( "%s-HODOtmean vs row, After Alignment, ecut only",type.c_str() ),
+			       hcal::maxHCalRows,
+			       0,
+			       hcal::maxHCalRows,
+			       total_bins,
+			       lower_lim,
+			       upper_lim);
+
   TH1D *ht_allchan_allruns_before = new TH1D("ht_allchan_allruns_before",
 					     Form( "%s-HODOtmean All Runs All Channels, Before Alignment", type.c_str() ),
 					     total_bins,
@@ -352,6 +405,9 @@ void qreplay_settimepatch( std::string experiment = "gen",
   std::string ts_compare = "";
   bool cut_first = true;
   vector<int> used_runs;
+
+  double sigma_adct;
+  double sigma_tdc;
 
   //loop over patches
   for (size_t s=0; s<patch_ranges.size(); s++){
@@ -494,6 +550,9 @@ void qreplay_settimepatch( std::string experiment = "gen",
       Double_t atime0 = cut[0].atime0;
       Double_t atimesig = cut[0].atime_sig;
       Int_t min_ev = cut[0].min_ev;
+
+      //Used later to set fit range - may be updated many times, but needs only to be rough across kine
+      sigma_adct = atimesig;
 
       // Setting up chain and branch addresses
       C = new TChain("T");
@@ -723,7 +782,7 @@ void qreplay_settimepatch( std::string experiment = "gen",
 	Double_t y_bestcluster = cy[cidx_best];
 	Double_t row_bestcluster = crow[cidx_best];
 	Double_t col_bestcluster = ccol[cidx_best];
-	Double_t id_bestcluster = cid[cidx_best];
+	Double_t id_bestcluster = cid[cidx_best]-1;
 
 	//Cut on dxdy spots bools
 	bool is_proton = util::Nspotcheck(dy, dx, dy0, dx0_p, 3*dysig, 3*dxsig_p);
@@ -739,17 +798,22 @@ void qreplay_settimepatch( std::string experiment = "gen",
 	if(best_clus){
 	  if(is_proton_bc || is_neutron_bc)
 	    pass_spot = true;
-	  pblkid = (double)cid[cidx_best];
+	  pblkid = (double)cid[cidx_best]-1;
 	  pblkrow = (double)crow[cidx_best];
 	  hcalatime = catime[cidx_best];
 	  hcaltime = ctdctime[cidx_best];
 	}else{
 	  if(is_proton || is_neutron)
 	    pass_spot = true;
-	  pblkid = (double)cid[0];
+	  pblkid = (double)cid[0]-1;
 	  pblkrow = (double)crow[0];
 	  hcalatime = catime[0];
 	  hcaltime = ctdctime[0];
+	}
+
+	if(pblkid<0 || pblkid>287){
+	  std::cout << "ERROR: Dimension of primary block id array out of bounds, should be 0-287, is: " << pblkid << std::endl;
+	  return;
 	}
 
 	//double hcalatime = cblkatime[0];
@@ -775,6 +839,13 @@ void qreplay_settimepatch( std::string experiment = "gen",
 	  time_before = hcaltime_bc;
 	  time_after = hcaltime_fc;
 	} 
+
+	ht_id_ecut_before->Fill(pblkid,time_before);
+	ht_id_ecut_after->Fill(pblkid,time_after);
+	ht_row_ecut_before->Fill(pblkrow,time_before);
+	ht_row_ecut_after->Fill(pblkrow,time_after);
+	ht_run_ecut_before->Fill(current_runnumber,time_before);
+	ht_run_ecut_after->Fill(current_runnumber,time_after);
 
 	//Cut on nucleon spot
 	if( !pass_spot )
@@ -806,7 +877,7 @@ void qreplay_settimepatch( std::string experiment = "gen",
   std::vector<double> c1x;
   //gStyle->SetOptStat(0);
   //c1->cd();
-  overlayWithMeans(ht_run_before,c1,c1y,c1x);
+  overlayWithMeans(ht_run_before,sigma_adct,c1,c1y,c1x);
 
   c1->SetGridy();
   c1->Write();
@@ -819,7 +890,7 @@ void qreplay_settimepatch( std::string experiment = "gen",
   vector<double> c2x;
   //gStyle->SetOptStat(0);
   //c2->cd();
-  overlayWithMeans(ht_run_after,c2,c2y,c2x);
+  overlayWithMeans(ht_run_after,sigma_adct,c2,c2y,c2x);
 
   c2->SetGridy();
   c2->Write();
@@ -832,7 +903,7 @@ void qreplay_settimepatch( std::string experiment = "gen",
   std::vector<double> c3x;
   //gStyle->SetOptStat(0);
   //c3->cd();
-  overlayWithMeans(ht_id_before,c3,c3y,c3x);
+  overlayWithMeans(ht_id_before,sigma_adct,c3,c3y,c3x);
 
   c3->SetGridy();
   c3->Write();
@@ -845,7 +916,7 @@ void qreplay_settimepatch( std::string experiment = "gen",
   vector<double> c4x;
   //gStyle->SetOptStat(0);
   //c4->cd();
-  overlayWithMeans(ht_id_after,c4,c4y,c4x);
+  overlayWithMeans(ht_id_after,sigma_adct,c4,c4y,c4x);
 
   c4->SetGridy();
   c4->Write();
@@ -858,7 +929,7 @@ void qreplay_settimepatch( std::string experiment = "gen",
   std::vector<double> c3rx;
   //gStyle->SetOptStat(0);
   //c3r->cd();
-  overlayWithMeans(ht_row_before,c3r,c3ry,c3rx);
+  overlayWithMeans(ht_row_before,sigma_adct,c3r,c3ry,c3rx);
 
   c3r->SetGridy();
   c3r->Write();
@@ -871,7 +942,7 @@ void qreplay_settimepatch( std::string experiment = "gen",
   vector<double> c4rx;
   //gStyle->SetOptStat(0);
   //c4r->cd();
-  overlayWithMeans(ht_row_after,c4r,c4ry,c4rx);
+  overlayWithMeans(ht_row_after,sigma_adct,c4r,c4ry,c4rx);
 
   c4r->SetGridy();
   c4r->Write();

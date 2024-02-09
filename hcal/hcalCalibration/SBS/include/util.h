@@ -91,6 +91,8 @@ namespace util {
 			      Double_t xlow,               //lower limit on find range
 			      Double_t xhigh );            //upper limit on find range
 
+  double get_max_bin_content_ignore_overflow(TH1D* hist);   //1D histogram to fine max bin
+
   vector<Double_t> fitGaussianAndGetFineParams(TH1D* hist,           //1D histogram to fit
 					       Double_t sig,         //guess at std dev for course fit
 					       Double_t low,         //min limit on fit range  
@@ -103,8 +105,21 @@ namespace util {
 		   vector<Double_t> &cell,                 //vector to store bin x values
 		   vector<Double_t> &mean,                 //vector to store mean values of fit
 		   vector<Double_t> &err,                  //vector to store std dev values of fit
+		   TCanvas *c,                             //canvas to hold multiple fits
 		   Double_t meanXmin,                      //hard min limit on finding mean value (if known)
-		   Double_t meanXmax);                     //hard max limit on finding mean value (if known)
+		   Double_t meanXmax,                      //hard max limit on finding mean value (if known)
+		   Double_t noise_floor);                        //hard noise floor (if known)
+
+  void sliceHistoOnCanvas( TH2D *h2,                               //2D histogram to slice
+		   Int_t Nslices,                          //number of x bins for slicing
+		   Double_t fwhm,                          //guess at std dev of gaus fit for preliminary fits
+		   Int_t min_ev,                           //minimum events to fit the x-cell
+		   vector<Double_t> &cell,                 //vector to store bin x values
+		   vector<Double_t> &mean,                 //vector to store mean values of fit
+		   vector<Double_t> &err,                  //vector to store std dev values of fit
+		   Double_t meanXmin,                      //hard min limit on finding mean value (if known)
+		   Double_t meanXmax,                      //hard max limit on finding mean value (if known)
+		   Double_t noise_floor);                        //hard noise floor (if known)
 
   void sliceHCalIDHisto( TH2D *h2,                               //2D histogram to slice
 			 Int_t Nslices,                          //number of x bins for slicing
@@ -116,7 +131,21 @@ namespace util {
 			 vector<Double_t> &mean,                 //vector to store mean values of fit
 			 vector<Double_t> &err,                  //vector to store std dev values of fit
 			 Double_t meanXmin,                      //hard min limit on finding mean value (if known)
-			 Double_t meanXmax);                           //Canvas to hold fits for bottom half cells
+			 Double_t meanXmax,                      //hard max limit on finding mean value (if known)
+			 Double_t noise_floor);                        //hard noise floor (if known)
+
+  void sliceHCalIDHistoAlt( TH2D *h2,                               //2D histogram to slice
+			    Int_t Nslices,                          //number of x bins for slicing
+			    Double_t fwhm,                          //guess at std dev of gaus fit for preliminary fits
+			    Int_t min_ev,                           //minimum events to fit the x-cell
+			    TCanvas *c1,                            //Canvas to hold fits for top half cells
+			    TCanvas *c2,                           //Canvas to hold fits for bottom half cells
+			    vector<Double_t> &cell,                 //vector to store bin x values
+			    vector<Double_t> &mean,                 //vector to store mean values of fit
+			    vector<Double_t> &err,                  //vector to store std dev values of fit
+			    Double_t meanXmin,                      //hard min limit on finding mean value (if known)
+			    Double_t meanXmax,                      //hard max limit on finding mean value (if known)
+			    Double_t noise_floor);                        //hard noise floor (if known)
 
   void sliceHistoFine( TH2D *h2,                           //2D histogram to slice
 		       Int_t Nslices,                      //number of x bins for slicing

@@ -1,4 +1,4 @@
-#HCal ADCt offsets obtained 1_10_2024 for gmn config 8
+#HCal ADCt offsets obtained 2_6_2024 for gmn config 8
 #Offsets obtained from fits over ADCt distributions.
 
 sbs.hcal.adc.timeoffset =

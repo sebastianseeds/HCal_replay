@@ -35,10 +35,14 @@ root -l -b -q 'qreplay_settimepatch.C("gmn",8,1,false,"adct","../timing/paramete
 
 wait
 
-root -l -b -q 'qreplay_settimepatch.C("gmn",9,1,false,"adct","../timing/parameters/simple_adctoffsets_gmn_conf9_pass1_0_to_0_exclude_13682_to_13682.txt")'
+# root -l -b -q 'qreplay_settimepatch.C("gmn",9,1,false,"adct","../timing/parameters/simple_adctoffsets_gmn_conf9_pass1_0_to_0_exclude_0_to_0.txt")'
 
-wait
+# wait
 
-root -l -b -q 'qreplay_settimepatch.C("gmn",9,1,false,"adct","../timing/parameters/simple_adctoffsets_gmn_conf9_pass1_13682_to_13682_exclude_0_to_0.txt")'
+# root -l -b -q 'qreplay_settimepatch.C("gmn",9,1,false,"adct","../timing/parameters/simple_adctoffsets_gmn_conf9_pass1_0_to_0_exclude_13682_to_13682.txt")'
 
-wait
+# wait
+
+# root -l -b -q 'qreplay_settimepatch.C("gmn",9,1,false,"adct","../timing/parameters/simple_adctoffsets_gmn_conf9_pass1_13682_to_13682_exclude_0_to_0.txt")'
+
+# wait

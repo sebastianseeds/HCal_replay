@@ -820,6 +820,19 @@ namespace util {
     return maxBin;
   }
 
+  //Just gets max bin ignoring overflow and underflow
+  double get_max_bin_content_ignore_overflow(TH1D* hist) {
+    double maxContent = 0;
+    // Start from bin 1 to ignore underflow, end at GetNbinsX() to ignore overflow
+    for (int i = 1; i <= hist->GetNbinsX(); i++) {
+      double binContent = hist->GetBinContent(i);
+      if (binContent > maxContent) {
+	maxContent = binContent;
+      }
+    }
+    return maxContent;
+  }
+
   //Fits a gaussian to a distribution twice, first course, then fine
   std::vector<Double_t> fitGaussianAndGetFineParams(TH1D* hist, Double_t sig, Double_t low = -1e38, Double_t high = 1e38) {
     
@@ -881,7 +894,7 @@ namespace util {
   }
 
   //function to get gaussian fit mean and std dev per x-bin for later tgraph plotting
-  void sliceHisto( TH2D *h2, Int_t Nslices, Double_t fwhm, Int_t min_ev, vector<Double_t> &cell, vector<Double_t> &mean, vector<Double_t> &err, Double_t meanXmin = -1e38, Double_t meanXmax = 1e38 ){
+  void sliceHisto( TH2D *h2, Int_t Nslices, Double_t fwhm, Int_t min_ev, vector<Double_t> &cell, vector<Double_t> &mean, vector<Double_t> &err, Double_t meanXmin = -1e38, Double_t meanXmax = 1e38, Double_t noise_floor = 1e38 ){
   
     TH1D *cellslice[Nslices];
 
@@ -895,16 +908,20 @@ namespace util {
 
       // Calculate the integral (total number of entries) in the range
       double sliceN = cellslice[i]->Integral(1, cellslice[i]->GetNbinsX());
-      if( sliceN<min_ev ) //continue if too sparse to get distribution
+      if( sliceN<min_ev ){ //continue if too sparse to get distribution
+	//cout << "WARNING: Insufficient statistics on hist " << h2->GetName() << " cell " << cellval << " with " << sliceN << endl;
 	continue;
+      }
 
       //get reasonable limits on fit
       Double_t min = cellslice[i]->GetXaxis()->GetXmin();
       Double_t max = cellslice[i]->GetXaxis()->GetXmax();
       Int_t totalbins = cellslice[i]->GetNbinsX();
       Int_t binmax = cellslice[i]->GetMaximumBin();
+      //Double_t maxcontent = cellslice[i]->GetMaximum();
+      Double_t maxcontent = get_max_bin_content_ignore_overflow(cellslice[i]);
 
-      if( cellslice[i]->GetMaximum() < 5 ) //catch, underflow/overflow may be off range
+      if( maxcontent < noise_floor ) //catch, underflow/overflow may be off range
 	continue;
 
       Double_t binmaxX = min+binmax*(max-min)/totalbins;
@@ -932,10 +949,87 @@ namespace util {
     }
   }
 
+  void sliceHistoOnCanvas(TH2D *h2, Int_t Nslices, Double_t fwhm, Int_t min_ev, vector<Double_t> &cell, vector<Double_t> &mean, vector<Double_t> &err, TCanvas *c, Double_t meanXmin = -1e38, Double_t meanXmax = 1e38, Double_t noise_floor = 1e38) {
+    
+    TH1D *cellsliceC[Nslices];
+    
+    c->Divide(sqrt(Nslices)+1, sqrt(Nslices)+1); // Arrange the canvas in a grid close to square
+
+    for (Int_t i = 0; i < Nslices; i++) {
+      Double_t cellval = (Double_t)i + 0.5;
+      Double_t meanval = 0.;
+      Double_t errval = 0.;
+
+      cellsliceC[i] = h2->ProjectionY(Form("cellsliceC_%d", i + 1), i + 1, i + 1);
+
+      // Calculate the integral (total number of entries) in the range
+      double sliceN = cellsliceC[i]->Integral(1, cellsliceC[i]->GetNbinsX());
+
+      // Get maximum value for scaling and cuts
+      Double_t histmaxa = cellsliceC[i]->GetMaximum(); 
+      cellsliceC[i]->GetYaxis()->SetRangeUser(0,histmaxa*1.1);
+
+      c->cd(i+1); // Go to the sub-pad
+      cellsliceC[i]->Draw();
+
+      // Create a legend
+      TLegend *legR = new TLegend(0.1, 0.7, 0.9, 0.9); // x1, y1, x2, y2 coordinates (NDC)
+      legR->AddEntry( (TObject*)0, Form("ev: %0.2f",sliceN), "");
+      // Draw the legend
+      legR->Draw();
+
+      if (sliceN < min_ev) { // Continue if too sparse to get distribution
+	//cout << "WARNING: Insufficient statistics on hist " << h2->GetName() << " cell " << cellval << " with " << sliceN << endl;
+	cellsliceC[i]->SetLineColor(kRed);
+	cellsliceC[i]->SetTitle(Form("i%d FAIL ev%0.2f",i,sliceN));
+	c->Update();
+	continue;
+      }
+
+      Double_t min = cellsliceC[i]->GetXaxis()->GetXmin();
+      Double_t max = cellsliceC[i]->GetXaxis()->GetXmax();
+      Int_t totalbins = cellsliceC[i]->GetNbinsX();
+      Int_t binmax = cellsliceC[i]->GetMaximumBin();
+      //Double_t maxcontent = cellsliceC[i]->GetMaximum();
+      Double_t maxcontent = get_max_bin_content_ignore_overflow(cellsliceC[i]);
+
+      if ( maxcontent < noise_floor ){ // Catch, underflow/overflow may be off range
+	cellsliceC[i]->SetLineColor(kMagenta);
+	cellsliceC[i]->SetTitle(Form("i%d FAIL noise_floor%0.2f",i,maxcontent));
+	continue;
+      }
+
+      Double_t binmaxX = min + binmax * (max - min) / totalbins;
+      Double_t llim = binmaxX - fwhm;
+      Double_t ulim = binmaxX + fwhm;
+      if (llim < min) {
+	binmax = get_max_bin_on_range(cellsliceC[i], min, max);
+	binmaxX = min + binmax * (max - min) / totalbins;
+	llim = min;
+	ulim = binmaxX + (binmaxX - llim);
+      }
+
+      cellsliceC[i]->Fit("gaus", "Q", "", llim, ulim);
+      TF1 *fit1 = cellsliceC[i]->GetFunction("gaus");
+      meanval = fit1->GetParameter(1);
+      errval = fit1->GetParameter(2);
+      cellsliceC[i]->SetTitle(Form("i%d m%0.2f s%0.2f max%0.2f",i,meanval,errval,maxcontent));
+
+      if (meanval > meanXmax || meanval < meanXmin){ // Hard catch, if mean value out of known range use args
+	cellsliceC[i]->SetLineColor(kOrange);
+	continue;
+      }
+      //cell.push_back(cellval);
+      //mean.push_back(meanval);
+      //err.push_back(errval);
+    }
+    c->Update();
+  }
+
   //slice histo function to include fits for all cells and write to c1 canvas. Hardcoded for HCal analysis.
-  void sliceHCalIDHisto( TH2D *h2, Int_t Nslices, Double_t fwhm, Int_t min_ev, TCanvas *c1, TCanvas *c2, vector<Double_t> &cell, vector<Double_t> &mean, vector<Double_t> &err, Double_t meanXmin = -1e38, Double_t meanXmax = 1e38 ){
+  void sliceHCalIDHisto( TH2D *h2, Int_t Nslices, Double_t fwhm, Int_t min_ev, TCanvas *c1, TCanvas *c2, vector<Double_t> &cell, vector<Double_t> &mean, vector<Double_t> &err, Double_t meanXmin = -1e38, Double_t meanXmax = 1e38, Double_t noise_floor = 1e38 ){
   
-    TH1D *cellslice[Nslices];
+    TH1D *hcalcellslice[Nslices];
 
     Int_t nBinsX = h2->GetNbinsX();
 
@@ -954,7 +1048,7 @@ namespace util {
       Double_t meanval = 0.;
       Double_t errval = 0.;
 
-      cellslice[i] = h2->ProjectionY(Form("cellslice_%d",i+1),i+1,i+1);
+      hcalcellslice[i] = h2->ProjectionY(Form("hcalcellslice_%d",i+1),i+1,i+1);
 
       if(i<144)
 	c1->cd(i+1);
@@ -962,21 +1056,42 @@ namespace util {
 	c2->cd(i-143);
 
       // Calculate the integral (total number of entries) in the range
-      double sliceN = cellslice[i]->Integral(1, cellslice[i]->GetNbinsX());
+      Double_t sliceN = hcalcellslice[i]->Integral(1, hcalcellslice[i]->GetNbinsX());
+
+      // Get maximum value for scaling and cuts
+      //Double_t histmax = hcalcellslice[i]->GetMaximum(); 
+      Double_t histmax = get_max_bin_content_ignore_overflow(hcalcellslice[i]);
+
+      hcalcellslice[i]->GetYaxis()->SetRangeUser(0,histmax*1.35);
+
       if( sliceN<min_ev ){ //continue if too sparse to get distribution
-	cellslice[i]->SetLineColor(kRed-5);
-	cellslice[i]->Draw();
+	hcalcellslice[i]->SetLineColor(kRed-5);
+	hcalcellslice[i]->Draw();
+
+	// Create a legend
+	TLegend *leg = new TLegend(0.1, 0.7, 0.9, 0.9); // x1, y1, x2, y2 coordinates (NDC)
+	leg->AddEntry( (TObject*)0, Form("ev: %0.2f",sliceN), "");
+	// Draw the legend
+	leg->Draw();
+
 	continue;
       }
       //get reasonable limits on fit
-      Double_t min = cellslice[i]->GetXaxis()->GetXmin();
-      Double_t max = cellslice[i]->GetXaxis()->GetXmax();
-      Int_t totalbins = cellslice[i]->GetNbinsX();
-      Int_t binmax = cellslice[i]->GetMaximumBin();
+      Double_t min = hcalcellslice[i]->GetXaxis()->GetXmin();
+      Double_t max = hcalcellslice[i]->GetXaxis()->GetXmax();
+      Int_t totalbins = hcalcellslice[i]->GetNbinsX();
+      Int_t binmax = hcalcellslice[i]->GetMaximumBin();
 
-      if( cellslice[i]->GetMaximum() < 5 ){ //catch if all uniform noise
-	cellslice[i]->SetLineColor(kYellow-5);
-	cellslice[i]->Draw();
+      if( histmax < noise_floor ){ //catch if all uniform noise
+	hcalcellslice[i]->SetLineColor(kYellow-5);
+	hcalcellslice[i]->Draw();
+
+	// Create a legend
+	TLegend *leg = new TLegend(0.1, 0.7, 0.9, 0.9); // x1, y1, x2, y2 coordinates (NDC)
+	leg->AddEntry( (TObject*)0, Form("ev: %0.2f",sliceN), "");
+	// Draw the legend
+	leg->Draw();
+
 	continue;
       }
 
@@ -984,26 +1099,162 @@ namespace util {
       Double_t llim = binmaxX-fwhm;
       Double_t ulim = binmaxX+fwhm;
       if( llim < min ){ //if the lower limit is below minimum, recalculate
-	binmax = get_max_bin_on_range( cellslice[i], min, max );
+	binmax = get_max_bin_on_range( hcalcellslice[i], min, max );
 	binmaxX = min+binmax*(max-min)/totalbins;
 	llim = min;
 	ulim = binmaxX + ( binmaxX - llim );
       }
     
       TF1 *fit1;
-      cellslice[i]->Fit("gaus","Q","",llim,ulim);
-      fit1 = cellslice[i]->GetFunction("gaus");
+      hcalcellslice[i]->Fit("gaus","Q","",llim,ulim);
+      fit1 = hcalcellslice[i]->GetFunction("gaus");
       meanval = fit1->GetParameter(1);
       errval = fit1->GetParameter(2);
-      cellslice[i]->SetTitle(Form("m:%0.2f s:%0.2f",meanval,errval));
+      hcalcellslice[i]->SetTitle(Form("c:%d m:%0.2f s:%0.2f",i,meanval,errval));
+
+      // Check if maximum bin is at the endpoints of the fit range
+      Double_t tolerance = (ulim-llim)*0.025 ; // Define a small tolerance
+      if (std::abs(meanval - llim) < tolerance || std::abs(meanval - ulim) < tolerance) {
+	hcalcellslice[i]->SetLineColor(kMagenta);
+      }
 
       if( meanval > meanXmax || meanval < meanXmin ){ //hard catch, if mean value out of known range use args
-	cellslice[i]->SetLineColor(kOrange-5);
-	cellslice[i]->Draw();
+	hcalcellslice[i]->SetLineColor(kOrange-5);
+	hcalcellslice[i]->Draw();
+
+	// Create a legend
+	TLegend *leg = new TLegend(0.1, 0.7, 0.9, 0.9); // x1, y1, x2, y2 coordinates (NDC)
+	leg->AddEntry( (TObject*)0, Form("ev: %0.2f",sliceN), "");
+	// Draw the legend
+	leg->Draw();
+
 	continue;
       }
 
-      cellslice[i]->Draw();
+      hcalcellslice[i]->Draw();
+
+      // Create a legend
+      TLegend *leg = new TLegend(0.1, 0.7, 0.9, 0.9); // x1, y1, x2, y2 coordinates (NDC)
+      leg->AddEntry( (TObject*)0, Form("ev: %0.2f",sliceN), "");
+      // Draw the legend
+      leg->Draw();
+
+      cell.push_back(cellval);
+      mean.push_back(meanval);
+      err.push_back(errval);
+    }
+  }
+
+//slice histo function to include fits for all cells and write to c1 canvas. Hardcoded for HCal analysis.
+  void sliceHCalIDHistoAlt( TH2D *h2, Int_t Nslices, Double_t fwhm, Int_t min_ev, TCanvas *c1, TCanvas *c2, vector<Double_t> &cell, vector<Double_t> &mean, vector<Double_t> &err, Double_t meanXmin = -1e38, Double_t meanXmax = 1e38, Double_t noise_floor = 1e38 ){
+  
+    TH1D *hcalcellslicealt[Nslices];
+
+    Int_t nBinsX = h2->GetNbinsX();
+
+    // Assuming 288 bins in X
+    if (nBinsX != hcal::maxHCalChan) {
+      std::cerr << "Histogram does not have " << hcal::maxHCalChan << " bins in X" << std::endl;
+        return;
+    }
+
+    c1->Divide(hcal::maxHCalCols,hcal::maxHCalRows/2); // 12 columns, 0-12 row (top half)
+    c2->Divide(hcal::maxHCalCols,hcal::maxHCalRows/2); // 12 columns, 12-24 row (bottom half)
+
+    for( Int_t i=0; i<Nslices; i++ ){
+    
+      Double_t cellval = (Double_t)i+0.5;
+      Double_t meanval = 0.;
+      Double_t errval = 0.;
+
+      hcalcellslicealt[i] = h2->ProjectionY(Form("hcalcellslicealt_%d",i+1),i+1,i+1);
+
+      if(i<144)
+	c1->cd(i+1);
+      else
+	c2->cd(i-143);
+
+      // Calculate the integral (total number of entries) in the range
+      Double_t sliceN = hcalcellslicealt[i]->Integral(1, hcalcellslicealt[i]->GetNbinsX());
+
+      // Get maximum value for scaling and cuts
+      Double_t histmax = hcalcellslicealt[i]->GetMaximum(); 
+      hcalcellslicealt[i]->GetYaxis()->SetRangeUser(0,histmax*1.35);
+
+      if( sliceN<min_ev ){ //continue if too sparse to get distribution
+	hcalcellslicealt[i]->SetLineColor(kRed-5);
+	hcalcellslicealt[i]->Draw();
+
+	// Create a legend
+	TLegend *leg = new TLegend(0.1, 0.7, 0.9, 0.9); // x1, y1, x2, y2 coordinates (NDC)
+	leg->AddEntry( (TObject*)0, Form("ev: %0.2f",sliceN), "");
+	// Draw the legend
+	leg->Draw();
+
+	continue;
+      }
+      //get reasonable limits on fit
+      Double_t min = hcalcellslicealt[i]->GetXaxis()->GetXmin();
+      Double_t max = hcalcellslicealt[i]->GetXaxis()->GetXmax();
+      Int_t totalbins = hcalcellslicealt[i]->GetNbinsX();
+      Int_t binmax = hcalcellslicealt[i]->GetMaximumBin();
+
+      if( histmax < noise_floor ){ //catch if all uniform noise
+	hcalcellslicealt[i]->SetLineColor(kYellow-5);
+	hcalcellslicealt[i]->Draw();
+
+	// Create a legend
+	TLegend *leg = new TLegend(0.1, 0.7, 0.9, 0.9); // x1, y1, x2, y2 coordinates (NDC)
+	leg->AddEntry( (TObject*)0, Form("ev: %0.2f",sliceN), "");
+	// Draw the legend
+	leg->Draw();
+
+	continue;
+      }
+
+      Double_t binmaxX = min+binmax*(max-min)/totalbins;
+      Double_t llim = binmaxX-fwhm;
+      Double_t ulim = binmaxX+fwhm;
+      if( llim < min ){ //if the lower limit is below minimum, recalculate
+	binmax = get_max_bin_on_range( hcalcellslicealt[i], min, max );
+	binmaxX = min+binmax*(max-min)/totalbins;
+	llim = min;
+	ulim = binmaxX + ( binmaxX - llim );
+      }
+    
+      TF1 *fit1;
+      hcalcellslicealt[i]->Fit("gaus","Q","",llim,ulim);
+      fit1 = hcalcellslicealt[i]->GetFunction("gaus");
+      meanval = fit1->GetParameter(1);
+      errval = fit1->GetParameter(2);
+      hcalcellslicealt[i]->SetTitle(Form("c:%d m:%0.2f s:%0.2f",i,meanval,errval));
+
+      // Check if maximum bin is at the endpoints of the fit range
+      Double_t tolerance = (ulim-llim)*0.025 ; // Define a small tolerance
+      if (std::abs(meanval - llim) < tolerance || std::abs(meanval - ulim) < tolerance) {
+	hcalcellslicealt[i]->SetLineColor(kMagenta);
+      }
+
+      if( meanval > meanXmax || meanval < meanXmin ){ //hard catch, if mean value out of known range use args
+	hcalcellslicealt[i]->SetLineColor(kOrange-5);
+	hcalcellslicealt[i]->Draw();
+
+	// Create a legend
+	TLegend *leg = new TLegend(0.1, 0.7, 0.9, 0.9); // x1, y1, x2, y2 coordinates (NDC)
+	leg->AddEntry( (TObject*)0, Form("ev: %0.2f",sliceN), "");
+	// Draw the legend
+	leg->Draw();
+
+	continue;
+      }
+
+      hcalcellslicealt[i]->Draw();
+
+      // Create a legend
+      TLegend *leg = new TLegend(0.1, 0.7, 0.9, 0.9); // x1, y1, x2, y2 coordinates (NDC)
+      leg->AddEntry( (TObject*)0, Form("ev: %0.2f",sliceN), "");
+      // Draw the legend
+      leg->Draw();
 
       cell.push_back(cellval);
       mean.push_back(meanval);
@@ -1014,7 +1265,7 @@ namespace util {
   //slice histo function configured to use course/fine gaussian fitting (fitGaussianAndGetFineParams())
   void sliceHistoFine( TH2D *h2, Int_t Nslices, Double_t fwhm, Int_t min_ev, vector<Double_t> &cell, vector<Double_t> &mean, vector<Double_t> &err ){
   
-    TH1D *cellslice[Nslices];
+    TH1D *finecellslice[Nslices];
 
     for( Int_t i=0; i<Nslices; i++ ){
     
@@ -1022,12 +1273,12 @@ namespace util {
       Double_t meanval = 0.;
       Double_t errval = 0.;
 
-      cellslice[i] = h2->ProjectionY(Form("cellslice_%d",i+1),i+1,i+1);
-      Int_t sliceN = cellslice[i]->GetEntries();
+      finecellslice[i] = h2->ProjectionY(Form("finecellslice_%d",i+1),i+1,i+1);
+      Int_t sliceN = finecellslice[i]->GetEntries();
       if( sliceN<min_ev )
 	continue;
     
-      vector<Double_t> fitParams = fitGaussianAndGetFineParams(cellslice[i],fwhm);
+      vector<Double_t> fitParams = fitGaussianAndGetFineParams(finecellslice[i],fwhm);
 
       meanval = fitParams[1];
       errval = fitParams[2];

@@ -1,4 +1,5 @@
 //SSeeds 12.12.23 - Rewrite of timing calibration script to run from diagnostic plots with tighter elastic cuts. Added functionality such that channels with insufficient statistics will be aligned to the row value.
+//Update 2.2.24 - Added beamside override, corrected but which promoted bad tight row fits over good wide fits
 
 #include <vector>
 #include <iostream>
@@ -19,6 +20,7 @@ bool verb = true;
 
 ///////////////////////////////////////////////////////
 //Manual overide/tune information
+bool beamside_override = true;
 bool channel_override = true;
 bool channel_override_tdc = false;
 Int_t corrChan = 264; //Channel to correct
@@ -30,6 +32,11 @@ Double_t binXmin = -1e38;
 Double_t binXmax_tdc = 1e38;
 Double_t binXmin_tdc = -1e38;
 ///////////////////////////////////////////////////////
+
+Int_t min_epc_row = 120; //min events per row to fit
+Int_t min_epc = 80;     //min events per cell to fit
+Double_t noise_floor_row = 15; //noise floor for row max val to crest
+Double_t noise_floor = 11;     //noise floor for cell max val to crest
 
 //Main. If no arguments are passed to run_b and run_e, alignment over all runs will proceed.
 void simple_setalign( const char *experiment = "gmn", 
@@ -124,8 +131,9 @@ void simple_setalign( const char *experiment = "gmn",
   Int_t mag = runs[0].sbsmag / 21; //convert to percent where max field is at 2100A
   util::ReadDiagnosticCutList(struct_dir,experiment,config,targ,mag,verb,cut); //needed only for min ev
   //Int_t min_epc = cut[0].min_ev;
-  Int_t min_epc = 300; //TEST ONLY
-  Double_t atime_fwhm = cut[0].atime_sig;
+  //Int_t min_epc = 140; //TEST ONLY
+  Double_t atime_fwhm = 2 * cut[0].atime_sig;
+  //Double_t atime_fwhm = 8.0;
 
   //get vector of runnumbers
   vector<Double_t> runnumbers;
@@ -178,6 +186,10 @@ void simple_setalign( const char *experiment = "gmn",
   TH2D *htimex_bc = (TH2D*)f1->Get("htimex_bc");
   TH2D *htimey_bc = (TH2D*)f1->Get("htimey_bc");
 
+  // Output text file for new ADCt offsets
+  ofstream writeADCtParFile;
+  writeADCtParFile.open( new_adctoffset_path );
+
   //Set up structures to hold calibration parameters
   calset adct_cal;
   calset tdc_cal;
@@ -187,21 +199,61 @@ void simple_setalign( const char *experiment = "gmn",
   util::readDB( old_db_path, offset_timestamp, db_tdcoffset_variable, tdc_cal.old_param );
   util::readDB( old_db_path, offset_timestamp, db_tdccalib_variable, tdc_cal.tdc_calib );
 
-  //Make histogram to store all adct slices
-  TH1D *hadctAll = hatimeid->ProjectionY("hadctAll", 1, hatimeid->GetNbinsX(), "e");
-  //Get fit parameters
-  vector<Double_t> AllP = util::fitGaussianAndGetFineParams(hadctAll, atime_fwhm);
+  //Make fit histograms first to avoid ROOT-based canvas idiosyncracies 
+  vector<Double_t> c0cell;
+  vector<Double_t> c0mean;
+  vector<Double_t> c0err;
+    
+  //Clone the wide cut adct histogram for slices and fits
+  TH2D *hadctWide = (TH2D*)hatimeid_ecut->Clone("hadctWide");
 
-  //Make histogram to store all tdc slices
-  TH1D *htdcAll = htimeid->ProjectionY("htdcAll", 1, htimeid->GetNbinsX(), "e");
-  //Get fit parameters
-  vector<Double_t> AllPtdc = util::fitGaussianAndGetFineParams(htdcAll, atime_fwhm);
+  Int_t c0binsX = hadctWide->GetNbinsX();
+
+  TCanvas *c0v1 = new TCanvas("c0v1","ATime Diff fits wide cuts HCal Top Half",1600,1200);
+  TCanvas *c0v2 = new TCanvas("c0v2","ATime Diff fits wide cuts HCal Bottom Half",1600,1200);
+
+  //slice and save to canvas
+  if(verb){
+    util::sliceHCalIDHisto(hadctWide, c0binsX, atime_fwhm, min_epc, c0v1, c0v2, c0cell, c0mean, c0err, binXmin, binXmax, noise_floor );
+    c0v1->Write();
+    c0v2->Write();
+  } else
+    util::sliceHisto(hadctWide, c0binsX, atime_fwhm, min_epc, c0cell, c0mean, c0err, binXmin, binXmax, noise_floor );
+
+  vector<Double_t> c1cell;
+  vector<Double_t> c1mean;
+  vector<Double_t> c1err;
+    
+  //Clone the tight cut adct histogram from slices and fits
+  TH2D *hadctAlign;
+  if(best_clus)
+    hadctAlign = (TH2D*)hatimeid_bc->Clone("hadctAlign");
+  else
+    hadctAlign = (TH2D*)hatimeid->Clone("hadctAlign");
+
+  Int_t c1binsX = hadctAlign->GetNbinsX();
+
+  TCanvas *c1v1 = new TCanvas("c1v1","ATime Diff fits tight cuts HCal Top Half",1600,1200);
+  TCanvas *c1v2 = new TCanvas("c1v2","ATime Diff fits tight cuts HCal Bottom Half",1600,1200);
+   
+  //slice and fit to canvas
+  if(verb){
+    util::sliceHCalIDHistoAlt(hadctAlign, c1binsX, atime_fwhm, min_epc, c1v1, c1v2, c1cell, c1mean, c1err, binXmin, binXmax, noise_floor );
+    c1v1->Write();
+    c1v2->Write();
+  }else
+    util::sliceHisto(hadctAlign, c1binsX, atime_fwhm, min_epc, c1cell, c1mean, c1err, binXmin, binXmax, noise_floor );
 
   //Make canvas to write adct projection
   TCanvas *cAll = new TCanvas("cAll","ATime Diff All Channels",1600,1200);
   cAll->SetGrid();
-
   cAll->cd();
+
+  //Make histogram to store adct over all bins
+  TH1D *hadctAll = hatimeid->ProjectionY("hadctAll", 1, hatimeid->GetNbinsX(), "e");
+  //Get fit parameters
+  vector<Double_t> AllP = util::fitGaussianAndGetFineParams(hadctAll, atime_fwhm);
+
   hadctAll->Draw();
 
   cAll->Update();
@@ -209,18 +261,16 @@ void simple_setalign( const char *experiment = "gmn",
   //Make canvas to write tdc projection
   TCanvas *cAlltdc = new TCanvas("cAlltdc","Time Diff All Channels",1600,1200);
   cAlltdc->SetGrid();
-
   cAlltdc->cd();
+
+  //Make histogram to store tdc over all bins
+  TH1D *htdcAll = htimeid->ProjectionY("htdcAll", 1, htimeid->GetNbinsX(), "e");
+  //Get fit parameters
+  vector<Double_t> AllPtdc = util::fitGaussianAndGetFineParams(htdcAll, atime_fwhm);
+
   htdcAll->Draw();
 
   cAlltdc->Update();
-
-  /////////////////////
-  //Course alignments
-
-  // Output text file for new ADCt offsets
-  ofstream writeADCtParFile;
-  writeADCtParFile.open( new_adctoffset_path );
 
   ////////////////////
   // ADCtime vs ID
@@ -231,26 +281,6 @@ void simple_setalign( const char *experiment = "gmn",
   TCanvas *c0 = new TCanvas("c0","ATime Diff vs Id (wide e-arm cuts only)",1600,1200);
   c0->Divide(1,2);
   c0->SetGrid();
-    
-  vector<Double_t> c0cell;
-  vector<Double_t> c0mean;
-  vector<Double_t> c0err;
-    
-  //Clone the histogram which corresponds to the cluster method chosen
-  TH2D *hadctWide = (TH2D*)hatimeid_ecut->Clone("hadctWide");
-
-  Int_t c0binsX = hadctWide->GetNbinsX();
-
-  TCanvas *c0v1 = new TCanvas("c0v1","ATime Diff fits HCal Top Half",1600,1200);
-  TCanvas *c0v2 = new TCanvas("c0v2","ATime Diff fits HCal Bottom Half",1600,1200);
-
-  if(verb){
-    util::sliceHCalIDHisto(hadctWide, c0binsX, atime_fwhm, min_epc, c0v1, c0v2, c0cell, c0mean, c0err, binXmin, binXmax );
-    c0v1->Write();
-    c0v2->Write();
-  } else
-    util::sliceHisto(hadctWide, c0binsX, atime_fwhm, min_epc, c0cell, c0mean, c0err, binXmin, binXmax );
-
   c0->cd(1);
 
   // Convert vectors to arrays
@@ -286,7 +316,7 @@ void simple_setalign( const char *experiment = "gmn",
     
   Int_t c0binsX_row = hadctWideRow->GetNbinsX();
 
-  util::sliceHisto(hadctWideRow, c0binsX_row, atime_fwhm, min_epc, c0cell_row, c0mean_row, c0err_row, binXmin, binXmax );
+  util::sliceHisto(hadctWideRow, c0binsX_row, atime_fwhm, min_epc_row, c0cell_row, c0mean_row, c0err_row, binXmin, binXmax, noise_floor_row );
     
   // Convert vectors to arrays
   Double_t* c0x_row = &c0cell_row[0];  
@@ -313,36 +343,18 @@ void simple_setalign( const char *experiment = "gmn",
   c0->Draw();
   c0->Write();
  
+  //Get plot of row fits with wide cuts
+  TCanvas *c0rowfits = new TCanvas("c0rowfits","ATime Diff fits wide cuts HCal Rows",1600,1200);
+  util::sliceHistoOnCanvas(hadctWideRow, c0binsX_row, atime_fwhm, min_epc_row, c0cell_row, c0mean_row, c0err_row, c0rowfits, binXmin, binXmax, noise_floor_row );
+  c0rowfits->Update();
+  c0rowfits->Write();
+
   /////////////////////////////////
   //Fits to tight elastic cut data
-
+ 
   TCanvas *c1 = new TCanvas("c1","ATime Diff vs ID Tight Cut",1600,1200);
   c1->Divide(1,2);
   c1->SetGrid();
-    
-  vector<Double_t> c1cell;
-  vector<Double_t> c1mean;
-  vector<Double_t> c1err;
-    
-  //Clone the histogram which corresponds to the cluster method chosen
-  TH2D *hadctAlign;
-  if(best_clus)
-    hadctAlign = (TH2D*)hatimeid_bc->Clone("hadctAlign");
-  else
-    hadctAlign = (TH2D*)hatimeid->Clone("hadctAlign");
-
-  Int_t c1binsX = hadctAlign->GetNbinsX();
-
-  TCanvas *c1v1 = new TCanvas("c1v1","ATime Diff fits All Cuts HCal Top Half",1600,1200);
-  TCanvas *c1v2 = new TCanvas("c1v2","ATime Diff fits All Cuts HCal Bottom Half",1600,1200);
-   
-  if(verb){
-    util::sliceHCalIDHisto(hadctAlign, c1binsX, atime_fwhm, min_epc, c1v1, c1v2, c1cell, c1mean, c1err, binXmin, binXmax );
-    c1v1->Write();
-    c1v2->Write();
-  }else
-    util::sliceHisto(hadctAlign, c1binsX, atime_fwhm, min_epc, c1cell, c1mean, c1err, binXmin, binXmax );
- 
   c1->cd(1);
 
   // Convert vectors to arrays
@@ -382,7 +394,7 @@ void simple_setalign( const char *experiment = "gmn",
     
   Int_t c1binsX_row = hadctAlignRow->GetNbinsX();
 
-  util::sliceHisto(hadctAlignRow, c1binsX_row, atime_fwhm, min_epc, c1cell_row, c1mean_row, c1err_row, binXmin, binXmax );
+  util::sliceHisto(hadctAlignRow, c1binsX_row, atime_fwhm, min_epc_row, c1cell_row, c1mean_row, c1err_row, binXmin, binXmax, noise_floor_row );
     
   // Convert vectors to arrays
   Double_t* c1x_row = &c1cell_row[0];  
@@ -409,7 +421,19 @@ void simple_setalign( const char *experiment = "gmn",
   c1->Draw();
   c1->Write();
 
-  //Calculate new offsets
+  //Get plot of row fits with tight cuts
+  TCanvas *c1rowfits = new TCanvas("c1rowfits","ATime Diff fits tight cuts HCal Rows",1600,1600);
+  util::sliceHistoOnCanvas(hadctAlignRow, c1binsX_row, atime_fwhm, min_epc_row, c1cell_row, c1mean_row, c1err_row, c1rowfits, binXmin, binXmax, noise_floor_row );
+  c1rowfits->Update();
+  c1rowfits->Write();
+
+
+  TCanvas *what = new TCanvas("what","What the heck",1600,1600);
+  what->cd();
+  hadctAlignRow->Draw();
+
+  /////////////////////////////////////////////////
+  //Calculate and write new offsets
 
   //check to be sure the size of the tgraph x axis matches hcal channels
   if( hadctAlign->GetXaxis()->GetNbins() != hcal::maxHCalChan ){
@@ -420,77 +444,104 @@ void simple_setalign( const char *experiment = "gmn",
   //get an all fitted-channel average for last-resort on low statistics
   double cell_avg = AllP[1];
 
-  if(verb)
-    cout << "All ADCt Cell Mean Value: " << cell_avg << endl;
+  if(verb){
+    cout << endl << "All ADCt Cell Mean Value: " << cell_avg << endl;
+    cout << endl << "Surviving wide cut rows meeting min stats: " << endl;
+
+    for( size_t i=0; i<c0cell_row.size(); ++i )
+      cout << c0cell_row[i] << " with " << c0mean_row[i] << endl;
+    cout << endl << "Surviving tight cut rows meeting min stats: " << endl;
+    for( size_t i=0; i<c1cell_row.size(); ++i )
+      cout << c1cell_row[i] << " with " << c1mean_row[i] << endl;
+    cout << endl;
+  }
 
   int cell = 0;
   double mean_vals[hcal::maxHCalChan] = {0.};
+  double source_idx[hcal::maxHCalChan] = {0.}; //double check on source of offset, 0=overall, 1=tight channel, 2=tight row, 3=wide channel, 4=wide row
 
   //Write to output text file
   writeADCtParFile << "#HCal ADCt offsets obtained " << date.c_str() << " for " << experiment << " config " << config << endl;
   writeADCtParFile << "#Offsets obtained from fits over ADCt distributions." << endl << endl;
   writeADCtParFile << db_adctoffset_variable << " =" << endl;
 
-  //After suitable check on dimensions, loop over hcal rows and cols
+  //After suitable check on dimensions, loop over hcal rows and cols ADC ADC ADC
   for( int r = 0; r<hcal::maxHCalRows; ++r){
     for( int c = 0; c<hcal::maxHCalCols; ++c){
       
+      bool widecut_col_override = beamside_override && c==11; //override fit where SNR very small
+
       //mean_wide_val will serve as a default value if fine and course tight cuts don't do the job
       //if the cell cannot be found in the vector of x-axis tgraph points, no fit was performed
       //if no fit was performed, insufficient statistics exist for that cell
 
       //get the mean fitted/wide-cut value for this cell
       double mean_wide_val = -1000.;
+      double source = 0;
       auto it_w = std::find(c0cell.begin(), c0cell.end(), (double)cell+0.5);
-      if (it_w != c0cell.end()){
+      //if the electron arm cuts produce a histogram with enough to fit, use it
+      if (it_w != c0cell.end() && !widecut_col_override && cell!=58&& cell!=33&& cell!=6){
+
         int idx = std::distance(c0cell.begin(), it_w);
 	mean_wide_val = c0mean[idx];
-      }else{
+	source = 3;
+      }else{ //else, use the fit to the entire row (rough alignments done on pass0)
 	auto it_w_r = std::find(c0cell_row.begin(), c0cell_row.end(), (double)r+0.5);
 	if (it_w_r != c0cell_row.end()){
 	  int idx_r = std::distance(c0cell_row.begin(), it_w_r);
 	  mean_wide_val = c0mean_row[idx_r];
+	  source = 4;
 	}
       }
 
+      //if row does not have enough events to fit, use fit to entire detector
       if( mean_wide_val == -1000. )
 	mean_wide_val = cell_avg;
 
+      //Set the wide cut value to default. Will improve with fine fits where able.
       //get the mean fitted/tight-cut value for this cell
-      double mean_val = -1000.;
+      double mean_val = mean_wide_val;
       auto it = std::find(c1cell.begin(), c1cell.end(), (double)cell+0.5);
+      //if the both arms cuts produce a histogram with enough to fit, use it
       if (it != c1cell.end()){
+	//if (it != c1cell.end() && cell != 83 && cell != 227 && cell != 277){
         int idx = std::distance(c1cell.begin(), it);
 	mean_val = c1mean[idx];
-	if(verb)
-	  cout << "Search Cell : Found Cell - " << (double)cell+0.5 << " : " << c1cell[idx] << endl;
-      }else{
+	source = 1;
+	//if(verb)
+	//cout << "Search Cell : Found Cell - " << (double)cell+0.5 << " : " << c1cell[idx] << endl;
+      }else{ //else, use the fit to the entire row (rough alignments done on pass0)
 	auto it_r = std::find(c1cell_row.begin(), c1cell_row.end(), (double)r+0.5);
 	if (it_r != c1cell_row.end()){
-	  cout << "Insufficient statistics on cell " << cell << ", using fit to row." << endl;
+	  //cout << "Insufficient statistics on cell " << cell << ", using fit to row." << endl;
 	  int idx_r = std::distance(c1cell_row.begin(), it_r);
 	  mean_val = c1mean_row[idx_r];
-	  if(verb)
-	    cout << "Search Row : Found Row - " << (double)r+0.5 << " : " << c1cell_row[idx_r] << endl;
+	  source = 2;
+	  //if(verb)
+	  //cout << "Search Row : Found Row - " << (double)r+0.5 << " : " << c1cell_row[idx_r] << endl;
 	}
       }
 
-      //default to wide value if no value can be obtained from id or row fits
-      if( mean_val == -1000. ){
-	cout << "WARNING: Cell " << cell << ", defaulting to fit over all data." << endl;
-	mean_val = mean_wide_val;
-      }
+      //default to old param if no value can be obtained from id or row fits
+      // if( mean_val == -1000. ){
+      // 	cout << "WARNING: Cell " << cell << ", defaulting to fit over all data." << endl;
+      // 	mean_val = mean_wide_val;
+      // 	return;
+      // }
 
       //populate the adct offset array
       mean_vals[cell] = mean_val;
+      source_idx[cell] = source;
+
+      cout << "For ADCt cell " << cell << " col " << c << " mean " << mean_val << " source index " << source << endl;
 
       if( channel_override && cell==corrChan )  //manual override option
 	writeADCtParFile << corrChanOffset << " ";
       else
 	writeADCtParFile << mean_vals[cell] + adct_cal.old_param[cell] - adct_target << " ";
 
-      if(verb)
-	cout << "Fitted ADCt value for cell " << cell << ": " << mean_vals[cell] << endl;
+      //if(verb)
+      //cout << "Fitted ADCt value for cell " << cell << ": " << mean_vals[cell] << endl;
 
       //advance the id for the next loop
       cell++;
@@ -502,22 +553,28 @@ void simple_setalign( const char *experiment = "gmn",
   writeADCtParFile << endl << endl << endl;
 
   //Now write the new values in the format expected in the database for adc time
+  //cout << endl << endl << "Writing values as follows:" << endl;
   cell = 0;
   writeADCtParFile << "(inverted) " << db_adctoffset_variable << " =" << endl;
   for( int r = 0; r<hcal::maxHCalRows; ++r){
     for( int c = 0; c<hcal::maxHCalCols; ++c){
-      if( channel_override && cell==corrChan )  //manual override option
+      if( channel_override && cell==corrChan ){  //manual override option
 	writeADCtParFile << -corrChanOffset << " ";
-      else
+	//if(verb)
+	  //cout << "-corrChanOffset " << -corrChanOffset << endl;
+      }else{
 	writeADCtParFile << -(mean_vals[cell] - adct_cal.old_param[cell] - adct_target) << " ";
+	//if(verb) 
+	//cout << "-(mean_vals[cell] - adct_cal.old_param[cell] - adct_target): " << "-(" << mean_vals[cell] << " - " << adct_cal.old_param[cell] << " - " << adct_target << ") = " << -(mean_vals[cell] - adct_cal.old_param[cell] - adct_target) << endl;
+      }
       cell++;
     } // endloop over columns 
     writeADCtParFile << endl;
   } // endloop over rows
   writeADCtParFile << endl << endl << endl;
-
+  
   writeADCtParFile.close();
-
+  
   ////////////////////
   // TDC time vs ID
 
@@ -546,7 +603,7 @@ void simple_setalign( const char *experiment = "gmn",
 
   Int_t c6binsX = htdcWide->GetNbinsX();
 
-  util::sliceHisto(htdcWide, c6binsX, atime_fwhm, min_epc, c6cell, c6mean, c6err, binXmin_tdc, binXmax_tdc );
+  util::sliceHisto(htdcWide, c6binsX, atime_fwhm, min_epc, c6cell, c6mean, c6err, binXmin_tdc, binXmax_tdc, noise_floor );
     
   // Convert vectors to arrays
   Double_t* c6x = &c6cell[0];  
@@ -573,7 +630,7 @@ void simple_setalign( const char *experiment = "gmn",
   c6->cd(2);
 
   //Clone the histogram which corresponds to the cluster method chosen
-  TH2D *htdcWideRow = (TH2D*)hatimerow_ecut->Clone("htdcWideRow");
+  TH2D *htdcWideRow = (TH2D*)htimerow_ecut->Clone("htdcWideRow");
 
   vector<Double_t> c6cell_row;
   vector<Double_t> c6mean_row;
@@ -581,7 +638,7 @@ void simple_setalign( const char *experiment = "gmn",
     
   Int_t c6binsX_row = htdcWideRow->GetNbinsX();
 
-  util::sliceHisto(htdcWideRow, c6binsX_row, atime_fwhm, min_epc, c6cell_row, c6mean_row, c6err_row, binXmin_tdc, binXmax_tdc );
+  util::sliceHisto(htdcWideRow, c6binsX_row, atime_fwhm, min_epc, c6cell_row, c6mean_row, c6err_row, binXmin_tdc, binXmax_tdc, noise_floor );
     
   // Convert vectors to arrays
   Double_t* c6x_row = &c6cell_row[0];  
@@ -630,7 +687,7 @@ void simple_setalign( const char *experiment = "gmn",
 
   Int_t c2binsX = htdcAlign->GetNbinsX();
 
-  util::sliceHisto(htdcAlign, c2binsX, atime_fwhm, min_epc, c2cell, c2mean, c2err );
+  util::sliceHisto(htdcAlign, c2binsX, atime_fwhm, min_epc, c2cell, c2mean, c2err, noise_floor );
     
   // Convert vectors to arrays
   Double_t* c2x = &c2cell[0];  
@@ -670,7 +727,7 @@ void simple_setalign( const char *experiment = "gmn",
     
   Int_t c2binsX_row = htdcAlignRow->GetNbinsX();
 
-  util::sliceHisto(htdcAlignRow, c2binsX_row, atime_fwhm, min_epc, c2cell_row, c2mean_row, c2err_row );
+  util::sliceHisto(htdcAlignRow, c2binsX_row, atime_fwhm, min_epc, c2cell_row, c2mean_row, c2err_row, noise_floor_row );
     
   // Convert vectors to arrays
   Double_t* c2x_row = &c2cell_row[0];  
@@ -708,11 +765,12 @@ void simple_setalign( const char *experiment = "gmn",
   //get an all fitted-channel average for last-resort on low statistics
   double cell_avg_tdc = AllPtdc[1];
 
-  if(verb)
-    cout << "All TDC Cell Mean Value: " << cell_avg_tdc << endl;
+  //if(verb)
+  //cout << "All TDC Cell Mean Value: " << cell_avg_tdc << endl;
 
   int cell_tdc = 0;
   double mean_vals_tdc[hcal::maxHCalChan] = {0.};
+  double source_idx_tdc[hcal::maxHCalChan] = {0.};
 
   //Write to output text file
   writeTDCParFile << "#HCal TDC offsets obtained " << date.c_str() << " for " << experiment << " config " << config << endl;
@@ -729,56 +787,64 @@ void simple_setalign( const char *experiment = "gmn",
 
       //get the mean fitted/wide-cut value for this cell
       double mean_wide_val = -1000.;
+      double source = 0;
       auto it_w = std::find(c6cell.begin(), c6cell.end(), (double)cell_tdc+0.5);
       if (it_w != c6cell.end()){
         int idx = std::distance(c6cell.begin(), it_w);
 	mean_wide_val = c6mean[idx];
+	source = 3;
       }else{
 	auto it_w_r = std::find(c6cell_row.begin(), c6cell_row.end(), (double)r+0.5);
 	if (it_w_r != c6cell_row.end()){
 	  int idx_r = std::distance(c6cell_row.begin(), it_w_r);
 	  mean_wide_val = c6mean_row[idx_r];
+	  source = 4;
 	}
       }
 
       if( mean_wide_val == -1000. )
-	mean_wide_val = cell_avg_tdc;
+      	mean_wide_val = cell_avg_tdc;
 
       //get the mean fitted/tight-cut value for this cell
-      double mean_val = -1000.;
+      double mean_val = mean_wide_val;
       auto it = std::find(c2cell.begin(), c2cell.end(), (double)cell_tdc+0.5);
       if (it != c2cell.end()){
         int idx = std::distance(c2cell.begin(), it);
 	mean_val = c2mean[idx];
-	if(verb)
-	  cout << "Search Cell : Found Cell - " << (double)cell_tdc+0.5 << " : " << c2cell[idx] << endl;
+	source = 1;
+	//if(verb)
+	  //cout << "Search Cell : Found Cell - " << (double)cell_tdc+0.5 << " : " << c2cell[idx] << endl;
       }else{
 	auto it_r = std::find(c2cell_row.begin(), c2cell_row.end(), (double)r+0.5);
 	if (it_r != c2cell_row.end()){
-	  cout << "Insufficient statistics on cell " << cell << ", using fit to row." << endl;
+	  //cout << "Insufficient TDC statistics on cell " << cell << ", using fit to row." << endl;
 	  int idx_r = std::distance(c2cell_row.begin(), it_r);
 	  mean_val = c2mean_row[idx_r];
-	  if(verb)
-	    cout << "Search Row : Found Row - " << (double)r+0.5 << " : " << c2cell_row[idx_r] << endl;
+	  source = 2;
+	  //if(verb)
+	    //cout << "Search Row : Found Row - " << (double)r+0.5 << " : " << c2cell_row[idx_r] << endl;
 	}
       }
 
-      //default to wide value if no value can be obtained from id or row fits
-      if( mean_val == -1000. ){
-	cout << "WARNING: Cell " << cell_tdc << ", defaulting to fit over all data." << endl;
-	mean_val = mean_wide_val;
-      }
+      // //default to wide value if no value can be obtained from id or row fits
+      // if( mean_val == -1000. ){
+      // 	cout << "WARNING: Cell " << cell_tdc << ", defaulting to fit over all data." << endl;
+      // 	mean_val = mean_wide_val;
+      // }
 
       //populate the adct offset array
       mean_vals_tdc[cell_tdc] = mean_val;
+      source_idx_tdc[cell_tdc] = source;
+
+      cout << "For TDC cell " << cell_tdc << " mean " << mean_val << " source index " << source << endl;
 
       if( channel_override_tdc && cell_tdc==corrChan_tdc )  //manual override option
 	writeTDCParFile << corrChanOffset << " ";
       else
 	writeTDCParFile << mean_vals_tdc[cell_tdc]/calib_const + tdc_cal.old_param[cell_tdc] - tdc_target/calib_const << " ";
 
-      if(verb)
-	cout << "Fitted TDC value for cell " << cell_tdc << ": " << mean_vals_tdc[cell_tdc] << endl;
+      //if(verb)
+	//cout << "Fitted TDC value for cell " << cell_tdc << ": " << mean_vals_tdc[cell_tdc] << endl;
 
       //advance the id for the next loop
       cell_tdc++;
