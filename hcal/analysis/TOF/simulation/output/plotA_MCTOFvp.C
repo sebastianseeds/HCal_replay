@@ -25,6 +25,9 @@
 #include "TLorentzVector.h"
 #include "TString.h"
 #include "TF1.h"
+#include <TStyle.h>
+#include <TCanvas.h>
+#include <TH1F.h>
 
 const Int_t nkine = 6; //total kinematics
 const Int_t kIdx[6] = {4,7,11,14,8,9}; //indexing kinematics for processing
@@ -54,13 +57,15 @@ void plotA_MCTOFvp( ){
 
   gStyle->SetOptStat(0);
   gStyle->SetPalette(53);
+  gStyle->SetPadGridX(true); // Enable grid lines along the X-axis
+  gStyle->SetPadGridY(true); // Enable grid lines along the Y-axis
 
   //Get TOF v p for protons and send to canvas 1
   TFile *fmc[nkine];
   TH2D *hmc_p[nkine];
   for( Int_t i=0; i<nkine; i++ ){
     c1->cd(i+1);
-    c1->SetGrid();
+    //c1->SetGrid();
 
     TF1 *f = new TF1("f","pol3",1.5,9);
     f->SetParameters(TOFfitp_p[i][0],TOFfitp_p[i][1],TOFfitp_p[i][2],TOFfitp_p[i][3]);
@@ -78,7 +83,7 @@ void plotA_MCTOFvp( ){
     c1->Update();
   }
 
-  // c1->Update();
+  c1->Update();
   // c1->Modified();
   // c1->Write();
   cout << endl << endl;
@@ -108,7 +113,7 @@ void plotA_MCTOFvp( ){
     c2->Update();
   }
 
-  // c2->Update();
+  c2->Update();
   // c2->Modified();
   // c2->Write();
 
